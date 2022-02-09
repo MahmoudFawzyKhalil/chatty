@@ -35,6 +35,6 @@ public class UserModel {
     }
 
     public UserModel(){
-        setUserImage(new Image(getClass().getResource("/images/user.png").toString()));
+//        setUserImage(new Image(getClass().getResource("/images/user.png").toString()));
     }
 }
