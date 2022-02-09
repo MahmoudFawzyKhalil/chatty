@@ -1,4 +1,7 @@
 module chatty.server {
+    // RMI
+    requires java.rmi;
+
     // JavaFX
     requires javafx.controls;
     requires javafx.fxml;
@@ -14,6 +17,7 @@ module chatty.server {
 
     // Exports, Opens
     exports gov.iti.jets;
+
     opens gov.iti.jets.presentation.controllers to javafx.fxml;
     opens gov.iti.jets.presentation.customcontrols to javafx.fxml;
 }
