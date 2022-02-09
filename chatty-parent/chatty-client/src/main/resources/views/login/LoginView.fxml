@@ -27,7 +27,7 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </padding>
             </PasswordField>
-            <Button fx:id="loginBtn" mnemonicParsing="false" onAction="#onLoginButtonAction" styleClass="login-button" text="Login">
+            <Button fx:id="loginButton" mnemonicParsing="false" onAction="#onLoginButtonAction" styleClass="login-button" text="Login">
                <padding>
                   <Insets bottom="7.0" left="20.0" right="20.0" top="7.0" />
                </padding>
@@ -35,7 +35,7 @@
             <HBox alignment="CENTER">
                <children>
                   <Label styleClass="create-account-label" text="Need an account? " />
-                  <Hyperlink fx:id="createOneHyperLink" onAction="#onCreateOneHyperLinkAction" text="Create one" />
+                  <Hyperlink fx:id="createAccountHyperLink" onAction="#onCreateAccountHyperLinkAction" text="Create one" />
                </children>
             </HBox>
          </children>

@@ -23,10 +23,10 @@ public class LoginController implements Initializable {
 
 
     @FXML
-    private Hyperlink createOneHyperLink;
+    private Hyperlink createAccountHyperLink;
 
     @FXML
-    private Button loginBtn;
+    private Button loginButton;
 
     @FXML
     private PasswordField passwordTextField;
@@ -40,7 +40,7 @@ public class LoginController implements Initializable {
     }
 
     @FXML
-    void onCreateOneHyperLinkAction(ActionEvent event) {
+    void onCreateAccountHyperLinkAction(ActionEvent event) {
 
     }
 
