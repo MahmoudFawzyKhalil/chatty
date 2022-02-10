@@ -31,7 +31,7 @@
       </HBox>
       <ScrollPane id="text-field-holder" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" styleClass="transparent-color" vbarPolicy="NEVER" VBox.vgrow="ALWAYS">
          <content>
-            <VBox id="text-field-holder" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="15.0" styleClass="input-field-holder">
+            <VBox id="text-field-holder" fx:id="contactsVBox" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="15.0" styleClass="input-field-holder">
                <padding>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                </padding>
