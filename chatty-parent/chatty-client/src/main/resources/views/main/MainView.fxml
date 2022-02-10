@@ -26,7 +26,7 @@
                <children>
                   <StackPane id="profile-pic-container">
                      <children>
-                        <Circle id="profiile-pic" fill="WHITE" radius="25.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                        <Circle id="profile-pic" fill="WHITE" radius="25.0" stroke="TRANSPARENT" strokeType="INSIDE" styleClass="user-profile-pic" />
                      </children>
                      <VBox.margin>
                         <Insets top="20.0" />
@@ -34,15 +34,20 @@
                   </StackPane>
                   <StackPane id="invite-button-container">
                      <children>
-                        <Button id="invite-button" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" styleClass="invites-button" />
+                        <Button id="invite-button" mnemonicParsing="false" prefHeight="20.0" prefWidth="25.0" styleClass="invites-button" />
                      </children>
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
                   </StackPane>
-                  <StackPane id="settings-button-container">
+                  <StackPane id="chatbot-button-container">
                      <children>
-                        <Button id="settings-button" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" styleClass="settings-button" />
+                        <ToggleButton id="chatbot-button" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" styleClass="chatbot-button" />
+                     </children>
+                  </StackPane>
+                  <StackPane id="signout-button-container">
+                     <children>
+                        <Button id="signout-button" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" styleClass="signout-button" />
                      </children>
                   </StackPane>
                </children>
@@ -53,12 +58,15 @@
                      <children>
                         <HBox id="contacts-header" alignment="CENTER_LEFT" fillHeight="false">
                            <children>
-                              <Label id="contacts-title-label" scaleShape="false" styleClass="contacts-title-label" text="Contacts">
+                              <Label id="contacts-title-label" prefWidth="70.0" scaleShape="false" styleClass="contacts-title-label" text="Contacts">
                                  <HBox.margin>
                                     <Insets left="10.0" right="110.0" />
                                  </HBox.margin>
                               </Label>
-                              <Button id="add-contact-button" mnemonicParsing="false" prefHeight="5.0" prefWidth="20.0" styleClass="add-contact-button" />
+                              <Button id="add-contact-button" mnemonicParsing="false" prefHeight="5.0" prefWidth="20.0" styleClass="add-contact-button">
+                                 <padding>
+                                    <Insets top="2.0" />
+                                 </padding></Button>
                            </children>
                         </HBox>
                         <ScrollPane id="contacts-scrollpane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" styleClass="contacts-scrollpane" vbarPolicy="NEVER">
@@ -205,12 +213,15 @@
                      <children>
                         <HBox id="groups-header" alignment="CENTER_LEFT" fillHeight="false">
                            <children>
-                              <Label id="groups-title-label" scaleShape="false" styleClass="contacts-title-label" text="Groups">
+                              <Label id="groups-title-label" prefWidth="70.0" scaleShape="false" styleClass="contacts-title-label" text="Groups">
                                  <HBox.margin>
                                     <Insets left="10.0" right="110.0" />
                                  </HBox.margin>
                               </Label>
-                              <Button id="add-group-button" mnemonicParsing="false" prefHeight="5.0" prefWidth="20.0" styleClass="add-contact-button" />
+                              <Button id="add-group-button" mnemonicParsing="false" prefHeight="5.0" prefWidth="20.0" styleClass="add-contact-button">
+                                 <padding>
+                                    <Insets top="2.0" />
+                                 </padding></Button>
                            </children>
                         </HBox>
                         <ScrollPane id="groups-scrollpane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" styleClass="contacts-scrollpane" vbarPolicy="NEVER">
@@ -437,7 +448,7 @@
                <children>
                   <StackPane>
                      <children>
-                        <Circle id="profiile-pic" fill="WHITE" radius="25.0" stroke="TRANSPARENT" strokeType="INSIDE">
+                        <Circle id="profile-pic" fill="WHITE" radius="25.0" stroke="TRANSPARENT" strokeType="INSIDE">
                            <StackPane.margin>
                               <Insets left="20.0" />
                            </StackPane.margin>
@@ -468,7 +479,7 @@
                                     </Circle>
                                     <VBox id="sender-message-container" styleClass="sender-message-container">
                                        <children>
-                                          <Label id="sender-name" styleClass="sender-name" text="Label">
+                                          <Label id="sender-name" styleClass="sender-name" text="Mahmoud Fawzy">
                                              <VBox.margin>
                                                 <Insets bottom="5.0" />
                                              </VBox.margin>
@@ -480,7 +491,7 @@
                                           </TextFlow>
                                        </children>
                                        <padding>
-                                          <Insets bottom="10.0" left="10.0" right="10.0" top="5.0" />
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="8.0" />
                                        </padding>
                                     </VBox>
                                  </children>
@@ -491,38 +502,38 @@
                               <HBox id="padding" minWidth="250.0" HBox.hgrow="ALWAYS" />
                            </children>
                         </HBox>
-                        <HBox id="recieved-chat-bubble-container" fillHeight="false">
+                        <HBox id="sent-chat-bubble-container" fillHeight="false">
                            <children>
                               <HBox id="image-message-container" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Circle id="contact-pic" fill="#243f66" radius="15.0" stroke="TRANSPARENT" strokeType="INSIDE">
-                                       <HBox.margin>
-                                          <Insets right="5.0" />
-                                       </HBox.margin>
-                                    </Circle>
-                                    <VBox id="sender-message-container" styleClass="sender-message-container">
+                                    <HBox id="padding" minWidth="250.0" HBox.hgrow="ALWAYS" />
+                                    <VBox id="sender-message-container" alignment="TOP_RIGHT" styleClass="sender-message-container">
                                        <children>
-                                          <Label id="sender-name" styleClass="sender-name" text="Label">
+                                          <Label id="sender-name" styleClass="sender-name" text="Christine Nedaa">
                                              <VBox.margin>
-                                                <Insets bottom="5.0" />
+                                                <Insets bottom="5.0" right="2.0" />
                                              </VBox.margin>
                                           </Label>
-                                          <TextFlow>
+                                          <TextFlow textAlignment="RIGHT">
                                              <children>
                                                 <Text id="sender-message-text" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="sender-message-text" text="heloo heloo heloo heloo heloo heloo heloo heloo heloo heloohelooheloohelooheloo heloo heloo heloo heloo heloo heloo heloo heloo heloo " />
                                              </children>
                                           </TextFlow>
                                        </children>
                                        <padding>
-                                          <Insets bottom="10.0" left="10.0" right="10.0" top="5.0" />
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="8.0" />
                                        </padding>
                                     </VBox>
+                                    <Circle id="contact-pic" fill="#243f66" radius="15.0" stroke="TRANSPARENT" strokeType="INSIDE">
+                                       <HBox.margin>
+                                          <Insets left="5.0" />
+                                       </HBox.margin>
+                                    </Circle>
                                  </children>
                                  <HBox.margin>
-                                    <Insets left="10.0" top="20.0" />
+                                    <Insets right="10.0" top="20.0" />
                                  </HBox.margin>
                               </HBox>
-                              <HBox id="padding" minWidth="250.0" HBox.hgrow="ALWAYS" />
                            </children>
                         </HBox>
                      </children>
