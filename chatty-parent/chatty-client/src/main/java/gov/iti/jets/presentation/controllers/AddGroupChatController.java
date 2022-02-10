@@ -15,13 +15,7 @@ import java.util.ResourceBundle;
 public class AddGroupChatController implements Initializable {
 
     @FXML
-    private Hyperlink cancelHyperLink;
-
-    @FXML
     private CheckBox contactNameTextField;
-
-    @FXML
-    private Button nextButton;
 
     @FXML
     private Button createButton;
@@ -42,7 +36,7 @@ public class AddGroupChatController implements Initializable {
     }
 
     @FXML
-    void onCancelHyperLinkClick(ActionEvent event) {
+    void onCancelHyperLinkAction(ActionEvent event) {
 
     }
 
