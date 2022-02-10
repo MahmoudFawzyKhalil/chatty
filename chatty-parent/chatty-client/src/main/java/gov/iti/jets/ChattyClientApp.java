@@ -12,8 +12,8 @@ public class ChattyClientApp extends Application {
 
     @Override
     public void start(Stage primaryStage){
-        // stageCoordinator.initStage(primaryStage);
-        // stageCoordinator.switchToLoginScene();
+         stageCoordinator.initStage(primaryStage);
+         stageCoordinator.switchToLoginScene();
 
         primaryStage.setMinWidth(940);
         primaryStage.setMinHeight(500);
