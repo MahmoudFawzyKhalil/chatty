@@ -11,8 +11,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="510.0" prefWidth="940.0" styleClass="main-back-ground" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="510.0" prefWidth="940.0" styleClass="main-back-ground" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.presentation.controllers.RegistrationController">
    <children>
       <VBox id="registration-two-card" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="20.0" styleClass="card">
          <children>
@@ -43,7 +42,7 @@
             <FlowPane id="next-previoyus" alignment="CENTER" hgap="20.0">
                <children>
                   <Button id="previous" fx:id="previousButton" mnemonicParsing="false" onAction="#onPreviousButtonAction" styleClass="previous-button" text="Previous" />
-                  <Button id="next" fx:id="nextButton" mnemonicParsing="false" onAction="#onNextButtonAction" styleClass="next-button" text="Next" />
+                  <Button id="next" fx:id="secondNextButton" mnemonicParsing="false" onAction="#onSecondNextButtonAction" styleClass="next-button" text="Next" />
                </children>
             </FlowPane>
          </children>
