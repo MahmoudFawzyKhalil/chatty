@@ -53,7 +53,7 @@
     -fx-background-color: -main-medium;
 }
 .text-styling-button{
-    -fx-shape: "M512 0C229.232 0 0 229.232 0 512c0 282.784 229.232 512 512 512 282.784 0 512-229.216 512-512C1024 229.232 794.784 0 512 0zm0 961.008c-247.024 0-448-201.984-448-449.01 0-247.024 200.976-448 448-448s448 200.977 448 448-200.976 449.01-448 449.01zM736 480H544V288c0-17.664-14.336-32-32-32s-32 14.336-32 32v192H288c-17.664 0-32 14.336-32 32s14.336 32 32 32h192v192c0 17.664 14.336 32 32 32s32-14.336 32-32V544h192c17.664 0 32-14.336 32-32s-14.336-32-32-32z";
+    -fx-shape: "m22.106 0h-20.211c-1.047 0-1.895.849-1.895 1.895v4.924c0 .016-.001.034-.001.053 0 1.047.849 1.895 1.895 1.895s1.895-.849 1.895-1.895c0-.019 0-.037-.001-.056v.003-3.03h6.315v16.422h-2.925c-1.024.03-1.842.867-1.842 1.895s.819 1.865 1.84 1.895h.003 9.642c1.024-.03 1.842-.867 1.842-1.895s-.819-1.865-1.84-1.895h-.003-2.926v-16.422h6.315v3.03c.03 1.024.867 1.842 1.895 1.842s1.865-.819 1.895-1.84v-.003-4.924c0-1.046-.848-1.895-1.894-1.895z";
     -fx-background-color: -main-light;
 }
 .attach-button{
@@ -73,6 +73,18 @@
 .button{
     -fx-cursor:hand;
 }
+
+.toggle-button {
+    -fx-cursor: hand;
+    -fx-background-color: -main-light;
+}
+
+
+.toggle-button:selected {
+    -fx-text-fill: -main-light;
+    -fx-background-color: derive(-main-dark, 10%) ;
+}
+
 .contact-chat-name{
     -fx-font-size: 16px;
     -fx-text-fill: -main-light;
@@ -100,5 +112,68 @@
     -fx-background-color: -main-light;
 }
 .user-profile-pic:hover{
-    -fx-cursor-hand;    /*not working*/
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: derive(-main-medium, 30%);
+}
+
+.toggle-button:hover {
+    -fx-background-color: derive(-main-medium, 30%);
+}
+
+.profile-pic-status-container {
+    -fx-background: -main-dark;
+    -fx-background-color: -main-dark;
+}
+
+.text-settings-tool-bar {
+    -fx-background-color: -main-medium;
+}
+
+.font-settings-popup-contextmenu {
+    -fx-background-color: -main-medium;
+}
+
+#text-color-label {
+    -fx-text-fill: -main-light;
+}
+
+#background-label {
+   -fx-text-fill: -main-light;
+}
+
+
+.choice-box {
+    -fx-background-color: -main-light;
+}
+
+.choice-box:hover {
+    -fx-background-color: derive(-main-light, -10%);
+}
+
+.color-picker {
+    -fx-background-color: -main-light;
+}
+
+.color-picker:hover {
+    -fx-background-color: derive(-main-light, -10%);
+}
+
+.user-status-context-menu {
+    -fx-background-color: -main-light;
+}
+
+.user-status-menu-item {
+    -fx-background-color: -main-light;
+    -fx-text-fill: -main-dark;
+}
+
+.user-status-menu-item:hover {
+    -fx-background-color: -main-medium;
+}
+
+.chat-text-area:selected{
+    -fx-border-color: transparent;
 }

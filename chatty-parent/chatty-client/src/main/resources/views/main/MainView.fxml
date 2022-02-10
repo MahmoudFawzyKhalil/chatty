@@ -3,13 +3,17 @@
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ColorPicker?>
 <?import javafx.scene.control.ContextMenu?>
 <?import javafx.scene.control.CustomMenuItem?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
@@ -24,17 +28,34 @@
          <children>
             <VBox id="side-bar-left" prefWidth="80.0" spacing="30.0" styleClass="side-bar-left">
                <children>
-                  <StackPane id="profile-pic-container">
-                     <children>
-                        <Circle id="profile-pic" fill="WHITE" radius="25.0" stroke="TRANSPARENT" strokeType="INSIDE" styleClass="user-profile-pic" />
-                     </children>
+                  <ScrollPane id="profile-pic-status-container" fitToHeight="true" fitToWidth="true" styleClass="profile-pic-status-container">
                      <VBox.margin>
                         <Insets top="20.0" />
                      </VBox.margin>
-                  </StackPane>
+                     <content>
+                        <StackPane id="profile-pic-container">
+                           <children>
+                              <Circle id="profile-pic" fill="WHITE" radius="25.0" stroke="TRANSPARENT" strokeType="INSIDE" styleClass="user-profile-pic" />
+                              <Circle id="status-color" fill="#48ff48" radius="6.0" stroke="TRANSPARENT" strokeType="INSIDE" translateX="-18.0" StackPane.alignment="BOTTOM_RIGHT" />
+                           </children>
+                        </StackPane>
+                     </content>
+                     <contextMenu>
+                        <ContextMenu>
+                          <items>
+                            <MenuItem id="Available" mnemonicParsing="false" text="Available" />
+                              <MenuItem id="Busy" mnemonicParsing="false" text="Busy" />
+                              <MenuItem id="Away" mnemonicParsing="false" text="Away" />
+                          </items>
+                        </ContextMenu>
+                     </contextMenu>
+                     <tooltip>
+                        <Tooltip text="Right click to change status" />
+                     </tooltip>
+                  </ScrollPane>
                   <StackPane id="invite-button-container">
                      <children>
-                        <Button id="invite-button" mnemonicParsing="false" prefHeight="20.0" prefWidth="25.0" styleClass="invites-button" />
+                        <Button id="invite-button" mnemonicParsing="false" prefHeight="20.0" prefWidth="26.0" styleClass="invites-button" />
                      </children>
                      <VBox.margin>
                         <Insets />
@@ -348,46 +369,6 @@
                                           <Insets bottom="8.0" top="8.0" />
                                        </padding>
                                     </HBox>
-                                    <HBox id="group-chat-hbox" alignment="CENTER_LEFT" styleClass="contact-chat-hbox">
-                                       <children>
-                                          <StackPane id="group-pic-container">
-                                             <HBox.margin>
-                                                <Insets left="10.0" />
-                                             </HBox.margin>
-                                             <children>
-                                                <Circle id="group-pic" fill="WHITE" radius="15.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-                                             </children>
-                                          </StackPane>
-                                          <Label id="group-name" styleClass="contact-name" text="ITI Intake 42">
-                                             <HBox.margin>
-                                                <Insets left="10.0" />
-                                             </HBox.margin>
-                                          </Label>
-                                       </children>
-                                       <padding>
-                                          <Insets bottom="8.0" top="8.0" />
-                                       </padding>
-                                    </HBox>
-                                    <HBox id="group-chat-hbox" alignment="CENTER_LEFT" styleClass="contact-chat-hbox">
-                                       <children>
-                                          <StackPane id="group-pic-container">
-                                             <HBox.margin>
-                                                <Insets left="10.0" />
-                                             </HBox.margin>
-                                             <children>
-                                                <Circle id="group-pic" fill="WHITE" radius="15.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-                                             </children>
-                                          </StackPane>
-                                          <Label id="group-name" styleClass="contact-name" text="ITI Intake 42">
-                                             <HBox.margin>
-                                                <Insets left="10.0" />
-                                             </HBox.margin>
-                                          </Label>
-                                       </children>
-                                       <padding>
-                                          <Insets bottom="8.0" top="8.0" />
-                                       </padding>
-                                    </HBox>
                                  </children>
                               </VBox>
                            </content>
@@ -415,18 +396,53 @@
                         <Insets left="10.0" />
                      </HBox.margin>
                      <contextMenu>
-                        <ContextMenu>
+                        <ContextMenu id="extras-menu" anchorLocation="CONTENT_BOTTOM_LEFT" anchorX="0.0" anchorY="0.0" styleClass="font-settings-popup-contextmenu" x="0.0" y="0.0">
                           <items>
-                              <CustomMenuItem hideOnClick="false" mnemonicParsing="false" text="Unspecified Action">
+                              <CustomMenuItem id="bla" hideOnClick="false" mnemonicParsing="false" styleClass="font-settings-popup-contextmenu" text="Unspecified Action">
                                  <content>
-                                    <ToggleButton mnemonicParsing="false" text="ToggleButton" />
+                                    <VBox id="extras-menu-container" prefWidth="200.0" spacing="5.0">
+                                       <children>
+                                          <HBox id="font-type" spacing="5.0">
+                                             <children>
+                                                <ToggleButton id="bold-toggle-button" mnemonicParsing="false" text="B" />
+                                                <ToggleButton id="italic-toggle-button" mnemonicParsing="false" text="I" />
+                                                <ToggleButton id="underline-toggle-button" mnemonicParsing="false" text="U" />
+                                             </children>
+                                          </HBox>
+                                          <HBox id="font-settings" spacing="10.0">
+                                             <children>
+                                                <ChoiceBox id="font-family-picker" prefWidth="130.0" />
+                                                <ChoiceBox id="font-size-picker" prefWidth="70.0" />
+                                             </children>
+                                          </HBox>
+                                          <HBox id="color-pickers" spacing="10.0">
+                                             <children>
+                                                <VBox id="text-color-picker">
+                                                   <children>
+                                                      <Label id="text-color-label" text="Font" />
+                                                      <ColorPicker id="text-color-picker" />
+                                                   </children>
+                                                </VBox>
+                                                <VBox id="background-color-picker">
+                                                   <children>
+                                                      <Label id="background-label" text="Background" />
+                                                      <ColorPicker id="background-color-picker" />
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </padding>
+                                    </VBox>
                                  </content>
                               </CustomMenuItem>
                           </items>
                         </ContextMenu>
                      </contextMenu>
                   </Button>
-                  <Button id="attach-button" mnemonicParsing="false" prefWidth="20.0" styleClass="attach-button" text="Button">
+                  <Button id="attach-button" mnemonicParsing="false" prefWidth="25.0" styleClass="attach-button">
                      <HBox.margin>
                         <Insets left="10.0" right="10.0" />
                      </HBox.margin>
@@ -436,7 +452,7 @@
                         <Insets left="10.0" />
                      </HBox.margin>
                   </TextArea>
-                  <Button id="send-button" mnemonicParsing="false" prefWidth="25.0" styleClass="send-button" text="Button">
+                  <Button id="send-button" mnemonicParsing="false" prefWidth="25.0" styleClass="send-button">
                      <HBox.margin>
                         <Insets left="20.0" right="20.0" />
                      </HBox.margin>
@@ -453,7 +469,7 @@
                               <Insets left="20.0" />
                            </StackPane.margin>
                         </Circle>
-                        <Circle id="status-color" fill="#48ff48" radius="6.0" stroke="TRANSPARENT" strokeType="INSIDE" translateX="-3.0" translateY="-8.0" StackPane.alignment="BOTTOM_RIGHT" />
+                        <Circle id="status-color" fill="#48ff48" radius="6.0" stroke="TRANSPARENT" strokeType="INSIDE" translateX="-3.0" translateY="-10.0" StackPane.alignment="BOTTOM_RIGHT" />
                      </children>
                   </StackPane>
                   <Label id="contact-chat-name" styleClass="contact-chat-name" text="Christine Nedaa">
