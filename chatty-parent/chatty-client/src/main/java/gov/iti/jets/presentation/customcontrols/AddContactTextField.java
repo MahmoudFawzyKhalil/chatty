@@ -12,7 +12,7 @@ import java.util.ResourceBundle;
 
 public class AddContactTextField extends TextField implements Initializable {
     @FXML
-    private TextField phoneNumberTextField;
+    private TextField contactPhoneNumberTextField;
 
     public AddContactTextField(){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/add-contact/AddContactTextField.fxml"));
