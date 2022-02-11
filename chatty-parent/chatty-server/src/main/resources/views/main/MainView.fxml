@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.gluonhq.charm.glisten.control.Icon?>
+<?import com.gluonhq.charm.glisten.control.ToggleButtonGroup?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
@@ -8,6 +10,7 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.image.Image?>
@@ -50,17 +53,9 @@
                      </tooltip>
                   </ScrollPane>
                   <StackPane id="invite-button-container">
-                     <children>
-                        <Button id="invite-button" mnemonicParsing="false" onAction="#onInvitationsButtonAction" prefHeight="20.0" prefWidth="26.0" styleClass="invites-button" />
-                     </children>
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
-                  </StackPane>
-                  <StackPane id="chatbot-button-container">
-                     <children>
-                        <Button id="chatbot-button" mnemonicParsing="false" onAction="#onChatBotButtonAction" prefHeight="25.0" prefWidth="25.0" styleClass="chatbot-button" />
-                     </children>
                   </StackPane>
                   <StackPane id="signout-button-container">
                      <children>
@@ -71,103 +66,47 @@
             </VBox>
             <VBox id="side-bar-right" prefWidth="230.0" styleClass="side-bar-right">
                <children>
-                  <VBox id="contacts-element" VBox.vgrow="ALWAYS">
+                  <VBox id="contacts-element">
                      <children>
                         <HBox id="contacts-header" alignment="CENTER_LEFT" fillHeight="false">
                            <children>
-                              <Label id="contacts-title-label" prefWidth="70.0" scaleShape="false" styleClass="contacts-title-label" text="Contacts">
+                              <Label id="broad-cast-message" scaleShape="false" styleClass="contacts-title-label" text="Broadcast Message">
                                  <HBox.margin>
-                                    <Insets left="10.0" right="110.0" />
+                                    <Insets left="10.0" />
                                  </HBox.margin>
                               </Label>
-                              <Button id="add-contact-button" mnemonicParsing="false" onAction="#onAddContactButtonAction" prefHeight="5.0" prefWidth="20.0" styleClass="add-contact-button">
+                              <Button id="broadcast-message-button" mnemonicParsing="false" onAction="#onAddGroupButtonAction" prefHeight="3.0" prefWidth="15.0" styleClass="add-contact-button">
                                  <padding>
                                     <Insets top="2.0" />
-                                 </padding></Button>
+                                 </padding>
+                                 <HBox.margin>
+                                    <Insets left="40.0" />
+                                 </HBox.margin>
+                              </Button>
                            </children>
                         </HBox>
-                        <ScrollPane id="contacts-scrollpane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" styleClass="contacts-scrollpane" vbarPolicy="NEVER">
-                           <content>
-                              <VBox id="contact-vbox-pane" fx:id="contactChatsVbox">
-                                 <children>
-                                    <HBox id="contact-chat-hbox" fx:id="contactChatItemHBox" alignment="CENTER_LEFT" styleClass="contact-chat-hbox">
-                                       <children>
-                                          <StackPane id="contact-pic-container">
-                                             <HBox.margin>
-                                                <Insets left="10.0" />
-                                             </HBox.margin>
-                                             <children>
-                                                <Circle id="contact-pic" fill="WHITE" radius="15.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-                                                <Circle id="status-color" fill="#48ff48" radius="5.0" stroke="TRANSPARENT" strokeType="INSIDE" StackPane.alignment="BOTTOM_RIGHT" />
-                                             </children>
-                                          </StackPane>
-                                          <Label id="contact-name" styleClass="contact-name" text="Mahmoud Fawzy">
-                                             <HBox.margin>
-                                                <Insets left="10.0" />
-                                             </HBox.margin>
-                                          </Label>
-                                       </children>
-                                       <padding>
-                                          <Insets bottom="8.0" top="8.0" />
-                                       </padding>
-                                    </HBox>
-                                 </children>
-                              </VBox>
-                           </content>
-                        </ScrollPane>
+                        <Separator opacity="0.2" />
                      </children>
                      <VBox.margin>
                         <Insets top="20.0" />
                      </VBox.margin>
                   </VBox>
-                  <Separator opacity="0.2" />
-                  <VBox id="groups-element" maxHeight="300.0" prefHeight="200.0">
+                  <VBox alignment="CENTER" VBox.vgrow="ALWAYS">
                      <children>
-                        <HBox id="groups-header" alignment="CENTER_LEFT" fillHeight="false">
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <Label id="groups-title-label" prefWidth="70.0" scaleShape="false" styleClass="contacts-title-label" text="Groups">
-                                 <HBox.margin>
-                                    <Insets left="10.0" right="110.0" />
-                                 </HBox.margin>
-                              </Label>
-                              <Button id="add-group-button" mnemonicParsing="false" onAction="#onAddGroupButtonAction" prefHeight="5.0" prefWidth="20.0" styleClass="add-contact-button">
-                                 <padding>
-                                    <Insets top="2.0" />
-                                 </padding></Button>
+                              <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../images/chat-box.png" />
+                                 </image>
+                                 <effect>
+                                    <ColorAdjust brightness="0.94" />
+                                 </effect>
+                              </ImageView>
                            </children>
                         </HBox>
-                        <ScrollPane id="groups-scrollpane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" styleClass="contacts-scrollpane" vbarPolicy="NEVER">
-                           <content>
-                              <VBox id="group-vbox-pane" fx:id="groupChatsVbox">
-                                 <children>
-                                    <HBox id="group-chat-hbox" fx:id="groupChatItemHBox" alignment="CENTER_LEFT" styleClass="contact-chat-hbox">
-                                       <children>
-                                          <StackPane id="group-pic-container">
-                                             <HBox.margin>
-                                                <Insets left="10.0" />
-                                             </HBox.margin>
-                                             <children>
-                                                <Circle id="group-pic" fill="WHITE" radius="15.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-                                             </children>
-                                          </StackPane>
-                                          <Label id="group-name" styleClass="contact-name" text="ITI Intake 42">
-                                             <HBox.margin>
-                                                <Insets left="10.0" />
-                                             </HBox.margin>
-                                          </Label>
-                                       </children>
-                                       <padding>
-                                          <Insets bottom="8.0" top="8.0" />
-                                       </padding>
-                                    </HBox>
-                                 </children>
-                              </VBox>
-                           </content>
-                        </ScrollPane>
+                        <Label styleClass="welcome-label" text="Broadcast Chatty!" />
                      </children>
-                     <VBox.margin>
-                        <Insets top="20.0" />
-                     </VBox.margin>
                   </VBox>
                </children></VBox>
          </children>
@@ -178,21 +117,128 @@
       <URL value="@../../styles/Base.css" />
    </stylesheets>
    <center>
-      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" styleClass="init-center" BorderPane.alignment="CENTER">
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+            <HBox alignment="CENTER_LEFT" styleClass="label-area">
                <children>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../images/chat-box.png" />
-                     </image>
-                     <effect>
-                        <ColorAdjust brightness="0.94" />
-                     </effect>
-                  </ImageView>
+                  <ToggleButtonGroup selectionType="SINGLE">
+                      <toggles>
+                          <ToggleButton text="Stop">
+                              <graphic>
+                                  <Icon content="FORMAT_ALIGN_LEFT" />
+                              </graphic>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                          </ToggleButton>
+                          <ToggleButton selected="true" text="Start">
+                              <graphic>
+                                  <Icon content="FORMAT_ALIGN_CENTER" />
+                              </graphic>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                          </ToggleButton>
+                      </toggles>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </ToggleButtonGroup>
                </children>
+               <VBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </VBox.margin>
             </HBox>
-            <Label styleClass="welcome-label" text="Welcome to Chatty!" />
+            <VBox>
+               <VBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </VBox.margin>
+               <children>
+                  <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="stop-service-label" text="DashBoard" />
+                  <HBox prefHeight="100.0" prefWidth="200.0" spacing="20.0" styleClass="label-area">
+                     <children>
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" styleClass="card-area" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label styleClass="stop-service-label" text="Online User" />
+                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <ImageView fitHeight="75.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../images/online.png" />
+                                       </image>
+                                       <effect>
+                                          <ColorAdjust brightness="0.94" />
+                                       </effect>
+                                       <HBox.margin>
+                                          <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                                       </HBox.margin>
+                                    </ImageView>
+                                 </children>
+                              </HBox>
+                              <Label styleClass="stop-service-label" text="500" />
+                           </children>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </VBox>
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" styleClass="card-area" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label styleClass="stop-service-label" text="Online User" />
+                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <ImageView fitHeight="75.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../images/online.png" />
+                                       </image>
+                                       <effect>
+                                          <ColorAdjust brightness="0.94" />
+                                       </effect>
+                                       <HBox.margin>
+                                          <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                                       </HBox.margin>
+                                    </ImageView>
+                                 </children>
+                              </HBox>
+                              <Label styleClass="stop-service-label" text="500" />
+                           </children>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </VBox>
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" styleClass="card-area" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label styleClass="stop-service-label" text="Online User" />
+                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <ImageView fitHeight="75.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../images/online.png" />
+                                       </image>
+                                       <effect>
+                                          <ColorAdjust brightness="0.94" />
+                                       </effect>
+                                       <HBox.margin>
+                                          <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                                       </HBox.margin>
+                                    </ImageView>
+                                 </children>
+                              </HBox>
+                              <Label styleClass="stop-service-label" text="500" />
+                           </children>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </VBox>
+                     </children>
+                     <padding>
+                        <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
+                     </padding>
+                  </HBox>
+               </children>
+            </VBox>
          </children>
       </VBox>
    </center>
