@@ -9,12 +9,12 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="510.0" prefWidth="940.0" styleClass="main-back-ground" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.presentation.controllers.LoginController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="510.0" prefWidth="940.0" styleClass="main-back-ground" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.presentation.controllers.RegistrationController">
    <children>
       <VBox id="register-card" alignment="CENTER" maxHeight="-Infinity" maxWidth="400.0" spacing="10.0" styleClass="card" StackPane.alignment="CENTER">
          <children>
             <Label id="finish-register-label" styleClass="finish-label" text="Finish Registration" />
-            <Circle fx:id="imageCircle" fill="DODGERBLUE" radius="43.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+            <Circle fx:id="profilePictureCircle" fill="DODGERBLUE" radius="43.0" stroke="TRANSPARENT" strokeType="INSIDE" />
             <Hyperlink fx:id="uploadPictureHyperLink" onAction="#onUploadPictureHyperLinkAction" text="Upload picture" />
             <Button id="finish-button" fx:id="finishButton" mnemonicParsing="false" onAction="#onFinishButtonAction" styleClass="login-button" text="Finish">
                <padding>
