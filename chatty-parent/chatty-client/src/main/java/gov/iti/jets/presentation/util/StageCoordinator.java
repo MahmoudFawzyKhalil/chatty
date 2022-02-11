@@ -44,6 +44,51 @@ public class StageCoordinator {
         primaryStage.setScene(loginScene);
     }
 
+    public void switchToRegisterSceneOne(){
+        Scene registerSceneOne = sceneMap.get("registerSceneOne");
+        if (registerSceneOne == null){
+            try {
+                Pane root = FXMLLoader.load(getClass().getResource("/views/register/RegistrationViewOne.fxml"));
+                registerSceneOne = new Scene(root);
+                sceneMap.put("registerSceneOne", registerSceneOne);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        primaryStage.setScene(registerSceneOne);
+    }
+
+    public void switchToRegisterSceneTwo(){
+        Scene registerSceneTwo = sceneMap.get("registerSceneTwo");
+        if (registerSceneTwo == null){
+            try {
+                Pane root = FXMLLoader.load(getClass().getResource("/views/register/RegistrationViewTwo.fxml"));
+                registerSceneTwo = new Scene(root);
+                sceneMap.put("registerSceneTwo", registerSceneTwo);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        primaryStage.setScene(registerSceneTwo);
+    }
+
+    public void switchToRegisterSceneThree(){
+        Scene registerSceneThree = sceneMap.get("registerSceneThree");
+        if (registerSceneThree == null){
+            try {
+                Pane root = FXMLLoader.load(getClass().getResource("/views/register/RegistrationViewThree.fxml"));
+                registerSceneThree = new Scene(root);
+                sceneMap.put("registerSceneThree", registerSceneThree);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        primaryStage.setScene(registerSceneThree);
+    }
+
     public void switchToChatScene() {
         Scene chatScene = sceneMap.get("chatScene");
         if (chatScene == null){
