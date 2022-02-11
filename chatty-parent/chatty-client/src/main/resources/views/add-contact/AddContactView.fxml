@@ -40,12 +40,12 @@
       </ScrollPane>
       <HBox id="adding-box" alignment="TOP_RIGHT" spacing="10.0" styleClass="adding-box">
          <children>
-            <Hyperlink fx:id="cancelHyperLink" onAction="#onCancelHyperLinkClick" text="Cancel">
+            <Hyperlink onAction="#onCancelHyperLinkClick" text="Cancel">
                <HBox.margin>
                   <Insets top="7.0" />
                </HBox.margin>
             </Hyperlink>
-            <Button fx:id="addButton" mnemonicParsing="false" onAction="#onAddButtonAction" styleClass="add-button" text="Add" />
+            <Button mnemonicParsing="false" onAction="#onAddButtonAction" styleClass="add-button" text="Add" />
          </children>
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

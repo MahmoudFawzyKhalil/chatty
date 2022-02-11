@@ -10,12 +10,6 @@ import javafx.scene.layout.VBox;
 public class AddContactController {
 
     @FXML
-    private Button addButton;
-
-    @FXML
-    private Hyperlink cancelHyperLink;
-
-    @FXML
     private TextField phoneNumberTextField;
 
     @FXML
