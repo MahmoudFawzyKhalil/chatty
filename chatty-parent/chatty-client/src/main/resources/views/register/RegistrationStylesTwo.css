@@ -58,3 +58,24 @@
 .hyperlink:hover {
     -fx-underline: true;
 }
+
+.date-picker > .arrow-button > .arrow {
+    -fx-background-color: -main-dark;
+}
+
+.date-picker > .arrow-button > .arrow:hover {
+    -fx-background-color: -main-light;
+}
+
+.date-picker > .arrow-button  {
+    -fx-background-color: -main-light;
+}
+
+.date-picker .text-field {
+    -fx-control-inner-background: -main-light;
+}
+.date-picker >.arrow-button:hover {
+    -fx-background-color: derive(-main-light,-10%);
+    -fx-cursor:hand;
+
+}
