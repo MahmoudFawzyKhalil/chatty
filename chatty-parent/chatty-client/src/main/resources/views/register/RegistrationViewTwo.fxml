@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="510.0" prefWidth="940.0" styleClass="main-back-ground" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.presentation.controllers.RegistrationController">
+   <children>
+      <VBox id="registration-two-card" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="20.0" styleClass="card">
+         <children>
+            <Label id="complete-registration-label" styleClass="register-label" text="Complete Registration" />
+            <TextField fx:id="emailTextField" promptText="Email" styleClass="input-field">
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </TextField>
+            <HBox id="country-gender" alignment="CENTER" spacing="20.0">
+               <children>
+                  <ComboBox id="country" fx:id="countryComboBox" maxWidth="1.7976931348623157E308" promptText="Country" styleClass="input-field" HBox.hgrow="ALWAYS" />
+                  <ComboBox id="country" fx:id="genderComboBox" maxWidth="1.7976931348623157E308" promptText="Gender" styleClass="input-field" HBox.hgrow="ALWAYS" />
+               </children>
+            </HBox>
+            <HBox id="birth-date" spacing="10.0">
+               <children>
+                  <DatePicker maxWidth="1.7976931348623157E308" promptText="Enter your birth date" styleClass="input-field" HBox.hgrow="ALWAYS">
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </DatePicker>
+               </children>
+            </HBox>
+            <TextField id="bio-text-field" fx:id="bioTextField" promptText="Enter your bio" styleClass="input-field">
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </TextField>
+            <FlowPane id="next-previoyus" alignment="CENTER" hgap="20.0">
+               <children>
+                  <Button id="previous" fx:id="previousButton" mnemonicParsing="false" onAction="#onPreviousButtonAction" styleClass="previous-button" text="Previous" />
+                  <Button id="next" fx:id="secondNextButton" mnemonicParsing="false" onAction="#onSecondNextButtonAction" styleClass="next-button" text="Next" />
+               </children>
+            </FlowPane>
+         </children>
+         <padding>
+            <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+         </padding>
+      </VBox>
+   </children>
+   <stylesheets>
+      <URL value="@../../styles/Base.css" />
+      <URL value="@RegistrationStylesTwo.css" />
+   </stylesheets>
+</StackPane>
