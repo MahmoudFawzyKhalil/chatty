@@ -205,3 +205,13 @@
     -fx-background-radius: 3.4, 2, 2;
     -fx-prompt-text-fill: transparent;
 }
+
+.init-center{
+    -fx-background-color: derive(-main-dark, 10%);
+}
+
+.welcome-label{
+    -fx-text-fill:-main-light;
+    -fx-font-weight:bold;
+    -fx-font-size:24px;
+}
