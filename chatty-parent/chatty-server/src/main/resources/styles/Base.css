@@ -1,6 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
-
 .root{
-	-main-color: #14b8a6;
-	-fx-font-family: 'Poppins';
+	-main-dark: #334257;
+	-main-medium: #476072;
+	-main-light: #EEEEEE;
+	-fx-font-family: 'Helvetica';
 }

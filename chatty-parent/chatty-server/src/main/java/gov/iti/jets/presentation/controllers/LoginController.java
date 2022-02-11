@@ -9,6 +9,8 @@ import gov.iti.jets.services.util.ServiceFactory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -25,33 +27,43 @@ public class LoginController implements Initializable {
     private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
     private final LoginService loginService = serviceFactory.getLoginService();
 
-    UserModel userModel;
-    
+    private UserModel userModel;
+
+
     @FXML
-    private TextField nameTextField;
-    
+    private Hyperlink createAccountHyperLink;
+
+    @FXML
+    private Button loginButton;
+
+    @FXML
+    private PasswordField passwordTextField;
+
+    @FXML
+    private TextField phoneNumberTextField;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        userModel = modelFactory.getUserModel();
+
     }
 
     @FXML
-    void onImageButtonAction(ActionEvent event) {
-        FileChooser fileChooser = new FileChooser();
-        File imageFile = fileChooser.showOpenDialog(null);
-
-        if (imageFile == null) return;
-
-        Image image = new Image(imageFile.getAbsolutePath());
-        userModel.setUserImage(image);
+    void onCreateAccountHyperLinkAction(ActionEvent event) {
+        switchToRegisterOne();
     }
 
     @FXML
-    void onYallaButtonAction(ActionEvent event) {
-        if (nameTextField.getText().isEmpty()) return;
-
-        userModel.setUserName(nameTextField.getText());
-        stageCoordinator.switchToChatScene();
-        stageCoordinator.setStageResizable(true);
+    void onLoginButtonAction(ActionEvent event) {
+        switchToMain();
     }
+
+    private void switchToMain() {
+        stageCoordinator.switchToMainScene();
+    }
+
+    private void switchToRegisterOne() {
+        stageCoordinator.switchToRegisterSceneOne();
+    }
+
+
 }

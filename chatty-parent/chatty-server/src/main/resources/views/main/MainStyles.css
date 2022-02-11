@@ -1,0 +1,233 @@
+.side-bar-left {
+    -fx-background-color: -main-dark;
+}
+
+.side-bar-right {
+    -fx-background-color: -main-medium;
+}
+
+.send-message-container {
+    -fx-background-color: -main-medium;
+}
+
+.invites-button {
+    -fx-shape: "M18.429,23.914A10.832,10.832,0,1,0,7.679,13.082,10.786,10.786,0,0,0,18.429,23.914ZM25.8,27.009H25a14.741,14.741,0,0,1-13.15,0h-.8A11.1,11.1,0,0,0,0,38.15v2.785a4.626,4.626,0,0,0,4.607,4.642H32.25a4.626,4.626,0,0,0,4.607-4.642V38.15A11.1,11.1,0,0,0,25.8,27.009Zm20.272-3.095a9.285,9.285,0,1,0-9.214-9.285A9.252,9.252,0,0,0,46.072,23.914Zm4.607,3.095h-.365a12.018,12.018,0,0,1-8.485,0h-.365A10.6,10.6,0,0,0,36.118,28.5a14.212,14.212,0,0,1,3.811,9.652v3.714c0,.213-.048.416-.058.619H56.822a4.626,4.626,0,0,0,4.607-4.642,10.786,10.786,0,0,0-10.75-10.832Z";
+    -fx-background-color: -main-light;
+    -fx-cursor:hand;
+}
+
+.settings-button {
+    -fx-shape: "M38.86 25.95c.08-.64.14-1.29.14-1.95s-.06-1.31-.14-1.95l4.23-3.31c.38-.3.49-.84.24-1.28l-4-6.93c-.25-.43-.77-.61-1.22-.43l-4.98 2.01c-1.03-.79-2.16-1.46-3.38-1.97L29 4.84c-.09-.47-.5-.84-1-.84h-8c-.5 0-.91.37-.99.84l-.75 5.3c-1.22.51-2.35 1.17-3.38 1.97L9.9 10.1c-.45-.17-.97 0-1.22.43l-4 6.93c-.25.43-.14.97.24 1.28l4.22 3.31C9.06 22.69 9 23.34 9 24s.06 1.31.14 1.95l-4.22 3.31c-.38.3-.49.84-.24 1.28l4 6.93c.25.43.77.61 1.22.43l4.98-2.01c1.03.79 2.16 1.46 3.38 1.97l.75 5.3c.08.47.49.84.99.84h8c.5 0 .91-.37.99-.84l.75-5.3c1.22-.51 2.35-1.17 3.38-1.97l4.98 2.01c.45.17.97 0 1.22-.43l4-6.93c.25-.43.14-.97-.24-1.28l-4.22-3.31zM24 31c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z";
+    -fx-background-color: -main-light;
+    -fx-cursor:hand;
+}
+
+.add-contact-button {
+    -fx-background-color: -main-light;
+    -fx-shape: "M215.037,36.846c-49.129-49.128-129.063-49.128-178.191,0c-49.127,49.127-49.127,129.063,0,178.19
+               		c24.564,24.564,56.83,36.846,89.096,36.846s64.531-12.282,89.096-36.846C264.164,165.909,264.164,85.973,215.037,36.846z
+               		 M49.574,202.309c-42.109-42.109-42.109-110.626,0-152.735c21.055-21.054,48.711-31.582,76.367-31.582s55.313,10.527,76.367,31.582
+               		c42.109,42.109,42.109,110.626,0,152.735C160.199,244.417,91.683,244.417,49.574,202.309z M194.823,116.941h-59.882V57.059c0-4.971-4.029-9-9-9s-9,4.029-9,9v59.882H57.059c-4.971,0-9,4.029-9,9s4.029,9,9,9h59.882
+                    v59.882c0,4.971,4.029,9,9,9s9-4.029,9-9v-59.882h59.882c4.971,0,9-4.029,9-9S199.794,116.941,194.823,116.941z";
+    -fx-cursor:hand;
+}
+
+.contacts-title-label {
+    -fx-text-fill: -main-light;
+    -fx-font-weight: bold;
+    -fx-font-size: 16px
+}
+
+.contact-chat-hbox:hover {
+    -fx-background-color: -main-dark;
+    -fx-cursor:hand;
+}
+
+.contact-name {
+    -fx-text-fill: -main-light;
+    -fx-font-size: 12px;
+}
+
+.contacts-scrollpane {
+    -fx-background: -main-medium;
+    -fx-background-color: -main-medium;
+}
+.text-styling-button{
+    -fx-shape: "m22.106 0h-20.211c-1.047 0-1.895.849-1.895 1.895v4.924c0 .016-.001.034-.001.053 0 1.047.849 1.895 1.895 1.895s1.895-.849 1.895-1.895c0-.019 0-.037-.001-.056v.003-3.03h6.315v16.422h-2.925c-1.024.03-1.842.867-1.842 1.895s.819 1.865 1.84 1.895h.003 9.642c1.024-.03 1.842-.867 1.842-1.895s-.819-1.865-1.84-1.895h-.003-2.926v-16.422h6.315v3.03c.03 1.024.867 1.842 1.895 1.842s1.865-.819 1.895-1.84v-.003-4.924c0-1.046-.848-1.895-1.894-1.895z";
+    -fx-background-color: -main-light;
+}
+.attach-button{
+    -fx-shape:"M19.463 5.576c-.688-.75-1.929-.796-2.756.031l-8.1 8.1c-.21.21-.21.476 0 .686.21.21.476.21.686 0l6.7-6.7a1 1 0 0 1 1.414 1.414l-6.7 6.7a2.45 2.45 0 0 1-3.514 0 2.45 2.45 0 0 1 0-3.514l8.1-8.1c1.567-1.568 4.115-1.619 5.63.015 1.552 1.569 1.597 4.104-.03 5.613l-9.486 9.486c-2.19 2.19-5.624 2.19-7.814 0-2.19-2.19-2.19-5.624 0-7.814l8.1-8.1a1 1 0 0 1 1.414 1.414l-8.1 8.1c-1.41 1.41-1.41 3.576 0 4.986 1.41 1.41 3.576 1.41 4.986 0l9.5-9.5.031-.03c.75-.687.796-1.929-.031-2.756l-.03-.031z";
+    -fx-background-color: -main-light;
+}
+.send-button{
+    -fx-shape:"M511.716,9.802c-0.107-0.853-0.213-1.707-0.533-2.56c-0.107-0.32-0.213-0.747-0.32-1.067
+              			c-0.533-1.173-1.28-2.24-2.133-3.2c-0.96-0.853-2.027-1.6-3.2-2.133c-0.32-0.107-0.747-0.32-1.067-0.32
+              			c-0.853-0.213-1.707-0.427-2.56-0.427c-0.427,0-0.747,0-1.173,0c-0.96,0-2.027,0.213-2.987,0.533
+              			c-0.213,0.107-0.427,0.107-0.64,0.213h-0.107L6.436,213.962c-5.44,2.347-7.893,8.64-5.547,14.08c0.96,2.24,2.667,4.053,4.8,5.12
+              			l178.347,94.4l94.507,178.347c1.813,3.52,5.44,5.653,9.387,5.76h0.427c4.053-0.107,7.68-2.667,9.387-6.4L510.969,14.815v-0.107
+              			c0.107-0.213,0.107-0.427,0.213-0.64c0.32-0.96,0.533-1.92,0.533-2.987C511.716,10.655,511.822,10.228,511.716,9.802z
+              			 M35.342,224.522l418.88-182.08l-264.107,264L35.342,224.522z M287.182,476.362l-81.92-154.773l264-264.107L287.182,476.362z";
+    -fx-background-color: -main-light;
+}
+.button{
+    -fx-cursor:hand;
+}
+
+.toggle-button {
+    -fx-cursor: hand;
+    -fx-background-color: -main-light;
+}
+
+
+.toggle-button:selected {
+    -fx-text-fill: -main-light;
+    -fx-background-color: derive(-main-dark, 10%) ;
+}
+
+.contact-chat-name{
+    -fx-font-size: 16px;
+    -fx-text-fill: -main-light;
+}
+.sender-message-container{
+    -fx-background-color: #E6E0E0;
+    -fx-background-radius: 10px;
+}
+.sender-name{
+    -fx-text-fill: -main-dark;
+    -fx-font-size: 10px;
+}
+.sender-message-text{
+    -fx-fill: -main-dark;
+}
+.signout-button{
+    -fx-shape: "M11.02 3.77v1.56l1-.99V2.5l-.5-.5h-9l-.5.5v.486L2 3v10.29l.36.46 5 1.72L8 15v-1h3.52l.5-.5v-1.81l-1-1V13H8V4.71l-.33-.46L4.036 3h6.984v.77zM7 14.28l-4-1.34V3.72l4 1.34v9.22zm6.52-5.8H8.55v-1h4.93l-1.6-1.6.71-.7 2.47 2.46v.71l-2.49 2.48-.7-.7 1.65-1.65z";
+    -fx-background-color: -main-light;
+}
+.chatbot-button{
+    -fx-shape: "M465.455,240.485v-77.576H279.273v-52.787c13.908-8.049,23.273-23.079,23.273-40.304c0-25.706-20.84-46.545-46.545-46.545
+               			s-46.545,20.84-46.545,46.545c0,17.225,9.365,32.254,23.273,40.304v52.787H46.545v77.576H0v124.121h46.545v77.576h139.636v46.545
+               			h139.636v-46.545h139.636v-77.576H512V240.485H465.455z M465.455,318.061h-46.545v77.576H279.273v46.545h-46.545v-46.545H93.091
+               			v-77.576H46.545v-31.03h46.545v-77.576h325.818v77.576h46.545V318.061z M209.455,318.061c0,25.706,20.84,46.545,46.545,46.545s46.545-20.84,46.545-46.545H209.455z";
+    -fx-background-color: -main-light;
+}
+.user-profile-pic:hover{
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: derive(-main-medium, 30%);
+}
+
+.toggle-button:hover {
+    -fx-background-color: derive(-main-medium, 30%);
+}
+
+.profile-pic-status-container {
+    -fx-background: -main-dark;
+    -fx-background-color: -main-dark;
+}
+
+.text-settings-tool-bar {
+    -fx-background-color: -main-medium;
+}
+
+.font-settings-popup-contextmenu {
+    -fx-background-color: -main-medium;
+}
+
+#text-color-label {
+    -fx-text-fill: -main-light;
+}
+
+#background-label {
+   -fx-text-fill: -main-light;
+}
+
+
+.style-choice-boxes {
+    -fx-background-color: -main-light;
+}
+
+.style-choice-boxes:hover {
+    -fx-background-color: derive(-main-light, -10%);
+}
+
+.color-picker {
+    -fx-background-color: -main-light;
+}
+
+.color-picker:hover {
+    -fx-background-color: derive(-main-light, -10%);
+}
+
+.user-status-context-menu {
+    -fx-background-color: -main-light;
+}
+
+.user-status-menu-item {
+    -fx-background-color: -main-light;
+    -fx-text-fill: -main-dark;
+}
+
+.user-status-menu-item:hover {
+    -fx-background-color: -main-medium;
+}
+
+.chat-text-area{
+    -fx-border-color: transparent;
+}
+
+.chat-area-scroll-pane {
+    -fx-background-color: -main-light;
+}
+
+.scroll-bar:vertical {
+        -fx-background-color: derive(-main-light, 0%), derive(-main-light, 0%);
+}
+
+.scroll-bar:vertical > .thumb {
+    -fx-background-color: -main-medium, -main-medium, -main-medium;
+}
+
+.scroll-bar:vertical > .thumb:hover {
+    -fx-background-color: -main-dark, -main-dark, -main-dark;
+}
+
+.chat-text-area {
+    -fx-background-color: transparent, transparent, transparent;
+    -fx-control-inner-background: -main-light;
+}
+
+.chat-text-area:focused {
+    -fx-background-color: transparent, transparent, transparent;
+    -fx-background-insets: -0.4, 1, 2;
+    -fx-background-radius: 3.4, 2, 2;
+    -fx-prompt-text-fill: transparent;
+}
+
+.init-center{
+    -fx-background-color: derive(-main-light, 10%);
+}
+
+.welcome-label{
+    -fx-text-fill:-main-light;
+    -fx-font-weight:bold;
+    -fx-font-size:18px;
+}
+.stop-service-label{
+    -fx-text-fill:-main-dark;
+    -fx-font-weight:bold;
+    -fx-font-size:16px;
+}
+
+.label-area {
+    -fx-background-color: derive(-main-light,5%);
+    -fx-cursor:hand;
+    -fx-background-radius:5px;
+}
+.card-area {
+    -fx-background-color: derive(-main-light,-10%);
+    -fx-cursor:hand;
+    -fx-background-radius:5px;
+}
