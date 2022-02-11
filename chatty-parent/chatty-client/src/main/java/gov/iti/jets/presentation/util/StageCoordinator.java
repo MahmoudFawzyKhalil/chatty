@@ -13,12 +13,9 @@ public class StageCoordinator {
     private static final StageCoordinator stageCoordinator = new StageCoordinator();
 
     private Stage primaryStage;
-
     private final Map<String, Scene> sceneMap = new HashMap<>();
 
-    private StageCoordinator(){
-
-    }
+    private StageCoordinator() {}
 
     public static StageCoordinator getInstance(){
         return stageCoordinator;
@@ -104,7 +101,5 @@ public class StageCoordinator {
         primaryStage.setScene(mainScene);
     }
 
-    public void setStageResizable(boolean value){
-        primaryStage.setResizable(value);
-    }
+
 }

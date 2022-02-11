@@ -48,7 +48,10 @@
                   </ScrollPane>
                   <StackPane id="invite-button-container">
                      <children>
-                        <Button id="invite-button" mnemonicParsing="false" onAction="#onInvitationsButtonAction" prefHeight="20.0" prefWidth="26.0" styleClass="invites-button" />
+                        <Button id="invite-button" mnemonicParsing="false" onAction="#onInvitationsButtonAction" prefHeight="22.0" prefWidth="34.0" styleClass="invites-button">
+                           <tooltip>
+                              <Tooltip text="Friend Requests" />
+                           </tooltip></Button>
                      </children>
                      <VBox.margin>
                         <Insets />
@@ -56,12 +59,18 @@
                   </StackPane>
                   <StackPane id="chatbot-button-container">
                      <children>
-                        <Button id="chatbot-button" mnemonicParsing="false" onAction="#onChatBotButtonAction" prefHeight="25.0" prefWidth="25.0" styleClass="chatbot-button" />
+                        <Button id="chatbot-button" mnemonicParsing="false" onAction="#onChatBotButtonAction" prefHeight="33.0" prefWidth="31.0" styleClass="chatbot-button">
+                           <tooltip>
+                              <Tooltip text="Chatbot" />
+                           </tooltip></Button>
                      </children>
                   </StackPane>
                   <StackPane id="signout-button-container">
                      <children>
-                        <Button id="signout-button" mnemonicParsing="false" onAction="#onSignOutButtonAction" prefHeight="25.0" prefWidth="25.0" styleClass="signout-button" />
+                        <Button id="signout-button" mnemonicParsing="false" onAction="#onSignOutButtonAction" prefHeight="25.0" prefWidth="25.0" styleClass="signout-button">
+                           <tooltip>
+                              <Tooltip text="Sign Out" />
+                           </tooltip></Button>
                      </children>
                   </StackPane>
                </children>
@@ -80,7 +89,10 @@
                               <Button id="add-contact-button" mnemonicParsing="false" onAction="#onAddContactButtonAction" prefHeight="5.0" prefWidth="20.0" styleClass="add-contact-button">
                                  <padding>
                                     <Insets top="2.0" />
-                                 </padding></Button>
+                                 </padding>
+                                 <tooltip>
+                                    <Tooltip text="New Contact" />
+                                 </tooltip></Button>
                            </children>
                         </HBox>
                         <ScrollPane id="contacts-scrollpane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" styleClass="contacts-scrollpane" vbarPolicy="NEVER">
@@ -130,7 +142,10 @@
                               <Button id="add-group-button" mnemonicParsing="false" onAction="#onAddGroupButtonAction" prefHeight="5.0" prefWidth="20.0" styleClass="add-contact-button">
                                  <padding>
                                     <Insets top="2.0" />
-                                 </padding></Button>
+                                 </padding>
+                                 <tooltip>
+                                    <Tooltip text="New Group" />
+                                 </tooltip></Button>
                            </children>
                         </HBox>
                         <ScrollPane id="groups-scrollpane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" styleClass="contacts-scrollpane" vbarPolicy="NEVER">

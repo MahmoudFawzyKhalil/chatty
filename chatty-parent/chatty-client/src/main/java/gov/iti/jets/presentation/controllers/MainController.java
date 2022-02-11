@@ -1,5 +1,6 @@
 package gov.iti.jets.presentation.controllers;
 
+import gov.iti.jets.presentation.util.StageCoordinator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -12,6 +13,9 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
+
+    private final StageCoordinator stageCoordinator = StageCoordinator.getInstance();
+
     @FXML
     private HBox contactChatItemHBox;
 
@@ -73,7 +77,7 @@ public class MainController implements Initializable {
 
     @FXML
     void onSignOutButtonAction(ActionEvent event) {
-
+        stageCoordinator.switchToLoginScene();
     }
 
     @FXML
