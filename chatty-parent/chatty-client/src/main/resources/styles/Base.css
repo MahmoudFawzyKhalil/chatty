@@ -1,6 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 .root{
 	-main-dark: #334257;
 	-main-medium: #476072;
 	-main-light: #EEEEEE;
-	-fx-font-family: 'Helvetica';
+	-fx-font-family: 'Roboto', 'Helvetica';
 }

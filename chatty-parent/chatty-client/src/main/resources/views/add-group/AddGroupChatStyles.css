@@ -3,6 +3,11 @@
     -fx-background-radius:15px;
 }
 
+.shadow-pane{
+   -fx-background-color: transparent;
+   -fx-padding: 10px;
+}
+
 .add-label{
     -fx-text-fill:-main-light;
     -fx-font-weight:bold;

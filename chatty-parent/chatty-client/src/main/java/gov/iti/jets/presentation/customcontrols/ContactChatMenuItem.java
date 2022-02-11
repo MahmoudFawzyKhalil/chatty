@@ -11,7 +11,7 @@ import java.util.ResourceBundle;
 public class ContactChatMenuItem extends HBox implements Initializable {
 
 
-    ContactChatMenuItem() {
+    public ContactChatMenuItem() {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/main/ContactChatMenuItem.fxml"));
         loader.setController(this);
         loader.setRoot(this);

@@ -15,8 +15,10 @@ public class ChattyClientApp extends Application {
          stageCoordinator.initStage(primaryStage);
          stageCoordinator.switchToLoginScene();
 
-        primaryStage.setMinWidth(940);
-        primaryStage.setMinHeight(500);
+        primaryStage.setWidth(960);
+        primaryStage.setHeight(530);
+        primaryStage.setMinWidth(960);
+        primaryStage.setMinHeight(530);
         primaryStage.show();
     }
 

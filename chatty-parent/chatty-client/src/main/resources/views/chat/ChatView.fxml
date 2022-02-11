@@ -23,12 +23,12 @@
    <bottom>
       <HBox id="message-area-container" alignment="CENTER_LEFT" fillHeight="false" prefHeight="80.0" styleClass="send-message-container" BorderPane.alignment="CENTER">
          <children>
-            <Button id="text-styling-button" mnemonicParsing="false" onAction="#onTextStyleButtonAction" prefWidth="25.0" styleClass="text-styling-button" stylesheets="@../main/MainStyles.css">
+            <Button id="text-styling-button" fx:id="textStyleButton" mnemonicParsing="false" onAction="#onTextStyleButtonAction" prefWidth="25.0" styleClass="text-styling-button" stylesheets="@../main/MainStyles.css">
                <HBox.margin>
                   <Insets left="10.0" />
                </HBox.margin>
                <contextMenu>
-                  <ContextMenu id="extras-menu" anchorLocation="CONTENT_BOTTOM_LEFT" anchorX="0.0" anchorY="0.0" styleClass="font-settings-popup-contextmenu" x="0.0" y="0.0">
+                  <ContextMenu id="extras-menu" fx:id="textStyleContextMenu" anchorLocation="CONTENT_BOTTOM_LEFT" anchorX="0.0" anchorY="0.0" styleClass="font-settings-popup-contextmenu" x="0.0" y="0.0">
                      <items>
                         <CustomMenuItem id="bla" hideOnClick="false" mnemonicParsing="false" styleClass="font-settings-popup-contextmenu" text="Unspecified Action">
                            <content>

@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.shape.Circle?>
 
-<fx:root id="group-chat-hbox" alignment="CENTER_LEFT" styleClass="contact-chat-hbox" type="HBox" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.presentation.customcontrols.GroupChatMenuItem">
+<fx:root id="group-chat-hbox" alignment="CENTER_LEFT" styleClass="contact-chat-hbox" type="HBox" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <StackPane id="group-pic-container">
          <HBox.margin>
