@@ -1,12 +1,12 @@
 package gov.iti.jets.presentation.controllers;
 
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ColorPicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
+import javafx.geometry.Side;
+import javafx.scene.control.*;
+import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 
@@ -32,6 +32,12 @@ public class ChatController implements Initializable {
     private Circle contactStatusCircle;
 
     @FXML
+    private ContextMenu textStyleContextMenu;
+
+    @FXML
+    private Button textStyleButton;
+
+    @FXML
     private ChoiceBox<String> fontFamilyChoiceBox;
 
     @FXML
@@ -43,14 +49,10 @@ public class ChatController implements Initializable {
     @FXML
     private ColorPicker messageTextColorPicker;
 
-
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        textStyleButton.addEventFilter(ContextMenuEvent.CONTEXT_MENU_REQUESTED, Event::consume);
     }
-
-
 
     @FXML
     void onAttachFileButtonAction(ActionEvent event) {
@@ -74,12 +76,11 @@ public class ChatController implements Initializable {
 
     @FXML
     void onTextStyleButtonAction(ActionEvent event) {
-
+        textStyleContextMenu.show(textStyleButton, Side.RIGHT, 0, 0);
     }
 
     @FXML
     void onUnderlineToggleButtonAction(ActionEvent event) {
 
     }
-
 }

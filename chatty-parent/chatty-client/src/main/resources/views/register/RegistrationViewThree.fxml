@@ -14,7 +14,7 @@
       <VBox id="register-card" alignment="CENTER" maxHeight="-Infinity" maxWidth="400.0" spacing="10.0" styleClass="card" StackPane.alignment="CENTER">
          <children>
             <Label id="finish-register-label" styleClass="finish-label" text="Finish Registration" />
-            <Circle fx:id="profilePictureCircle" fill="DODGERBLUE" radius="43.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+            <Circle fx:id="profilePictureCircle" fill="#ededed" radius="43.0" stroke="TRANSPARENT" strokeType="INSIDE" />
             <Hyperlink fx:id="uploadPictureHyperLink" onAction="#onUploadPictureHyperLinkAction" text="Upload picture" />
             <Button id="finish-button" fx:id="finishButton" mnemonicParsing="false" onAction="#onFinishButtonAction" styleClass="login-button" text="Finish">
                <padding>

@@ -6,12 +6,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class InvitationItem extends HBox implements Initializable {
+public class InvitationItem extends VBox implements Initializable {
 
     @FXML
     private Button acceptButton;

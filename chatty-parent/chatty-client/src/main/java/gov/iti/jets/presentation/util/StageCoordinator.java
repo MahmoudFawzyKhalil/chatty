@@ -2,6 +2,7 @@ package gov.iti.jets.presentation.util;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -11,6 +12,7 @@ import java.util.Map;
 
 public class StageCoordinator {
     private static final StageCoordinator stageCoordinator = new StageCoordinator();
+    private static final PaneCoordinator paneCoordinator = PaneCoordinator.getInstance();
 
     private Stage primaryStage;
     private final Map<String, Scene> sceneMap = new HashMap<>();
@@ -90,8 +92,9 @@ public class StageCoordinator {
         Scene mainScene = sceneMap.get("mainScene");
         if (mainScene == null){
             try {
-                Pane root = FXMLLoader.load(getClass().getResource("/views/main/MainView.fxml"));
-                mainScene = new Scene(root);
+                BorderPane mainSceneBorderPane = FXMLLoader.load(getClass().getResource("/views/main/MainView.fxml"));
+                paneCoordinator.initPane(mainSceneBorderPane);
+                mainScene = new Scene(mainSceneBorderPane);
                 sceneMap.put("mainScene", mainScene);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -104,6 +107,9 @@ public class StageCoordinator {
         MAHMOUD
      */
 
+    public void clearSceneMap(){
+        sceneMap.clear();
+    }
 
     /*
         MAHMOUD

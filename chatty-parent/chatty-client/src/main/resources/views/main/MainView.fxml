@@ -100,31 +100,7 @@
                         </HBox>
                         <ScrollPane id="contacts-scrollpane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" styleClass="contacts-scrollpane" vbarPolicy="NEVER">
                            <content>
-                              <VBox id="contact-vbox-pane" fx:id="contactChatsVbox">
-                                 <children>
-                                    <HBox id="contact-chat-hbox" fx:id="contactChatItemHBox" alignment="CENTER_LEFT" styleClass="contact-chat-hbox">
-                                       <children>
-                                          <StackPane id="contact-pic-container">
-                                             <HBox.margin>
-                                                <Insets left="10.0" />
-                                             </HBox.margin>
-                                             <children>
-                                                <Circle id="contact-pic" fill="WHITE" radius="15.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-                                                <Circle id="status-color" fill="#48ff48" radius="5.0" stroke="TRANSPARENT" strokeType="INSIDE" StackPane.alignment="BOTTOM_RIGHT" />
-                                             </children>
-                                          </StackPane>
-                                          <Label id="contact-name" styleClass="contact-name" text="Mahmoud Fawzy">
-                                             <HBox.margin>
-                                                <Insets left="10.0" />
-                                             </HBox.margin>
-                                          </Label>
-                                       </children>
-                                       <padding>
-                                          <Insets bottom="8.0" top="8.0" />
-                                       </padding>
-                                    </HBox>
-                                 </children>
-                              </VBox>
+                              <VBox id="contact-vbox-pane" fx:id="contactChatsVbox" />
                            </content>
                         </ScrollPane>
                      </children>
@@ -153,30 +129,7 @@
                         </HBox>
                         <ScrollPane id="groups-scrollpane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" styleClass="contacts-scrollpane" vbarPolicy="NEVER">
                            <content>
-                              <VBox id="group-vbox-pane" fx:id="groupChatsVbox">
-                                 <children>
-                                    <HBox id="group-chat-hbox" fx:id="groupChatItemHBox" alignment="CENTER_LEFT" styleClass="contact-chat-hbox">
-                                       <children>
-                                          <StackPane id="group-pic-container">
-                                             <HBox.margin>
-                                                <Insets left="10.0" />
-                                             </HBox.margin>
-                                             <children>
-                                                <Circle id="group-pic" fill="WHITE" radius="15.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-                                             </children>
-                                          </StackPane>
-                                          <Label id="group-name" styleClass="contact-name" text="ITI Intake 42">
-                                             <HBox.margin>
-                                                <Insets left="10.0" />
-                                             </HBox.margin>
-                                          </Label>
-                                       </children>
-                                       <padding>
-                                          <Insets bottom="8.0" top="8.0" />
-                                       </padding>
-                                    </HBox>
-                                 </children>
-                              </VBox>
+                              <VBox id="group-vbox-pane" fx:id="groupChatsVbox" />
                            </content>
                         </ScrollPane>
                      </children>

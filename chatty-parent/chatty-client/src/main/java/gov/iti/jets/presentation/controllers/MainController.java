@@ -1,11 +1,14 @@
 package gov.iti.jets.presentation.controllers;
 
+import gov.iti.jets.presentation.customcontrols.ContactChatMenuItem;
+import gov.iti.jets.presentation.customcontrols.GroupChatMenuItem;
+import gov.iti.jets.presentation.util.PaneCoordinator;
 import gov.iti.jets.presentation.util.StageCoordinator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 
@@ -15,15 +18,10 @@ import java.util.ResourceBundle;
 public class MainController implements Initializable {
 
     private final StageCoordinator stageCoordinator = StageCoordinator.getInstance();
-
-    @FXML
-    private HBox contactChatItemHBox;
+    private  final PaneCoordinator paneCoordinator = PaneCoordinator.getInstance();
 
     @FXML
     private VBox contactChatsVbox;
-
-    @FXML
-    private HBox groupChatItemHBox;
 
     @FXML
     private VBox groupChatsVbox;
@@ -37,7 +35,8 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        createAndAddGroupChatMenuItem();
+        createAndAddContactChatMenuItem();
     }
 
     @FXML
@@ -72,7 +71,7 @@ public class MainController implements Initializable {
 
     @FXML
     void onInvitationsButtonAction(ActionEvent event) {
-
+        paneCoordinator.switchToInvitationPane();
     }
 
     @FXML
@@ -82,6 +81,21 @@ public class MainController implements Initializable {
 
     @FXML
     void onUserProfilePicCircleMouseClicked(MouseEvent event) {
+        if (event.getButton().equals(MouseButton.SECONDARY)){
+            return;
+        }
+        paneCoordinator.switchToUpdateProfilePane();
+    }
 
+    private void createAndAddContactChatMenuItem() {
+        var item = new ContactChatMenuItem();
+        item.setOnMouseClicked(e -> paneCoordinator.switchToChatPane());
+        contactChatsVbox.getChildren().add(item);
+    }
+
+    private void createAndAddGroupChatMenuItem() {
+        var item = new GroupChatMenuItem();
+        item.setOnMouseClicked(e -> paneCoordinator.switchToChatPane());
+        groupChatsVbox.getChildren().add(item);
     }
 }

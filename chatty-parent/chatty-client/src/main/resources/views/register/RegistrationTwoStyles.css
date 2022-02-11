@@ -31,9 +31,9 @@
 }
 
 .previous-button {
-    -fx-background-color: -main-light;
+    -fx-background-color: -main-dark;
     -fx-font-size: 16px;
-    -fx-text-fill: -main-dark;
+    -fx-text-fill: -main-light;
     -fx-cursor:hand;
     -fx-background-radius:5px;
 }
