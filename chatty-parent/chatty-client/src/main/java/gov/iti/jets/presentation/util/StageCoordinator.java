@@ -89,19 +89,19 @@ public class StageCoordinator {
         primaryStage.setScene(registerSceneThree);
     }
 
-    public void switchToChatScene() {
-        Scene chatScene = sceneMap.get("chatScene");
-        if (chatScene == null){
+    public void switchToMainScene() {
+        Scene mainScene = sceneMap.get("mainScene");
+        if (mainScene == null){
             try {
-                Pane root = FXMLLoader.load(getClass().getResource("/views/chat/ChatView.fxml"));
-                chatScene = new Scene(root);
-                sceneMap.put("chatScene", chatScene);
+                Pane root = FXMLLoader.load(getClass().getResource("/views/main/MainView.fxml"));
+                mainScene = new Scene(root);
+                sceneMap.put("mainScene", mainScene);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
 
-        primaryStage.setScene(chatScene);
+        primaryStage.setScene(mainScene);
     }
 
     public void setStageResizable(boolean value){

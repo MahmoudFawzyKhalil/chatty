@@ -46,7 +46,11 @@ public class LoginController implements Initializable {
 
     @FXML
     void onLoginButtonAction(ActionEvent event) {
+        switchToMain();
+    }
 
+    private void switchToMain() {
+        stageCoordinator.switchToMainScene();
     }
 
     private void switchToRegisterOne() {
