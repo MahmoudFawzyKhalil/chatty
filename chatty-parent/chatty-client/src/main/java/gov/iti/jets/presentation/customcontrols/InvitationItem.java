@@ -1,9 +1,9 @@
 package gov.iti.jets.presentation.customcontrols;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 
@@ -11,15 +11,22 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class InvitationBubble extends HBox implements Initializable {
+public class InvitationItem extends HBox implements Initializable {
+
+    @FXML
+    private Button acceptButton;
+
     @FXML
     private Label friendNameLabel;
 
     @FXML
     private Label friendPhoneNumberLabel;
 
-    public InvitationBubble(){
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/invitations/InvitationBubble.fxml"));
+    @FXML
+    private Button refuseButton;
+
+    public InvitationItem(){
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/invitations/InvitationItem.fxml"));
         loader.setController(this);
         loader.setRoot(this);
 
@@ -31,16 +38,6 @@ public class InvitationBubble extends HBox implements Initializable {
     }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
-    }
-
-    @FXML
-    void onAcceptButtonAction(ActionEvent event) {
-
-    }
-
-    @FXML
-    void onRefuseButtonAction(ActionEvent event) {
 
     }
 }
