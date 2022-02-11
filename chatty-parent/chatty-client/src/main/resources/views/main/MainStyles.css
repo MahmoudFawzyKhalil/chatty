@@ -145,11 +145,11 @@
 }
 
 
-.choice-box {
+.style-choice-boxes {
     -fx-background-color: -main-light;
 }
 
-.choice-box:hover {
+.style-choice-boxes:hover {
     -fx-background-color: derive(-main-light, -10%);
 }
 
@@ -174,6 +174,34 @@
     -fx-background-color: -main-medium;
 }
 
-.chat-text-area:selected{
+.chat-text-area{
     -fx-border-color: transparent;
+}
+
+.chat-area-scroll-pane {
+    -fx-background-color: -main-light;
+}
+
+.scroll-bar:vertical {
+        -fx-background-color: derive(-main-light, 0%), derive(-main-light, 0%);
+}
+
+.scroll-bar:vertical > .thumb {
+    -fx-background-color: -main-medium, -main-medium, -main-medium;
+}
+
+.scroll-bar:vertical > .thumb:hover {
+    -fx-background-color: -main-dark, -main-dark, -main-dark;
+}
+
+.chat-text-area {
+    -fx-background-color: transparent, transparent, transparent;
+    -fx-control-inner-background: -main-light;
+}
+
+.chat-text-area:focused {
+    -fx-background-color: transparent, transparent, transparent;
+    -fx-background-insets: -0.4, 1, 2;
+    -fx-background-radius: 3.4, 2, 2;
+    -fx-prompt-text-fill: transparent;
 }

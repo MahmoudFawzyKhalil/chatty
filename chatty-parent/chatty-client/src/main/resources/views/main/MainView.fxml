@@ -1,27 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
 <?import java.net.URL?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
-<?import javafx.scene.control.ColorPicker?>
-<?import javafx.scene.control.ContextMenu?>
-<?import javafx.scene.control.CustomMenuItem?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.ToggleButton?>
-<?import javafx.scene.control.Tooltip?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Circle?>
-<?import javafx.scene.text.Text?>
-<?import javafx.scene.text.TextFlow?>
-
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="940.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.presentation.controllers.MainController">
    <left>
       <HBox id="side-bar" prefWidth="310.0" BorderPane.alignment="CENTER">
@@ -35,17 +18,17 @@
                      <content>
                         <StackPane id="profile-pic-container">
                            <children>
-                              <Circle id="profile-pic" fill="WHITE" radius="25.0" stroke="TRANSPARENT" strokeType="INSIDE" styleClass="user-profile-pic" />
-                              <Circle id="status-color" fill="#48ff48" radius="6.0" stroke="TRANSPARENT" strokeType="INSIDE" translateX="-18.0" StackPane.alignment="BOTTOM_RIGHT" />
+                              <Circle id="profile-pic" fx:id="userProfilePicCircle" fill="WHITE" onMouseClicked="#onUserProfilePicCircleMouseClicked" radius="25.0" stroke="TRANSPARENT" strokeType="INSIDE" styleClass="user-profile-pic" />
+                              <Circle id="status-color" fx:id="userStatusCircle" fill="#48ff48" radius="6.0" stroke="TRANSPARENT" strokeType="INSIDE" translateX="-18.0" StackPane.alignment="BOTTOM_RIGHT" />
                            </children>
                         </StackPane>
                      </content>
                      <contextMenu>
                         <ContextMenu>
                           <items>
-                            <MenuItem id="Available" mnemonicParsing="false" text="Available" />
-                              <MenuItem id="Busy" mnemonicParsing="false" text="Busy" />
-                              <MenuItem id="Away" mnemonicParsing="false" text="Away" />
+                            <MenuItem id="Available" mnemonicParsing="false" onAction="#onAvailableStatusMenuItemAction" text="Available" />
+                              <MenuItem id="Busy" mnemonicParsing="false" onAction="#onBusyStatusMenuItemAction" text="Busy" />
+                              <MenuItem id="Away" mnemonicParsing="false" onAction="#onAwayStatusMenuItemAction" text="Away" />
                           </items>
                         </ContextMenu>
                      </contextMenu>
@@ -55,7 +38,7 @@
                   </ScrollPane>
                   <StackPane id="invite-button-container">
                      <children>
-                        <Button id="invite-button" mnemonicParsing="false" prefHeight="20.0" prefWidth="26.0" styleClass="invites-button" />
+                        <Button id="invite-button" mnemonicParsing="false" onAction="#onInvitationsButtonAction" prefHeight="20.0" prefWidth="26.0" styleClass="invites-button" />
                      </children>
                      <VBox.margin>
                         <Insets />
@@ -63,12 +46,12 @@
                   </StackPane>
                   <StackPane id="chatbot-button-container">
                      <children>
-                        <ToggleButton id="chatbot-button" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" styleClass="chatbot-button" />
+                        <Button id="chatbot-button" mnemonicParsing="false" onAction="#onChatBotButtonAction" prefHeight="25.0" prefWidth="25.0" styleClass="chatbot-button" />
                      </children>
                   </StackPane>
                   <StackPane id="signout-button-container">
                      <children>
-                        <Button id="signout-button" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" styleClass="signout-button" />
+                        <Button id="signout-button" mnemonicParsing="false" onAction="#onSignOutButtonAction" prefHeight="25.0" prefWidth="25.0" styleClass="signout-button" />
                      </children>
                   </StackPane>
                </children>
@@ -84,7 +67,7 @@
                                     <Insets left="10.0" right="110.0" />
                                  </HBox.margin>
                               </Label>
-                              <Button id="add-contact-button" mnemonicParsing="false" prefHeight="5.0" prefWidth="20.0" styleClass="add-contact-button">
+                              <Button id="add-contact-button" mnemonicParsing="false" onAction="#onAddContactButtonAction" prefHeight="5.0" prefWidth="20.0" styleClass="add-contact-button">
                                  <padding>
                                     <Insets top="2.0" />
                                  </padding></Button>
@@ -92,9 +75,9 @@
                         </HBox>
                         <ScrollPane id="contacts-scrollpane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" styleClass="contacts-scrollpane" vbarPolicy="NEVER">
                            <content>
-                              <VBox id="contact-vbox-pane">
+                              <VBox id="contact-vbox-pane" fx:id="contactChatsVbox">
                                  <children>
-                                    <HBox id="contact-chat-hbox" alignment="CENTER_LEFT" styleClass="contact-chat-hbox">
+                                    <HBox id="contact-chat-hbox" fx:id="contactChatItemHBox" alignment="CENTER_LEFT" styleClass="contact-chat-hbox">
                                        <children>
                                           <StackPane id="contact-pic-container">
                                              <HBox.margin>
@@ -106,111 +89,6 @@
                                              </children>
                                           </StackPane>
                                           <Label id="contact-name" styleClass="contact-name" text="Mahmoud Fawzy">
-                                             <HBox.margin>
-                                                <Insets left="10.0" />
-                                             </HBox.margin>
-                                          </Label>
-                                       </children>
-                                       <padding>
-                                          <Insets bottom="8.0" top="8.0" />
-                                       </padding>
-                                    </HBox>
-                                    <HBox id="contact-chat-hbox" alignment="CENTER_LEFT" styleClass="contact-chat-hbox">
-                                       <children>
-                                          <StackPane id="contact-pic-container">
-                                             <HBox.margin>
-                                                <Insets left="10.0" />
-                                             </HBox.margin>
-                                             <children>
-                                                <Circle id="contact-pic" fill="WHITE" radius="15.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-                                                <Circle id="status-color" fill="#ffe042" radius="5.0" stroke="TRANSPARENT" strokeType="INSIDE" StackPane.alignment="BOTTOM_RIGHT" />
-                                             </children>
-                                          </StackPane>
-                                          <Label id="contact-name" styleClass="contact-name" text="Christine Nedaa">
-                                             <HBox.margin>
-                                                <Insets left="10.0" />
-                                             </HBox.margin>
-                                          </Label>
-                                       </children>
-                                       <padding>
-                                          <Insets bottom="8.0" top="8.0" />
-                                       </padding>
-                                    </HBox>
-                                    <HBox id="contact-chat-hbox" alignment="CENTER_LEFT" styleClass="contact-chat-hbox">
-                                       <children>
-                                          <StackPane id="contact-pic-container">
-                                             <HBox.margin>
-                                                <Insets left="10.0" />
-                                             </HBox.margin>
-                                             <children>
-                                                <Circle id="contact-pic" fill="WHITE" radius="15.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-                                                <Circle id="status-color" fill="#ffe042" radius="5.0" stroke="TRANSPARENT" strokeType="INSIDE" StackPane.alignment="BOTTOM_RIGHT" />
-                                             </children>
-                                          </StackPane>
-                                          <Label id="contact-name" styleClass="contact-name" text="Christine Nedaa">
-                                             <HBox.margin>
-                                                <Insets left="10.0" />
-                                             </HBox.margin>
-                                          </Label>
-                                       </children>
-                                       <padding>
-                                          <Insets bottom="8.0" top="8.0" />
-                                       </padding>
-                                    </HBox>
-                                    <HBox id="contact-chat-hbox" alignment="CENTER_LEFT" styleClass="contact-chat-hbox">
-                                       <children>
-                                          <StackPane id="contact-pic-container">
-                                             <HBox.margin>
-                                                <Insets left="10.0" />
-                                             </HBox.margin>
-                                             <children>
-                                                <Circle id="contact-pic" fill="WHITE" radius="15.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-                                                <Circle id="status-color" fill="#ffe042" radius="5.0" stroke="TRANSPARENT" strokeType="INSIDE" StackPane.alignment="BOTTOM_RIGHT" />
-                                             </children>
-                                          </StackPane>
-                                          <Label id="contact-name" styleClass="contact-name" text="Christine Nedaa">
-                                             <HBox.margin>
-                                                <Insets left="10.0" />
-                                             </HBox.margin>
-                                          </Label>
-                                       </children>
-                                       <padding>
-                                          <Insets bottom="8.0" top="8.0" />
-                                       </padding>
-                                    </HBox>
-                                    <HBox id="contact-chat-hbox" alignment="CENTER_LEFT" styleClass="contact-chat-hbox">
-                                       <children>
-                                          <StackPane id="contact-pic-container">
-                                             <HBox.margin>
-                                                <Insets left="10.0" />
-                                             </HBox.margin>
-                                             <children>
-                                                <Circle id="contact-pic" fill="WHITE" radius="15.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-                                                <Circle id="status-color" fill="#ffe042" radius="5.0" stroke="TRANSPARENT" strokeType="INSIDE" StackPane.alignment="BOTTOM_RIGHT" />
-                                             </children>
-                                          </StackPane>
-                                          <Label id="contact-name" styleClass="contact-name" text="Christine Nedaa">
-                                             <HBox.margin>
-                                                <Insets left="10.0" />
-                                             </HBox.margin>
-                                          </Label>
-                                       </children>
-                                       <padding>
-                                          <Insets bottom="8.0" top="8.0" />
-                                       </padding>
-                                    </HBox>
-                                    <HBox id="contact-chat-hbox" alignment="CENTER_LEFT" styleClass="contact-chat-hbox">
-                                       <children>
-                                          <StackPane id="contact-pic-container">
-                                             <HBox.margin>
-                                                <Insets left="10.0" />
-                                             </HBox.margin>
-                                             <children>
-                                                <Circle id="contact-pic" fill="WHITE" radius="15.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-                                                <Circle id="status-color" fill="#ffe042" radius="5.0" stroke="TRANSPARENT" strokeType="INSIDE" StackPane.alignment="BOTTOM_RIGHT" />
-                                             </children>
-                                          </StackPane>
-                                          <Label id="contact-name" styleClass="contact-name" text="Christine Nedaa">
                                              <HBox.margin>
                                                 <Insets left="10.0" />
                                              </HBox.margin>
@@ -239,7 +117,7 @@
                                     <Insets left="10.0" right="110.0" />
                                  </HBox.margin>
                               </Label>
-                              <Button id="add-group-button" mnemonicParsing="false" prefHeight="5.0" prefWidth="20.0" styleClass="add-contact-button">
+                              <Button id="add-group-button" mnemonicParsing="false" onAction="#onAddGroupButtonAction" prefHeight="5.0" prefWidth="20.0" styleClass="add-contact-button">
                                  <padding>
                                     <Insets top="2.0" />
                                  </padding></Button>
@@ -247,109 +125,9 @@
                         </HBox>
                         <ScrollPane id="groups-scrollpane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" styleClass="contacts-scrollpane" vbarPolicy="NEVER">
                            <content>
-                              <VBox id="group-vbox-pane">
+                              <VBox id="group-vbox-pane" fx:id="groupChatsVbox">
                                  <children>
-                                    <HBox id="group-chat-hbox" alignment="CENTER_LEFT" styleClass="contact-chat-hbox">
-                                       <children>
-                                          <StackPane id="group-pic-container">
-                                             <HBox.margin>
-                                                <Insets left="10.0" />
-                                             </HBox.margin>
-                                             <children>
-                                                <Circle id="group-pic" fill="WHITE" radius="15.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-                                             </children>
-                                          </StackPane>
-                                          <Label id="group-name" styleClass="contact-name" text="ITI Intake 42">
-                                             <HBox.margin>
-                                                <Insets left="10.0" />
-                                             </HBox.margin>
-                                          </Label>
-                                       </children>
-                                       <padding>
-                                          <Insets bottom="8.0" top="8.0" />
-                                       </padding>
-                                    </HBox>
-                                    <HBox id="group-chat-hbox" alignment="CENTER_LEFT" styleClass="contact-chat-hbox">
-                                       <children>
-                                          <StackPane id="group-pic-container">
-                                             <HBox.margin>
-                                                <Insets left="10.0" />
-                                             </HBox.margin>
-                                             <children>
-                                                <Circle id="group-pic" fill="WHITE" radius="15.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-                                             </children>
-                                          </StackPane>
-                                          <Label id="group-name" styleClass="contact-name" text="ITI Intake 42">
-                                             <HBox.margin>
-                                                <Insets left="10.0" />
-                                             </HBox.margin>
-                                          </Label>
-                                       </children>
-                                       <padding>
-                                          <Insets bottom="8.0" top="8.0" />
-                                       </padding>
-                                    </HBox>
-                                    <HBox id="group-chat-hbox" alignment="CENTER_LEFT" styleClass="contact-chat-hbox">
-                                       <children>
-                                          <StackPane id="group-pic-container">
-                                             <HBox.margin>
-                                                <Insets left="10.0" />
-                                             </HBox.margin>
-                                             <children>
-                                                <Circle id="group-pic" fill="WHITE" radius="15.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-                                             </children>
-                                          </StackPane>
-                                          <Label id="group-name" styleClass="contact-name" text="ITI Intake 42">
-                                             <HBox.margin>
-                                                <Insets left="10.0" />
-                                             </HBox.margin>
-                                          </Label>
-                                       </children>
-                                       <padding>
-                                          <Insets bottom="8.0" top="8.0" />
-                                       </padding>
-                                    </HBox>
-                                    <HBox id="group-chat-hbox" alignment="CENTER_LEFT" styleClass="contact-chat-hbox">
-                                       <children>
-                                          <StackPane id="group-pic-container">
-                                             <HBox.margin>
-                                                <Insets left="10.0" />
-                                             </HBox.margin>
-                                             <children>
-                                                <Circle id="group-pic" fill="WHITE" radius="15.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-                                             </children>
-                                          </StackPane>
-                                          <Label id="group-name" styleClass="contact-name" text="ITI Intake 42">
-                                             <HBox.margin>
-                                                <Insets left="10.0" />
-                                             </HBox.margin>
-                                          </Label>
-                                       </children>
-                                       <padding>
-                                          <Insets bottom="8.0" top="8.0" />
-                                       </padding>
-                                    </HBox>
-                                    <HBox id="group-chat-hbox" alignment="CENTER_LEFT" styleClass="contact-chat-hbox">
-                                       <children>
-                                          <StackPane id="group-pic-container">
-                                             <HBox.margin>
-                                                <Insets left="10.0" />
-                                             </HBox.margin>
-                                             <children>
-                                                <Circle id="group-pic" fill="WHITE" radius="15.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-                                             </children>
-                                          </StackPane>
-                                          <Label id="group-name" styleClass="contact-name" text="ITI Intake 42">
-                                             <HBox.margin>
-                                                <Insets left="10.0" />
-                                             </HBox.margin>
-                                          </Label>
-                                       </children>
-                                       <padding>
-                                          <Insets bottom="8.0" top="8.0" />
-                                       </padding>
-                                    </HBox>
-                                    <HBox id="group-chat-hbox" alignment="CENTER_LEFT" styleClass="contact-chat-hbox">
+                                    <HBox id="group-chat-hbox" fx:id="groupChatItemHBox" alignment="CENTER_LEFT" styleClass="contact-chat-hbox">
                                        <children>
                                           <StackPane id="group-pic-container">
                                              <HBox.margin>
@@ -386,177 +164,4 @@
       <URL value="@MainStyles.css" />
       <URL value="@../../styles/Base.css" />
    </stylesheets>
-   <center>
-      <BorderPane id="center" BorderPane.alignment="CENTER">
-         <bottom>
-            <HBox id="message-area-container" alignment="CENTER_LEFT" fillHeight="false" prefHeight="80.0" styleClass="send-message-container" BorderPane.alignment="CENTER">
-               <children>
-                  <Button id="text-styling-button" mnemonicParsing="false" prefWidth="25.0" styleClass="text-styling-button" stylesheets="@MainStyles.css">
-                     <HBox.margin>
-                        <Insets left="10.0" />
-                     </HBox.margin>
-                     <contextMenu>
-                        <ContextMenu id="extras-menu" anchorLocation="CONTENT_BOTTOM_LEFT" anchorX="0.0" anchorY="0.0" styleClass="font-settings-popup-contextmenu" x="0.0" y="0.0">
-                          <items>
-                              <CustomMenuItem id="bla" hideOnClick="false" mnemonicParsing="false" styleClass="font-settings-popup-contextmenu" text="Unspecified Action">
-                                 <content>
-                                    <VBox id="extras-menu-container" prefWidth="200.0" spacing="5.0">
-                                       <children>
-                                          <HBox id="font-type" spacing="5.0">
-                                             <children>
-                                                <ToggleButton id="bold-toggle-button" mnemonicParsing="false" text="B" />
-                                                <ToggleButton id="italic-toggle-button" mnemonicParsing="false" text="I" />
-                                                <ToggleButton id="underline-toggle-button" mnemonicParsing="false" text="U" />
-                                             </children>
-                                          </HBox>
-                                          <HBox id="font-settings" spacing="10.0">
-                                             <children>
-                                                <ChoiceBox id="font-family-picker" prefWidth="130.0" />
-                                                <ChoiceBox id="font-size-picker" prefWidth="70.0" />
-                                             </children>
-                                          </HBox>
-                                          <HBox id="color-pickers" spacing="10.0">
-                                             <children>
-                                                <VBox id="text-color-picker">
-                                                   <children>
-                                                      <Label id="text-color-label" text="Font" />
-                                                      <ColorPicker id="text-color-picker" />
-                                                   </children>
-                                                </VBox>
-                                                <VBox id="background-color-picker">
-                                                   <children>
-                                                      <Label id="background-label" text="Background" />
-                                                      <ColorPicker id="background-color-picker" />
-                                                   </children>
-                                                </VBox>
-                                             </children>
-                                          </HBox>
-                                       </children>
-                                       <padding>
-                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                       </padding>
-                                    </VBox>
-                                 </content>
-                              </CustomMenuItem>
-                          </items>
-                        </ContextMenu>
-                     </contextMenu>
-                  </Button>
-                  <Button id="attach-button" mnemonicParsing="false" prefWidth="25.0" styleClass="attach-button">
-                     <HBox.margin>
-                        <Insets left="10.0" right="10.0" />
-                     </HBox.margin>
-                  </Button>
-                  <TextArea prefHeight="35.0" HBox.hgrow="ALWAYS">
-                     <HBox.margin>
-                        <Insets left="10.0" />
-                     </HBox.margin>
-                  </TextArea>
-                  <Button id="send-button" mnemonicParsing="false" prefWidth="25.0" styleClass="send-button">
-                     <HBox.margin>
-                        <Insets left="20.0" right="20.0" />
-                     </HBox.margin>
-                  </Button>
-               </children></HBox>
-         </bottom>
-         <top>
-            <HBox id="chat-name-header" alignment="CENTER_LEFT" prefHeight="70.0" styleClass="send-message-container" BorderPane.alignment="CENTER">
-               <children>
-                  <StackPane>
-                     <children>
-                        <Circle id="profile-pic" fill="WHITE" radius="25.0" stroke="TRANSPARENT" strokeType="INSIDE">
-                           <StackPane.margin>
-                              <Insets left="20.0" />
-                           </StackPane.margin>
-                        </Circle>
-                        <Circle id="status-color" fill="#48ff48" radius="6.0" stroke="TRANSPARENT" strokeType="INSIDE" translateX="-3.0" translateY="-10.0" StackPane.alignment="BOTTOM_RIGHT" />
-                     </children>
-                  </StackPane>
-                  <Label id="contact-chat-name" styleClass="contact-chat-name" text="Christine Nedaa">
-                     <HBox.margin>
-                        <Insets left="10.0" />
-                     </HBox.margin>
-                  </Label>
-               </children></HBox>
-         </top>
-         <center>
-            <ScrollPane id="chatting-scrollpane" fitToWidth="true" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-               <content>
-                  <VBox id="chatting-vbox-area" prefHeight="200.0" prefWidth="100.0">
-                     <children>
-                        <HBox id="recieved-chat-bubble-container" fillHeight="false">
-                           <children>
-                              <HBox id="image-message-container" HBox.hgrow="ALWAYS">
-                                 <children>
-                                    <Circle id="contact-pic" fill="#243f66" radius="15.0" stroke="TRANSPARENT" strokeType="INSIDE">
-                                       <HBox.margin>
-                                          <Insets right="5.0" />
-                                       </HBox.margin>
-                                    </Circle>
-                                    <VBox id="sender-message-container" styleClass="sender-message-container">
-                                       <children>
-                                          <Label id="sender-name" styleClass="sender-name" text="Mahmoud Fawzy">
-                                             <VBox.margin>
-                                                <Insets bottom="5.0" />
-                                             </VBox.margin>
-                                          </Label>
-                                          <TextFlow>
-                                             <children>
-                                                <Text id="sender-message-text" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="sender-message-text" text="heloo heloo heloo heloo heloo heloo heloo heloo heloo heloohelooheloohelooheloo heloo heloo heloo heloo heloo heloo heloo heloo heloo " />
-                                             </children>
-                                          </TextFlow>
-                                       </children>
-                                       <padding>
-                                          <Insets bottom="10.0" left="10.0" right="10.0" top="8.0" />
-                                       </padding>
-                                    </VBox>
-                                 </children>
-                                 <HBox.margin>
-                                    <Insets left="10.0" top="20.0" />
-                                 </HBox.margin>
-                              </HBox>
-                              <HBox id="padding" minWidth="250.0" HBox.hgrow="ALWAYS" />
-                           </children>
-                        </HBox>
-                        <HBox id="sent-chat-bubble-container" fillHeight="false">
-                           <children>
-                              <HBox id="image-message-container" HBox.hgrow="ALWAYS">
-                                 <children>
-                                    <HBox id="padding" minWidth="250.0" HBox.hgrow="ALWAYS" />
-                                    <VBox id="sender-message-container" alignment="TOP_RIGHT" styleClass="sender-message-container">
-                                       <children>
-                                          <Label id="sender-name" styleClass="sender-name" text="Christine Nedaa">
-                                             <VBox.margin>
-                                                <Insets bottom="5.0" right="2.0" />
-                                             </VBox.margin>
-                                          </Label>
-                                          <TextFlow textAlignment="RIGHT">
-                                             <children>
-                                                <Text id="sender-message-text" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="sender-message-text" text="heloo heloo heloo heloo heloo heloo heloo heloo heloo heloohelooheloohelooheloo heloo heloo heloo heloo heloo heloo heloo heloo heloo " />
-                                             </children>
-                                          </TextFlow>
-                                       </children>
-                                       <padding>
-                                          <Insets bottom="10.0" left="10.0" right="10.0" top="8.0" />
-                                       </padding>
-                                    </VBox>
-                                    <Circle id="contact-pic" fill="#243f66" radius="15.0" stroke="TRANSPARENT" strokeType="INSIDE">
-                                       <HBox.margin>
-                                          <Insets left="5.0" />
-                                       </HBox.margin>
-                                    </Circle>
-                                 </children>
-                                 <HBox.margin>
-                                    <Insets right="10.0" top="20.0" />
-                                 </HBox.margin>
-                              </HBox>
-                           </children>
-                        </HBox>
-                     </children>
-                  </VBox>
-               </content>
-            </ScrollPane>
-         </center>
-      </BorderPane>
-   </center>
 </BorderPane>

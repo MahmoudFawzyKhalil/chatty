@@ -55,6 +55,6 @@
    </children>
    <stylesheets>
       <URL value="@../../styles/Base.css" />
-      <URL value="@RegistrationViewOneStyles.css" />
+      <URL value="@RegistrationOneStyles.css" />
    </stylesheets>
 </StackPane>
