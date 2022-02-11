@@ -110,8 +110,10 @@ public class StageCoordinator {
         primaryStage.setScene(mainScene);
     }
 
-    public void clearSceneMap(){
+    public void clearSceneStagePaneMaps(){
+        stageMap.clear();
         sceneMap.clear();
+        paneCoordinator.clearPaneMap();
     }
 
     public void closeAddContactScene(){
@@ -139,8 +141,8 @@ public class StageCoordinator {
             setPopupStage(addGroupStage,"/views/add-group/AddGroupChatViewOne.fxml");
             stageMap.put("addGroupStage",addGroupStage);
         }
-        addGroupStage.show();
 
+        addGroupStage.show();
     }
 
     private void setPopupStage(Stage stage,String fxmlPath) {

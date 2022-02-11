@@ -76,6 +76,7 @@ public class MainController implements Initializable {
 
     @FXML
     void onSignOutButtonAction(ActionEvent event) {
+        stageCoordinator.clearSceneStagePaneMaps();
         stageCoordinator.switchToLoginScene();
     }
 
