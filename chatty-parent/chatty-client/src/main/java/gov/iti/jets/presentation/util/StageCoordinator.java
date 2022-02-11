@@ -100,6 +100,25 @@ public class StageCoordinator {
 
         primaryStage.setScene(mainScene);
     }
+    /*
+        MAHMOUD
+     */
+
+
+    /*
+        MAHMOUD
+     */
+
+
+
+    /*
+        OSAMA
+     */
+
+
+    /*
+        OSAMA
+     */
 
 
 }
