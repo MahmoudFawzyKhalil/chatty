@@ -2,8 +2,12 @@ package gov.iti.jets.presentation.util;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -14,6 +18,8 @@ public class StageCoordinator {
 
     private Stage primaryStage;
     private final Map<String, Scene> sceneMap = new HashMap<>();
+
+    private final Map<String,Stage>stageMap = new HashMap<>();
 
     private StageCoordinator() {}
 
@@ -115,6 +121,50 @@ public class StageCoordinator {
         OSAMA
      */
 
+    public void closeAddContactScene(){
+        stageMap.get("addContactStage").close();
+    }
+
+    public void closeGroupContactScene(){
+        stageMap.get("addGroupStage").close();
+    }
+    public void showAddContactStage(){
+        Stage addContactStage=stageMap.get("addContactStage");
+        if(addContactStage==null){
+            addContactStage=new Stage();
+            setPopupStage(addContactStage,"/views/add-contact/AddContactView.fxml");
+            stageMap.put("addContactStage",addContactStage);
+        }
+        addContactStage.show();
+
+    }
+
+    public void showAddGroupStage(){
+        Stage addGroupStage=stageMap.get("addGroupStage");
+        if(addGroupStage==null){
+            addGroupStage=new Stage();
+            setPopupStage(addGroupStage,"/views/add-group/AddGroupChatViewOne.fxml");
+            stageMap.put("addGroupStage",addGroupStage);
+        }
+        addGroupStage.show();
+
+    }
+
+    private void setPopupStage(Stage stage,String fxmlPath) {
+        stage.initStyle(StageStyle.TRANSPARENT);
+        stage.initModality(Modality.APPLICATION_MODAL);
+        try {
+            Pane root = FXMLLoader.load(getClass().getResource(fxmlPath));
+            Scene scene=new Scene(root);
+            scene.setFill(Color.TRANSPARENT);
+            scene.getRoot().setEffect(new DropShadow(10, Color.rgb(30, 30, 30)));
+            stage.setScene(scene);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 
     /*
         OSAMA
