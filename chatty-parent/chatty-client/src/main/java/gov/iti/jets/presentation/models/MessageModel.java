@@ -7,15 +7,17 @@ import javafx.beans.property.StringProperty;
 import javafx.scene.image.Image;
 
 public class MessageModel {
-    private StringProperty senderName;
-    private ObjectProperty<Image> senderProfilePicture; // ImageView.imageProperty.bind(contactModel.imageProperty);
+    private StringProperty senderName = new SimpleStringProperty();
+    private ObjectProperty<Image> senderProfilePicture = new SimpleObjectProperty<>();
     private String messageBody;
+    private String cssTextStyleString;
     private String cssBubbleStyleString;
 
-    public MessageModel(String senderName, Image senderProfilePicture, String messageBody, String cssBubbleStyleString) {
-        this.senderName = new SimpleStringProperty(senderName);
-        this.senderProfilePicture = new SimpleObjectProperty<>(senderProfilePicture);
+    public MessageModel(String senderName, Image senderProfilePicture, String messageBody, String cssTextStyleString, String cssBubbleStyleString) {
+        this.senderName.set(senderName);
+        this.senderProfilePicture.set(senderProfilePicture);
         this.messageBody = messageBody;
+        this.cssTextStyleString = cssTextStyleString;
         this.cssBubbleStyleString = cssBubbleStyleString;
     }
 
@@ -58,5 +60,13 @@ public class MessageModel {
 
     public void setCssBubbleStyleString(String cssBubbleStyleString) {
         this.cssBubbleStyleString = cssBubbleStyleString;
+    }
+
+    public String getCssTextStyleString() {
+        return cssTextStyleString;
+    }
+
+    public void setCssTextStyleString(String cssTextStyleString) {
+        this.cssTextStyleString = cssTextStyleString;
     }
 }

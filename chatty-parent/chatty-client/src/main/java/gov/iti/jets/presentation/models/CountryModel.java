@@ -7,15 +7,15 @@ import javafx.beans.property.StringProperty;
 
 public class CountryModel {
 
-    private IntegerProperty countryId;
-    private StringProperty countryName;
+    private IntegerProperty countryId = new SimpleIntegerProperty();
+    private StringProperty countryName = new SimpleStringProperty();
 
     public CountryModel(){
 
     }
     public CountryModel(int countryId, String countryName){
-        this.countryId = new SimpleIntegerProperty(countryId);
-        this.countryName = new SimpleStringProperty(countryName);
+        this.countryId.set(countryId);
+        this.countryName.set(countryName);
     }
 
     public int getCountryId() {

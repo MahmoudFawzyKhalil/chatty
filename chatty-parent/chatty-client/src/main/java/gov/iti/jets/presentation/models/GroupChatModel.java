@@ -6,20 +6,24 @@ import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
 
 public class GroupChatModel {
-    private IntegerProperty groupChatId;
-    private StringProperty groupChatName;
-    private ObjectProperty<Image> groupChatPicture;
-    private ListProperty<ContactModel> groupMembersList;
+    private IntegerProperty groupChatId = new SimpleIntegerProperty();
+    private StringProperty groupChatName = new SimpleStringProperty();
+    private ObjectProperty<Image> groupChatPicture = new SimpleObjectProperty<>();
+    private ListProperty<ContactModel> groupMembersList = new SimpleListProperty<>(FXCollections.observableArrayList());
 
     public GroupChatModel() {
 
     }
 
+    public GroupChatModel(String groupChatName, Image groupChatPicture) {
+        this.groupChatName.set(groupChatName);
+        this.groupChatPicture.set(groupChatPicture);
+    }
+
     public GroupChatModel(int groupChatId, String groupChatName, Image groupChatPicture) {
-        this.groupChatId = new SimpleIntegerProperty(groupChatId);
-        this.groupChatName = new SimpleStringProperty(groupChatName);
-        this.groupChatPicture = new SimpleObjectProperty<>(groupChatPicture);
-        this.groupMembersList = new SimpleListProperty<>(FXCollections.observableArrayList());
+        this.groupChatId.set(groupChatId);
+        this.groupChatName.set(groupChatName);
+        this.groupChatPicture.set(groupChatPicture);
     }
 
     public int getGroupChatId() {

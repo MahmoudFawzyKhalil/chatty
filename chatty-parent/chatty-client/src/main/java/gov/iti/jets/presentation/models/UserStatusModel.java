@@ -10,9 +10,10 @@ public class UserStatusModel {
     private StringProperty userStatusName = new SimpleStringProperty();
 
     public UserStatusModel(int userStatusId, String userStatusName){
-        this.userStatusId = new SimpleIntegerProperty(userStatusId);
-        this.userStatusName = new SimpleStringProperty(userStatusName);
+        this.userStatusId.set(userStatusId);
+        this.userStatusName.set(userStatusName);
     }
+
     public String getUserStatusName() {
         return userStatusName.get();
     }
