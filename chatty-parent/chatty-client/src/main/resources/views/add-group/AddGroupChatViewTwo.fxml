@@ -66,6 +66,6 @@
    </children>
    <stylesheets>
       <URL value="@../../styles/Base.css" />
-      <URL value="@addGroupChatStyles.css" />
+      <URL value="@AddGroupChatStyles.css" />
    </stylesheets>
 </VBox>
