@@ -41,12 +41,12 @@ public class MainController implements Initializable {
 
     @FXML
     void onAddContactButtonAction(ActionEvent event) {
-
+        stageCoordinator.showAddContactStage();
     }
 
     @FXML
     void onAddGroupButtonAction(ActionEvent event) {
-
+        stageCoordinator.showAddGroupStage();
     }
 
     @FXML
