@@ -1,18 +1,38 @@
 package gov.iti.jets.presentation.controllers;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
-public class InvitationController {
+
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class InvitationController implements Initializable {
     @FXML
     private Label friendNameLabel;
+
+    @FXML
+    private Label friendNameLabel2;
 
     @FXML
     private Label friendPhoneNumberLabel;
 
     @FXML
-    private Button onAcceptButtonAction;
+    private Label numberOfRequestsLabel;
 
     @FXML
-    private Button onRefuseButtonAction;
+    void onAcceptButtonAction(ActionEvent event) {
+
+    }
+
+    @FXML
+    void onRefuseButtonAction(ActionEvent event) {
+
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+    }
 }
