@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import java.net.URL?>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="940.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.presentation.controllers.MainController">
+   <left>
+      <HBox id="side-bar" prefWidth="310.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox id="side-bar-left" prefWidth="80.0" spacing="30.0" styleClass="side-bar-left">
+               <children>
+                  <ScrollPane id="profile-pic-status-container" fitToHeight="true" fitToWidth="true" styleClass="profile-pic-status-container">
+                     <VBox.margin>
+                        <Insets top="20.0" />
+                     </VBox.margin>
+                     <content>
+                        <StackPane id="profile-pic-container">
+                           <children>
+                              <Circle id="profile-pic" fx:id="userProfilePicCircle" fill="WHITE" onMouseClicked="#onUserProfilePicCircleMouseClicked" radius="25.0" stroke="TRANSPARENT" strokeType="INSIDE" styleClass="user-profile-pic" />
+                              <Circle id="status-color" fx:id="userStatusCircle" fill="#48ff48" radius="6.0" stroke="TRANSPARENT" strokeType="INSIDE" translateX="-18.0" StackPane.alignment="BOTTOM_RIGHT" />
+                           </children>
+                        </StackPane>
+                     </content>
+                     <contextMenu>
+                        <ContextMenu>
+                          <items>
+                            <MenuItem id="Available" mnemonicParsing="false" onAction="#onAvailableStatusMenuItemAction" text="Available" />
+                              <MenuItem id="Busy" mnemonicParsing="false" onAction="#onBusyStatusMenuItemAction" text="Busy" />
+                              <MenuItem id="Away" mnemonicParsing="false" onAction="#onAwayStatusMenuItemAction" text="Away" />
+                          </items>
+                        </ContextMenu>
+                     </contextMenu>
+                     <tooltip>
+                        <Tooltip text="Right click to change status" />
+                     </tooltip>
+                  </ScrollPane>
+                  <StackPane id="invite-button-container">
+                     <children>
+                        <Button id="invite-button" mnemonicParsing="false" onAction="#onInvitationsButtonAction" prefHeight="20.0" prefWidth="26.0" styleClass="invites-button" />
+                     </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </StackPane>
+                  <StackPane id="chatbot-button-container">
+                     <children>
+                        <Button id="chatbot-button" mnemonicParsing="false" onAction="#onChatBotButtonAction" prefHeight="25.0" prefWidth="25.0" styleClass="chatbot-button" />
+                     </children>
+                  </StackPane>
+                  <StackPane id="signout-button-container">
+                     <children>
+                        <Button id="signout-button" mnemonicParsing="false" onAction="#onSignOutButtonAction" prefHeight="25.0" prefWidth="25.0" styleClass="signout-button" />
+                     </children>
+                  </StackPane>
+               </children>
+            </VBox>
+            <VBox id="side-bar-right" prefWidth="230.0" styleClass="side-bar-right">
+               <children>
+                  <VBox id="contacts-element" VBox.vgrow="ALWAYS">
+                     <children>
+                        <HBox id="contacts-header" alignment="CENTER_LEFT" fillHeight="false">
+                           <children>
+                              <Label id="contacts-title-label" prefWidth="70.0" scaleShape="false" styleClass="contacts-title-label" text="Contacts">
+                                 <HBox.margin>
+                                    <Insets left="10.0" right="110.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <Button id="add-contact-button" mnemonicParsing="false" onAction="#onAddContactButtonAction" prefHeight="5.0" prefWidth="20.0" styleClass="add-contact-button">
+                                 <padding>
+                                    <Insets top="2.0" />
+                                 </padding></Button>
+                           </children>
+                        </HBox>
+                        <ScrollPane id="contacts-scrollpane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" styleClass="contacts-scrollpane" vbarPolicy="NEVER">
+                           <content>
+                              <VBox id="contact-vbox-pane" fx:id="contactChatsVbox">
+                                 <children>
+                                    <HBox id="contact-chat-hbox" fx:id="contactChatItemHBox" alignment="CENTER_LEFT" styleClass="contact-chat-hbox">
+                                       <children>
+                                          <StackPane id="contact-pic-container">
+                                             <HBox.margin>
+                                                <Insets left="10.0" />
+                                             </HBox.margin>
+                                             <children>
+                                                <Circle id="contact-pic" fill="WHITE" radius="15.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                                                <Circle id="status-color" fill="#48ff48" radius="5.0" stroke="TRANSPARENT" strokeType="INSIDE" StackPane.alignment="BOTTOM_RIGHT" />
+                                             </children>
+                                          </StackPane>
+                                          <Label id="contact-name" styleClass="contact-name" text="Mahmoud Fawzy">
+                                             <HBox.margin>
+                                                <Insets left="10.0" />
+                                             </HBox.margin>
+                                          </Label>
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="8.0" top="8.0" />
+                                       </padding>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </content>
+                        </ScrollPane>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="20.0" />
+                     </VBox.margin>
+                  </VBox>
+                  <Separator opacity="0.2" />
+                  <VBox id="groups-element" maxHeight="300.0">
+                     <children>
+                        <HBox id="groups-header" alignment="CENTER_LEFT" fillHeight="false">
+                           <children>
+                              <Label id="groups-title-label" prefWidth="70.0" scaleShape="false" styleClass="contacts-title-label" text="Groups">
+                                 <HBox.margin>
+                                    <Insets left="10.0" right="110.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <Button id="add-group-button" mnemonicParsing="false" onAction="#onAddGroupButtonAction" prefHeight="5.0" prefWidth="20.0" styleClass="add-contact-button">
+                                 <padding>
+                                    <Insets top="2.0" />
+                                 </padding></Button>
+                           </children>
+                        </HBox>
+                        <ScrollPane id="groups-scrollpane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" styleClass="contacts-scrollpane" vbarPolicy="NEVER">
+                           <content>
+                              <VBox id="group-vbox-pane" fx:id="groupChatsVbox">
+                                 <children>
+                                    <HBox id="group-chat-hbox" fx:id="groupChatItemHBox" alignment="CENTER_LEFT" styleClass="contact-chat-hbox">
+                                       <children>
+                                          <StackPane id="group-pic-container">
+                                             <HBox.margin>
+                                                <Insets left="10.0" />
+                                             </HBox.margin>
+                                             <children>
+                                                <Circle id="group-pic" fill="WHITE" radius="15.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                                             </children>
+                                          </StackPane>
+                                          <Label id="group-name" styleClass="contact-name" text="ITI Intake 42">
+                                             <HBox.margin>
+                                                <Insets left="10.0" />
+                                             </HBox.margin>
+                                          </Label>
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="8.0" top="8.0" />
+                                       </padding>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </content>
+                        </ScrollPane>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="20.0" />
+                     </VBox.margin>
+                  </VBox>
+               </children></VBox>
+         </children>
+      </HBox>
+   </left>
+   <stylesheets>
+      <URL value="@MainStyles.css" />
+      <URL value="@../../styles/Base.css" />
+   </stylesheets>
+</BorderPane>
