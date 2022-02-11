@@ -41,12 +41,20 @@ public class LoginController implements Initializable {
 
     @FXML
     void onCreateAccountHyperLinkAction(ActionEvent event) {
-
+        switchToRegisterOne();
     }
 
     @FXML
     void onLoginButtonAction(ActionEvent event) {
+        switchToMain();
+    }
 
+    private void switchToMain() {
+        stageCoordinator.switchToMainScene();
+    }
+
+    private void switchToRegisterOne() {
+            stageCoordinator.switchToRegisterSceneOne();
     }
 
 

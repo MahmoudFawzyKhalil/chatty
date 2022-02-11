@@ -83,22 +83,26 @@ public class RegistrationController implements Initializable{
 
     @FXML
     void onFirstNextButtonAction(ActionEvent event) {
-
+        switchToRegisterTwo();
     }
 
     @FXML
     void onLoginHyperLinkAction(ActionEvent event) {
-
+        switchToLogin();
     }
+
+
 
     @FXML
     void onPreviousButtonAction(ActionEvent event) {
-
+        switchToRegisterOne();
     }
+
+
 
     @FXML
     void onSecondNextButtonAction(ActionEvent event) {
-
+        switchToRegisterThree();
     }
 
     @FXML
@@ -108,6 +112,23 @@ public class RegistrationController implements Initializable{
 
     @FXML
     void onFinishButtonAction(ActionEvent event) {
-
+        switchToLogin();
     }
+
+    private void switchToRegisterOne() {
+        stageCoordinator.switchToRegisterSceneOne();
+    }
+
+    private void switchToRegisterTwo() {
+        stageCoordinator.switchToRegisterSceneTwo();
+    }
+
+    private void switchToRegisterThree() {
+        stageCoordinator.switchToRegisterSceneThree();
+    }
+
+    private void switchToLogin() {
+        stageCoordinator.switchToLoginScene();
+    }
+
 }
