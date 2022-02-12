@@ -1,7 +1,9 @@
 package gov.iti.jets.presentation.models;
 
+import javafx.beans.Observable;
 import javafx.beans.property.*;
 import javafx.scene.image.Image;
+import javafx.util.Callback;
 
 public class ContactModel {
     /*
@@ -31,6 +33,15 @@ public class ContactModel {
         this.displayName.set(displayName);
         this.profilePicture.set(profilePicture);
         this.currentStatus.set(currentStatus);
+    }
+
+    public static Callback<ContactModel, Observable[]> extractor() {
+        return new Callback<ContactModel, Observable[]>() {
+            @Override
+            public Observable[] call(ContactModel param) {
+                return new Observable[]{param.phoneNumber,param.displayName,param.profilePicture,param.currentStatus};
+            }
+        };
     }
 
     public int getContactId() {
