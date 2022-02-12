@@ -5,12 +5,11 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
-
 
 <BorderPane styleClass="shadow-pane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.presentation.controllers.AddContactController">
    <center>
@@ -33,15 +32,7 @@
                   <Insets top="40.0" />
                </VBox.margin>
             </HBox>
-            <ScrollPane id="text-field-holder" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" styleClass="transparent-color" vbarPolicy="NEVER" VBox.vgrow="ALWAYS">
-               <content>
-                  <VBox id="text-field-holder" fx:id="contactsVBox" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="15.0" styleClass="input-field-holder">
-                     <padding>
-                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                     </padding>
-                  </VBox>
-               </content>
-            </ScrollPane>
+            <ListView fx:id="contactsListView" prefHeight="200.0" prefWidth="200.0" styleClass="custom-list-view" VBox.vgrow="ALWAYS" />
             <HBox id="adding-box" alignment="TOP_RIGHT" spacing="10.0" styleClass="adding-box">
                <children>
                   <Hyperlink onAction="#onCancelHyperLinkClick" text="Cancel">
