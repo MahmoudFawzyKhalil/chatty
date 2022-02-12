@@ -6,7 +6,8 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.util.Callback;
 
-public class ContactModelCellFactory implements Callback<ListView<ContactModel>, ListCell<ContactModel>> {
+public class ContactChatMenuItemCellFactory implements Callback<ListView<ContactModel>, ListCell<ContactModel>> {
+
         @Override
         public ListCell<ContactModel> call(ListView<ContactModel> param) {
             ListCell<ContactModel> cell = new ListCell<>(){
