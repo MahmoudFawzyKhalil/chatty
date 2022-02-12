@@ -1,7 +1,8 @@
 module chatty.client {
     // RMI
     requires java.rmi;
-    
+    requires  chatty.commons;
+
     // JavaFX
     requires javafx.controls;
     requires javafx.fxml;

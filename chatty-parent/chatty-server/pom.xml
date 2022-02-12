@@ -27,6 +27,11 @@
             <artifactId>HikariCP</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>gov.iti.jets</groupId>
+            <artifactId>chatty-commons</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
