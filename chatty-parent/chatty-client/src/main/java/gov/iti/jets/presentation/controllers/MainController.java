@@ -53,7 +53,7 @@ public class MainController implements Initializable {
 //        createAndAddGroupChatMenuItem();
         createAndAddContactChatMenuItem();
         groupsListView.setCellFactory(new GroupMemberCellFactory());
-        observableList = FXCollections.<GroupChatModel>observableArrayList();
+        observableList = FXCollections.<GroupChatModel>observableArrayList(GroupChatModel.extractor());
         observableList.add(new GroupChatModel("ITI"));
         SimpleListProperty<GroupChatModel> slp = new SimpleListProperty<>(observableList);
         groupsListView.itemsProperty().bind(slp);
@@ -127,7 +127,7 @@ public class MainController implements Initializable {
     private static class GroupMemberCellFactory implements Callback<ListView<GroupChatModel>, ListCell<GroupChatModel>> {
         @Override
         public ListCell<GroupChatModel> call(ListView<GroupChatModel> param) {
-            return new ListCell<>(){
+            ListCell<GroupChatModel> cell = new ListCell<>(){
                 @Override
                 public void updateItem(GroupChatModel groupChat, boolean empty) {
                     super.updateItem(groupChat, empty);
@@ -143,6 +143,15 @@ public class MainController implements Initializable {
                     }
                 }
             };
+
+            // chatPaneMap is map from GroupChatModel to ChatPane
+            // chatPaneMap is map from groupChatID to ChatPane
+            // override equals and
+            cell.setUserData("chat-id");
+
+            cell.setOnMouseClicked(e -> System.out.println(cell.getItem()));
+
+            return cell;
         }
     }
 }
