@@ -1,5 +1,6 @@
 package gov.iti.jets.presentation.customcontrols;
 
+import gov.iti.jets.presentation.models.GroupChatModel;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -13,13 +14,16 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class GroupChatMenuItem extends HBox implements Initializable {
-    @FXML
-    private Label groupChatNameLabel;
+
+    public Label groupChatNameLabel;
 
     @FXML
     private Circle groupChatPhotoCircle;
 
-    public GroupChatMenuItem (){
+    private  GroupChatModel groupChatModel;
+
+    public GroupChatMenuItem (GroupChatModel groupChatModel){
+        this.groupChatModel = groupChatModel;
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/main/GroupChatMenuItem.fxml"));
         loader.setController(this);
         loader.setRoot(this);
@@ -33,6 +37,6 @@ public class GroupChatMenuItem extends HBox implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        groupChatNameLabel.setText(groupChatModel.getGroupChatName());
     }
 }

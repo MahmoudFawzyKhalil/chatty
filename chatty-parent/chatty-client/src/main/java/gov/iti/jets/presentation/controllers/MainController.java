@@ -3,6 +3,7 @@ package gov.iti.jets.presentation.controllers;
 import gov.iti.jets.presentation.customcontrols.ContactChatMenuItem;
 import gov.iti.jets.presentation.customcontrols.GroupChatMenuItem;
 import gov.iti.jets.presentation.customcontrols.GroupMemberItem;
+import gov.iti.jets.presentation.models.GroupChatModel;
 import gov.iti.jets.presentation.util.PaneCoordinator;
 import gov.iti.jets.presentation.util.StageCoordinator;
 import javafx.beans.property.SimpleListProperty;
@@ -40,10 +41,11 @@ public class MainController implements Initializable {
     @FXML
     private Circle userStatusCircle;
 
+    public static GroupChatModel g1;
 
     @FXML
-    private ListView<GroupChatMenuItem> groupsListView;
-    private static ObservableList<GroupChatMenuItem> observableList;
+    private ListView<GroupChatModel> groupsListView;
+    private static ObservableList<GroupChatModel> observableList;
 
 
     @Override
@@ -51,11 +53,13 @@ public class MainController implements Initializable {
 //        createAndAddGroupChatMenuItem();
         createAndAddContactChatMenuItem();
         groupsListView.setCellFactory(new GroupMemberCellFactory());
-        observableList = FXCollections.<GroupChatMenuItem>observableArrayList();
-        observableList.add(new GroupChatMenuItem());
-        SimpleListProperty<GroupChatMenuItem> slp = new SimpleListProperty<>(observableList);
+        observableList = FXCollections.<GroupChatModel>observableArrayList();
+        observableList.add(new GroupChatModel("ITI"));
+        SimpleListProperty<GroupChatModel> slp = new SimpleListProperty<>(observableList);
         groupsListView.itemsProperty().bind(slp);
-        slp.add(new GroupChatMenuItem());
+
+        g1 = new GroupChatModel("HELLO");
+        slp.add(g1);
     }
 
     @FXML
@@ -85,7 +89,8 @@ public class MainController implements Initializable {
 
     @FXML
     void onChatBotButtonAction(ActionEvent event) {
-        observableList.add(new GroupChatMenuItem());
+        observableList.add(new GroupChatModel("ROBOT BUTTON"));
+        g1.setGroupChatName("BOII");
     }
 
     @FXML
@@ -114,24 +119,24 @@ public class MainController implements Initializable {
     }
 
     private void createAndAddGroupChatMenuItem() {
-        var item = new GroupChatMenuItem();
+        var item = new GroupChatMenuItem(new GroupChatModel("Default group"));
         item.setOnMouseClicked(e -> paneCoordinator.switchToChatPane());
         groupChatsVbox.getChildren().add(item);
     }
 
-    private static class GroupMemberCellFactory implements Callback<ListView<GroupChatMenuItem>, ListCell<GroupChatMenuItem>> {
+    private static class GroupMemberCellFactory implements Callback<ListView<GroupChatModel>, ListCell<GroupChatModel>> {
         @Override
-        public ListCell<GroupChatMenuItem> call(ListView<GroupChatMenuItem> param) {
+        public ListCell<GroupChatModel> call(ListView<GroupChatModel> param) {
             return new ListCell<>(){
                 @Override
-                public void updateItem(GroupChatMenuItem person, boolean empty) {
-                    super.updateItem(person, empty);
+                public void updateItem(GroupChatModel groupChat, boolean empty) {
+                    super.updateItem(groupChat, empty);
                     if (empty) {
                         setText(null);
                         setGraphic(null);
-                    } else if (person != null) {
+                    } else if (groupChat != null) {
                         setText(null);
-                        setGraphic(new GroupChatMenuItem());
+                        setGraphic(new GroupChatMenuItem(groupChat));
                     } else {
                         setText("null");
                         setGraphic(null);

@@ -16,7 +16,7 @@
             <Circle id="group-pic" fx:id="groupChatPhotoCircle" fill="WHITE" radius="15.0" stroke="TRANSPARENT" strokeType="INSIDE" />
          </children>
       </StackPane>
-      <Label id="group-name" fx:id="groupChatNameLabel" styleClass="contact-name" text="ITI Intake 42">
+      <Label id="group-name" fx:id="groupChatNameLabel" styleClass="contact-name">
          <HBox.margin>
             <Insets left="10.0" />
          </HBox.margin>
