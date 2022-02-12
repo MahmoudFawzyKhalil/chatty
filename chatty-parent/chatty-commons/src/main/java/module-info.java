@@ -14,5 +14,5 @@ module chatty.commons {
     requires org.mapstruct;
 
     // Exports, Opens
-    exports gov.iti.jets;
+    exports gov.iti.jets.commons;
 }
