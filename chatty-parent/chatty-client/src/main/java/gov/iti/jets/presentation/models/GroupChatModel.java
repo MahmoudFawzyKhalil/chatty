@@ -1,9 +1,11 @@
 package gov.iti.jets.presentation.models;
 
+import javafx.beans.Observable;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
+import javafx.util.Callback;
 
 public class GroupChatModel {
     private IntegerProperty groupChatId = new SimpleIntegerProperty();
@@ -24,6 +26,15 @@ public class GroupChatModel {
         this.groupChatId.set(groupChatId);
         this.groupChatName.set(groupChatName);
         this.groupChatPicture.set(groupChatPicture);
+    }
+
+    public static Callback<GroupChatModel, Observable[]> extractor() {
+        return new Callback<GroupChatModel, Observable[]>() {
+            @Override
+            public Observable[] call(GroupChatModel param) {
+                return new Observable[]{param.groupChatName,param.groupChatPicture,param.groupMembersList};
+            }
+        };
     }
 
     public int getGroupChatId() {
