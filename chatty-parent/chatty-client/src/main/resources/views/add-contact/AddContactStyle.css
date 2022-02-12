@@ -64,3 +64,19 @@
 .input-field-holder{
     -fx-background-color:-main-medium;
 }
+
+.custom-list-view {
+    -fx-background-color: -main-medium;
+    -fx-border-insets: 0, 0, 0, 0;
+    -fx-background-insets: 0, 0, 0, 0;
+}
+
+.custom-list-view .list-cell {
+    -fx-background-color: -main-medium;
+    -fx-border-insets: 0, 0, 0, 0;
+}
+
+.custom-list-view .scroll-bar:vertical {
+    -fx-scale-x: 0;
+    -fx-padding: -20;
+}
