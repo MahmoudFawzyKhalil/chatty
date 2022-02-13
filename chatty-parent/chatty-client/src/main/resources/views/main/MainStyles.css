@@ -231,3 +231,19 @@
     -fx-scale-x: 0;
     -fx-padding: -20;
 }
+
+.chat-list-view {
+    -fx-background-color: -main-light;
+    -fx-border-insets: 0, 0, 0, 0;
+    -fx-background-insets: 0, 0, 0, 0;
+}
+
+.chat-list-view .list-cell {
+    -fx-background-color: -main-light;
+    -fx-border-insets: 0, 0, 0, 0;
+}
+
+.chat-list-view .scroll-bar:vertical {
+    -fx-scale-x: 0;
+    -fx-padding: -20;
+}

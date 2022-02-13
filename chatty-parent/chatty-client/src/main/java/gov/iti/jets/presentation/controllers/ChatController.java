@@ -1,5 +1,6 @@
 package gov.iti.jets.presentation.controllers;
 
+import gov.iti.jets.presentation.models.MessageModel;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -17,7 +18,7 @@ public class ChatController implements Initializable {
 
 
     @FXML
-    private VBox chatMessagesVbox;
+    private ListView<MessageModel> chatMessagesListView;
 
     @FXML
     private TextArea chatTextArea;
