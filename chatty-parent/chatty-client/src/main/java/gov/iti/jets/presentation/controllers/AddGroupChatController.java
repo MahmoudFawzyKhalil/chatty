@@ -1,15 +1,11 @@
 package gov.iti.jets.presentation.controllers;
 
-import gov.iti.jets.presentation.customcontrols.GroupMemberItem;
+import gov.iti.jets.presentation.models.ContactModel;
 import gov.iti.jets.presentation.util.StageCoordinator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Hyperlink;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.*;
 import javafx.scene.shape.Circle;
 
 import java.net.URL;
@@ -23,7 +19,7 @@ public class AddGroupChatController implements Initializable {
     private CheckBox contactNameTextField;
 
     @FXML
-    private VBox contactsVBox;
+    private ListView<ContactModel> contactsListView;
 
     @FXML
     private Button createButton;
@@ -40,7 +36,6 @@ public class AddGroupChatController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        contactsVBox.getChildren().add(new GroupMemberItem());
     }
 
     @FXML

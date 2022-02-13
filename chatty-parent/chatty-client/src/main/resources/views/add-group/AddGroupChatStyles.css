@@ -108,3 +108,19 @@
     -fx-background-color: derive(-main-dark,20%);
 }
 
+.contacts-list-view {
+    -fx-background-color: -main-medium;
+    -fx-border-insets: 0, 0, 0, 0;
+    -fx-background-insets: 0, 0, 0, 0;
+}
+
+.contacts-list-view .list-cell {
+    -fx-background-color: -main-medium;
+    -fx-border-insets: 0, 0, 0, 0;
+}
+
+.contacts-list-view .scroll-bar:vertical {
+    -fx-scale-x: 0;
+    -fx-padding: -20;
+}
+
