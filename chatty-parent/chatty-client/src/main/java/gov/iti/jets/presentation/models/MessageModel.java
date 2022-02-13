@@ -8,18 +8,18 @@ import javafx.beans.property.StringProperty;
 import javafx.scene.image.Image;
 import javafx.util.Callback;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class MessageModel {
     private StringProperty senderName = new SimpleStringProperty();
     private ObjectProperty<Image> senderProfilePicture = new SimpleObjectProperty<>();
-    private Date timeStamp;
+    private LocalDate timeStamp;
     private String messageBody;
     private String cssTextStyleString;
     private String cssBubbleStyleString;
     private boolean isSentByMe;
 
-    public MessageModel(String senderName, Image senderProfilePicture, Date timeStamp, String messageBody, String cssTextStyleString, String cssBubbleStyleString, boolean isSentByMe) {
+    public MessageModel(String senderName, Image senderProfilePicture, LocalDate timeStamp, String messageBody, String cssTextStyleString, String cssBubbleStyleString, boolean isSentByMe) {
         this.senderName.set(senderName);
         this.senderProfilePicture.set(senderProfilePicture);
         this.timeStamp = timeStamp;
@@ -94,11 +94,11 @@ public class MessageModel {
         this.cssTextStyleString = cssTextStyleString;
     }
 
-    public Date getTimeStamp() {
+    public LocalDate getTimeStamp() {
         return timeStamp;
     }
 
-    public void setTimeStamp(Date timeStamp) {
+    public void setTimeStamp(LocalDate timeStamp) {
         this.timeStamp = timeStamp;
     }
 }
