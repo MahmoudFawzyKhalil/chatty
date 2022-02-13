@@ -106,7 +106,8 @@ public class StageCoordinator {
                 e.printStackTrace();
             }
         }
-
+        primaryStage.setWidth(961);
+        primaryStage.setHeight(531);
         primaryStage.setScene(mainScene);
     }
 
