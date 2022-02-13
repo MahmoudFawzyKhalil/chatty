@@ -25,6 +25,9 @@ public class ReceivedChatBubble extends HBox implements Initializable {
     private Label senderNameLabel;
 
     @FXML
+    private Label timeStampLabel;
+
+    @FXML
     private Circle senderProfilePicCircle;
 
     public ReceivedChatBubble(){

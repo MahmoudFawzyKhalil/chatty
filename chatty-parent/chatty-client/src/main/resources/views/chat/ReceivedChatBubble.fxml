@@ -8,7 +8,7 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
-<fx:root id="recieved-chat-bubble-container" fillHeight="false" type="HBox" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" >
+<fx:root id="recieved-chat-bubble-container" fillHeight="false" type="HBox" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <HBox id="image-message-container" HBox.hgrow="ALWAYS">
          <children>
@@ -21,7 +21,12 @@
                <children>
                   <Label id="sender-name" fx:id="senderNameLabel" styleClass="sender-name" text="Mahmoud Fawzy">
                      <VBox.margin>
-                        <Insets bottom="5.0" />
+                        <Insets />
+                     </VBox.margin>
+                  </Label>
+                  <Label id="timestamp" fx:id="timeStampLabel" opacity="0.5" styleClass="sender-name" text="Sun Feb 13 08:21:00 EET 2022">
+                     <VBox.margin>
+                        <Insets bottom="3.0" top="-1.0" />
                      </VBox.margin>
                   </Label>
                   <TextFlow>
