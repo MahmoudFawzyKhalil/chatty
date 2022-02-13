@@ -3,7 +3,6 @@ package gov.iti.jets.presentation.models;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 
 import java.time.LocalDate;
@@ -21,8 +20,9 @@ public class UserModel {
     private ObjectProperty<LocalDate> birthDate = new SimpleObjectProperty<>();
     private ObjectProperty<CountryModel> country = new SimpleObjectProperty<>();
     private ObjectProperty<UserStatusModel> currentStatus = new SimpleObjectProperty<>();
-    private ListProperty<ContactModel> contactsList = new SimpleListProperty<>(FXCollections.observableArrayList());
-    private ListProperty<GroupChatModel> groups = new SimpleListProperty<>(FXCollections.observableArrayList());
+    private ListProperty<ContactModel> contacts = new SimpleListProperty<>(FXCollections.observableArrayList());
+    private ListProperty<GroupChatModel> groupChats = new SimpleListProperty<>(FXCollections.observableArrayList());
+    private ListProperty<InvitationModel> invitations = new SimpleListProperty<>(FXCollections.observableArrayList());
 
     public  UserModel(){
 
@@ -161,29 +161,39 @@ public class UserModel {
         this.currentStatus.set(currentStatus);
     }
 
-    public ObservableList<ContactModel> getContactsList() {
-        return contactsList.get();
+    public ObservableList<ContactModel> getContacts() {
+        return contacts.get();
     }
 
-    public ListProperty<ContactModel> contactsListProperty() {
-        return contactsList;
+    public ListProperty<ContactModel> contactsProperty() {
+        return contacts;
     }
 
-    public void setContactsList(ObservableList<ContactModel> contactsList) {
-        this.contactsList.set(contactsList);
+    public void setContacts(ObservableList<ContactModel> contacts) {
+        this.contacts.set(contacts);
     }
 
-    public ObservableList<GroupChatModel> getGroups() {
-        return groups.get();
+    public ObservableList<GroupChatModel> getGroupChats() {
+        return groupChats.get();
     }
 
-    public ListProperty<GroupChatModel> groupsProperty() {
-        return groups;
+    public ListProperty<GroupChatModel> groupChatsProperty() {
+        return groupChats;
     }
 
-    public void setGroups(ObservableList<GroupChatModel> groups) {
-        this.groups.set(groups);
+    public void setGroupChats(ObservableList<GroupChatModel> groupChats) {
+        this.groupChats.set(groupChats);
     }
 
+    public ObservableList<InvitationModel> getInvitations() {
+        return invitations.get();
+    }
 
+    public ListProperty<InvitationModel> invitationsProperty() {
+        return invitations;
+    }
+
+    public void setInvitations(ObservableList<InvitationModel> invitations) {
+        this.invitations.set(invitations);
+    }
 }
