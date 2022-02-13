@@ -1,10 +1,12 @@
 package gov.iti.jets.presentation.models;
 
+import javafx.beans.Observable;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.image.Image;
+import javafx.util.Callback;
 
 import java.util.Date;
 
@@ -15,16 +17,34 @@ public class MessageModel {
     private String messageBody;
     private String cssTextStyleString;
     private String cssBubbleStyleString;
+    private boolean isSentByMe;
 
-    public MessageModel(String senderName, Image senderProfilePicture, Date timeStamp, String messageBody, String cssTextStyleString, String cssBubbleStyleString) {
+    public MessageModel(String senderName, Image senderProfilePicture, Date timeStamp, String messageBody, String cssTextStyleString, String cssBubbleStyleString, boolean isSentByMe) {
         this.senderName.set(senderName);
         this.senderProfilePicture.set(senderProfilePicture);
         this.timeStamp = timeStamp;
         this.messageBody = messageBody;
+        this.isSentByMe = isSentByMe;
         this.cssTextStyleString = cssTextStyleString;
         this.cssBubbleStyleString = cssBubbleStyleString;
     }
 
+    public static Callback<MessageModel, Observable[]> extractor() {
+        return new Callback<MessageModel, Observable[]>() {
+            @Override
+            public Observable[] call(MessageModel param) {
+                return new Observable[]{param.senderName, param.senderProfilePicture};
+            }
+        };
+    }
+
+    public boolean isSentByMe() {
+        return isSentByMe;
+    }
+
+    public void setSentByMe(boolean sentByMe) {
+        isSentByMe = sentByMe;
+    }
 
     public String getSenderName() {
         return senderName.get();

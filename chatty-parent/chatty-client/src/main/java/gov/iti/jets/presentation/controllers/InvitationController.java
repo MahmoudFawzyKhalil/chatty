@@ -1,6 +1,7 @@
 package gov.iti.jets.presentation.controllers;
 
 import gov.iti.jets.presentation.customcontrols.InvitationItem;
+import gov.iti.jets.presentation.models.InvitationModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -15,7 +16,7 @@ public class InvitationController implements Initializable {
 
 
     @FXML
-    private ListView<InvitationItem> invitationListView; // list view of invitation model
+    private ListView<InvitationModel> invitationListView;
 
     @FXML
     private Label numberOfRequestsLabel;

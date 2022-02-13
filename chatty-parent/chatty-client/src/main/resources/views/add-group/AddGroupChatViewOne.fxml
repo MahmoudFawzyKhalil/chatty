@@ -32,7 +32,7 @@
                   <Insets top="40.0" />
                </VBox.margin>
             </HBox>
-            <ListView styleClass="contacts-list-view" VBox.vgrow="ALWAYS" />
+            <ListView fx:id="contactsListView" styleClass="contacts-list-view" VBox.vgrow="ALWAYS" />
             <HBox id="adding-box" alignment="TOP_RIGHT" spacing="10.0" styleClass="adding-box">
                <children>
                   <Hyperlink onAction="#onCancelHyperLinkAction" text="Cancel">
