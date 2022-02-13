@@ -2,26 +2,18 @@ package gov.iti.jets.presentation.models;
 
 import javafx.beans.Observable;
 import javafx.beans.property.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
 import javafx.util.Callback;
 
 public class ContactModel {
-    /*
-    ContactModel
-    --
-    -contactId: IntegerProperty
-    -phoneNumber: StringProperty
-    -displayName: StringProperty
-    -profilePicture: ObjectProperty<Image>
-    -currentStatus: ObjectProperty<UserStatusModel>
-
-     */
-
     private IntegerProperty contactId = new SimpleIntegerProperty();
     private StringProperty phoneNumber = new SimpleStringProperty();
     private StringProperty displayName = new SimpleStringProperty();
     private ObjectProperty<Image> profilePicture = new SimpleObjectProperty<>();
     private ObjectProperty<UserStatusModel> currentStatus = new SimpleObjectProperty<>();
+    private ListProperty<MessageModel> messsages = new SimpleListProperty<>(FXCollections.observableArrayList( MessageModel.extractor() ));
 
     public ContactModel(){
 
@@ -102,5 +94,17 @@ public class ContactModel {
 
     public void setCurrentStatus(UserStatusModel currentStatus) {
         this.currentStatus.set(currentStatus);
+    }
+
+    public ObservableList<MessageModel> getMesssages() {
+        return messsages.get();
+    }
+
+    public ListProperty<MessageModel> messsagesProperty() {
+        return messsages;
+    }
+
+    public void setMesssages(ObservableList<MessageModel> messsages) {
+        this.messsages.set(messsages);
     }
 }

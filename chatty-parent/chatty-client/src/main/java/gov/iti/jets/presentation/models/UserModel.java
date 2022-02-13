@@ -20,9 +20,10 @@ public class UserModel {
     private ObjectProperty<LocalDate> birthDate = new SimpleObjectProperty<>();
     private ObjectProperty<CountryModel> country = new SimpleObjectProperty<>();
     private ObjectProperty<UserStatusModel> currentStatus = new SimpleObjectProperty<>();
-    private ListProperty<ContactModel> contacts = new SimpleListProperty<>(FXCollections.observableArrayList());
-    private ListProperty<GroupChatModel> groupChats = new SimpleListProperty<>(FXCollections.observableArrayList());
-    private ListProperty<InvitationModel> invitations = new SimpleListProperty<>(FXCollections.observableArrayList());
+    private ListProperty<ContactModel> contacts = new SimpleListProperty<>( FXCollections.observableArrayList( ContactModel.extractor() ) );
+    private ListProperty<GroupChatModel> groupChats = new SimpleListProperty<>( FXCollections.observableArrayList( GroupChatModel.extractor() ));
+    private ListProperty<InvitationModel> invitations = new SimpleListProperty<>( FXCollections.observableArrayList( InvitationModel.extractor() ) );
+
 
     public  UserModel(){
 
