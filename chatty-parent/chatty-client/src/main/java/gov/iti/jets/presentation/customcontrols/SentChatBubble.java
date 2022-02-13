@@ -25,6 +25,9 @@ public class SentChatBubble extends HBox implements Initializable {
     private Label userNameLabel;
 
     @FXML
+    private Label timeStampLabel;
+
+    @FXML
     private Circle userProfilePicCircle;
 
     public SentChatBubble(){

@@ -131,12 +131,17 @@
                                  <children>
                                     <Label id="sender-name" styleClass="sender-name" text="Mahmoud Fawzy">
                                        <VBox.margin>
-                                          <Insets bottom="5.0" />
+                                          <Insets />
+                                       </VBox.margin>
+                                    </Label>
+                                    <Label id="timestamp" opacity="0.5" styleClass="sender-name" text="Sun Feb 13 08:21:00 EET 2022">
+                                       <VBox.margin>
+                                          <Insets bottom="3.0" top="-1.0" />
                                        </VBox.margin>
                                     </Label>
                                     <TextFlow>
                                        <children>
-                                          <Text id="sender-message-text" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="sender-message-text" text="Hello, welcome to Chatty!" />
+                                          <Text id="sender-message-text" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="sender-message-text" text="Hey!" />
                                        </children>
                                     </TextFlow>
                                  </children>
@@ -161,7 +166,12 @@
                                  <children>
                                     <Label id="sender-name" styleClass="sender-name" text="Christine Nedaa">
                                        <VBox.margin>
-                                          <Insets bottom="5.0" right="2.0" />
+                                          <Insets right="2.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <Label id="timestamp" opacity="0.5" styleClass="sender-name" text="Sun Feb 13 08:21:00 EET 2022">
+                                       <VBox.margin>
+                                          <Insets bottom="3.0" top="-1.0" />
                                        </VBox.margin>
                                     </Label>
                                     <TextFlow textAlignment="RIGHT">
