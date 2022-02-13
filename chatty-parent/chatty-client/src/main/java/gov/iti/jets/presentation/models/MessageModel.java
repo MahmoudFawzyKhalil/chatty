@@ -6,16 +6,20 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.image.Image;
 
+import java.util.Date;
+
 public class MessageModel {
     private StringProperty senderName = new SimpleStringProperty();
     private ObjectProperty<Image> senderProfilePicture = new SimpleObjectProperty<>();
+    private Date timeStamp;
     private String messageBody;
     private String cssTextStyleString;
     private String cssBubbleStyleString;
 
-    public MessageModel(String senderName, Image senderProfilePicture, String messageBody, String cssTextStyleString, String cssBubbleStyleString) {
+    public MessageModel(String senderName, Image senderProfilePicture, Date timeStamp, String messageBody, String cssTextStyleString, String cssBubbleStyleString) {
         this.senderName.set(senderName);
         this.senderProfilePicture.set(senderProfilePicture);
+        this.timeStamp = timeStamp;
         this.messageBody = messageBody;
         this.cssTextStyleString = cssTextStyleString;
         this.cssBubbleStyleString = cssBubbleStyleString;
@@ -68,5 +72,13 @@ public class MessageModel {
 
     public void setCssTextStyleString(String cssTextStyleString) {
         this.cssTextStyleString = cssTextStyleString;
+    }
+
+    public Date getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(Date timeStamp) {
+        this.timeStamp = timeStamp;
     }
 }
