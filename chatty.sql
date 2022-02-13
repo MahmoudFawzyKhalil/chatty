@@ -90,10 +90,16 @@ INSERT INTO `chatty`.`contacts` (`contact_phone_number`, `contactee_phone_number
 INSERT INTO `chatty`.`group_chats` (`group_chat_name`) VALUES ('shabeha');
 INSERT INTO `chatty`.`group_chats` (`group_chat_name`) VALUES ('iti5000');
 
-INSERT INTO `chatty`.`group_chats_users` (`group_chat_id`, `user_phone_number`) VALUES ('3', '11111111111');
-INSERT INTO `chatty`.`group_chats_users` (`group_chat_id`, `user_phone_number`) VALUES ('3', '22222222222');
-INSERT INTO `chatty`.`group_chats_users` (`group_chat_id`, `user_phone_number`) VALUES ('3', '55555555555');
-INSERT INTO `chatty`.`group_chats_users` (`group_chat_id`, `user_phone_number`) VALUES ('4', '33333333333');
-INSERT INTO `chatty`.`group_chats_users` (`group_chat_id`, `user_phone_number`) VALUES ('4', '44444444444');
+INSERT INTO `chatty`.`group_chats_users` (`group_chat_id`, `user_phone_number`) VALUES ('1', '11111111111');
+INSERT INTO `chatty`.`group_chats_users` (`group_chat_id`, `user_phone_number`) VALUES ('1', '22222222222');
+INSERT INTO `chatty`.`group_chats_users` (`group_chat_id`, `user_phone_number`) VALUES ('1', '55555555555');
+INSERT INTO `chatty`.`group_chats_users` (`group_chat_id`, `user_phone_number`) VALUES ('2', '33333333333');
+INSERT INTO `chatty`.`group_chats_users` (`group_chat_id`, `user_phone_number`) VALUES ('2', '44444444444');
 
 INSERT INTO `chatty`.`invitations` (`contact_phone_number`, `contactee_phone_number`) VALUES ('11111111111', '33333333333');
+
+
+
+
+
+
