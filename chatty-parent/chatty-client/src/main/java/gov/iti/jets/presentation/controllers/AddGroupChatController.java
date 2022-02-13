@@ -50,7 +50,7 @@ public class AddGroupChatController implements Initializable {
 
     @FXML
     void onNextButtonAction(ActionEvent event) {
-
+        stageCoordinator.switchToAddGroupChatTwo();
     }
 
     @FXML
