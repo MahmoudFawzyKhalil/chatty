@@ -25,7 +25,6 @@ public class ModelFactory {
     public UserModel getMockUserModel(){
         mockUserModel = new UserModel();
 
-        mockUserModel.setUserId(1);
         mockUserModel.setPhoneNumber("01117950455");
         mockUserModel.setDisplayName("johnson123");
         mockUserModel.setGender("F");

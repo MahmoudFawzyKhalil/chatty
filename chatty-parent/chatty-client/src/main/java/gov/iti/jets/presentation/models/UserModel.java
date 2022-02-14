@@ -10,7 +10,6 @@ import java.time.LocalDate;
 public class UserModel {
 
 
-    private IntegerProperty userId = new SimpleIntegerProperty();
     private StringProperty phoneNumber = new SimpleStringProperty();
     private StringProperty displayName = new SimpleStringProperty();
     private StringProperty gender = new SimpleStringProperty();
@@ -40,18 +39,6 @@ public class UserModel {
         this.birthDate.set(birthDate);
         this.country.set(country);
         this.currentStatus.set(currentStatus);
-    }
-
-    public int getUserId() {
-        return userId.get();
-    }
-
-    public IntegerProperty userIdProperty() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId.set(userId);
     }
 
     public String getPhoneNumber() {
