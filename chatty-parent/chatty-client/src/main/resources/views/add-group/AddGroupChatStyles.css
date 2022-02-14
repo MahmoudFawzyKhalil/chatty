@@ -124,3 +124,18 @@
     -fx-padding: -20;
 }
 
+
+.done-icon{
+    -fx-shape:"M27.252,9.823,25.084,7.664l-9.833,9.8,2.168,2.16Zm6.581-2.159L17.42,23.939l-6.426-6.4L8.826,19.7l8.593,8.639L36,9.823ZM0,19.7l8.671,8.639,2.168-2.16L2.245,17.537Z" ;
+    -fx-background-color:-main-light;
+}
+
+.contact-label{
+    -fx-text-fill:-main-light;
+    -fx-font-size:14px;
+}
+
+.contact-chat-hbox:hover {
+    -fx-background-color: -main-dark;
+    -fx-cursor:hand;
+}

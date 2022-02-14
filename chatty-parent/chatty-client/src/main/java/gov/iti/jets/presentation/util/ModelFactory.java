@@ -7,10 +7,11 @@ import java.time.LocalDate;
 public class ModelFactory {
     private static ModelFactory modelFactory = new ModelFactory();
 
-    private UserModel userModel = new UserModel();
+    private UserModel userModel ;
     private UserModel mockUserModel = new UserModel();
+    private GroupChatModel createGroupChatModel ;
 
-    private ModelFactory(){
+    private ModelFactory() {
 
     }
 
@@ -18,11 +19,14 @@ public class ModelFactory {
         return modelFactory;
     }
 
-    public UserModel getUserModel(){
-        return getMockUserModel();
+    public UserModel getUserModel() {
+        if(userModel==null){
+            userModel=getMockUserModel();
+        }
+        return userModel;
     }
 
-    public UserModel getMockUserModel(){
+    public UserModel getMockUserModel() {
         mockUserModel = new UserModel();
 
         mockUserModel.setPhoneNumber("01117950455");
@@ -38,7 +42,7 @@ public class ModelFactory {
         ContactModel cm1 = new ContactModel(33, "12345678910", "salma77", null, UserStatusModel.AWAY);
         cm1.getMesssages().add(new MessageModel("salma77", null, LocalDate.now(), "Hello it's me salma", "", "", false));
         cm1.getMesssages().add(new MessageModel("You", null, LocalDate.now(), "Hello it's me johnson", "", "", true));
-        ContactModel cm2 = new ContactModel(33, "12345678910", "salma77", null, UserStatusModel.AWAY);
+        ContactModel cm2 = new ContactModel(30, "12345678910", "Osama", null, UserStatusModel.AVAILABLE);
         cm2.getMesssages().add(new MessageModel("christine33", null, LocalDate.now(), "ana christine 3aml eh", "", "", false));
         cm2.getMesssages().add(new MessageModel("You", null, LocalDate.now(), "ezayek ya christine", "", "", true));
         mockUserModel.getContacts().addAll(cm1, cm2);
@@ -52,4 +56,13 @@ public class ModelFactory {
 
         return mockUserModel;
     }
+
+    public GroupChatModel getCreateGroupChatModel() {
+        if(createGroupChatModel==null){
+            createGroupChatModel=new GroupChatModel();
+            createGroupChatModel.setGroupMembersList(getUserModel().contactsProperty());
+        }
+        return createGroupChatModel;
+    }
+
 }

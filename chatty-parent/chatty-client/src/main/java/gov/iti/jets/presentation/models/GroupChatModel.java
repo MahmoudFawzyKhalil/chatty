@@ -12,7 +12,8 @@ public class GroupChatModel {
     private StringProperty groupChatName = new SimpleStringProperty();
     private ObjectProperty<Image> groupChatPicture = new SimpleObjectProperty<>();
     private ListProperty<ContactModel> groupMembersList = new SimpleListProperty<>(FXCollections.observableArrayList(ContactModel.extractor()));
-    private ListProperty<MessageModel> messsages = new SimpleListProperty<>(FXCollections.observableArrayList( MessageModel.extractor() ));
+    private ListProperty<MessageModel> messsages = new SimpleListProperty<>(FXCollections.observableArrayList(MessageModel.extractor()));
+
     public GroupChatModel() {
 
     }
@@ -28,11 +29,20 @@ public class GroupChatModel {
         this.groupChatPicture.set(groupChatPicture);
     }
 
+    public void clear() {
+        groupChatName.unbind();
+        groupChatName.set("");
+        groupMembersList.unbind();
+        groupMembersList.clear();
+        messsages.unbind();
+        messsages.clear();
+    }
+
     public static Callback<GroupChatModel, Observable[]> extractor() {
         return new Callback<GroupChatModel, Observable[]>() {
             @Override
             public Observable[] call(GroupChatModel param) {
-                return new Observable[]{param.groupChatName,param.groupChatPicture,param.groupMembersList};
+                return new Observable[]{param.groupChatName, param.groupChatPicture, param.groupMembersList};
             }
         };
     }

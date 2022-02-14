@@ -40,7 +40,9 @@ public class UserModel {
         this.country.set(country);
         this.currentStatus.set(currentStatus);
     }
-
+    public  void clearSelectedContacts(){
+        contacts.stream().filter(ContactModel::isSelected).forEach(e -> e.setSelected(false));
+    }
     public String getPhoneNumber() {
         return phoneNumber.get();
     }
