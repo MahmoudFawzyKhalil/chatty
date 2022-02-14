@@ -14,7 +14,7 @@ import javafx.scene.shape.Circle;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class RegistrationControllerThree  implements Initializable{
+public class RegistrationThreeController implements Initializable{
 
     private final StageCoordinator stageCoordinator = StageCoordinator.getInstance();
     private final ModelFactory modelFactory = ModelFactory.getInstance();
@@ -23,29 +23,14 @@ public class RegistrationControllerThree  implements Initializable{
     private UserModel userModel;
 
     @FXML
-    private Button finishButton;
-
-    @FXML
     private Circle profilePictureCircle;
-
-    @FXML
-    private Hyperlink uploadPictureHyperLink;
-
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-//        TODO
-//         bindProfilePicCircle();
+        userModel = modelFactory.getMockUserModel();
+        // TODO
+        //bindProfilePicCircle();
     }
-
-    private void bindProfilePicCircle() {
-        profilePictureCircle.setFill( new ImagePattern( userModel.getProfilePicture() ) );
-        userModel.profilePictureProperty().addListener( e -> {
-            profilePictureCircle.setFill( new ImagePattern( userModel.getProfilePicture() ));
-        } );
-    }
-
     @FXML
     void onUploadPictureHyperLinkAction(ActionEvent event) {
 
@@ -55,4 +40,16 @@ public class RegistrationControllerThree  implements Initializable{
     void onFinishButtonAction(ActionEvent event) {
         stageCoordinator.switchToLoginScene();
     }
+
+    @FXML
+    void onPreviousButtonAction(ActionEvent event) {
+        stageCoordinator.switchToRegisterSceneTwo();
+    }
+    /*TODO
+    private void bindProfilePicCircle() {
+        profilePictureCircle.setFill( new ImagePattern( userModel.getProfilePicture() ) );
+        userModel.profilePictureProperty().addListener( e -> {
+            profilePictureCircle.setFill( new ImagePattern( userModel.getProfilePicture() ));
+        } );
+    }*/
 }

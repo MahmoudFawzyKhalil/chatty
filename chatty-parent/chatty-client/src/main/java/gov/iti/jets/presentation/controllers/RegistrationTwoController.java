@@ -13,6 +13,11 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class RegistrationTwoController implements Initializable {
+    private final StageCoordinator stageCoordinator = StageCoordinator.getInstance();
+    private final ModelFactory modelFactory = ModelFactory.getInstance();
+    private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
+
+    private UserModel userModel;
 
     @FXML
     private TextField bioTextField;
@@ -29,28 +34,6 @@ public class RegistrationTwoController implements Initializable {
     @FXML
     private ChoiceBox<String> genderChoiceBox;
 
-    @FXML
-    private Button previousButton;
-
-    @FXML
-    private Button secondNextButton;
-
-    private final StageCoordinator stageCoordinator = StageCoordinator.getInstance();
-    private final ModelFactory modelFactory = ModelFactory.getInstance();
-    private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
-
-    private UserModel userModel;
-
-    @FXML
-    void onPreviousButtonAction(ActionEvent event) {
-        stageCoordinator.switchToRegisterSceneOne();
-    }
-
-    @FXML
-    void onSecondNextButtonAction(ActionEvent event) {
-        stageCoordinator.switchToRegisterSceneThree();
-    }
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         userModel = modelFactory.getUserModel();
@@ -59,5 +42,14 @@ public class RegistrationTwoController implements Initializable {
         genderChoiceBox.valueProperty().bindBidirectional(userModel.genderProperty());
         birthDateDatePicker.valueProperty().bindBidirectional(userModel.birthDateProperty());
         bioTextField.textProperty().bindBidirectional(userModel.bioProperty());
+    }
+    @FXML
+    void onPreviousButtonAction(ActionEvent event) {
+        stageCoordinator.switchToRegisterSceneOne();
+    }
+
+    @FXML
+    void onNextButtonAction(ActionEvent event) {
+        stageCoordinator.switchToRegisterSceneThree();
     }
 }
