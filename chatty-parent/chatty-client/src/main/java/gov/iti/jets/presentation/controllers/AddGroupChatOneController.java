@@ -6,32 +6,17 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.shape.Circle;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class AddGroupChatController implements Initializable {
+public class AddGroupChatOneController implements Initializable {
 
-    StageCoordinator stageCoordinator=StageCoordinator.getInstance();
+    StageCoordinator stageCoordinator = StageCoordinator.getInstance();
 
-    @FXML
-    private CheckBox contactNameTextField;
 
     @FXML
     private ListView<ContactModel> contactsListView;
-
-    @FXML
-    private Button createButton;
-
-    @FXML
-    private TextField groupNameTextField;
-
-    @FXML
-    private Circle groupPictureCircle;
-
-    @FXML
-    private Hyperlink uploadPictureHyperLink;
 
 
     @Override
@@ -40,21 +25,11 @@ public class AddGroupChatController implements Initializable {
 
     @FXML
     void onCancelHyperLinkAction(ActionEvent event) {
-        stageCoordinator.closeGroupContactScene();
+        stageCoordinator.closeAddGroupChatStage();
     }
 
     @FXML
     void onNextButtonAction(ActionEvent event) {
         stageCoordinator.switchToAddGroupChatTwo();
-    }
-
-    @FXML
-    void onCreateButtonAction(ActionEvent event) {
-
-    }
-
-    @FXML
-    void onUploadPictureHyperLinkAction(ActionEvent event) {
-
     }
 }

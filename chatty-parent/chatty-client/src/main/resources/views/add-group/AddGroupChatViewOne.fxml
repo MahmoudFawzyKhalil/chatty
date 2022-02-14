@@ -11,9 +11,9 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane styleClass="shadow-pane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.presentation.controllers.AddGroupChatController">
+<BorderPane styleClass="shadow-pane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.presentation.controllers.AddGroupChatOneController">
    <center>
-      <VBox id="add-card" alignment="CENTER" maxHeight="450.0" maxWidth="390.0" prefHeight="450.0" prefWidth="390.0" spacing="15.0" styleClass="card">
+      <VBox id="add-card" alignment="CENTER" maxHeight="450.0" maxWidth="390.0" minHeight="450.0" minWidth="390.0" prefHeight="450.0" prefWidth="390.0" spacing="15.0" styleClass="card">
          <children>
             <HBox id="title" alignment="CENTER" spacing="10.0">
                <children>
