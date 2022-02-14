@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 
 import java.net.URL;
@@ -43,19 +44,14 @@ public class RegistrationController implements Initializable{
     private TextField bioTextField;
 
     @FXML
-    private ComboBox<?> countryComboBox;
-
-    @FXML
-    private ComboBox<?> dayComboBox;
-
-    @FXML
     private TextField emailTextField;
 
     @FXML
-    private ComboBox<?> genderComboBox;
+    private ChoiceBox<String> countryChoiceBox;
 
     @FXML
-    private ComboBox<?> monthComboBox;
+    private ChoiceBox<String> genderChoiceBox;
+
 
     @FXML
     private Button previousButton;
@@ -64,7 +60,7 @@ public class RegistrationController implements Initializable{
     private Button secondNextButton;
 
     @FXML
-    private ComboBox<?> yearComboBox;
+    private DatePicker birthDateDatePicker;
 
     @FXML
     private Button finishButton;
@@ -75,10 +71,24 @@ public class RegistrationController implements Initializable{
     @FXML
     private Hyperlink uploadPictureHyperLink;
 
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        userModel = modelFactory.getUserModel();
+        phoneNumberTextField.textProperty().bindBidirectional(userModel.phoneNumberProperty());
+        nameTextField.textProperty().bindBidirectional(userModel.displayNameProperty());
+        emailTextField.textProperty().bindBidirectional(userModel.emailProperty());
+        countryChoiceBox.valueProperty().bindBidirectional(userModel.getCountry().countryNameProperty());
+        genderChoiceBox.valueProperty().bindBidirectional(userModel.genderProperty());
+        birthDateDatePicker.valueProperty().bindBidirectional(userModel.birthDateProperty());
+        bioTextField.textProperty().bindBidirectional(userModel.bioProperty());
+        bindProfilePicCircle();
+    }
 
+    private void bindProfilePicCircle() {
+        profilePictureCircle.setFill( new ImagePattern( userModel.getProfilePicture() ) );
+        userModel.profilePictureProperty().addListener( e -> {
+            profilePictureCircle.setFill( new ImagePattern( userModel.getProfilePicture() ));
+        } );
     }
 
     @FXML
