@@ -8,7 +8,6 @@ import javafx.util.Callback;
 public class InvitationModel {
     private ObjectProperty<ContactModel>  contactModel = new SimpleObjectProperty<>();
     // + Other stuff
-
     public InvitationModel(ContactModel contactModel) {
         this.contactModel.set(contactModel);
     }

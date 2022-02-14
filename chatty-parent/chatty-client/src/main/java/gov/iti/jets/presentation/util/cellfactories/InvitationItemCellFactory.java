@@ -21,7 +21,7 @@ public class InvitationItemCellFactory implements Callback<ListView<InvitationMo
                     setGraphic(null);
                 } else if (invitation != null) {
                     setText(null);
-                    setGraphic(new InvitationItem()); //contact argument
+                    setGraphic(new InvitationItem(invitation)); //contact argument
                 } else {
                     setText("null");
                     setGraphic(null);

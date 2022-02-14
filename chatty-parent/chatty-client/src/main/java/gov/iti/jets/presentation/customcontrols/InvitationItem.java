@@ -1,5 +1,6 @@
 package gov.iti.jets.presentation.customcontrols;
 
+import gov.iti.jets.presentation.models.InvitationModel;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -14,6 +15,7 @@ import java.util.ResourceBundle;
 
 public class InvitationItem extends VBox implements Initializable {
 
+
     @FXML
     private Button acceptButton;
 
@@ -26,10 +28,13 @@ public class InvitationItem extends VBox implements Initializable {
     @FXML
     private Button refuseButton;
 
-    public InvitationItem(){
+    InvitationModel invitationModel;
+
+    public InvitationItem(InvitationModel invitationModel){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/invitations/InvitationItem.fxml"));
         loader.setController(this);
         loader.setRoot(this);
+        this.invitationModel = invitationModel;
 
         try {
             loader.load();
@@ -39,6 +44,7 @@ public class InvitationItem extends VBox implements Initializable {
     }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        friendNameLabel.textProperty().bind(invitationModel.getContactModel().displayNameProperty());
+        friendPhoneNumberLabel.textProperty().bind(invitationModel.getContactModel().phoneNumberProperty());
     }
 }
