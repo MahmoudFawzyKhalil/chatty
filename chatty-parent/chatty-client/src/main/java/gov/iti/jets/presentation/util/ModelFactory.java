@@ -19,7 +19,7 @@ public class ModelFactory {
     }
 
     public UserModel getUserModel(){
-        return userModel;
+        return getMockUserModel();
     }
 
     public UserModel getMockUserModel(){
