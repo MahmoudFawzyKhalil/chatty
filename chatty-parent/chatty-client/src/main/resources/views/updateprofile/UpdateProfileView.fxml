@@ -3,7 +3,7 @@
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
@@ -39,7 +39,7 @@
          <children>
             <VBox id="register-card" alignment="CENTER" spacing="12.0" styleClass="profile-vbox">
                <children>
-                  <Circle fx:id="profilePictureCirclr" fill="#476072" radius="43.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                  <Circle fx:id="profilePictureCircle" fill="#476072" radius="43.0" stroke="TRANSPARENT" strokeType="INSIDE" />
                   <Hyperlink fx:id="uploadPictureHyperLink" onAction="#onUploadPictureHyperLinkAction" text="Upload picture" />
                   <HBox alignment="CENTER" spacing="20.0">
                      <children>
@@ -65,8 +65,11 @@
                   </HBox>
                   <HBox alignment="CENTER" spacing="20.0">
                      <children>
-                        <ComboBox fx:id="countryComboBox" prefWidth="200.0" promptText="Egypt" styleClass="input-field" HBox.hgrow="ALWAYS" />
-                        <ComboBox fx:id="genderComboBox" maxWidth="-Infinity" prefWidth="200.0" promptText="Female" styleClass="input-field" HBox.hgrow="ALWAYS" />
+                        <ChoiceBox fx:id="countryChoiceBox" maxWidth="-Infinity" prefWidth="200.0" styleClass="input-field" HBox.hgrow="ALWAYS">
+                           <padding>
+                              <Insets top="5.0" />
+                           </padding></ChoiceBox>
+                        <ChoiceBox fx:id="genderChoiceBox" maxWidth="-Infinity" prefWidth="200.0" styleClass="input-field" HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" spacing="20.0">

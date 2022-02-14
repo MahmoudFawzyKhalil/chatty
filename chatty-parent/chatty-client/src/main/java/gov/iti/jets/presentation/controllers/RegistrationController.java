@@ -73,6 +73,7 @@ public class RegistrationController implements Initializable{
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
         userModel = modelFactory.getUserModel();
         phoneNumberTextField.textProperty().bindBidirectional(userModel.phoneNumberProperty());
         nameTextField.textProperty().bindBidirectional(userModel.displayNameProperty());
@@ -81,14 +82,8 @@ public class RegistrationController implements Initializable{
         genderChoiceBox.valueProperty().bindBidirectional(userModel.genderProperty());
         birthDateDatePicker.valueProperty().bindBidirectional(userModel.birthDateProperty());
         bioTextField.textProperty().bindBidirectional(userModel.bioProperty());
-        bindProfilePicCircle();
-    }
-
-    private void bindProfilePicCircle() {
-        profilePictureCircle.setFill( new ImagePattern( userModel.getProfilePicture() ) );
-        userModel.profilePictureProperty().addListener( e -> {
-            profilePictureCircle.setFill( new ImagePattern( userModel.getProfilePicture() ));
-        } );
+       //TODO
+        // bindProfilePicCircle();
     }
 
     @FXML
@@ -120,4 +115,11 @@ public class RegistrationController implements Initializable{
     void onFinishButtonAction(ActionEvent event) {
         stageCoordinator.switchToLoginScene();
     }
+    /* TODO
+    private void bindProfilePicCircle() {
+        profilePictureCircle.setFill( new ImagePattern( userModel.getProfilePicture() ) );
+        userModel.profilePictureProperty().addListener( e -> {
+            profilePictureCircle.setFill( new ImagePattern( userModel.getProfilePicture() ));
+        } );
+    }*/
 }
