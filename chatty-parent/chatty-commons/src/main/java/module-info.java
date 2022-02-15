@@ -16,4 +16,5 @@ module chatty.commons {
 
     // Exports, Opens
     exports gov.iti.jets.commons;
+    exports  gov.iti.jets.commons.remoteinterfaces;
 }
