@@ -8,7 +8,7 @@ public class StatusColors {
     public static final Color AWAY_STATUS_COLOR = Color.web( "#fbbf24" );
 
     private StatusColors(){
-        
+
     }
 
     public static Color getColorFromStatusName( String statusName ) {
