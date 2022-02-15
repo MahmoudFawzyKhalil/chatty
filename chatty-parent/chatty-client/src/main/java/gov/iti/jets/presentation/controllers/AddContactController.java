@@ -23,7 +23,7 @@ public class AddContactController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        contactsVBox.getChildren().add(new AddContactTextField());
+        contactsVBox.getChildren().add(new AddContactTextField(contactsVBox));
     }
 
     @FXML
