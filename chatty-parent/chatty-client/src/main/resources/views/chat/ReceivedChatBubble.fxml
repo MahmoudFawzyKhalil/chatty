@@ -29,7 +29,7 @@
                         <Insets bottom="3.0" top="-1.0" />
                      </VBox.margin>
                   </Label>
-                  <TextFlow>
+                  <TextFlow fx:id="textFlow">
                      <children>
                         <Text id="sender-message-text" fx:id="messageText" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="sender-message-text" text="heloo heloo heloo heloo heloo heloo heloo heloo heloo heloohelooheloohelooheloo heloo heloo heloo heloo heloo heloo heloo heloo heloo " />
                      </children>
@@ -44,6 +44,6 @@
             <Insets left="10.0" top="20.0" />
          </HBox.margin>
       </HBox>
-      <HBox id="padding" minWidth="250.0" HBox.hgrow="ALWAYS" />
+      <HBox id="padding" HBox.hgrow="ALWAYS" />
    </children>
 </fx:root>

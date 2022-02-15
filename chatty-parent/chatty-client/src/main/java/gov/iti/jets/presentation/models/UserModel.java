@@ -8,37 +8,34 @@ import javafx.scene.image.Image;
 import java.time.LocalDate;
 
 public class UserModel {
-
-
     private StringProperty phoneNumber = new SimpleStringProperty();
     private StringProperty displayName = new SimpleStringProperty();
     private StringProperty gender = new SimpleStringProperty();
-    private ObjectProperty<Image> profilePicture = new SimpleObjectProperty<>();
+    private ObjectProperty<Image> profilePicture = new SimpleObjectProperty<>( new Image( getClass().getResource( "/images/user.png" ).toString() ) );
     private StringProperty email = new SimpleStringProperty();
     private StringProperty bio = new SimpleStringProperty();
     private ObjectProperty<LocalDate> birthDate = new SimpleObjectProperty<>();
     private ObjectProperty<CountryModel> country = new SimpleObjectProperty<>();
     private ObjectProperty<UserStatusModel> currentStatus = new SimpleObjectProperty<>();
     private ListProperty<ContactModel> contacts = new SimpleListProperty<>( FXCollections.observableArrayList( ContactModel.extractor() ) );
-    private ListProperty<GroupChatModel> groupChats = new SimpleListProperty<>( FXCollections.observableArrayList( GroupChatModel.extractor() ));
+    private ListProperty<GroupChatModel> groupChats = new SimpleListProperty<>( FXCollections.observableArrayList( GroupChatModel.extractor() ) );
     private ListProperty<InvitationModel> invitations = new SimpleListProperty<>( FXCollections.observableArrayList( InvitationModel.extractor() ) );
+    private final StringProperty currentlyChattingWith = new SimpleStringProperty();
 
-
-    public  UserModel(){
+    public UserModel() {
 
     }
 
-    public UserModel(String phoneNumber, String displayName, String gender, String email,
-                     String bio, LocalDate birthDate, CountryModel country, UserStatusModel currentStatus) {
-
-        this.phoneNumber.set(phoneNumber);
-        this.displayName.set(displayName);
-        this.gender.set(gender);
-        this.email.set(email);
-        this.bio.set(bio);
-        this.birthDate.set(birthDate);
-        this.country.set(country);
-        this.currentStatus.set(currentStatus);
+    public UserModel( String phoneNumber, String displayName, String gender, String email,
+                      String bio, LocalDate birthDate, CountryModel country, UserStatusModel currentStatus ) {
+        this.phoneNumber.set( phoneNumber );
+        this.displayName.set( displayName );
+        this.gender.set( gender );
+        this.email.set( email );
+        this.bio.set( bio );
+        this.birthDate.set( birthDate );
+        this.country.set( country );
+        this.currentStatus.set( currentStatus );
     }
 
     public String getPhoneNumber() {
@@ -49,8 +46,8 @@ public class UserModel {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber.set(phoneNumber);
+    public void setPhoneNumber( String phoneNumber ) {
+        this.phoneNumber.set( phoneNumber );
     }
 
     public String getDisplayName() {
@@ -61,8 +58,8 @@ public class UserModel {
         return displayName;
     }
 
-    public void setDisplayName(String displayName) {
-        this.displayName.set(displayName);
+    public void setDisplayName( String displayName ) {
+        this.displayName.set( displayName );
     }
 
     public String getGender() {
@@ -73,8 +70,8 @@ public class UserModel {
         return gender;
     }
 
-    public void setGender(String gender) {
-        this.gender.set(gender);
+    public void setGender( String gender ) {
+        this.gender.set( gender );
     }
 
     public Image getProfilePicture() {
@@ -85,8 +82,8 @@ public class UserModel {
         return profilePicture;
     }
 
-    public void setProfilePicture(Image profilePicture) {
-        this.profilePicture.set(profilePicture);
+    public void setProfilePicture( Image profilePicture ) {
+        this.profilePicture.set( profilePicture );
     }
 
     public String getEmail() {
@@ -97,8 +94,8 @@ public class UserModel {
         return email;
     }
 
-    public void setEmail(String email) {
-        this.email.set(email);
+    public void setEmail( String email ) {
+        this.email.set( email );
     }
 
     public String getBio() {
@@ -109,8 +106,8 @@ public class UserModel {
         return bio;
     }
 
-    public void setBio(String bio) {
-        this.bio.set(bio);
+    public void setBio( String bio ) {
+        this.bio.set( bio );
     }
 
     public LocalDate getBirthDate() {
@@ -121,8 +118,8 @@ public class UserModel {
         return birthDate;
     }
 
-    public void setBirthDate(LocalDate birthDate) {
-        this.birthDate.set(birthDate);
+    public void setBirthDate( LocalDate birthDate ) {
+        this.birthDate.set( birthDate );
     }
 
     public CountryModel getCountry() {
@@ -133,8 +130,8 @@ public class UserModel {
         return country;
     }
 
-    public void setCountry(CountryModel country) {
-        this.country.set(country);
+    public void setCountry( CountryModel country ) {
+        this.country.set( country );
     }
 
     public UserStatusModel getCurrentStatus() {
@@ -145,8 +142,8 @@ public class UserModel {
         return currentStatus;
     }
 
-    public void setCurrentStatus(UserStatusModel currentStatus) {
-        this.currentStatus.set(currentStatus);
+    public void setCurrentStatus( UserStatusModel currentStatus ) {
+        this.currentStatus.set( currentStatus );
     }
 
     public ObservableList<ContactModel> getContacts() {
@@ -157,8 +154,8 @@ public class UserModel {
         return contacts;
     }
 
-    public void setContacts(ObservableList<ContactModel> contacts) {
-        this.contacts.set(contacts);
+    public void setContacts( ObservableList<ContactModel> contacts ) {
+        this.contacts.set( contacts );
     }
 
     public ObservableList<GroupChatModel> getGroupChats() {
@@ -169,8 +166,8 @@ public class UserModel {
         return groupChats;
     }
 
-    public void setGroupChats(ObservableList<GroupChatModel> groupChats) {
-        this.groupChats.set(groupChats);
+    public void setGroupChats( ObservableList<GroupChatModel> groupChats ) {
+        this.groupChats.set( groupChats );
     }
 
     public ObservableList<InvitationModel> getInvitations() {
@@ -181,7 +178,19 @@ public class UserModel {
         return invitations;
     }
 
-    public void setInvitations(ObservableList<InvitationModel> invitations) {
-        this.invitations.set(invitations);
+    public void setInvitations( ObservableList<InvitationModel> invitations ) {
+        this.invitations.set( invitations );
+    }
+
+    public String getCurrentlyChattingWith() {
+        return currentlyChattingWith.get();
+    }
+
+    public StringProperty currentlyChattingWithProperty() {
+        return currentlyChattingWith;
+    }
+
+    public void setCurrentlyChattingWith( String currentlyChattingWith ) {
+        this.currentlyChattingWith.set( currentlyChattingWith );
     }
 }

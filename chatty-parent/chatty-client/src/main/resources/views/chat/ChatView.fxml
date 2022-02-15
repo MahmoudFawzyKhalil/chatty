@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 
-<BorderPane id="center" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.presentation.controllers.ChatController">
+<BorderPane id="center" fx:id="centerBorderPane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.presentation.controllers.ChatController">
    <bottom>
       <HBox id="message-area-container" alignment="CENTER_LEFT" fillHeight="false" prefHeight="80.0" styleClass="send-message-container" BorderPane.alignment="CENTER">
          <children>
@@ -100,7 +100,7 @@
                         <Insets left="20.0" />
                      </StackPane.margin>
                   </Circle>
-                  <Circle id="status-color" fx:id="contactStatusCircle" fill="#48ff48" radius="6.0" stroke="TRANSPARENT" strokeType="INSIDE" translateX="-3.0" translateY="-10.0" StackPane.alignment="BOTTOM_RIGHT" />
+                  <Circle id="status-color" fx:id="contactStatusCircle" fill="#48ff48" radius="6.0" stroke="TRANSPARENT" strokeType="INSIDE" translateX="-3.0" translateY="-10.0" visible="false" StackPane.alignment="BOTTOM_RIGHT" />
                </children>
             </StackPane>
             <Label id="contact-chat-name" fx:id="contactOrGroupNameLabel" styleClass="contact-chat-name" text="Christine Nedaa">
@@ -116,6 +116,6 @@
       <URL value="@../../styles/Base.css" />
    </stylesheets>
    <center>
-      <ListView fx:id="chatMessagesListView" prefHeight="200.0" prefWidth="200.0" styleClass="chat-list-view" BorderPane.alignment="CENTER" />
+      <ListView fx:id="chatMessagesListView" styleClass="chat-list-view" BorderPane.alignment="CENTER" />
    </center>
 </BorderPane>

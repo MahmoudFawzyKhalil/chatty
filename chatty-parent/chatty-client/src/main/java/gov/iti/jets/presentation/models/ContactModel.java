@@ -16,14 +16,14 @@ public class ContactModel {
     private ListProperty<MessageModel> messsages = new SimpleListProperty<>(FXCollections.observableArrayList( MessageModel.extractor() ));
 
     public ContactModel(){
-
+        profilePicture.set(new Image(getClass().getResource( "/images/user.png" ).toString()));
     }
 
-    public ContactModel(int contactId, String phoneNumber, String displayName, Image profilePicture, UserStatusModel currentStatus) {
+    public ContactModel(int contactId, String phoneNumber, String displayName, UserStatusModel currentStatus) {
+        this();
         this.contactId.set(contactId);
         this.phoneNumber.set(phoneNumber);
         this.displayName.set(displayName);
-        this.profilePicture.set(profilePicture);
         this.currentStatus.set(currentStatus);
     }
 
