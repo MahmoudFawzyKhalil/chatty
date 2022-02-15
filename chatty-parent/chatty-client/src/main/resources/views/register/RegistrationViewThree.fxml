@@ -5,22 +5,24 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="510.0" prefWidth="940.0" styleClass="main-back-ground" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.presentation.controllers.RegistrationController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="510.0" prefWidth="940.0" styleClass="main-back-ground" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.presentation.controllers.RegistrationThreeController">
    <children>
       <VBox id="register-card" alignment="CENTER" maxHeight="-Infinity" maxWidth="400.0" spacing="10.0" styleClass="card" StackPane.alignment="CENTER">
          <children>
             <Label id="finish-register-label" styleClass="finish-label" text="Finish Registration" />
             <Circle fx:id="profilePictureCircle" fill="#ededed" radius="43.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-            <Hyperlink fx:id="uploadPictureHyperLink" onAction="#onUploadPictureHyperLinkAction" text="Upload picture" />
-            <Button id="finish-button" fx:id="finishButton" mnemonicParsing="false" onAction="#onFinishButtonAction" styleClass="login-button" text="Finish">
-               <padding>
-                  <Insets bottom="7.0" left="20.0" right="20.0" top="7.0" />
-               </padding>
-            </Button>
+            <Hyperlink onAction="#onUploadPictureHyperLinkAction" text="Upload picture" />
+            <HBox alignment="CENTER" spacing="20.0">
+               <children>
+                  <Button id="finish-button" mnemonicParsing="false" onAction="#onPreviousButtonAction" prefWidth="90.0" styleClass="login-button" text="Previous" />
+                  <Button id="finish-button" mnemonicParsing="false" onAction="#onFinishButtonAction" prefWidth="90.0" styleClass="login-button" text="Finish" />
+               </children>
+            </HBox>
          </children>
          <padding>
             <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />

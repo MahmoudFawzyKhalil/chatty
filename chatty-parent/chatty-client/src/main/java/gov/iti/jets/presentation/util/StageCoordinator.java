@@ -1,6 +1,5 @@
 package gov.iti.jets.presentation.util;
 
-import gov.iti.jets.presentation.controllers.AddGroupChatController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.effect.DropShadow;
@@ -114,10 +113,10 @@ public class StageCoordinator {
     }
 
     public void switchToAddGroupChatTwo(){
-        Scene addGroupSceneTwo = sceneMap.get("addGroupSceneTwo");
-        if(addGroupSceneTwo!=null){
-            Stage stage=stageMap.get("addGroupStage");
-            stage.setScene(addGroupSceneTwo);
+
+        Stage addGroupStage=stageMap.get("addGroupStage");
+        if(addGroupStage!=null){
+            setPopupStage(addGroupStage, "/views/add-group/AddGroupChatViewTwo.fxml");
         }
     }
 
@@ -127,11 +126,11 @@ public class StageCoordinator {
         paneCoordinator.clearPaneMap();
     }
 
-    public void closeAddContactScene() {
+    public void closeAddContactStage() {
         stageMap.get("addContactStage").close();
     }
 
-    public void closeGroupContactScene() {
+    public void closeAddGroupChatStage() {
         stageMap.get("addGroupStage").close();
     }
 
@@ -161,25 +160,11 @@ public class StageCoordinator {
 
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxmlPath));
-
             Pane root = fxmlLoader.load();
-            loadWithController(fxmlLoader.getController(),"/views/add-group/AddGroupChatViewTwo.fxml");
             Scene scene = new Scene(root);
             setPopUpSceneStyle(scene);
             stage.setScene(scene);
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void loadWithController(AddGroupChatController controller, String fxmlPath) {
-        try {
-            FXMLLoader currLoader = new FXMLLoader(getClass().getResource(fxmlPath));
-            currLoader.setController(controller);
-            Scene scene = new Scene(currLoader.load());
-            setPopUpSceneStyle(scene);
-            sceneMap.put("addGroupSceneTwo", scene);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -27,11 +27,20 @@ public class GroupChatModel {
         this.groupChatName.set(groupChatName);
     }
 
+    public void clear() {
+        groupChatName.unbind();
+        groupChatName.set("");
+        groupMembersList.unbind();
+        groupMembersList.clear();
+        messsages.unbind();
+        messsages.clear();
+    }
+
     public static Callback<GroupChatModel, Observable[]> extractor() {
         return new Callback<GroupChatModel, Observable[]>() {
             @Override
             public Observable[] call(GroupChatModel param) {
-                return new Observable[]{param.groupChatName,param.groupChatPicture,param.groupMembersList};
+                return new Observable[]{param.groupChatName, param.groupChatPicture, param.groupMembersList};
             }
         };
     }

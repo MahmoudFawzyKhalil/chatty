@@ -10,6 +10,7 @@ public class ModelFactory {
 
     private UserModel userModel = new UserModel();
     private UserModel mockUserModel = new UserModel();
+    private GroupChatModel createGroupChatModel ;
 
     private ModelFactory() {
         populateMockUserModel();
@@ -55,4 +56,13 @@ public class ModelFactory {
 
         mockUserModel.getInvitations().add( new InvitationModel( new ContactModel( 55, "12345678910", "bob521", UserStatusModel.AWAY ) ) );
     }
+
+    public GroupChatModel getCreateGroupChatModel() {
+        if(createGroupChatModel==null){
+            createGroupChatModel=new GroupChatModel();
+            createGroupChatModel.setGroupMembersList(getUserModel().contactsProperty());
+        }
+        return createGroupChatModel;
+    }
+
 }

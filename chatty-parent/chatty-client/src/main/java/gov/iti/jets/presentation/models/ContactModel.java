@@ -11,6 +11,7 @@ public class ContactModel {
     private IntegerProperty contactId = new SimpleIntegerProperty();
     private StringProperty phoneNumber = new SimpleStringProperty();
     private StringProperty displayName = new SimpleStringProperty();
+    private BooleanProperty selected = new SimpleBooleanProperty(false);
     private ObjectProperty<Image> profilePicture = new SimpleObjectProperty<>();
     private ObjectProperty<UserStatusModel> currentStatus = new SimpleObjectProperty<>();
     private ListProperty<MessageModel> messsages = new SimpleListProperty<>(FXCollections.observableArrayList( MessageModel.extractor() ));
@@ -106,5 +107,17 @@ public class ContactModel {
 
     public void setMesssages(ObservableList<MessageModel> messsages) {
         this.messsages.set(messsages);
+    }
+
+    public boolean isSelected() {
+        return selected.get();
+    }
+
+    public BooleanProperty selectedProperty() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected.set(selected);
     }
 }
