@@ -8,9 +8,8 @@ import javafx.util.Callback;
 public class InvitationModel {
     private ObjectProperty<ContactModel>  contactModel = new SimpleObjectProperty<>();
     // + Other stuff
-
-    public InvitationModel(ObjectProperty<ContactModel> contactModel) {
-        this.contactModel = contactModel;
+    public InvitationModel(ContactModel contactModel) {
+        this.contactModel.set(contactModel);
     }
 
     public static Callback<InvitationModel, Observable[]> extractor() {
@@ -32,5 +31,12 @@ public class InvitationModel {
 
     public void setContactModel(ContactModel contactModel) {
         this.contactModel.set(contactModel);
+    }
+
+    @Override
+    public String toString() {
+        return "InvitationModel{" +
+                "contactModel=" + contactModel +
+                '}';
     }
 }

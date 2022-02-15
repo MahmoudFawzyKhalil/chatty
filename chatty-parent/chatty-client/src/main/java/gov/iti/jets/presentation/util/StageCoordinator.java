@@ -20,23 +20,22 @@ public class StageCoordinator {
 
     private Stage primaryStage;
     private final Map<String, Scene> sceneMap = new HashMap<>();
+    private final Map<String, Stage> stageMap = new HashMap<>();
 
-    private final Map<String,Stage>stageMap = new HashMap<>();
+    private StageCoordinator() {
+    }
 
-    private StageCoordinator() {}
-
-    public static StageCoordinator getInstance(){
+    public static StageCoordinator getInstance() {
         return stageCoordinator;
     }
 
-    public void initStage(Stage primaryStage){
+    public void initStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
-
     }
 
-    public void switchToLoginScene(){
+    public void switchToLoginScene() {
         Scene loginScene = sceneMap.get("loginScene");
-        if (loginScene == null){
+        if (loginScene == null) {
             try {
                 Pane root = FXMLLoader.load(getClass().getResource("/views/login/LoginView.fxml"));
                 loginScene = new Scene(root);
@@ -49,9 +48,9 @@ public class StageCoordinator {
         primaryStage.setScene(loginScene);
     }
 
-    public void switchToRegisterSceneOne(){
+    public void switchToRegisterSceneOne() {
         Scene registerSceneOne = sceneMap.get("registerSceneOne");
-        if (registerSceneOne == null){
+        if (registerSceneOne == null) {
             try {
                 Pane root = FXMLLoader.load(getClass().getResource("/views/register/RegistrationViewOne.fxml"));
                 registerSceneOne = new Scene(root);
@@ -64,9 +63,9 @@ public class StageCoordinator {
         primaryStage.setScene(registerSceneOne);
     }
 
-    public void switchToRegisterSceneTwo(){
+    public void switchToRegisterSceneTwo() {
         Scene registerSceneTwo = sceneMap.get("registerSceneTwo");
-        if (registerSceneTwo == null){
+        if (registerSceneTwo == null) {
             try {
                 Pane root = FXMLLoader.load(getClass().getResource("/views/register/RegistrationViewTwo.fxml"));
                 registerSceneTwo = new Scene(root);
@@ -79,9 +78,9 @@ public class StageCoordinator {
         primaryStage.setScene(registerSceneTwo);
     }
 
-    public void switchToRegisterSceneThree(){
+    public void switchToRegisterSceneThree() {
         Scene registerSceneThree = sceneMap.get("registerSceneThree");
-        if (registerSceneThree == null){
+        if (registerSceneThree == null) {
             try {
                 Pane root = FXMLLoader.load(getClass().getResource("/views/register/RegistrationViewThree.fxml"));
                 registerSceneThree = new Scene(root);
@@ -96,7 +95,7 @@ public class StageCoordinator {
 
     public void switchToMainScene() {
         Scene mainScene = sceneMap.get("mainScene");
-        if (mainScene == null){
+        if (mainScene == null) {
             try {
                 BorderPane mainSceneBorderPane = FXMLLoader.load(getClass().getResource("/views/main/MainView.fxml"));
                 paneCoordinator.initPane(mainSceneBorderPane);
@@ -111,54 +110,66 @@ public class StageCoordinator {
         primaryStage.setScene(mainScene);
     }
 
-    public void clearSceneStagePaneMaps(){
+    public void switchToAddGroupChatTwo(){
+
+        Stage addGroupStage=stageMap.get("addGroupStage");
+        if(addGroupStage!=null){
+            setPopupStage(addGroupStage, "/views/add-group/AddGroupChatViewTwo.fxml");
+        }
+    }
+
+    public void clearSceneStagePaneMaps() {
         stageMap.clear();
         sceneMap.clear();
         paneCoordinator.clearPaneMap();
     }
 
-    public void closeAddContactScene(){
+    public void closeAddContactStage() {
         stageMap.get("addContactStage").close();
     }
 
-    public void closeGroupContactScene(){
+    public void closeAddGroupChatStage() {
         stageMap.get("addGroupStage").close();
     }
-    public void showAddContactStage(){
-        Stage addContactStage=stageMap.get("addContactStage");
-        if(addContactStage==null){
-            addContactStage=new Stage();
-            setPopupStage(addContactStage,"/views/add-contact/AddContactView.fxml");
-            stageMap.put("addContactStage",addContactStage);
-        }
+
+    public void showAddContactStage() {
+        Stage addContactStage = new Stage();
+        setPopupStageStyle(addContactStage);
+        setPopupStage(addContactStage, "/views/add-contact/AddContactView.fxml");
+        stageMap.put("addContactStage", addContactStage);
         addContactStage.show();
 
     }
 
-    public void showAddGroupStage(){
-        Stage addGroupStage=stageMap.get("addGroupStage");
-        if(addGroupStage==null){
-            addGroupStage=new Stage();
-            setPopupStage(addGroupStage,"/views/add-group/AddGroupChatViewOne.fxml");
-            stageMap.put("addGroupStage",addGroupStage);
-        }
-
+    public void showAddGroupStage() {
+        Stage addGroupStage = new Stage();
+        setPopupStageStyle(addGroupStage);
+        setPopupStage(addGroupStage, "/views/add-group/AddGroupChatViewOne.fxml");
+        stageMap.put("addGroupStage", addGroupStage);
         addGroupStage.show();
     }
 
-    private void setPopupStage(Stage stage,String fxmlPath) {
+    private void setPopupStageStyle(Stage stage) {
         stage.initStyle(StageStyle.TRANSPARENT);
         stage.initModality(Modality.APPLICATION_MODAL);
+    }
+
+    private void setPopupStage(Stage stage, String fxmlPath) {
+
         try {
-            Pane root = FXMLLoader.load(getClass().getResource(fxmlPath));
-            Scene scene=new Scene(root);
-            scene.setFill(Color.TRANSPARENT);
-            scene.getRoot().setEffect(new DropShadow(10, Color.rgb(30, 30, 30)));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxmlPath));
+            Pane root = fxmlLoader.load();
+            Scene scene = new Scene(root);
+            setPopUpSceneStyle(scene);
             stage.setScene(scene);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
 
+    private void setPopUpSceneStyle(Scene scene) {
+        scene.setFill(Color.TRANSPARENT);
+        scene.getRoot().setEffect(new DropShadow(10, Color.rgb(30, 30, 30)));
     }
 }

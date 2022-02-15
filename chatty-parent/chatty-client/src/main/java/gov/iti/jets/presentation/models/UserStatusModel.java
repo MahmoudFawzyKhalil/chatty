@@ -9,7 +9,11 @@ public class UserStatusModel {
     private IntegerProperty userStatusId = new SimpleIntegerProperty();
     private StringProperty userStatusName = new SimpleStringProperty();
 
-    public UserStatusModel(int userStatusId, String userStatusName){
+    public static final UserStatusModel AVAILABLE = new UserStatusModel(1, "Available");
+    public static final UserStatusModel AWAY = new UserStatusModel(2, "Away");
+    public static final UserStatusModel BUSY = new UserStatusModel(3, "Busy");
+
+    private UserStatusModel(int userStatusId, String userStatusName){
         this.userStatusId.set(userStatusId);
         this.userStatusName.set(userStatusName);
     }
@@ -36,5 +40,13 @@ public class UserStatusModel {
 
     public void setUserStatusId(int userStatusId) {
         this.userStatusId.set(userStatusId);
+    }
+
+    @Override
+    public String toString() {
+        return "UserStatusModel{" +
+                "userStatusId=" + userStatusId +
+                ", userStatusName=" + userStatusName +
+                '}';
     }
 }

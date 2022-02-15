@@ -1,15 +1,21 @@
 package gov.iti.jets.presentation.controllers;
 
-import gov.iti.jets.presentation.customcontrols.ContactChatMenuItem;
-import gov.iti.jets.presentation.customcontrols.GroupChatMenuItem;
+import gov.iti.jets.presentation.models.ContactModel;
+import gov.iti.jets.presentation.models.GroupChatModel;
+import gov.iti.jets.presentation.models.UserModel;
+import gov.iti.jets.presentation.util.ModelFactory;
 import gov.iti.jets.presentation.util.PaneCoordinator;
 import gov.iti.jets.presentation.util.StageCoordinator;
+import gov.iti.jets.presentation.util.StatusColors;
+import gov.iti.jets.presentation.util.cellfactories.ContactChatMenuItemCellFactory;
+import gov.iti.jets.presentation.util.cellfactories.GroupChatMenuItemCellFactory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ListView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.VBox;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 
 import java.net.URL;
@@ -18,13 +24,14 @@ import java.util.ResourceBundle;
 public class MainController implements Initializable {
 
     private final StageCoordinator stageCoordinator = StageCoordinator.getInstance();
-    private  final PaneCoordinator paneCoordinator = PaneCoordinator.getInstance();
+    private final PaneCoordinator paneCoordinator = PaneCoordinator.getInstance();
+    private final UserModel userModel = ModelFactory.getInstance().getUserModel();
 
     @FXML
-    private VBox contactChatsVbox;
+    private ListView<ContactModel> contactChatsListView;
 
     @FXML
-    private VBox groupChatsVbox;
+    private ListView<GroupChatModel> groupChatsListView;
 
     @FXML
     private Circle userProfilePicCircle;
@@ -32,71 +39,78 @@ public class MainController implements Initializable {
     @FXML
     private Circle userStatusCircle;
 
-
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        createAndAddGroupChatMenuItem();
-        createAndAddContactChatMenuItem();
+    public void initialize( URL location, ResourceBundle resources ) {
+        bindProfilePicCircle();
+        bindContactChatsListView();
+        bindGroupChatsListView();
+    }
+
+    private void bindProfilePicCircle() {
+        userProfilePicCircle.setFill( new ImagePattern( userModel.getProfilePicture() ) );
+        userModel.profilePictureProperty().addListener( e -> {
+            userProfilePicCircle.setFill( new ImagePattern( userModel.getProfilePicture() ) );
+        } );
+    }
+
+    private void bindContactChatsListView() {
+        contactChatsListView.itemsProperty().bind( userModel.contactsProperty() );
+        contactChatsListView.setCellFactory( new ContactChatMenuItemCellFactory() );
+    }
+
+    private void bindGroupChatsListView() {
+        groupChatsListView.setCellFactory( new GroupChatMenuItemCellFactory() );
+        groupChatsListView.itemsProperty().bind( userModel.groupChatsProperty() );
     }
 
     @FXML
-    void onAddContactButtonAction(ActionEvent event) {
+    void onAddContactButtonAction( ActionEvent event ) {
         stageCoordinator.showAddContactStage();
     }
 
     @FXML
-    void onAddGroupButtonAction(ActionEvent event) {
+    void onAddGroupButtonAction( ActionEvent event ) {
         stageCoordinator.showAddGroupStage();
     }
 
     @FXML
-    void onAvailableStatusMenuItemAction(ActionEvent event) {
-
+    void onAvailableStatusMenuItemAction( ActionEvent event ) {
+        userStatusCircle.setFill( StatusColors.AVAILABLE_STATUS_COLOR );
     }
 
     @FXML
-    void onAwayStatusMenuItemAction(ActionEvent event) {
-
+    void onAwayStatusMenuItemAction( ActionEvent event ) {
+        userStatusCircle.setFill( StatusColors.AWAY_STATUS_COLOR );
     }
 
     @FXML
-    void onBusyStatusMenuItemAction(ActionEvent event) {
-
+    void onBusyStatusMenuItemAction( ActionEvent event ) {
+        userStatusCircle.setFill( StatusColors.BUSY_STATUS_COLOR );
     }
 
     @FXML
-    void onChatBotButtonAction(ActionEvent event) {
-
+    void onChatBotButtonAction( ActionEvent event ) {
+        paneCoordinator.switchToChatPane();
     }
 
     @FXML
-    void onInvitationsButtonAction(ActionEvent event) {
+    void onInvitationsButtonAction( ActionEvent event ) {
         paneCoordinator.switchToInvitationPane();
     }
 
     @FXML
-    void onSignOutButtonAction(ActionEvent event) {
+    void onSignOutButtonAction( ActionEvent event ) {
         stageCoordinator.clearSceneStagePaneMaps();
         stageCoordinator.switchToLoginScene();
     }
 
     @FXML
-    void onUserProfilePicCircleMouseClicked(MouseEvent event) {
-        if (event.getButton().equals(MouseButton.SECONDARY)){
+    void onUserProfilePicCircleMouseClicked( MouseEvent event ) {
+
+        if (event.getButton().equals( MouseButton.SECONDARY )) {
             return;
         }
+
         paneCoordinator.switchToUpdateProfilePane();
-    }
-
-    private void createAndAddContactChatMenuItem() {
-        var item = new ContactChatMenuItem();
-        item.setOnMouseClicked(e -> paneCoordinator.switchToChatPane());
-        contactChatsVbox.getChildren().add(item);
-    }
-
-    private void createAndAddGroupChatMenuItem() {
-        var item = new GroupChatMenuItem();
-        item.setOnMouseClicked(e -> paneCoordinator.switchToChatPane());
-        groupChatsVbox.getChildren().add(item);
     }
 }

@@ -74,6 +74,20 @@
     -fx-background-color: derive(-main-light,-10%);
 }
 
-.
+.custom-list-view {
+    -fx-background-color: -main-light;
+    -fx-border-insets: 0, 0, 0, 0;
+    -fx-background-insets: 0, 0, 0, 0;
+}
+
+.custom-list-view .list-cell {
+    -fx-background-color: -main-light;
+    -fx-border-insets: 0, 0, 0, 0;
+}
+
+.custom-list-view .scroll-bar:vertical {
+    -fx-scale-x: 0;
+    -fx-padding: -20;
+}
 
 

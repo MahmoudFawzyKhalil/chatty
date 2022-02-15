@@ -1,15 +1,23 @@
 package gov.iti.jets.presentation.controllers;
 
+import gov.iti.jets.presentation.models.UserModel;
+import gov.iti.jets.presentation.util.ModelFactory;
+import gov.iti.jets.services.util.ServiceFactory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Hyperlink;
-import javafx.scene.control.TextField;
+import javafx.fxml.Initializable;
+import javafx.scene.control.*;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 
-public class UpdateProfileController {
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class UpdateProfileController implements Initializable{
+
+    private static final ServiceFactory serviceFactory = ServiceFactory.getInstance();
+    private static final ModelFactory modelFactory = ModelFactory.getInstance();
+    private UserModel userModel;
 
     @FXML
     private TextField bioTextField;
@@ -18,25 +26,37 @@ public class UpdateProfileController {
     private DatePicker birthDateDatePicker;
 
     @FXML
-    private ComboBox<?> countryComboBox;
-
-    @FXML
     private TextField emailTextField;
 
     @FXML
-    private ComboBox<?> genderComboBox;
+    private ChoiceBox<String> countryChoiceBox;
+
+    @FXML
+    private ChoiceBox<String> genderChoiceBox;
 
     @FXML
     private TextField nameTextField;
 
     @FXML
-    private Circle profilePictureCirclr;
+    private Circle profilePictureCircle;
 
     @FXML
     private Button updateButton;
 
     @FXML
     private Hyperlink uploadPictureHyperLink;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        userModel = modelFactory.getUserModel();
+        bindProfilePicCircle();
+        nameTextField.textProperty().bind(userModel.displayNameProperty());
+        emailTextField.textProperty().bind(userModel.emailProperty());
+        bioTextField.textProperty().bind(userModel.bioProperty());
+        countryChoiceBox.valueProperty().bind(userModel.getCountry().countryNameProperty());
+        genderChoiceBox.valueProperty().bind(userModel.genderProperty());
+        birthDateDatePicker.valueProperty().bind(userModel.birthDateProperty());
+    }
 
     @FXML
     void onUpdateButtonAction(ActionEvent event) {
@@ -48,5 +68,11 @@ public class UpdateProfileController {
 
     }
 
+    private void bindProfilePicCircle() {
+        profilePictureCircle.setFill( new ImagePattern( userModel.getProfilePicture() ) );
+        userModel.profilePictureProperty().addListener( e -> {
+            profilePictureCircle.setFill( new ImagePattern( userModel.getProfilePicture() ));
+        } );
+    }
 }
 

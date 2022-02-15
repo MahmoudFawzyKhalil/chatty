@@ -5,15 +5,15 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane styleClass="shadow-pane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.presentation.controllers.AddGroupChatController">
+<BorderPane styleClass="shadow-pane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.presentation.controllers.AddGroupChatOneController">
    <center>
-      <VBox id="add-card" alignment="CENTER" maxHeight="450.0" maxWidth="390.0" prefHeight="450.0" prefWidth="390.0" spacing="15.0" styleClass="card">
+      <VBox id="add-card" alignment="CENTER" maxHeight="450.0" maxWidth="390.0" minHeight="450.0" minWidth="390.0" prefHeight="450.0" prefWidth="390.0" spacing="15.0" styleClass="card">
          <children>
             <HBox id="title" alignment="CENTER" spacing="10.0">
                <children>
@@ -32,15 +32,7 @@
                   <Insets top="40.0" />
                </VBox.margin>
             </HBox>
-            <ScrollPane id="contacts-holder" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" styleClass="transparent-color" vbarPolicy="NEVER" VBox.vgrow="ALWAYS">
-               <content>
-                  <VBox fx:id="contactsVBox" prefHeight="200.0" prefWidth="100.0" spacing="10.0" styleClass="input-field-holder">
-                     <padding>
-                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                     </padding>
-                  </VBox>
-               </content>
-            </ScrollPane>
+            <ListView fx:id="contactsListView" styleClass="contacts-list-view" VBox.vgrow="ALWAYS" />
             <HBox id="adding-box" alignment="TOP_RIGHT" spacing="10.0" styleClass="adding-box">
                <children>
                   <Hyperlink onAction="#onCancelHyperLinkAction" text="Cancel">

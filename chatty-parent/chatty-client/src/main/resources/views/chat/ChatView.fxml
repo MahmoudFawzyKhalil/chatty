@@ -8,7 +8,7 @@
 <?import javafx.scene.control.ContextMenu?>
 <?import javafx.scene.control.CustomMenuItem?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.layout.BorderPane?>
@@ -16,10 +16,8 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
-<?import javafx.scene.text.Text?>
-<?import javafx.scene.text.TextFlow?>
 
-<BorderPane id="center" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.presentation.controllers.ChatController">
+<BorderPane id="center" fx:id="centerBorderPane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.presentation.controllers.ChatController">
    <bottom>
       <HBox id="message-area-container" alignment="CENTER_LEFT" fillHeight="false" prefHeight="80.0" styleClass="send-message-container" BorderPane.alignment="CENTER">
          <children>
@@ -102,7 +100,7 @@
                         <Insets left="20.0" />
                      </StackPane.margin>
                   </Circle>
-                  <Circle id="status-color" fx:id="contactStatusCircle" fill="#48ff48" radius="6.0" stroke="TRANSPARENT" strokeType="INSIDE" translateX="-3.0" translateY="-10.0" StackPane.alignment="BOTTOM_RIGHT" />
+                  <Circle id="status-color" fx:id="contactStatusCircle" fill="#48ff48" radius="6.0" stroke="TRANSPARENT" strokeType="INSIDE" translateX="-3.0" translateY="-10.0" visible="false" StackPane.alignment="BOTTOM_RIGHT" />
                </children>
             </StackPane>
             <Label id="contact-chat-name" fx:id="contactOrGroupNameLabel" styleClass="contact-chat-name" text="Christine Nedaa">
@@ -113,96 +111,11 @@
          </children>
       </HBox>
    </top>
-   <center>
-      <ScrollPane id="chatting-scrollpane" fitToWidth="true" prefHeight="200.0" prefWidth="200.0" styleClass="chat-area-scroll-pane" BorderPane.alignment="CENTER">
-         <content>
-            <VBox id="chatting-vbox-area" fx:id="chatMessagesVbox" prefHeight="200.0" prefWidth="100.0">
-               <children>
-                  <HBox id="recieved-chat-bubble-container" fillHeight="false">
-                     <children>
-                        <HBox id="image-message-container" HBox.hgrow="ALWAYS">
-                           <children>
-                              <Circle id="contact-pic" fill="#243f66" radius="15.0" stroke="TRANSPARENT" strokeType="INSIDE">
-                                 <HBox.margin>
-                                    <Insets right="5.0" />
-                                 </HBox.margin>
-                              </Circle>
-                              <VBox id="sender-message-container" styleClass="sender-message-container">
-                                 <children>
-                                    <Label id="sender-name" styleClass="sender-name" text="Mahmoud Fawzy">
-                                       <VBox.margin>
-                                          <Insets />
-                                       </VBox.margin>
-                                    </Label>
-                                    <Label id="timestamp" opacity="0.5" styleClass="sender-name" text="Sun Feb 13 08:21:00 EET 2022">
-                                       <VBox.margin>
-                                          <Insets bottom="3.0" top="-1.0" />
-                                       </VBox.margin>
-                                    </Label>
-                                    <TextFlow>
-                                       <children>
-                                          <Text id="sender-message-text" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="sender-message-text" text="Hey!" />
-                                       </children>
-                                    </TextFlow>
-                                 </children>
-                                 <padding>
-                                    <Insets bottom="10.0" left="10.0" right="10.0" top="8.0" />
-                                 </padding>
-                              </VBox>
-                           </children>
-                           <HBox.margin>
-                              <Insets left="10.0" top="20.0" />
-                           </HBox.margin>
-                        </HBox>
-                        <HBox id="padding" minWidth="250.0" HBox.hgrow="ALWAYS" />
-                     </children>
-                  </HBox>
-                  <HBox id="sent-chat-bubble-container" fillHeight="false">
-                     <children>
-                        <HBox id="image-message-container" HBox.hgrow="ALWAYS">
-                           <children>
-                              <HBox id="padding" minWidth="250.0" HBox.hgrow="ALWAYS" />
-                              <VBox id="sender-message-container" alignment="TOP_RIGHT" styleClass="sender-message-container">
-                                 <children>
-                                    <Label id="sender-name" styleClass="sender-name" text="Christine Nedaa">
-                                       <VBox.margin>
-                                          <Insets right="2.0" />
-                                       </VBox.margin>
-                                    </Label>
-                                    <Label id="timestamp" opacity="0.5" styleClass="sender-name" text="Sun Feb 13 08:21:00 EET 2022">
-                                       <VBox.margin>
-                                          <Insets bottom="3.0" top="-1.0" />
-                                       </VBox.margin>
-                                    </Label>
-                                    <TextFlow textAlignment="RIGHT">
-                                       <children>
-                                          <Text id="sender-message-text" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="sender-message-text" text="Thanks!" />
-                                       </children>
-                                    </TextFlow>
-                                 </children>
-                                 <padding>
-                                    <Insets bottom="10.0" left="10.0" right="10.0" top="8.0" />
-                                 </padding>
-                              </VBox>
-                              <Circle id="contact-pic" fill="#243f66" radius="15.0" stroke="TRANSPARENT" strokeType="INSIDE">
-                                 <HBox.margin>
-                                    <Insets left="5.0" />
-                                 </HBox.margin>
-                              </Circle>
-                           </children>
-                           <HBox.margin>
-                              <Insets right="10.0" top="20.0" />
-                           </HBox.margin>
-                        </HBox>
-                     </children>
-                  </HBox>
-               </children>
-            </VBox>
-         </content>
-      </ScrollPane>
-   </center>
    <stylesheets>
       <URL value="@../main/MainStyles.css" />
       <URL value="@../../styles/Base.css" />
    </stylesheets>
+   <center>
+      <ListView fx:id="chatMessagesListView" styleClass="chat-list-view" BorderPane.alignment="CENTER" />
+   </center>
 </BorderPane>
