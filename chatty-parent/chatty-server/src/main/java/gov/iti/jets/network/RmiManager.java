@@ -6,28 +6,26 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
-public class RMI {
-    private final static RMI rmi = new RMI();
+public class RmiManager {
+    private final static RmiManager RMI_MANAGER = new RmiManager();
     private Registry registry;
 
-    private RMI() {
+    private RmiManager() {
         try {
-            LocateRegistry.createRegistry(1099);
-            this.registry = LocateRegistry.getRegistry();
+            this.registry = LocateRegistry.createRegistry(1099);
             registerServices();
-
         } catch (RemoteException e) {
             e.printStackTrace();
         }
     }
 
-    public static RMI getInstance() {
-        return rmi;
+    public static RmiManager getInstance() {
+        return RMI_MANAGER;
     }
 
     private void registerServices() {
         try {
-            registry.rebind("login-service", new LoginServiceImpl());
+            registry.rebind("loginService", new LoginServiceImpl());
         } catch (RemoteException e) {
             e.printStackTrace();
         }

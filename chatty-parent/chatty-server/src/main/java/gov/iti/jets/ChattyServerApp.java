@@ -1,6 +1,6 @@
 package gov.iti.jets;
 
-import gov.iti.jets.network.RMI;
+import gov.iti.jets.network.RmiManager;
 import gov.iti.jets.presentation.util.StageCoordinator;
 import gov.iti.jets.services.util.ServiceFactory;
 import javafx.application.Application;
@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 public class ChattyServerApp extends Application {
     private StageCoordinator stageCoordinator = StageCoordinator.getInstance();
     private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
-    private RMI rmi = RMI.getInstance();
+    private RmiManager rmiManager = RmiManager.getInstance();
 
     @Override
     public void start(Stage primaryStage){
@@ -23,7 +23,7 @@ public class ChattyServerApp extends Application {
 
     @Override
     public void stop() throws Exception {
-        rmi.closing();
+        rmiManager.closing();
     }
 
     public static void main(String[] args) {

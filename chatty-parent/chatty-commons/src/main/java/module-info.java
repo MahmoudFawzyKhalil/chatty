@@ -1,7 +1,7 @@
 module chatty.commons {
     // RMI
     requires java.rmi;
-    
+
     // JavaFX
     requires javafx.controls;
     requires javafx.fxml;
@@ -16,5 +16,6 @@ module chatty.commons {
 
     // Exports, Opens
     exports gov.iti.jets.commons;
-    exports  gov.iti.jets.commons.remoteinterfaces;
+    exports gov.iti.jets.commons.remoteinterfaces;
+    exports gov.iti.jets.commons.dtos;
 }
