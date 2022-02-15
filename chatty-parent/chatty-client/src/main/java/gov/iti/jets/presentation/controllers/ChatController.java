@@ -5,6 +5,7 @@ import gov.iti.jets.presentation.models.GroupChatModel;
 import gov.iti.jets.presentation.models.MessageModel;
 import gov.iti.jets.presentation.models.UserModel;
 import gov.iti.jets.presentation.util.ModelFactory;
+import gov.iti.jets.presentation.util.PaneCoordinator;
 import gov.iti.jets.presentation.util.cellfactories.ChatBubbleCellFactory;
 import gov.iti.jets.presentation.util.cellfactories.NoSelectionModel;
 import javafx.event.ActionEvent;
@@ -18,6 +19,7 @@ import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 
@@ -28,6 +30,8 @@ import java.util.ResourceBundle;
 
 public class ChatController implements Initializable {
     private final UserModel userModel = ModelFactory.getInstance().getUserModel();
+    private ContactModel contactModel;
+    private GroupChatModel groupChatModel;
 
 
     @FXML
@@ -66,8 +70,6 @@ public class ChatController implements Initializable {
     @FXML
     private ColorPicker messageTextColorPicker;
 
-    private ContactModel contactModel;
-    private GroupChatModel groupChatModel;
 
     @Override
     public void initialize( URL location, ResourceBundle resources ) {
@@ -82,6 +84,10 @@ public class ChatController implements Initializable {
 
     private void addCurrentlyChattingWithListener() {
         userModel.currentlyChattingWithProperty().addListener( ( observable, old, newval ) -> {
+            if (userModel.getCurrentlyChattingWith() == null) {
+                return;
+            }
+
             Optional<ContactModel> contactOptional = userModel.getContacts().stream()
                     .filter( cm -> cm.getPhoneNumber().equals( newval ) )
                     .findFirst();
@@ -106,6 +112,7 @@ public class ChatController implements Initializable {
     }
 
     private void bindToContactModel() {
+        PaneCoordinator.getInstance().switchToChatPane();
         bindContactNameLabel();
         bindContactPicCircle();
         bindContactChatMessagesListView();
@@ -132,6 +139,7 @@ public class ChatController implements Initializable {
     }
 
     private void bindToGroupChatModel() {
+        PaneCoordinator.getInstance().switchToChatPane();
         bindGroupNameLabel();
         bindGroupPicCircle();
         bindGroupChatMessagesListView();
@@ -157,10 +165,10 @@ public class ChatController implements Initializable {
     void onSendMessageButtonAction( ActionEvent event ) {
 
         /*
-        * TODO
-        *  Refactor this to use proper methods and to get the properties form the textStyleProperties
-        *  This is part of the sendSingleMessage use case
-        * */
+         * TODO
+         *  Refactor this to use proper methods and to get the properties form the textStyleProperties
+         *  This is part of the sendSingleMessage use case
+         * */
 
         if (groupChatModel == null && contactModel == null) {
             return;
@@ -185,9 +193,9 @@ public class ChatController implements Initializable {
     @FXML
     void onBoldToggleButtonAction( ActionEvent event ) {
         /*
-        * Use an ArrayList<String> to store the text styles in them then concatenate it into one string
-        * to store in the MessageModel's cssStyleString properties + dtos' styleStringProperties
-        * */
+         * Use an ArrayList<String> to store the text styles in them then concatenate it into one string
+         * to store in the MessageModel's cssStyleString properties + dtos' styleStringProperties
+         * */
     }
 
     @FXML

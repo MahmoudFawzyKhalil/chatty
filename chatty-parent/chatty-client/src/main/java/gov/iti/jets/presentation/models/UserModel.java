@@ -195,4 +195,23 @@ public class UserModel {
     public void setCurrentlyChattingWith( String currentlyChattingWith ) {
         this.currentlyChattingWith.set( currentlyChattingWith );
     }
+
+    @Override
+    public String toString() {
+        return "UserModel{" +
+                "phoneNumber=" + phoneNumber +
+                ", displayName=" + displayName +
+                ", gender=" + gender +
+                ", profilePicture=" + profilePicture +
+                ", email=" + email +
+                ", bio=" + bio +
+                ", birthDate=" + birthDate +
+                ", country=" + country +
+                ", currentStatus=" + currentStatus +
+                ", contacts=" + contacts +
+                ", groupChats=" + groupChats +
+                ", invitations=" + invitations +
+                ", currentlyChattingWith=" + currentlyChattingWith +
+                '}';
+    }
 }

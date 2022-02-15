@@ -104,4 +104,15 @@ public class GroupChatModel {
     public void setMesssages(ObservableList<MessageModel> messsages) {
         this.messsages.set(messsages);
     }
+
+    @Override
+    public String toString() {
+        return "GroupChatModel{" +
+                "groupChatId=" + groupChatId +
+                ", groupChatName=" + groupChatName +
+                ", groupChatPicture=" + groupChatPicture +
+                ", groupMembersList=" + groupMembersList +
+                ", messsages=" + messsages +
+                '}';
+    }
 }

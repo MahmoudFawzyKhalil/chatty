@@ -27,9 +27,8 @@ public class RegistrationThreeController implements Initializable{
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        userModel = modelFactory.getMockUserModel();
-        // TODO
-        //bindProfilePicCircle();
+        userModel = modelFactory.getUserModel();
+        bindProfilePicCircle();
     }
     @FXML
     void onUploadPictureHyperLinkAction(ActionEvent event) {
@@ -45,11 +44,11 @@ public class RegistrationThreeController implements Initializable{
     void onPreviousButtonAction(ActionEvent event) {
         stageCoordinator.switchToRegisterSceneTwo();
     }
-    /*TODO
+
     private void bindProfilePicCircle() {
         profilePictureCircle.setFill( new ImagePattern( userModel.getProfilePicture() ) );
         userModel.profilePictureProperty().addListener( e -> {
             profilePictureCircle.setFill( new ImagePattern( userModel.getProfilePicture() ));
         } );
-    }*/
+    }
 }

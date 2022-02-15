@@ -12,7 +12,7 @@
    <children>
       <HBox id="friend-request-vbox" prefHeight="70.0" spacing="20.0" styleClass="main-back-ground">
          <children>
-            <Region prefHeight="26.0" prefWidth="52.0" styleClass="friend-icon" />
+            <Region prefHeight="40.0" prefWidth="45.0" styleClass="friend-icon" />
             <Label maxWidth="1.7976931348623157E308" styleClass="invitation-label" text="Friend Requests" textFill="#83f8a4" />
          </children>
          <padding>

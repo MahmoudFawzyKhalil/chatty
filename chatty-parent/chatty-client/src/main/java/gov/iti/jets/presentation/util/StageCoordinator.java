@@ -20,7 +20,6 @@ public class StageCoordinator {
 
     private Stage primaryStage;
     private final Map<String, Scene> sceneMap = new HashMap<>();
-
     private final Map<String, Stage> stageMap = new HashMap<>();
 
     private StageCoordinator() {
@@ -32,7 +31,6 @@ public class StageCoordinator {
 
     public void initStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
-
     }
 
     public void switchToLoginScene() {

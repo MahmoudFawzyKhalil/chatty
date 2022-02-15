@@ -35,7 +35,7 @@ public class ModelFactory {
         mockUserModel.setCountry( new CountryModel( 22, "Egypt" ) );
         mockUserModel.setCurrentStatus( UserStatusModel.AVAILABLE );
         mockUserModel.setCurrentlyChattingWith( "hamada" );
-        ContactModel cm1 = new ContactModel( 33, "12345678910", "salma77", UserStatusModel.AWAY );
+        ContactModel cm1 = new ContactModel("12345678910", "salma77", UserStatusModel.AWAY );
         cm1.getMesssages().add( new MessageModel( "salma77", LocalDateTime.now(), "Hello it's me salma", "", "", false ) );
         cm1.getMesssages().add( new MessageModel( "You", LocalDateTime.now(), "Hello it's me johnson", "", "-fx-background-color: orange;", true ) );
         cm1.getMesssages().add( new MessageModel( "You", LocalDateTime.now(), "Hello it's me beeb", "-fx-fill: red; -fx-underline: true; -fx-font-family: 'Comic Sans MS'", "", true ) );
@@ -44,7 +44,7 @@ public class ModelFactory {
         cm1.getMesssages().add( new MessageModel( "You", LocalDateTime.now(), "Hello it's me johnson", "", "", true ) );
         cm1.getMesssages().add( new MessageModel( "You", LocalDateTime.now(), "Hello it's me johnson", "", "", true ) );
         cm1.getMesssages().add( new MessageModel( "You", LocalDateTime.now(), "Hello it's me johnson", "", "", true ) );
-        ContactModel cm2 = new ContactModel( 33, "56789101132", "mohamed11", UserStatusModel.AVAILABLE );
+        ContactModel cm2 = new ContactModel("56789101132", "mohamed11", UserStatusModel.AVAILABLE );
         cm2.getMesssages().add( new MessageModel( "christine33", LocalDateTime.now(), "ana christine 3aml eh", "", "", false ) );
         cm2.getMesssages().add( new MessageModel( "You", LocalDateTime.now(), "ezayek ya christine", "", "", true ) );
         mockUserModel.getContacts().addAll( cm1, cm2 );
@@ -54,7 +54,7 @@ public class ModelFactory {
         gcm1.getMesssages().add( new MessageModel( "You", LocalDateTime.now(), "ana mahmoud 3aml eh", "", "", true ) );
         mockUserModel.getGroupChats().add( gcm1 );
 
-        mockUserModel.getInvitations().add( new InvitationModel( new ContactModel( 55, "12345678910", "bob521", UserStatusModel.AWAY ) ) );
+        mockUserModel.getInvitations().add( new InvitationModel( new ContactModel("12345678910", "bob521", UserStatusModel.AWAY ) ) );
     }
 
     public GroupChatModel getCreateGroupChatModel() {

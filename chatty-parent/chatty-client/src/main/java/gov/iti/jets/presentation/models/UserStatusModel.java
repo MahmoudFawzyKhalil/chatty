@@ -41,4 +41,12 @@ public class UserStatusModel {
     public void setUserStatusId(int userStatusId) {
         this.userStatusId.set(userStatusId);
     }
+
+    @Override
+    public String toString() {
+        return "UserStatusModel{" +
+                "userStatusId=" + userStatusId +
+                ", userStatusName=" + userStatusName +
+                '}';
+    }
 }

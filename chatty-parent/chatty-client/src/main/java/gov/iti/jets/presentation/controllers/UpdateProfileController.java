@@ -49,14 +49,13 @@ public class UpdateProfileController implements Initializable{
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         userModel = modelFactory.getUserModel();
-       //TODO
-        // bindProfilePicCircle();
+        bindProfilePicCircle();
         nameTextField.textProperty().bind(userModel.displayNameProperty());
         emailTextField.textProperty().bind(userModel.emailProperty());
         bioTextField.textProperty().bind(userModel.bioProperty());
         countryChoiceBox.valueProperty().bind(userModel.getCountry().countryNameProperty());
         genderChoiceBox.valueProperty().bind(userModel.genderProperty());
-        birthDateDatePicker.valueProperty().bindBidirectional(userModel.birthDateProperty());
+        birthDateDatePicker.valueProperty().bind(userModel.birthDateProperty());
     }
 
     @FXML
@@ -68,12 +67,12 @@ public class UpdateProfileController implements Initializable{
     void onUploadPictureHyperLinkAction(ActionEvent event) {
 
     }
-    /* TODO
+
     private void bindProfilePicCircle() {
         profilePictureCircle.setFill( new ImagePattern( userModel.getProfilePicture() ) );
         userModel.profilePictureProperty().addListener( e -> {
             profilePictureCircle.setFill( new ImagePattern( userModel.getProfilePicture() ));
         } );
-    }*/
+    }
 }
 

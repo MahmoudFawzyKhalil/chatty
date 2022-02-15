@@ -100,4 +100,17 @@ public class MessageModel {
     public void setTimeStamp( LocalDateTime timeStamp ) {
         this.timeStamp = timeStamp;
     }
+
+    @Override
+    public String toString() {
+        return "MessageModel{" +
+                "senderName=" + senderName +
+                ", senderProfilePicture=" + senderProfilePicture +
+                ", timeStamp=" + timeStamp +
+                ", messageBody='" + messageBody + '\'' +
+                ", cssTextStyleString='" + cssTextStyleString + '\'' +
+                ", cssBubbleStyleString='" + cssBubbleStyleString + '\'' +
+                ", isSentByMe=" + isSentByMe +
+                '}';
+    }
 }

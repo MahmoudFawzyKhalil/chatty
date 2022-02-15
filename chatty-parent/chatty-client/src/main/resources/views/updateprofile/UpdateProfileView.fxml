@@ -19,7 +19,7 @@
    <top>
       <HBox id="update-profile-header" styleClass="profile-header" BorderPane.alignment="CENTER">
          <children>
-            <Region prefHeight="16.0" prefWidth="63.0" styleClass="update-profile-icon">
+            <Region prefHeight="35.0" prefWidth="55.0" styleClass="update-profile-icon">
                <HBox.margin>
                   <Insets right="20.0" />
                </HBox.margin>

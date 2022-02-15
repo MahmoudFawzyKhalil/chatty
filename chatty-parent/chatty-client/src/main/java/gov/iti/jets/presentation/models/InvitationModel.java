@@ -32,4 +32,11 @@ public class InvitationModel {
     public void setContactModel(ContactModel contactModel) {
         this.contactModel.set(contactModel);
     }
+
+    @Override
+    public String toString() {
+        return "InvitationModel{" +
+                "contactModel=" + contactModel +
+                '}';
+    }
 }
