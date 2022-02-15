@@ -7,11 +7,12 @@ module chatty.commons {
     requires javafx.fxml;
     requires org.controlsfx.controls;
 
-    // Database
-    requires java.sql;
-
     // Utils
-    requires org.mapstruct;
+    // Hibernate Validator
+    requires jakarta.validation;
+    requires org.hibernate.validator;
+    requires org.hibernate.validator.cdi;
+    opens gov.iti.jets.commons.dtos to org.hibernate.validator;
 
     // Exports, Opens
     exports gov.iti.jets.commons;
