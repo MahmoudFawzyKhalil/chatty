@@ -106,6 +106,12 @@
             <version>11.1.1</version>
         </dependency>
 
+        <dependency>
+            <groupId>net.synedra</groupId>
+            <artifactId>validatorfx</artifactId>
+            <version>0.2.1</version>
+        </dependency>
+
     </dependencies>
 
     <build>

@@ -19,6 +19,8 @@ module chatty.client {
     requires org.hibernate.validator;
     requires org.hibernate.validator.cdi;
 
+    requires validatorfx;
+
     // Exports, Opens
     exports gov.iti.jets;
     opens gov.iti.jets.presentation.controllers to javafx.fxml;

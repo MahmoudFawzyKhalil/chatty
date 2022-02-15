@@ -10,16 +10,12 @@ import gov.iti.jets.presentation.util.cellfactories.ChatBubbleCellFactory;
 import gov.iti.jets.presentation.util.cellfactories.NoSelectionModel;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Side;
 import javafx.scene.control.*;
 import javafx.scene.input.ContextMenuEvent;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 
@@ -178,10 +174,12 @@ public class ChatController implements Initializable {
             contactModel.getMesssages().add( new MessageModel( "You", LocalDateTime.now(),
                     "Hello from send message button.",
                     "", "", true ) );
+            scrollChatMessagesListViewToLastMessage();
         } else {
             groupChatModel.getMesssages().add( new MessageModel( "You", LocalDateTime.now(),
                     "Hello from send message button.",
                     "", "", true ) );
+            scrollChatMessagesListViewToLastMessage();
         }
     }
 
