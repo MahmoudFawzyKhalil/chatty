@@ -44,7 +44,6 @@ public class StageCoordinator {
                 e.printStackTrace();
             }
         }
-
         primaryStage.setScene(loginScene);
     }
 
@@ -99,7 +98,7 @@ public class StageCoordinator {
             try {
                 BorderPane mainSceneBorderPane = FXMLLoader.load(getClass().getResource("/views/main/MainView.fxml"));
                 paneCoordinator.initPane(mainSceneBorderPane);
-                mainScene = new Scene(mainSceneBorderPane);
+                mainScene = new Scene(mainSceneBorderPane, 960, 530);
                 sceneMap.put("mainScene", mainScene);
             } catch (IOException e) {
                 e.printStackTrace();
