@@ -14,7 +14,15 @@ module chatty.server {
     requires mysql.connector.java;
 
     // Utils
+    // MapStruct
     requires org.mapstruct;
+    exports gov.iti.jets.repository.util.mappers to org.mapstruct;
+
+    // Hibernate Validator
+    requires jakarta.validation;
+    requires org.hibernate.validator;
+    requires org.hibernate.validator.cdi;
+    opens gov.iti.jets.services.dtos to org.hibernate.validator;
 
     // Exports, Opens
     exports gov.iti.jets;
