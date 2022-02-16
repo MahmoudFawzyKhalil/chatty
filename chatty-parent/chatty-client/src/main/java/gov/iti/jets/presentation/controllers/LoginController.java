@@ -1,11 +1,12 @@
 package gov.iti.jets.presentation.controllers;
 
+import gov.iti.jets.commons.dtos.LoginDto;
 import gov.iti.jets.presentation.models.UserModel;
 import gov.iti.jets.presentation.util.ModelFactory;
 import gov.iti.jets.presentation.util.StageCoordinator;
 import gov.iti.jets.presentation.util.UiValidator;
-import gov.iti.jets.services.LoginService;
-import gov.iti.jets.services.util.ServiceFactory;
+import gov.iti.jets.services.LoginDao;
+import gov.iti.jets.services.util.DaoFactory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -16,14 +17,16 @@ import javafx.scene.control.TextField;
 import net.synedra.validatorfx.Validator;
 
 import java.net.URL;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
 
     private final StageCoordinator stageCoordinator = StageCoordinator.getInstance();
     private final ModelFactory modelFactory = ModelFactory.getInstance();
-    private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
-    private final LoginService loginService = serviceFactory.getLoginService();
+    private final DaoFactory daoFactory = DaoFactory.getInstance();
+    private final LoginDao loginDao = daoFactory.getLoginService();
 
     private UserModel userModel;
 
@@ -43,7 +46,7 @@ public class LoginController implements Initializable {
 
 
     @Override
-    public void initialize( URL location, ResourceBundle resources ) {
+    public void initialize(URL location, ResourceBundle resources) {
         validatePhoneNumberTextField();
         validatePasswordTextField();
         addEnableButtonValidationListener();
@@ -51,9 +54,9 @@ public class LoginController implements Initializable {
 
     private void validatePasswordTextField() {
         validator.createCheck()
-                .dependsOn( "password", passwordTextField.textProperty() )
-                .withMethod( c -> {
-                    String password = c.get( "password" );
+                .dependsOn("password", passwordTextField.textProperty())
+                .withMethod(c -> {
+                    String password = c.get("password");
                     if (password.length() < 8 || password.length() > 20) {
                         c.error( "Please enter a valid password between 8 and 20 characters long." );
                         loginButton.setDisable( true );
@@ -86,12 +89,23 @@ public class LoginController implements Initializable {
     }
 
     @FXML
-    void onCreateAccountHyperLinkAction( ActionEvent event ) {
+    void onCreateAccountHyperLinkAction(ActionEvent event) {
         stageCoordinator.switchToRegisterSceneOne();
     }
 
     @FXML
-    void onLoginButtonAction( ActionEvent event ) {
-        stageCoordinator.switchToMainScene();
+    void onLoginButtonAction(ActionEvent event) {
+        LoginDto loginDto = new LoginDto(phoneNumberTextField.getText(), passwordTextField.getText());
+        try {
+            boolean isAuthenticated = loginDao.isAuthenticated(loginDto);
+            if(isAuthenticated){
+                stageCoordinator.switchToMainScene();
+            } else {
+                stageCoordinator.showErrorNotification( "Invalid phone number or password." );
+            }
+        } catch (NotBoundException | RemoteException e) {
+            stageCoordinator.showErrorNotification( "Failed to connect to server. Please try again later." );
+            e.printStackTrace();
+        }
     }
 }

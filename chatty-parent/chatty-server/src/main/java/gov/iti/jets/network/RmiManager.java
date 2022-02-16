@@ -1,5 +1,6 @@
 package gov.iti.jets.network;
 
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -35,7 +36,12 @@ public class RmiManager {
         }
     }
 
-    public void closing() {
+    public void close() {
+        try {
+            registry.unbind("LoginService");
+        } catch (RemoteException | NotBoundException e) {
+            e.printStackTrace();
+        }
 //        try {
 //            Runtime rt = Runtime.getRuntime();
 //            Process proc = rt.exec("cmd /c netstat -ano | findstr 1099");

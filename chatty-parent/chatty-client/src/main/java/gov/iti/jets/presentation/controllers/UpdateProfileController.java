@@ -2,7 +2,7 @@ package gov.iti.jets.presentation.controllers;
 
 import gov.iti.jets.presentation.models.UserModel;
 import gov.iti.jets.presentation.util.ModelFactory;
-import gov.iti.jets.services.util.ServiceFactory;
+import gov.iti.jets.services.util.DaoFactory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -15,7 +15,7 @@ import java.util.ResourceBundle;
 
 public class UpdateProfileController implements Initializable{
 
-    private static final ServiceFactory serviceFactory = ServiceFactory.getInstance();
+    private static final DaoFactory DAO_FACTORY = DaoFactory.getInstance();
     private static final ModelFactory modelFactory = ModelFactory.getInstance();
     private UserModel userModel;
 

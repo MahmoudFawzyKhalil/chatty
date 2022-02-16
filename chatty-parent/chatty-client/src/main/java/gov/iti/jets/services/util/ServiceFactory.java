@@ -1,22 +1,37 @@
 package gov.iti.jets.services.util;
 
-import gov.iti.jets.services.*;
-import gov.iti.jets.services.impls.*;
+import gov.iti.jets.commons.remoteinterfaces.LoginService;
+
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 
 public class ServiceFactory {
-    private static final ServiceFactory serviceFactory = new ServiceFactory();
-    
-    private static final LoginService loginService = new LoginServiceImpl();
+    private static final ServiceFactory registryFactory = new ServiceFactory();
+    private Registry registry;
 
-    private ServiceFactory(){
+    private static LoginService loginService;
+
+    private ServiceFactory() {
+        try {
+            this.registry = LocateRegistry.getRegistry(1099);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
 
     }
 
     public static ServiceFactory getInstance() {
-        return serviceFactory;
+        return registryFactory;
     }
 
-    public LoginService getLoginService(){
+    public LoginService getLoginService() throws NotBoundException, RemoteException {
+        if (loginService == null) {
+            loginService = (LoginService) registry.lookup("LoginService");
+
+        }
         return loginService;
     }
+
 }

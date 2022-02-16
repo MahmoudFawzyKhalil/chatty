@@ -1,25 +1,19 @@
 package gov.iti.jets;
 
-import gov.iti.jets.commons.dtos.ContactDto;
-import gov.iti.jets.presentation.models.ContactModel;
-import gov.iti.jets.presentation.models.mappers.ContactMapper;
 import gov.iti.jets.presentation.util.StageCoordinator;
-import gov.iti.jets.services.util.ServiceFactory;
+import gov.iti.jets.services.util.DaoFactory;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
 
 public class ChattyClientApp extends Application {
     private StageCoordinator stageCoordinator = StageCoordinator.getInstance();
-    private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
+    private final DaoFactory daoFactory = DaoFactory.getInstance();
 
     @Override
     public void start( Stage primaryStage ) {
         stageCoordinator.initStage( primaryStage );
         stageCoordinator.switchToLoginScene();
-
-        ContactModel contactModel = ContactMapper.INSTANCE.contactDtoToModel( new ContactDto( "01117950455", "Osama" ) );
-        System.out.println( contactModel );
 
         primaryStage.setWidth( 960 );
         primaryStage.setHeight( 530 );
