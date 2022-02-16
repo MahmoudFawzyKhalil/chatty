@@ -5,27 +5,27 @@ import java.time.LocalDate;
 public class UserEntity {
     private String phoneNumber;
     private String password;
-    private String displayname;
+    private String displayName;
     private String gender;
     private String email;
     private String bio;
     private int countryId;
-    private String userpicture;
+    private String userPicture;
     private LocalDate birthDate;
     private int userStatusId;
 
     public UserEntity() {
     }
 
-    public UserEntity(String phoneNumber, String password, String displayname, String gender, String email, String bio, int countryId, String userpicture, LocalDate birthDate, int userStatusId) {
+    public UserEntity(String phoneNumber, String password, String displayName, String gender, String email, String bio, int countryId, String userPicture, LocalDate birthDate, int userStatusId) {
         this.phoneNumber = phoneNumber;
         this.password = password;
-        this.displayname = displayname;
+        this.displayName = displayName;
         this.gender = gender;
         this.email = email;
         this.bio = bio;
         this.countryId = countryId;
-        this.userpicture = userpicture;
+        this.userPicture = userPicture;
         this.birthDate = birthDate;
         this.userStatusId = userStatusId;
     }
@@ -46,12 +46,12 @@ public class UserEntity {
         this.password = password;
     }
 
-    public String getDisplayname() {
-        return displayname;
+    public String getDisplayName() {
+        return displayName;
     }
 
-    public void setDisplayname(String displayname) {
-        this.displayname = displayname;
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     public String getGender() {
@@ -86,12 +86,12 @@ public class UserEntity {
         this.countryId = countryId;
     }
 
-    public String getUserpicture() {
-        return userpicture;
+    public String getUserPicture() {
+        return userPicture;
     }
 
-    public void setUserpicture(String userpicture) {
-        this.userpicture = userpicture;
+    public void setUserPicture(String userPicture) {
+        this.userPicture = userPicture;
     }
 
     public LocalDate getBirthDate() {

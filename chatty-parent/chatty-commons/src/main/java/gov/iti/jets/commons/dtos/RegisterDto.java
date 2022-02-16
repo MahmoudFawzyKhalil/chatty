@@ -25,21 +25,21 @@ public class RegisterDto implements Serializable {
     private LocalDate birthDate;
     @NotNull
     //ask
-    private String country;
+    private int countryId;
     @NotNull
     private String gender;
-    @Max(100)
+    @Size(min = 0, max = 100)
     private String bio;
     //ask
     private String profilePicture;
 
-    public RegisterDto(String phoneNumber, String displayName, String password, String email, LocalDate birthDate, String country, String gender, String bio, String profilePicture) {
+    public RegisterDto(String phoneNumber, String displayName, String password, String email, LocalDate birthDate, int countryId, String gender, String bio, String profilePicture) {
         this.phoneNumber = phoneNumber;
         this.displayName = displayName;
         this.password = password;
         this.email = email;
         this.birthDate = birthDate;
-        this.country = country;
+        this.countryId = countryId;
         this.gender = gender;
         this.bio = bio;
         this.profilePicture = profilePicture;
@@ -86,12 +86,12 @@ public class RegisterDto implements Serializable {
         this.birthDate = birthDate;
     }
 
-    public String getCountry() {
-        return country;
+    public int getCountryId() {
+        return countryId;
     }
 
-    public void setCountry(String country) {
-        this.country = country;
+    public void setCountryId(int countryId) {
+        this.countryId = countryId;
     }
 
     public String getGender() {

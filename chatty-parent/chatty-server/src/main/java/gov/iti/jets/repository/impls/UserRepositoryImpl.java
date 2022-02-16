@@ -8,15 +8,6 @@ import java.sql.*;
 import java.util.Optional;
 
 public class UserRepositoryImpl implements UserRepository {
-    /*
-    private static final UserRepositoryImpl userRepository = new UserRepositoryImpl();
-    private UserRepositoryImpl(){
-
-    }
-    public static UserRepositoryImpl getInstance(){
-        return userRepository;
-    }
-    */
     @Override
     public boolean isFoundByPhoneNumberAndPassword(String phoneNumber, String password) {
         try (Connection connection = ConnectionPool.getConnection();
@@ -33,29 +24,29 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public boolean isRegistered(UserEntity userEntity) {
-    if(!(isFoundByPhoneNumber(userEntity.getPhoneNumber()))){
-        try (Connection connection = ConnectionPool.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement("insert into users (phone_number, display_name,gender, email,picture, bio, user_password, birth_date,country_id, user_status_id) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ")) {
-            preparedStatement.setString(1, userEntity.getPhoneNumber());
-            preparedStatement.setString(2, userEntity.getDisplayname());
-            preparedStatement.setString(3, userEntity.getGender());
-            preparedStatement.setString(4, userEntity.getEmail());
-            preparedStatement.setString(5, userEntity.getUserpicture());
-            preparedStatement.setString(6, userEntity.getBio());
-            preparedStatement.setString(7, userEntity.getPassword());
-            preparedStatement.setDate(8, Date.valueOf(userEntity.getBirthDate()));
-            preparedStatement.setInt(9, userEntity.getCountryId());
-            preparedStatement.setInt(10, userEntity.getUserStatusId());
-            int resultSet = preparedStatement.executeUpdate();
-            if(resultSet == 1){
-                return true;
-            }
+    public boolean addUser(UserEntity userEntity) {
+        if (!(isFoundByPhoneNumber(userEntity.getPhoneNumber()))) {
+            try (Connection connection = ConnectionPool.getConnection();
+                 PreparedStatement preparedStatement = connection.prepareStatement("insert into users (phone_number, display_name,gender, email,picture, bio, user_password, birth_date,country_id) values(?, ?, ?, ?, ?, ?, ?, ?, ?) ")) {
+                preparedStatement.setString(1, userEntity.getPhoneNumber());
+                preparedStatement.setString(2, userEntity.getDisplayName());
+                preparedStatement.setString(3, userEntity.getGender());
+                preparedStatement.setString(4, userEntity.getEmail());
+                preparedStatement.setString(5, userEntity.getUserPicture());
+                preparedStatement.setString(6, userEntity.getBio());
+                preparedStatement.setString(7, userEntity.getPassword());
+                preparedStatement.setDate(8, Date.valueOf(userEntity.getBirthDate()));
+                preparedStatement.setInt(9, 1);//todo //////////////////////////////////////////////////////////////
+                int resultSet = preparedStatement.executeUpdate();
+                System.out.println(resultSet);
+                if (resultSet == 1) {
+                    return true;
+                }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
-    }
         return false;
     }
 
@@ -67,13 +58,13 @@ public class UserRepositoryImpl implements UserRepository {
              PreparedStatement preparedStatement = connection.prepareStatement("select phone_number, display_name,gender, email,picture, bio, user_password, birth_date,country_id, user_status_id from users where phone_number = ?")) {
             preparedStatement.setString(1, phoneNumber);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()){
+            if (resultSet.next()) {
                 UserEntity userEntity = new UserEntity();
                 userEntity.setPhoneNumber(resultSet.getString("phone_number"));
-                userEntity.setDisplayname(resultSet.getString("display_name"));
+                userEntity.setDisplayName(resultSet.getString("display_name"));
                 userEntity.setGender(resultSet.getString("gender"));
                 userEntity.setEmail(resultSet.getString("email"));
-                userEntity.setUserpicture(resultSet.getString("picture"));
+                userEntity.setUserPicture(resultSet.getString("picture"));
                 userEntity.setBio(resultSet.getString("bio"));
                 userEntity.setPassword(resultSet.getString("user_password"));
                 userEntity.setBirthDate(resultSet.getDate("birth_date").toLocalDate());

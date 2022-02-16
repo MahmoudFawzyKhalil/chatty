@@ -14,7 +14,7 @@ CREATE TABLE users(
     user_password VARCHAR(250) NOT NULL,
     birth_date DATE NOT NULL,
     country_id INT NOT NULL,
-    user_status_id INT NOT NULL
+    user_status_id INT NOT NULL default 1
 );
 
 CREATE TABLE countries(
