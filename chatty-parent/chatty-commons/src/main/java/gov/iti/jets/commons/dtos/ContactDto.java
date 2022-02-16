@@ -19,7 +19,7 @@ public class ContactDto implements Serializable {
         this.phoneNumber = phoneNumber;
         this.displayName = displayName;
 
-        ValidationUtil.validate(this);
+        ValidationUtil.getInstance().validate(this);
     }
 
     public String getPhoneNumber() {

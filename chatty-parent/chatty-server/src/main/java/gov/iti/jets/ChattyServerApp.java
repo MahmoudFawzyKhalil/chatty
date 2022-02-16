@@ -23,7 +23,7 @@ public class ChattyServerApp extends Application {
 
     @Override
     public void stop() throws Exception {
-        rmiManager.closing();
+        rmiManager.close();
     }
 
     public static void main(String[] args) {

@@ -104,9 +104,7 @@ public class LoginController implements Initializable {
                 //TODO
                 //wrong
             }
-        } catch (NotBoundException e) {
-            e.printStackTrace();
-        } catch (RemoteException e) {
+        } catch (NotBoundException | RemoteException e) {
             e.printStackTrace();
         }
     }
