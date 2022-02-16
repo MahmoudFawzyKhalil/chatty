@@ -20,7 +20,7 @@ public class LoginDto implements Serializable {
         this.phoneNumber = phoneNumber;
         this.password = password;
 
-        ValidationUtil.validate(this);
+        ValidationUtil.getInstance().validate(this);
     }
 
     public String getPhoneNumber() {
