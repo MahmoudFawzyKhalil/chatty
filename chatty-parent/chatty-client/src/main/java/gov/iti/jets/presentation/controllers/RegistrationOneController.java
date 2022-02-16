@@ -49,6 +49,7 @@ public class RegistrationOneController implements Initializable {
         validateNameTextField();
         validatePasswordTextField();
         validateConfirmPasswordTextField();
+        addEnableButtonValidationListener();
     }
 
     @FXML
@@ -70,10 +71,6 @@ public class RegistrationOneController implements Initializable {
                     if (!UiValidator.PHONE_NUMBER_PATTERN.matcher( phoneNumber ).matches()) {
                         c.error( "Please enter a valid 11 digit phone number." );
                         registerButton.setDisable( true );
-                    } else {
-                        if (!validator.containsErrors()){
-                            registerButton.setDisable( false );
-                        }
                     }
                 } )
                 .decorates( phoneNumberTextField )
@@ -85,13 +82,9 @@ public class RegistrationOneController implements Initializable {
                 .dependsOn( "userName", nameTextField.textProperty() )
                 .withMethod( c -> {
                     String userName = c.get( "userName" );
-                    if (!UiValidator.USER_NAME_PATTERN.matcher( userName ).matches()) {
-                        c.error( "Please enter a valid name between 3 and 12 digit." );
+                    if (!UiValidator.USER_NAME_PATTERN.matcher( userName ).matches() || userName.length() > 12 || userName.length() < 3) {
+                        c.error( "Please enter a valid name between 3 and 12 characters long." );
                         registerButton.setDisable( true );
-                    } else {
-                        if (!validator.containsErrors()){
-                            registerButton.setDisable( false );
-                        }
                     }
                 } )
                 .decorates( nameTextField )
@@ -106,10 +99,6 @@ public class RegistrationOneController implements Initializable {
                     if (password.length() < 8 || password.length() > 20) {
                         c.error( "Please enter a valid password between 8 and 20 characters long." );
                         registerButton.setDisable( true );
-                    } else {
-                        if (!validator.containsErrors()){
-                            registerButton.setDisable( false );
-                        }
                     }
                 } )
                 .decorates( passwordTextField )
@@ -124,17 +113,19 @@ public class RegistrationOneController implements Initializable {
                     String password = c.get( "password" );
                     String confirmPassword = c.get( "confirmPassword" );
                     if (!confirmPassword.equals(password)) {
-                        c.error( "confirmed password must be the same as password" );
+                        c.error( "Passwords must match." );
                         registerButton.setDisable( true );
-                    } else {
-                        if (!validator.containsErrors()){
-                            registerButton.setDisable( false );
-                        }
                     }
                 } )
                 .decorates( confirmPasswordTextField )
                 .immediate();
     }
 
-
+    private void addEnableButtonValidationListener() {
+        validator.containsErrorsProperty().addListener( e -> {
+            if (!validator.containsErrors()){
+                registerButton.setDisable( false );
+            }
+        } );
+    }
 }
