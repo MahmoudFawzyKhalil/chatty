@@ -43,7 +43,7 @@ public class RegisterDto implements Serializable {
         this.gender = gender;
         this.bio = bio;
         this.profilePicture = profilePicture;
-        ValidationUtil.validate(this);
+        ValidationUtil.getInstance().validate(this);
     }
 
     public String getPhoneNumber() {
