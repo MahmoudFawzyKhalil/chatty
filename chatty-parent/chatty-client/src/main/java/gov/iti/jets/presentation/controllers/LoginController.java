@@ -100,11 +100,11 @@ public class LoginController implements Initializable {
             boolean isAuthenticated = loginDao.isAuthenticated(loginDto);
             if(isAuthenticated){
                 stageCoordinator.switchToMainScene();
-            }else{
-                //TODO
-                //wrong
+            } else {
+                stageCoordinator.showErrorNotification( "Invalid phone number or password." );
             }
         } catch (NotBoundException | RemoteException e) {
+            stageCoordinator.showErrorNotification( "Failed to connect to server. Please try again later." );
             e.printStackTrace();
         }
     }

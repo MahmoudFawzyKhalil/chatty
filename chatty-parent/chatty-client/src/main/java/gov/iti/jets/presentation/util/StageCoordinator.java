@@ -190,11 +190,20 @@ public class StageCoordinator {
         svgPath.setContent( "M16.5,22.5h3v3h-3Zm0-12h3v9h-3ZM17.985,3A15,15,0,1,0,33,18,14.993,14.993,0,0,0,17.985,3ZM18,30A12,12,0,1,1,30,18,12,12,0,0,1,18,30Z" );
         svgPath.setScaleX( 0.7 );
         svgPath.setScaleY( 0.7 );
+
+        Notifications thresholdNotification = Notifications.create()
+                .text(message)
+                .graphic( svgPath )
+                .owner( primaryStage )
+                .position( Pos.CENTER )
+                .hideAfter( Duration.INDEFINITE );
+
         Notifications.create()
                 .text(message)
                 .graphic( svgPath )
                 .owner( primaryStage )
                 .position( Pos.CENTER )
+                .threshold( 1, thresholdNotification )
                 .hideAfter( Duration.INDEFINITE )
                 .show();
     }
@@ -203,6 +212,7 @@ public class StageCoordinator {
         Notifications.create()
                 .title(senderName)
                 .text(message)
+                .hideAfter( Duration.seconds( 3 ) )
                 .hideCloseButton()
                 .show();
     }

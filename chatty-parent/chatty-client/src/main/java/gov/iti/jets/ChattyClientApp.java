@@ -1,8 +1,5 @@
 package gov.iti.jets;
 
-import gov.iti.jets.commons.dtos.ContactDto;
-import gov.iti.jets.presentation.models.ContactModel;
-import gov.iti.jets.presentation.models.mappers.ContactMapper;
 import gov.iti.jets.presentation.util.StageCoordinator;
 import gov.iti.jets.services.util.DaoFactory;
 import javafx.application.Application;
@@ -17,9 +14,6 @@ public class ChattyClientApp extends Application {
     public void start( Stage primaryStage ) {
         stageCoordinator.initStage( primaryStage );
         stageCoordinator.switchToLoginScene();
-
-        ContactModel contactModel = ContactMapper.INSTANCE.contactDtoToModel( new ContactDto( "01117950455", "Osama" ) );
-        System.out.println( contactModel );
 
         primaryStage.setWidth( 960 );
         primaryStage.setHeight( 530 );
