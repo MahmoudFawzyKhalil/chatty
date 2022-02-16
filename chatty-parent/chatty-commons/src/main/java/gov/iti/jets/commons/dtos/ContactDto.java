@@ -4,7 +4,9 @@ import gov.iti.jets.commons.util.ValidationUtil;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-public class ContactDto {
+import java.io.Serializable;
+
+public class ContactDto implements Serializable {
 
     @NotNull
     @Size(min = 11, max = 11)
@@ -13,18 +15,18 @@ public class ContactDto {
     @NotNull
     private String displayName;
 
-    public ContactDto( String phoneNumber, String displayName ) {
+    public ContactDto(String phoneNumber, String displayName) {
         this.phoneNumber = phoneNumber;
         this.displayName = displayName;
 
-        ValidationUtil.getInstance().validate( this );
+        ValidationUtil.validate(this);
     }
 
     public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber( String phoneNumber ) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
@@ -32,7 +34,7 @@ public class ContactDto {
         return displayName;
     }
 
-    public void setDisplayName( String displayName ) {
+    public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
 }

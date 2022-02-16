@@ -3,7 +3,7 @@ package gov.iti.jets.presentation.controllers;
 import gov.iti.jets.presentation.models.UserModel;
 import gov.iti.jets.presentation.util.ModelFactory;
 import gov.iti.jets.presentation.util.StageCoordinator;
-import gov.iti.jets.services.util.ServiceFactory;
+import gov.iti.jets.services.util.DaoFactory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -16,7 +16,7 @@ import java.util.ResourceBundle;
 public class RegistrationOneController implements Initializable {
     private final StageCoordinator stageCoordinator = StageCoordinator.getInstance();
     private final ModelFactory modelFactory = ModelFactory.getInstance();
-    private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
+    private final DaoFactory daoFactory = DaoFactory.getInstance();
     private UserModel userModel;
 
     @FXML
