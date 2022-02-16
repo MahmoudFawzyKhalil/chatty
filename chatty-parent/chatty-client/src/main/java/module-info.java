@@ -11,7 +11,7 @@ module chatty.client {
     // Utils
     // MapStruct
     requires org.mapstruct;
-    exports gov.iti.jets.services.util.mappers to org.mapstruct;
+    exports gov.iti.jets.presentation.models.mappers to org.mapstruct;
 
     // Hibernate Validator
     // COULD BE USELESS
@@ -23,6 +23,7 @@ module chatty.client {
 
     // Exports, Opens
     exports gov.iti.jets;
+    exports gov.iti.jets.presentation.models;
     opens gov.iti.jets.presentation.controllers to javafx.fxml;
     opens gov.iti.jets.presentation.customcontrols to javafx.fxml;
 }
