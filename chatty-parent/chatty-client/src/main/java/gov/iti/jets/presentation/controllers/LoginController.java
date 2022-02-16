@@ -4,7 +4,7 @@ import gov.iti.jets.presentation.models.UserModel;
 import gov.iti.jets.presentation.util.ModelFactory;
 import gov.iti.jets.presentation.util.StageCoordinator;
 import gov.iti.jets.presentation.util.UiValidator;
-import gov.iti.jets.services.LoginService;
+import gov.iti.jets.services.LoginDao;
 import gov.iti.jets.services.util.ServiceFactory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -23,7 +23,7 @@ public class LoginController implements Initializable {
     private final StageCoordinator stageCoordinator = StageCoordinator.getInstance();
     private final ModelFactory modelFactory = ModelFactory.getInstance();
     private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
-    private final LoginService loginService = serviceFactory.getLoginService();
+    private final LoginDao loginService = serviceFactory.getLoginService();
 
     private UserModel userModel;
 

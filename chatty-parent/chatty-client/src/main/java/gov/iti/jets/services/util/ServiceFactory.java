@@ -1,12 +1,12 @@
 package gov.iti.jets.services.util;
 
 import gov.iti.jets.services.*;
-import gov.iti.jets.services.impls.*;
+import gov.iti.jets.services.impls.LoginDaoImpl;
 
 public class ServiceFactory {
     private static final ServiceFactory serviceFactory = new ServiceFactory();
     
-    private static final LoginService loginService = new LoginServiceImpl();
+    private static final LoginDao loginService = new LoginDaoImpl();
 
     private ServiceFactory(){
 
@@ -16,7 +16,7 @@ public class ServiceFactory {
         return serviceFactory;
     }
 
-    public LoginService getLoginService(){
+    public LoginDao getLoginService(){
         return loginService;
     }
 }
