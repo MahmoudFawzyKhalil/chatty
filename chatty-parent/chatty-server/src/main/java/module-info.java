@@ -23,7 +23,6 @@ module chatty.server {
     requires jakarta.validation;
     requires org.hibernate.validator;
     requires org.hibernate.validator.cdi;
-    opens gov.iti.jets.services.dtos to org.hibernate.validator;
 
     // Exports, Opens
     exports gov.iti.jets;
