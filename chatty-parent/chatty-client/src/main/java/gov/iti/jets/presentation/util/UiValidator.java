@@ -18,6 +18,8 @@ public class UiValidator {
     private static final UiValidator INSTANCE = new UiValidator();
 
     public static Pattern PHONE_NUMBER_PATTERN = Pattern.compile( "[0-9]{11}" );
+    public static Pattern USER_NAME_PATTERN = Pattern.compile( "[a-zA-Z0-9]+" );
+
 
     private UiValidator() {
         DefaultDecoration.setFactory( this::createDecorationNode );

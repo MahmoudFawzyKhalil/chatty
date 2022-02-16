@@ -46,6 +46,7 @@ public class LoginController implements Initializable {
     public void initialize( URL location, ResourceBundle resources ) {
         validatePhoneNumberTextField();
         validatePasswordTextField();
+        addEnableButtonValidationListener();
     }
 
     private void validatePasswordTextField() {
@@ -56,10 +57,6 @@ public class LoginController implements Initializable {
                     if (password.length() < 8 || password.length() > 20) {
                         c.error( "Please enter a valid password between 8 and 20 characters long." );
                         loginButton.setDisable( true );
-                    } else {
-                        if (!validator.containsErrors()){
-                            loginButton.setDisable( false );
-                        }
                     }
                 } )
                 .decorates( passwordTextField )
@@ -74,14 +71,18 @@ public class LoginController implements Initializable {
                     if (!UiValidator.PHONE_NUMBER_PATTERN.matcher( phoneNumber ).matches()) {
                         c.error( "Please enter a valid 11 digit phone number." );
                         loginButton.setDisable( true );
-                    } else {
-                        if (!validator.containsErrors()){
-                            loginButton.setDisable( false );
-                        }
                     }
                 } )
                 .decorates( phoneNumberTextField )
                 .immediate();
+    }
+
+    private void addEnableButtonValidationListener() {
+        validator.containsErrorsProperty().addListener( e -> {
+            if (!validator.containsErrors()){
+                loginButton.setDisable( false );
+            }
+        } );
     }
 
     @FXML
