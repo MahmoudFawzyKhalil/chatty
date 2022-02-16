@@ -5,3 +5,27 @@
 	-main-light: #EEEEEE;
 	-fx-font-family: 'Roboto', 'Helvetica';
 }
+
+.notification-bar>.pane {
+    -fx-background-color: rgba(51, 66, 87, 0.95);
+    -fx-padding: 20;
+    -fx-background-insets: 1;
+/*    -fx-border-width: 1;
+    -fx-border-color: rgba(255, 255, 255, 0.2);*/
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0.5, 0.0, 0.0);
+    -fx-max-width: 200;
+}
+
+.notification-bar>.pane .title {
+    -fx-font-size: 20px;
+    -fx-text-fill: -main-light;
+    -fx-font-weight: bold;
+}
+
+.notification-bar>.pane .label {
+    -fx-font-size: 16px;
+    -fx-text-fill: -main-light;
+    -fx-alignment: top-left;
+    -fx-wrap-text: true;
+    -fx-label-padding: 5;
+}
