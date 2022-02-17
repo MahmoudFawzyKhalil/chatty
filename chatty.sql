@@ -14,7 +14,7 @@ CREATE TABLE users(
     user_password VARCHAR(250) NOT NULL,
     birth_date DATE NOT NULL,
     country_id INT NOT NULL,
-    user_status_id INT NOT NULL
+    user_status_id INT NOT NULL DEFAULT 1
 );
 
 CREATE TABLE countries(
@@ -77,11 +77,11 @@ INSERT INTO `chatty`.`user_status` (`user_status_id`, `user_status_name`) VALUES
 INSERT INTO `chatty`.`user_status` (`user_status_id`, `user_status_name`) VALUES ('2', 'Away');
 INSERT INTO `chatty`.`user_status` (`user_status_id`, `user_status_name`) VALUES ('3', 'Busy');
 
-INSERT INTO `chatty`.`users` (`phone_number`, `display_name`, `gender`, `email`, `bio`, `user_password`, `birth_date`, `country_id`, `user_status_id`) VALUES ('11111111111', 'Mahmoud123', 'M', 'mahmoudfawzykhalil98@gmail.com', 'Amir al a7zan', '123456', '1998-01-21', '1', '1');
-INSERT INTO `chatty`.`users` (`phone_number`, `display_name`, `gender`, `email`, `bio`, `user_password`, `birth_date`, `country_id`, `user_status_id`) VALUES ('22222222222', 'Osama123', 'M', 'osama@gmail.com', 'soltan el a7zan', '123456', '1999-05-06', '2', '2');
-INSERT INTO `chatty`.`users` (`phone_number`, `display_name`, `gender`, `email`, `bio`, `user_password`, `birth_date`, `country_id`, `user_status_id`) VALUES ('33333333333', 'Salma123', 'F', 'salma.fayez@gmail.com', 'eh', '123456', '2001-07-27', '1', '3');
-INSERT INTO `chatty`.`users` (`phone_number`, `display_name`, `gender`, `email`, `bio`, `user_password`, `birth_date`, `country_id`, `user_status_id`) VALUES ('44444444444', 'Christine123', 'F', 'christine123@gmail.com', 'ya 3m ektb ay 7aga', '123456', '1950-02-11', '2', '1');
-INSERT INTO `chatty`.`users` (`phone_number`, `display_name`, `gender`, `email`, `bio`, `user_password`, `birth_date`, `country_id`, `user_status_id`) VALUES ('55555555555', 'Hafsa123', 'F', 'hafsa@gmail.com', 'ay 7aga', '123456', '1977-11-22', '1', '1');
+INSERT INTO `chatty`.`users` (`phone_number`, `display_name`, `gender`, `email`, `bio`, `user_password`, `birth_date`, `country_id`, `user_status_id`) VALUES ('11111111111', 'Mahmoud123', 'M', 'mahmoudfawzykhalil98@gmail.com', 'Amir al a7zan', '12345678', '1998-01-21', '1', '1');
+INSERT INTO `chatty`.`users` (`phone_number`, `display_name`, `gender`, `email`, `bio`, `user_password`, `birth_date`, `country_id`, `user_status_id`) VALUES ('22222222222', 'Osama123', 'M', 'osama@gmail.com', 'soltan el a7zan', '12345678', '1999-05-06', '2', '2');
+INSERT INTO `chatty`.`users` (`phone_number`, `display_name`, `gender`, `email`, `bio`, `user_password`, `birth_date`, `country_id`, `user_status_id`) VALUES ('33333333333', 'Salma123', 'F', 'salma.fayez@gmail.com', 'eh', '12345678', '2001-07-27', '1', '3');
+INSERT INTO `chatty`.`users` (`phone_number`, `display_name`, `gender`, `email`, `bio`, `user_password`, `birth_date`, `country_id`, `user_status_id`) VALUES ('44444444444', 'Christine123', 'F', 'christine123@gmail.com', 'ya 3m ektb ay 7aga', '12345678', '1950-02-11', '2', '1');
+INSERT INTO `chatty`.`users` (`phone_number`, `display_name`, `gender`, `email`, `bio`, `user_password`, `birth_date`, `country_id`, `user_status_id`) VALUES ('55555555555', 'Hafsa123', 'F', 'hafsa@gmail.com', 'ay 7aga', '12345678', '1977-11-22', '1', '1');
 
 INSERT INTO `chatty`.`contacts` (`contact_phone_number`, `contactee_phone_number`) VALUES ('11111111111', '22222222222');
 INSERT INTO `chatty`.`contacts` (`contact_phone_number`, `contactee_phone_number`) VALUES ('33333333333', '44444444444');
