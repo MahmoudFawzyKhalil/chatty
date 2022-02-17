@@ -10,7 +10,7 @@ import javafx.util.Callback;
 public class GroupChatModel {
     private IntegerProperty groupChatId = new SimpleIntegerProperty();
     private StringProperty groupChatName = new SimpleStringProperty();
-    private ObjectProperty<Image> groupChatPicture = new SimpleObjectProperty<>( new Image( getClass().getResource( "/images/group.png" ).toString() ) );
+    private ObjectProperty<Image> groupChatPicture = new SimpleObjectProperty<>( UserModel.DEFAULT_IMAGE );
     private ListProperty<ContactModel> groupMembersList = new SimpleListProperty<>(FXCollections.observableArrayList(ContactModel.extractor()));
     private ListProperty<MessageModel> messsages = new SimpleListProperty<>(FXCollections.observableArrayList( MessageModel.extractor() ));
 

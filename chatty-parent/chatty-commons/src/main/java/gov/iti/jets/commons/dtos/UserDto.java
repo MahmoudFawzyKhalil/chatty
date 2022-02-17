@@ -1,5 +1,6 @@
 package gov.iti.jets.commons.dtos;
 
+import gov.iti.jets.commons.util.ValidationUtil;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
@@ -7,43 +8,42 @@ import jakarta.validation.constraints.Size;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserDto implements Serializable {
-    /* ListProperty<ContactModel> contacts = new SimpleListProperty<>( FXCollections.observableArrayList( ContactModel.extractor() ) );
-    private ListProperty<GroupChatModel> groupChats = new SimpleListProperty<>( FXCollections.observableArrayList( GroupChatModel.extractor() ) );
-    private ListProperty<InvitationModel> invitations = new SimpleListProperty<>( FXCollections.observableArrayList( InvitationModel.extractor() ) );
-    private final StringProperty currentlyChattingWith = new SimpleStringProperty();
-     */
     @NotNull
     @Size(min = 11, max = 11)
     private String phoneNumber;
 
     @NotNull
-    @Size(min=3,max=20)
+    @Size(min = 3, max = 20)
     private String displayName;
 
     @NotNull
     private String gender;
-    //TODO
-    //may be null
-    private String profilePicture;
 
     @Email
     private String email;
 
-    private String bio;
-
     @Past
     private LocalDate birthDate;
-    @NotNull
-    private String country;
-    //TODO
-    //may the user doesn't have any contatct or groups
-    private List<ContactDto> contactsList;
-    private List<GroupChatDto> groupChatList;
 
-    public UserDto(String phoneNumber, String displayName, String gender, String profilePicture, String email, String bio, LocalDate birthDate, String country, List<ContactDto> contactsList, List<GroupChatDto> groupChatList) {
+    @NotNull
+    private CountryDto country;
+
+    @NotNull
+    private UserStatusDto currentStatus;
+
+    private String profilePicture;
+    private String bio;
+    private List<ContactDto> contactsList = new ArrayList<>();
+    private List<GroupChatDto> groupChatList = new ArrayList<>();
+    private List<InvitationDto> invitationsList = new ArrayList<>();
+
+    public UserDto( String phoneNumber, String displayName, String gender, String profilePicture, String email, String bio,
+                    LocalDate birthDate, CountryDto country, UserStatusDto currentStatus,
+                    List<ContactDto> contactsList, List<GroupChatDto> groupChatList, List<InvitationDto> invitationsList ) {
         this.phoneNumber = phoneNumber;
         this.displayName = displayName;
         this.gender = gender;
@@ -52,15 +52,19 @@ public class UserDto implements Serializable {
         this.bio = bio;
         this.birthDate = birthDate;
         this.country = country;
+        this.currentStatus = currentStatus;
         this.contactsList = contactsList;
         this.groupChatList = groupChatList;
+        this.invitationsList = invitationsList;
+
+        ValidationUtil.getInstance().validate( this );
     }
 
     public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
+    public void setPhoneNumber( String phoneNumber ) {
         this.phoneNumber = phoneNumber;
     }
 
@@ -68,7 +72,7 @@ public class UserDto implements Serializable {
         return displayName;
     }
 
-    public void setDisplayName(String displayName) {
+    public void setDisplayName( String displayName ) {
         this.displayName = displayName;
     }
 
@@ -76,7 +80,7 @@ public class UserDto implements Serializable {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender( String gender ) {
         this.gender = gender;
     }
 
@@ -84,7 +88,7 @@ public class UserDto implements Serializable {
         return profilePicture;
     }
 
-    public void setProfilePicture(String profilePicture) {
+    public void setProfilePicture( String profilePicture ) {
         this.profilePicture = profilePicture;
     }
 
@@ -92,7 +96,7 @@ public class UserDto implements Serializable {
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail( String email ) {
         this.email = email;
     }
 
@@ -100,7 +104,7 @@ public class UserDto implements Serializable {
         return bio;
     }
 
-    public void setBio(String bio) {
+    public void setBio( String bio ) {
         this.bio = bio;
     }
 
@@ -108,23 +112,31 @@ public class UserDto implements Serializable {
         return birthDate;
     }
 
-    public void setBirthDate(LocalDate birthDate) {
+    public void setBirthDate( LocalDate birthDate ) {
         this.birthDate = birthDate;
     }
 
-    public String getCountry() {
+    public CountryDto getCountry() {
         return country;
     }
 
-    public void setCountry(String country) {
+    public void setCountry( CountryDto country ) {
         this.country = country;
+    }
+
+    public UserStatusDto getCurrentStatus() {
+        return currentStatus;
+    }
+
+    public void setCurrentStatus( UserStatusDto currentStatus ) {
+        this.currentStatus = currentStatus;
     }
 
     public List<ContactDto> getContactsList() {
         return contactsList;
     }
 
-    public void setContactsList(List<ContactDto> contactsList) {
+    public void setContactsList( List<ContactDto> contactsList ) {
         this.contactsList = contactsList;
     }
 
@@ -132,7 +144,15 @@ public class UserDto implements Serializable {
         return groupChatList;
     }
 
-    public void setGroupChatList(List<GroupChatDto> groupChatList) {
+    public void setGroupChatList( List<GroupChatDto> groupChatList ) {
         this.groupChatList = groupChatList;
+    }
+
+    public List<InvitationDto> getInvitationsList() {
+        return invitationsList;
+    }
+
+    public void setInvitationsList( List<InvitationDto> invitationsList ) {
+        this.invitationsList = invitationsList;
     }
 }

@@ -5,33 +5,27 @@ import gov.iti.jets.commons.callback.Client;
 import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class Clients {
     private static final Clients INSTANCE = new Clients();
-    private final Map<String, Client> clientsMap = new HashMap<>();
+    private final Map<String, Client> clientMap = new HashMap<>();
 
-    public static Clients getInstance(){
+    public static Clients getInstance() {
         return INSTANCE;
     }
 
-    public Client getClient(String phoneNUmber){
-        if(clientsMap.containsKey(phoneNUmber))
-            return clientsMap.get(phoneNUmber);
-        return null;
+    public Optional<Client> getClient( String phoneNumber ) {
+        return Optional.ofNullable( clientMap.get( phoneNumber ) );
     }
 
-    public void addClient(Client client) throws RemoteException {
-        String phoneNumber = client.getPhoneNumber();
-        if(!clientsMap.containsKey(phoneNumber)){
-            clientsMap.put(phoneNumber,client);
-        }
+    // We add the phone number as an argument to avoid having to make a remote call to the client just to get their phone number!
+    public void addClient( String phoneNumber, Client client ) {
+        clientMap.put( phoneNumber, client );
     }
 
-    public void removeClient(Client client) throws RemoteException{
-        String phoneNumber = client.getPhoneNumber();
-        if(clientsMap.containsValue(client)){
-            clientsMap.remove(phoneNumber,client);
-        }
+    public Optional<Client> removeClient( String phoneNumber, Client client ) throws RemoteException {
+        return Optional.ofNullable( clientMap.remove( phoneNumber ) );
     }
 
 }
