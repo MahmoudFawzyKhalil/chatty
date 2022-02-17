@@ -59,6 +59,37 @@
     -fx-underline: true;
 }
 
+.custom-combo-box {
+    -fx-background-color: -main-medium, -main-light, -main-light, -fx-body-color;
+    -fx-background-insets: 0 0 -1 0, 0, 1, 2;
+    -fx-background-radius: 3px, 3px, 2px, 1px;
+    -fx-text-fill: -main-dark;
+    -fx-alignment: CENTER;
+    -fx-content-display: LEFT;
+}
+
+
+
+.combo-box-popup .list-view .list-cell
+{
+    -fx-background-color: -main-light;
+}
+
+.combo-box-popup .list-view .list-cell:filled:selected, .combo-box-popup .list-view .list-cell:filled:selected:hover
+{
+    -fx-background: -main-dark;
+    -fx-background-color: -main-dark;
+    -fx-text-fill: -main-light;
+}
+
+.combo-box-popup .list-view .list-cell:filled:hover
+{
+    -fx-background-color: -main-medium;
+    -fx-text-fill: -main-light;
+}
+
+
+
 .date-picker .text-field {
     -fx-control-inner-background: -main-light;
     -fx-background-color:  -main-light;

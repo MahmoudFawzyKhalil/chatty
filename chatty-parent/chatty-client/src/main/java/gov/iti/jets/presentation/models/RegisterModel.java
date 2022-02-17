@@ -9,11 +9,13 @@ import javafx.scene.image.Image;
 import java.time.LocalDate;
 
 public class RegisterModel {
+    public static final CountryModel DEFAULT_COUNTRY_MODEL = new CountryModel(0, "Choose Country");
     private final Image defaultImage = new Image(getClass().getResource("/images/user.png").toString());
     private StringProperty phoneNumber = new SimpleStringProperty();
     private StringProperty password = new SimpleStringProperty();
+    private StringProperty confirmPassword = new SimpleStringProperty();
     private StringProperty displayName = new SimpleStringProperty();
-    private StringProperty gender = new SimpleStringProperty();
+    private StringProperty gender = new SimpleStringProperty("Male");
     private ObjectProperty<Image> profilePicture = new SimpleObjectProperty<>(defaultImage);
     private StringProperty email = new SimpleStringProperty();
     private StringProperty bio = new SimpleStringProperty();
@@ -37,14 +39,28 @@ public class RegisterModel {
     }
 
     public void clear() {
-        country.set(new CountryModel());
+        gender.set("Male");
+        country.set(DEFAULT_COUNTRY_MODEL);
         phoneNumber.set("");
         password.set("");
+        confirmPassword.set("");
         displayName.set("");
         gender.set("");
         profilePicture.set(defaultImage);
         email.set("");
         bio.set("");
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword.get();
+    }
+
+    public StringProperty confirmPasswordProperty() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword.set(confirmPassword);
     }
 
     public String getPassword() {

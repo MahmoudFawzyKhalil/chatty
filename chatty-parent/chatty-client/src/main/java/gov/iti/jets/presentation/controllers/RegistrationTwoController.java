@@ -13,7 +13,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.util.StringConverter;
@@ -37,14 +37,16 @@ public class RegistrationTwoController implements Initializable {
     @FXML
     private DatePicker birthDateDatePicker;
 
+
     @FXML
-    private ChoiceBox<CountryModel> countryChoiceBox;
+    private ComboBox<CountryModel> countryComboBox;
+
+    @FXML
+    private ComboBox<String> genderComboBox;
 
     @FXML
     private TextField emailTextField;
 
-    @FXML
-    private ChoiceBox<String> genderChoiceBox;
 
     private ObservableList<CountryModel> countryModels;
 
@@ -52,11 +54,13 @@ public class RegistrationTwoController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         loadCountries();
-        setCountryChoiceBoxConverter();
-        countryChoiceBox.setItems(countryModels);
+        setCountryComboBoxConverter();
+        countryComboBox.setItems(countryModels);
         emailTextField.textProperty().bindBidirectional(registerModel.emailProperty());
-        countryChoiceBox.valueProperty().bindBidirectional(registerModel.countryProperty());
-        genderChoiceBox.valueProperty().bindBidirectional(registerModel.genderProperty());
+        countryComboBox.valueProperty().bindBidirectional(registerModel.countryProperty());
+        genderComboBox.getItems().addAll("Male", "Female");
+        genderComboBox.valueProperty().bindBidirectional(registerModel.genderProperty());
+        genderComboBox.getSelectionModel().selectFirst();
         birthDateDatePicker.valueProperty().bindBidirectional(registerModel.birthDateProperty());
         bioTextField.textProperty().bindBidirectional(registerModel.bioProperty());
     }
@@ -71,18 +75,9 @@ public class RegistrationTwoController implements Initializable {
         }
     }
 
-    @FXML
-    void onPreviousButtonAction(ActionEvent event) {
-        stageCoordinator.switchToRegisterSceneOne();
-    }
+    private void setCountryComboBoxConverter() {
 
-    @FXML
-    void onNextButtonAction(ActionEvent event) {
-        stageCoordinator.switchToRegisterSceneThree();
-    }
-
-    private void setCountryChoiceBoxConverter() {
-        countryChoiceBox.setConverter(new StringConverter<>() {
+        countryComboBox.setConverter(new StringConverter<>() {
             @Override
             public String toString(CountryModel country) {
                 if (country == null) {
@@ -98,4 +93,16 @@ public class RegistrationTwoController implements Initializable {
             }
         });
     }
+
+    @FXML
+    void onPreviousButtonAction(ActionEvent event) {
+        stageCoordinator.switchToRegisterSceneOne();
+    }
+
+    @FXML
+    void onNextButtonAction(ActionEvent event) {
+        stageCoordinator.switchToRegisterSceneThree();
+    }
+
+
 }

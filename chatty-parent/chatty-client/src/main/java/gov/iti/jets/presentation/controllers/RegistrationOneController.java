@@ -42,6 +42,7 @@ public class RegistrationOneController implements Initializable {
         phoneNumberTextField.textProperty().bindBidirectional(registerModel.phoneNumberProperty());
         nameTextField.textProperty().bindBidirectional(registerModel.displayNameProperty());
         passwordTextField.textProperty().bindBidirectional(registerModel.passwordProperty());
+        confirmPasswordTextField.textProperty().bindBidirectional(registerModel.confirmPasswordProperty());
         validatePhoneNumberTextField();
         validateNameTextField();
         validatePasswordTextField();
