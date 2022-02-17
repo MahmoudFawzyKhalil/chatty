@@ -14,6 +14,9 @@ module chatty.server {
     requires mysql.connector.java;
 
     // Utils
+    requires logback.core;
+    requires logback.classic;
+
     // MapStruct
     requires org.mapstruct;
     requires org.slf4j;

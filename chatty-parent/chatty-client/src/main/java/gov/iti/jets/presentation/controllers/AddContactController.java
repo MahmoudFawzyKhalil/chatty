@@ -21,14 +21,16 @@ public class AddContactController implements Initializable {
     @FXML
     private VBox contactsVBox;
 
+
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         contactsVBox.getChildren().add(new AddContactTextField(contactsVBox));
     }
 
+
     @FXML
     void onAddButtonAction(ActionEvent event) {
-
     }
 
     @FXML

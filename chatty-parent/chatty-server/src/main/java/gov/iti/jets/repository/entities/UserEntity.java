@@ -9,21 +9,22 @@ public class UserEntity {
     private String gender;
     private String email;
     private String bio;
-    private CountryEntity country;
+    private int countryId;
     private String userPicture;
     private LocalDate birthDate;
     private int userStatusId;
-    public  UserEntity(){
 
+    public UserEntity() {
     }
-    public UserEntity(String phoneNumber, String password, String displayName, String gender, String email, String bio, CountryEntity country, String userPicture, LocalDate birthDate, int userStatusId) {
+
+    public UserEntity(String phoneNumber, String password, String displayName, String gender, String email, String bio, int countryId, String userPicture, LocalDate birthDate, int userStatusId) {
         this.phoneNumber = phoneNumber;
         this.password = password;
         this.displayName = displayName;
         this.gender = gender;
         this.email = email;
         this.bio = bio;
-        this.country = country;
+        this.countryId = countryId;
         this.userPicture = userPicture;
         this.birthDate = birthDate;
         this.userStatusId = userStatusId;
@@ -77,12 +78,12 @@ public class UserEntity {
         this.bio = bio;
     }
 
-    public CountryEntity getCountry() {
-        return country;
+    public int getCountryId() {
+        return countryId;
     }
 
-    public void setCountry(CountryEntity country) {
-        this.country = country;
+    public void setCountryId(int countryId) {
+        this.countryId = countryId;
     }
 
     public String getUserPicture() {

@@ -13,7 +13,7 @@ public class UserStatusModel {
     public static final UserStatusModel AWAY = new UserStatusModel(2, "Away");
     public static final UserStatusModel BUSY = new UserStatusModel(3, "Busy");
 
-    private UserStatusModel(int userStatusId, String userStatusName){
+    public UserStatusModel(int userStatusId, String userStatusName){
         this.userStatusId.set(userStatusId);
         this.userStatusName.set(userStatusName);
     }

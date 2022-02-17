@@ -8,12 +8,11 @@ import javafx.scene.image.Image;
 import javafx.util.Callback;
 
 public class GroupChatModel {
-    private Image defaultImage = new Image(getClass().getResource("/images/user.png").toString());
     private IntegerProperty groupChatId = new SimpleIntegerProperty();
     private StringProperty groupChatName = new SimpleStringProperty();
-    private ObjectProperty<Image> groupChatPicture = new SimpleObjectProperty<>(defaultImage);
+    private ObjectProperty<Image> groupChatPicture = new SimpleObjectProperty<>( UserModel.DEFAULT_IMAGE );
     private ListProperty<ContactModel> groupMembersList = new SimpleListProperty<>(FXCollections.observableArrayList(ContactModel.extractor()));
-    private ListProperty<MessageModel> messsages = new SimpleListProperty<>(FXCollections.observableArrayList(MessageModel.extractor()));
+    private ListProperty<MessageModel> messsages = new SimpleListProperty<>(FXCollections.observableArrayList( MessageModel.extractor() ));
 
     public GroupChatModel() {
 
@@ -35,7 +34,6 @@ public class GroupChatModel {
         groupMembersList.clear();
         messsages.unbind();
         messsages.clear();
-        groupChatPicture.set(defaultImage);
     }
 
     public static Callback<GroupChatModel, Observable[]> extractor() {

@@ -1,5 +1,8 @@
 package gov.iti.jets.network;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -8,6 +11,8 @@ import java.rmi.registry.Registry;
 public class RmiManager {
     private final static RmiManager RMI_MANAGER = new RmiManager();
     private Registry registry;
+
+    private Logger logger = LoggerFactory.getLogger( RmiManager.class );
 
     private RmiManager() {
         try {
@@ -18,7 +23,7 @@ public class RmiManager {
             } catch (RemoteException ex) {
                 ex.printStackTrace();
             }
-            System.err.println("Registry was already alive. Got registry.");
+            logger.info( "Registry was already alive. Obtained registry already running at port 1099" );
         }
 
         registerServices();

@@ -15,6 +15,7 @@ public class AddContactTextField extends TextField implements Initializable {
     @FXML
     private TextField contactPhoneNumberTextField;
     private Pane parent;
+
     public AddContactTextField(Pane parent){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/add-contact/AddContactTextField.fxml"));
         loader.setController(this);
@@ -26,18 +27,19 @@ public class AddContactTextField extends TextField implements Initializable {
             e.printStackTrace();
         }
         this.parent=parent;
-        setTextFieldListener();
+//        setTextFieldListener();
     }
 
-    private void setTextFieldListener() {
+    //TODO causes a bug on closing the add contact stage! removes all contact from observable list!
+   /* private void setTextFieldListener() {
         contactPhoneNumberTextField.textProperty().addListener(((observable, oldValue, newValue) -> {
 //            System.out.println(newValue.isEmpty());
             int myIndex=parent.getChildren().indexOf(this);
-            if(!newValue.isEmpty()&&myIndex==parent.getChildren().size()-1){
+            if(!newValue.isEmpty()&&myIndex==parent.getChildren().size()-1)
                 parent.getChildren().add(new AddContactTextField(parent));
-            }/*else if(newValue.isEmpty()&&myIndex==parent.getChildren().size()-2&&)*/
+            *//*else if(newValue.isEmpty()&&myIndex==parent.getChildren().size()-2&&)*//*
         }));
-    }
+    }*/
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
