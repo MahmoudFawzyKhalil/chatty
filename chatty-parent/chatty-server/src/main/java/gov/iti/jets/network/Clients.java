@@ -24,7 +24,7 @@ public class Clients {
         clientMap.put( phoneNumber, client );
     }
 
-    public Optional<Client> removeClient( String phoneNumber, Client client ) throws RemoteException {
+    public Optional<Client> removeClient( String phoneNumber ) throws RemoteException {
         return Optional.ofNullable( clientMap.remove( phoneNumber ) );
     }
 
