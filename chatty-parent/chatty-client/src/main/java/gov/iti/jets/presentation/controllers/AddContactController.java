@@ -89,8 +89,7 @@ public class AddContactController implements Initializable {
     }
 
     private void resetAddContactView() {
-        for (TextField textField : phoneNumberTextFields)
-            contactsVBox.getChildren().remove( textField );
+        contactsVBox.getChildren().clear();
         contactsVBox.getChildren().add( new AddContactTextField( contactsVBox, phoneNumberTextFields, addContactButton ) );
     }
 

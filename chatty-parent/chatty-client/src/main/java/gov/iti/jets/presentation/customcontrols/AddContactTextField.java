@@ -1,6 +1,5 @@
 package gov.iti.jets.presentation.customcontrols;
 
-import gov.iti.jets.presentation.util.StageCoordinator;
 import gov.iti.jets.presentation.util.UiValidator;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
@@ -83,6 +82,9 @@ public class AddContactTextField extends TextField implements Initializable {
         textFieldAddContactViewVBox.getChildren().addListener( new ListChangeListener<Node>() {
             @Override
             public void onChanged( Change<? extends Node> c ) {
+                if (c.getList().size() == 0){
+                    return;
+                }
                 var lastElement = (AddContactTextField) c.getList().get( c.getList().size() - 1 );
                 if (lastElement.textProperty().isEmpty().get()) {
                     addContactButton.setDisable( false );
