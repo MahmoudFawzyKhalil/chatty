@@ -5,9 +5,9 @@ public class ContactEntity {
     private String phoneNumber;
     private String displayName;
     private String profilePicture;
-    private StatusEntity currentStatus;
+    private UserStatusEntity currentStatus;
 
-    public ContactEntity(String phoneNumber, String displayName, String profilePicture, StatusEntity currentStatus) {
+    public ContactEntity(String phoneNumber, String displayName, String profilePicture, UserStatusEntity currentStatus) {
         this.phoneNumber = phoneNumber;
         this.displayName = displayName;
         this.profilePicture = profilePicture;
@@ -38,11 +38,11 @@ public class ContactEntity {
         this.profilePicture = profilePicture;
     }
 
-    public StatusEntity getCurrentStatus() {
+    public UserStatusEntity getCurrentStatus() {
         return currentStatus;
     }
 
-    public void setCurrentStatus(StatusEntity currentStatus) {
+    public void setCurrentStatus(UserStatusEntity currentStatus) {
         this.currentStatus = currentStatus;
     }
 }

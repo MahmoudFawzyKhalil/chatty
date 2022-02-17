@@ -2,27 +2,17 @@ package gov.iti.jets.repository.entities;
 
 public class InvitationEntity {
 
-    private String contactNumber;
-    private String contacteeNumber;
+    private ContactEntity contactEntity;
 
-    public InvitationEntity(String contactNumber, String contacteeNumber) {
-        this.contactNumber = contactNumber;
-        this.contacteeNumber = contacteeNumber;
+    public InvitationEntity(ContactEntity contactEntity) {
+        this.contactEntity = contactEntity;
     }
 
-    public String getContactNumber() {
-        return contactNumber;
+    public ContactEntity getContactEntity() {
+        return contactEntity;
     }
 
-    public void setContactNumber(String contactNumber) {
-        this.contactNumber = contactNumber;
-    }
-
-    public String getContacteeNumber() {
-        return contacteeNumber;
-    }
-
-    public void setContacteeNumber(String contacteeNumber) {
-        this.contacteeNumber = contacteeNumber;
+    public void setContactEntity(ContactEntity contactEntity) {
+        this.contactEntity = contactEntity;
     }
 }

@@ -1,10 +1,10 @@
 package gov.iti.jets.repository.entities;
 
-public class StatusEntity {
+public class UserStatusEntity {
     private int statusId;
     private String statusName;
 
-    public StatusEntity(int statusId, String statusName) {
+    public UserStatusEntity(int statusId, String statusName) {
         this.statusId = statusId;
         this.statusName = statusName;
     }
