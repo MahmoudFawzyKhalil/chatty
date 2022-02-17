@@ -92,18 +92,17 @@ public class LoginController implements Initializable {
 
     @FXML
     void onLoginButtonAction(ActionEvent event) {
-        stageCoordinator.switchToMainScene();
-//        LoginDto loginDto = new LoginDto(phoneNumberTextField.getText(), passwordTextField.getText());
-//        try {
-//            boolean isAuthenticated = loginDao.isAuthenticated(loginDto);
-//            if(isAuthenticated){
-//                stageCoordinator.switchToMainScene();//origin/add-contact
-//            } else {
-//                stageCoordinator.showErrorNotification( "Invalid phone number or password." );
-//            }
-//        } catch (NotBoundException | RemoteException e) {
-//            stageCoordinator.showErrorNotification( "Failed to connect to server. Please try again later." );
-//            e.printStackTrace();
-//        }
+        LoginDto loginDto = new LoginDto(phoneNumberTextField.getText(), passwordTextField.getText());
+        try {
+            boolean isAuthenticated = loginDao.isAuthenticated(loginDto);
+            if(isAuthenticated){
+                stageCoordinator.switchToMainScene();
+            } else {
+                stageCoordinator.showErrorNotification( "Invalid phone number or password." );
+            }
+        } catch (NotBoundException | RemoteException e) {
+            stageCoordinator.showErrorNotification( "Failed to connect to server. Please try again later." );
+            e.printStackTrace();
+        }
     }
 }

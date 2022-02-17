@@ -16,7 +16,7 @@ public class ContactModel {
     private ListProperty<MessageModel> messsages = new SimpleListProperty<>( FXCollections.observableArrayList( MessageModel.extractor() ) );
 
     public ContactModel() {
-        profilePicture.set( new Image( getClass().getResource( "/images/user.png" ).toString() ) );
+        profilePicture.set( UserModel.DEFAULT_IMAGE );
     }
 
     public ContactModel( String phoneNumber, String displayName, UserStatusModel currentStatus ) {
