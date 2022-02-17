@@ -45,8 +45,9 @@ public class RegisterModel {
         password.set("");
         confirmPassword.set("");
         displayName.set("");
-        gender.set("");
+        gender.set("Male");
         profilePicture.set(defaultImage);
+        birthDate.set(null);
         email.set("");
         bio.set("");
     }
