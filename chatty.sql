@@ -29,7 +29,8 @@ CREATE TABLE user_status(
     
 CREATE TABLE group_chats (
 	group_chat_id INT PRIMARY KEY AUTO_INCREMENT,
-    group_chat_name VARCHAR(50) NOT NULL
+    	group_chat_name VARCHAR(50) NOT NULL,
+	picture VARCHAR(250)
     );
     
 -- MANY TO MANY 
