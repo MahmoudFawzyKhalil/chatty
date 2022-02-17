@@ -1,11 +1,17 @@
-package gov.iti.jets.repository.entities;
+package gov.iti.jets.commons.dtos;
 
-public class CountryEntity {
+import jakarta.validation.constraints.NotNull;
+
+import java.io.Serializable;
+
+public class CountryDto implements Serializable {
+    @NotNull
     private int countryId;
 
+    @NotNull
     private String countryName;
 
-    public CountryEntity(int countryId, String countryName) {
+    public CountryDto(int countryId, String countryName) {
         this.countryId = countryId;
         this.countryName = countryName;
     }

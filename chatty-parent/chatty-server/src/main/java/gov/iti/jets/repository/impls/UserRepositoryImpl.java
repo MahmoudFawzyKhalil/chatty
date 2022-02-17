@@ -1,13 +1,18 @@
 package gov.iti.jets.repository.impls;
 
+import gov.iti.jets.repository.CountryRepository;
 import gov.iti.jets.repository.UserRepository;
+import gov.iti.jets.repository.entities.CountryEntity;
 import gov.iti.jets.repository.entities.UserEntity;
 import gov.iti.jets.repository.util.ConnectionPool;
+import gov.iti.jets.repository.util.RepositoryFactory;
 
 import java.sql.*;
 import java.util.Optional;
 
 public class UserRepositoryImpl implements UserRepository {
+
+
     @Override
     public boolean isFoundByPhoneNumberAndPassword(String phoneNumber, String password) {
         try (Connection connection = ConnectionPool.getConnection();
@@ -36,9 +41,8 @@ public class UserRepositoryImpl implements UserRepository {
                 preparedStatement.setString(6, userEntity.getBio());
                 preparedStatement.setString(7, userEntity.getPassword());
                 preparedStatement.setDate(8, Date.valueOf(userEntity.getBirthDate()));
-                preparedStatement.setInt(9, 1);//todo //////////////////////////////////////////////////////////////
+                preparedStatement.setInt(9, userEntity.getCountry().getCountryId());//todo //////////////////////////////////////////////////////////////
                 int resultSet = preparedStatement.executeUpdate();
-                System.out.println(resultSet);
                 if (resultSet == 1) {
                     return true;
                 }
@@ -52,6 +56,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public Optional<UserEntity> getByPhoneNumber(String phoneNumber) {
+        CountryRepository countryRepository = RepositoryFactory.getInstance().getCountryRepository();
         Optional<UserEntity> optionalUser = Optional.empty();
         try (Connection connection = ConnectionPool.getConnection();
 
@@ -68,7 +73,11 @@ public class UserRepositoryImpl implements UserRepository {
                 userEntity.setBio(resultSet.getString("bio"));
                 userEntity.setPassword(resultSet.getString("user_password"));
                 userEntity.setBirthDate(resultSet.getDate("birth_date").toLocalDate());
-                userEntity.setCountryId(resultSet.getInt("country_id"));
+                Optional<CountryEntity> countryEntityOptional = countryRepository.getById(resultSet.getInt("country_id"));
+                if (!countryEntityOptional.isEmpty()) {
+                    CountryEntity countryEntity = countryEntityOptional.get();
+                    userEntity.setCountry(countryEntity);
+                }
                 userEntity.setUserStatusId(resultSet.getInt("user_status_id"));
                 optionalUser = Optional.of(userEntity);
             }

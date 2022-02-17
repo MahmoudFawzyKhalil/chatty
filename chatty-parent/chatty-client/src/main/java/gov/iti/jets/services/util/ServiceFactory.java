@@ -1,5 +1,6 @@
 package gov.iti.jets.services.util;
 
+import gov.iti.jets.commons.remoteinterfaces.CountryService;
 import gov.iti.jets.commons.remoteinterfaces.LoginService;
 import gov.iti.jets.commons.remoteinterfaces.RegisterService;
 
@@ -15,6 +16,7 @@ public class ServiceFactory {
 
     private static LoginService loginService;
     private static RegisterService registerService;
+    private static CountryService countryService;
 
     private ServiceFactory() {
         try {
@@ -43,6 +45,14 @@ public class ServiceFactory {
 
         }
         return registerService;
+    }
+
+    public CountryService getCountryService() throws NotBoundException, RemoteException {
+        if (countryService == null) {
+            countryService = (CountryService) registry.lookup("CountryService");
+
+        }
+        return countryService;
     }
 
 }

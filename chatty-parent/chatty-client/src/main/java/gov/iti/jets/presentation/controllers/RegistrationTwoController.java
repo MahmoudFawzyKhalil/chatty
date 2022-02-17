@@ -1,9 +1,13 @@
 package gov.iti.jets.presentation.controllers;
 
+import gov.iti.jets.commons.dtos.CountryDto;
 import gov.iti.jets.presentation.models.CountryModel;
 import gov.iti.jets.presentation.models.RegisterModel;
+import gov.iti.jets.presentation.models.mappers.CountryMapper;
 import gov.iti.jets.presentation.util.ModelFactory;
 import gov.iti.jets.presentation.util.StageCoordinator;
+import gov.iti.jets.services.CountryDao;
+import gov.iti.jets.services.util.DaoFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -15,12 +19,17 @@ import javafx.scene.control.TextField;
 import javafx.util.StringConverter;
 
 import java.net.URL;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class RegistrationTwoController implements Initializable {
     private final StageCoordinator stageCoordinator = StageCoordinator.getInstance();
     private final ModelFactory modelFactory = ModelFactory.getInstance();
     private final RegisterModel registerModel = modelFactory.getRegisterModel();
+    private CountryDao countryDao = DaoFactory.getInstance().getCountryDao();
 
     @FXML
     private TextField bioTextField;
@@ -37,11 +46,12 @@ public class RegistrationTwoController implements Initializable {
     @FXML
     private ChoiceBox<String> genderChoiceBox;
 
+    private ObservableList<CountryModel> countryModels;
+
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        ObservableList<CountryModel> countryModels = FXCollections.observableArrayList();
-        CountryModel countryModel = new CountryModel(1, "egy");
-        countryModels.add(countryModel);
+        loadCountries();
         setCountryChoiceBoxConverter();
         countryChoiceBox.setItems(countryModels);
         emailTextField.textProperty().bindBidirectional(registerModel.emailProperty());
@@ -49,6 +59,16 @@ public class RegistrationTwoController implements Initializable {
         genderChoiceBox.valueProperty().bindBidirectional(registerModel.genderProperty());
         birthDateDatePicker.valueProperty().bindBidirectional(registerModel.birthDateProperty());
         bioTextField.textProperty().bindBidirectional(registerModel.bioProperty());
+    }
+
+    private void loadCountries() {
+        try {
+            List<CountryDto> countryDtos = countryDao.getAll();
+            List<CountryModel> countries = CountryMapper.INSTANCE.dtoListToModel(countryDtos);
+            this.countryModels = countries.stream().collect(Collectors.toCollection(FXCollections::observableArrayList));
+        } catch (NotBoundException | RemoteException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML

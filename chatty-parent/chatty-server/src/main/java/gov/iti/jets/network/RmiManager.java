@@ -32,6 +32,7 @@ public class RmiManager {
         try {
             registry.rebind("LoginService", new LoginServiceImpl());
             registry.rebind("RegisterService", new RegisterServiceImpl());
+            registry.rebind("CountryService", new CountryServiceImpl());
         } catch (RemoteException e) {
             e.printStackTrace();
         }

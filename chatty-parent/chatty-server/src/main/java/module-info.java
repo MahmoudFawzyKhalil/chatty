@@ -18,6 +18,7 @@ module chatty.server {
     requires org.mapstruct;
     requires org.slf4j;
     exports gov.iti.jets.repository.util.mappers to org.mapstruct;
+    exports gov.iti.jets.repository.entities to org.mapstruct;
 
     // Hibernate Validator
     requires jakarta.validation;

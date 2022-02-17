@@ -9,7 +9,7 @@ import javafx.scene.image.Image;
 import java.time.LocalDate;
 
 public class RegisterModel {
-    private Image defaultImage = new Image(getClass().getResource("/images/user.png").toString());
+    private final Image defaultImage = new Image(getClass().getResource("/images/user.png").toString());
     private StringProperty phoneNumber = new SimpleStringProperty();
     private StringProperty password = new SimpleStringProperty();
     private StringProperty displayName = new SimpleStringProperty();

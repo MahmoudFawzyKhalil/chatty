@@ -20,9 +20,7 @@ public class RegisterServiceImpl extends UnicastRemoteObject implements Register
 
     @Override
     public boolean register(RegisterDto registerDto) throws RemoteException {
-        System.out.println(registerDto.getDisplayName());
         UserEntity userEntity = UserMapper.INSTANCE.registerDtoToEntity(registerDto);
-        System.out.println(userEntity.getDisplayName());
         return userRepository.addUser(userEntity);
     }
 }
