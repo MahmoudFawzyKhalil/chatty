@@ -36,6 +36,8 @@ public class RmiManager {
     private void registerServices() {
         try {
             registry.rebind("LoginService", new LoginServiceImpl());
+            registry.rebind("RegisterService", new RegisterServiceImpl());
+            registry.rebind("CountryService", new CountryServiceImpl());
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -44,6 +46,7 @@ public class RmiManager {
     public void close() {
         try {
             registry.unbind("LoginService");
+            registry.unbind("RegisterService");
         } catch (RemoteException | NotBoundException e) {
             e.printStackTrace();
         }
