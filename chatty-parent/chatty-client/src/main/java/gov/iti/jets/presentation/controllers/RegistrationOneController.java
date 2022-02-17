@@ -1,9 +1,12 @@
 package gov.iti.jets.presentation.controllers;
 
+import gov.iti.jets.presentation.erros.ErrorMessages;
 import gov.iti.jets.presentation.models.RegisterModel;
 import gov.iti.jets.presentation.util.ModelFactory;
 import gov.iti.jets.presentation.util.StageCoordinator;
 import gov.iti.jets.presentation.util.UiValidator;
+import gov.iti.jets.services.RegisterDao;
+import gov.iti.jets.services.util.DaoFactory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -13,11 +16,14 @@ import javafx.scene.control.TextField;
 import net.synedra.validatorfx.Validator;
 
 import java.net.URL;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.util.ResourceBundle;
 
 public class RegistrationOneController implements Initializable {
     private final StageCoordinator stageCoordinator = StageCoordinator.getInstance();
     private final ModelFactory modelFactory = ModelFactory.getInstance();
+    private final RegisterDao registerDao = DaoFactory.getInstance().getRegisterDao();
     private final RegisterModel registerModel = modelFactory.getRegisterModel();
 
     private Validator validator = UiValidator.getInstance().createValidator();
@@ -52,13 +58,27 @@ public class RegistrationOneController implements Initializable {
 
     @FXML
     void onNextButtonAction(ActionEvent event) {
-        stageCoordinator.switchToRegisterSceneTwo();
+        if (!isPhoneNumberFound()) {
+            stageCoordinator.switchToRegisterSceneTwo();
+        } else {
+            stageCoordinator.showErrorNotification(ErrorMessages.PHONE_NUMBER_FOUND);
+        }
     }
+
 
     @FXML
     void onLoginHyperLinkAction(ActionEvent event) {
         registerModel.clear();
         stageCoordinator.switchToLoginScene();
+    }
+
+    boolean isPhoneNumberFound() {
+        try {
+            return registerDao.validatePhoneNumber(registerModel.getPhoneNumber());
+        } catch (NotBoundException | RemoteException e) {
+            stageCoordinator.showErrorNotification(ErrorMessages.FAILED_TO_CONNECT);
+        }
+        return false;
     }
 
 

@@ -9,7 +9,6 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 public class RegisterDto implements Serializable {
-    //phone number ,name, password, email , birthdate, country, gender, bio ,image
     @NotNull
     @Size(min = 11, max = 11)
     private String phoneNumber;

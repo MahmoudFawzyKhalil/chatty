@@ -16,4 +16,16 @@ public class RegisterDaoImpl implements RegisterDao {
         RegisterService registerService = serviceFactory.getRegisterService();
         return registerService.register(registerDto);
     }
+
+    @Override
+    public boolean validatePhoneNumber(String phoneNumber) throws NotBoundException, RemoteException {
+        RegisterService registerService = serviceFactory.getRegisterService();
+        return registerService.isFoundByPhoneNumber(phoneNumber);
+    }
+
+    @Override
+    public boolean validateEmail(String email) throws NotBoundException, RemoteException {
+        RegisterService registerService=serviceFactory.getRegisterService();
+        return registerService.isFoundByEmail(email);
+    }
 }

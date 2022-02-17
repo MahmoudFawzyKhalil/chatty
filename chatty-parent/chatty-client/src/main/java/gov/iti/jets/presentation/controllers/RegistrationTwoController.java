@@ -1,26 +1,32 @@
 package gov.iti.jets.presentation.controllers;
 
 import gov.iti.jets.commons.dtos.CountryDto;
+import gov.iti.jets.presentation.erros.ErrorMessages;
 import gov.iti.jets.presentation.models.CountryModel;
 import gov.iti.jets.presentation.models.RegisterModel;
 import gov.iti.jets.presentation.models.mappers.CountryMapper;
 import gov.iti.jets.presentation.util.ModelFactory;
 import gov.iti.jets.presentation.util.StageCoordinator;
+import gov.iti.jets.presentation.util.UiValidator;
 import gov.iti.jets.services.CountryDao;
+import gov.iti.jets.services.RegisterDao;
 import gov.iti.jets.services.util.DaoFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.util.StringConverter;
+import net.synedra.validatorfx.Validator;
 
 import java.net.URL;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
@@ -30,6 +36,7 @@ public class RegistrationTwoController implements Initializable {
     private final ModelFactory modelFactory = ModelFactory.getInstance();
     private final RegisterModel registerModel = modelFactory.getRegisterModel();
     private CountryDao countryDao = DaoFactory.getInstance().getCountryDao();
+    private RegisterDao registerDao = DaoFactory.getInstance().getRegisterDao();
 
     @FXML
     private TextField bioTextField;
@@ -47,8 +54,17 @@ public class RegistrationTwoController implements Initializable {
     @FXML
     private TextField emailTextField;
 
+    @FXML
+    private Button nextButton;
+
+    @FXML
+    private Button previousButton;
+
 
     private ObservableList<CountryModel> countryModels;
+
+
+    private Validator validator = UiValidator.getInstance().createValidator();
 
 
     @Override
@@ -63,6 +79,11 @@ public class RegistrationTwoController implements Initializable {
         genderComboBox.getSelectionModel().selectFirst();
         birthDateDatePicker.valueProperty().bindBidirectional(registerModel.birthDateProperty());
         bioTextField.textProperty().bindBidirectional(registerModel.bioProperty());
+        validateEmailTextField();
+        validateCountryComboBox();
+        validateBirthDateDatePicker();
+        addEnableButtonValidationListener();
+
     }
 
     private void loadCountries() {
@@ -94,6 +115,56 @@ public class RegistrationTwoController implements Initializable {
         });
     }
 
+    private void validateEmailTextField() {
+        validator.createCheck()
+                .dependsOn("email", emailTextField.textProperty())
+                .withMethod(c -> {
+                    String email = c.get("email");
+                    if (!UiValidator.EMAIL_PATTERN.matcher(email).matches()) {
+                        c.error("Please enter a valid email.");
+                        nextButton.setDisable(true);
+                    }
+                })
+                .decorates(emailTextField)
+                .immediate();
+    }
+
+    private void validateBirthDateDatePicker() {
+        validator.createCheck()
+                .dependsOn("birthDate", birthDateDatePicker.valueProperty())
+                .withMethod(c -> {
+                    LocalDate birthDate = c.get("birthDate");
+                    if (birthDate == null) {
+                        c.error("Please enter your birth date.");
+                        nextButton.setDisable(true);
+                    }
+                })
+                .decorates(birthDateDatePicker)
+                .immediate();
+    }
+
+    private void validateCountryComboBox() {
+        validator.createCheck()
+                .dependsOn("country", countryComboBox.valueProperty())
+                .withMethod(c -> {
+                    CountryModel country = c.get("country");
+                    if (country == RegisterModel.DEFAULT_COUNTRY_MODEL) {
+                        c.error("Please choose country.");
+                        nextButton.setDisable(true);
+                    }
+                })
+                .decorates(countryComboBox)
+                .immediate();
+    }
+
+    private void addEnableButtonValidationListener() {
+        validator.containsErrorsProperty().addListener(e -> {
+            if (!validator.containsErrors()) {
+                nextButton.setDisable(false);
+            }
+        });
+    }
+
     @FXML
     void onPreviousButtonAction(ActionEvent event) {
         stageCoordinator.switchToRegisterSceneOne();
@@ -101,7 +172,20 @@ public class RegistrationTwoController implements Initializable {
 
     @FXML
     void onNextButtonAction(ActionEvent event) {
-        stageCoordinator.switchToRegisterSceneThree();
+        if (!isEmailFound()) {
+            stageCoordinator.switchToRegisterSceneThree();
+        } else {
+            stageCoordinator.showErrorNotification(ErrorMessages.EMAIL_FOUND);
+        }
+    }
+
+    boolean isEmailFound() {
+        try {
+            return registerDao.validateEmail(registerModel.getEmail());
+        } catch (NotBoundException | RemoteException e) {
+            stageCoordinator.showErrorNotification(ErrorMessages.FAILED_TO_CONNECT);
+        }
+        return false;
     }
 
 

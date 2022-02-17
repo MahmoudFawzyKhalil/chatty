@@ -91,9 +91,22 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public boolean isFoundByPhoneNumber(String phoneNumber) {
         try (Connection connection = ConnectionPool.getConnection();
-
              PreparedStatement preparedStatement = connection.prepareStatement("select phone_number from users where phone_number = ?")) {
             preparedStatement.setString(1, phoneNumber);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next())
+                return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isFoundByEmail(String email) {
+        try (Connection connection = ConnectionPool.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement("select email from users where email = ?")) {
+            preparedStatement.setString(1, email);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next())
                 return true;

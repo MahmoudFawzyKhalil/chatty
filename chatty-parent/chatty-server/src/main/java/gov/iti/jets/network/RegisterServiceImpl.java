@@ -23,4 +23,14 @@ public class RegisterServiceImpl extends UnicastRemoteObject implements Register
         UserEntity userEntity = UserMapper.INSTANCE.registerDtoToEntity(registerDto);
         return userRepository.addUser(userEntity);
     }
+
+    @Override
+    public boolean isFoundByPhoneNumber(String phoneNumber) throws RemoteException {
+        return userRepository.isFoundByPhoneNumber(phoneNumber);
+    }
+
+    @Override
+    public boolean isFoundByEmail(String email) throws RemoteException {
+        return userRepository.isFoundByEmail(email);
+    }
 }

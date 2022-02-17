@@ -1,6 +1,7 @@
 package gov.iti.jets.presentation.controllers;
 
 import gov.iti.jets.commons.dtos.RegisterDto;
+import gov.iti.jets.presentation.erros.ErrorMessages;
 import gov.iti.jets.presentation.models.RegisterModel;
 import gov.iti.jets.presentation.models.mappers.RegisterMapper;
 import gov.iti.jets.presentation.util.ModelFactory;
@@ -41,16 +42,26 @@ public class RegistrationThreeController implements Initializable {
 
     @FXML
     void onFinishButtonAction(ActionEvent event) {
-        RegisterDto registerDto = RegisterMapper.INSTANCE.registerModelToDto(registerModel);
-        try {
-            registerDao.register(registerDto);
+        if (registered()) {
             registerModel.clear();
             stageCoordinator.switchToLoginScene();
-        } catch (NotBoundException e) {
-            e.printStackTrace();
-        } catch (RemoteException e) {
-            e.printStackTrace();
         }
+    }
+
+    boolean registered() {
+        RegisterDto registerDto = RegisterMapper.INSTANCE.registerModelToDto(registerModel);
+        try {
+            if (registerDao.register(registerDto)) {
+                stageCoordinator.showMessageNotification("Success", "Created Successfully");
+                return true;
+            } else {
+                stageCoordinator.showErrorNotification(ErrorMessages.FAILED_REGISTER);
+            }
+
+        } catch (NotBoundException | RemoteException e) {
+            stageCoordinator.showErrorNotification(ErrorMessages.FAILED_TO_CONNECT);
+        }
+        return false;
     }
 
     @FXML

@@ -52,8 +52,8 @@
             </TextField>
             <FlowPane id="next-previoyus" alignment="CENTER" hgap="20.0">
                <children>
-                  <Button id="previous" mnemonicParsing="false" onAction="#onPreviousButtonAction" prefWidth="90.0" styleClass="previous-button" text="Previous" />
-                  <Button id="next" mnemonicParsing="false" onAction="#onNextButtonAction" prefWidth="90.0" styleClass="next-button" text="Next" />
+                  <Button id="previous" fx:id="previousButton" mnemonicParsing="false" onAction="#onPreviousButtonAction" prefWidth="90.0" styleClass="previous-button" text="Previous" />
+                  <Button id="next" fx:id="nextButton" mnemonicParsing="false" onAction="#onNextButtonAction" prefWidth="90.0" styleClass="next-button" text="Next" />
                </children>
             </FlowPane>
          </children>
