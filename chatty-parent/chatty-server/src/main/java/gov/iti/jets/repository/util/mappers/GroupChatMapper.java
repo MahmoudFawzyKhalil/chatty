@@ -5,8 +5,8 @@ import gov.iti.jets.repository.entities.GroupChatEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
-@Mapper
-public class GroupChatMapper {
+@Mapper(uses = {ContactMapper.class})
+public interface GroupChatMapper {
     GroupChatMapper INSTANCE = Mappers.getMapper(GroupChatMapper.class);
 
     GroupChatEntity groupChatDtoToEntity(GroupChatDto groupChatDto);
