@@ -8,7 +8,7 @@ import jakarta.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.List;
 
-public class ContactDto implements Serializable {
+public class AddContactDto implements Serializable {
 
     @NotNull
     @Size(min = 11, max = 11)
@@ -16,9 +16,9 @@ public class ContactDto implements Serializable {
 
     private List<@NotNull @Pattern(regexp = "[0-9]{11}") String> phoneNumbers;
 
-    public ContactDto(String phoneNumber,List<String> phoneNumbers) {
+    public AddContactDto( String phoneNumber, List<String> phoneNumbers) {
         this.phoneNumber = phoneNumber;
-        this.phoneNumber = phoneNumber;
+        this.phoneNumbers = phoneNumbers;
 
         ValidationUtil.getInstance().validate(this);
     }
@@ -37,5 +37,13 @@ public class ContactDto implements Serializable {
 
     public void setPhoneNumbers(List<String> phoneNumbers) {
         this.phoneNumbers = phoneNumbers;
+    }
+
+    @Override
+    public String toString() {
+        return "AddContactDto{" +
+                "phoneNumber='" + phoneNumber + '\'' +
+                ", phoneNumbers=" + phoneNumbers +
+                '}';
     }
 }

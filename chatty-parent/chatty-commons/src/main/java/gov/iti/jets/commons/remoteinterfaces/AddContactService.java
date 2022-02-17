@@ -1,11 +1,10 @@
 package gov.iti.jets.commons.remoteinterfaces;
 
-import gov.iti.jets.commons.dtos.ContactDto;
-import gov.iti.jets.commons.dtos.LoginDto;
+import gov.iti.jets.commons.dtos.AddContactDto;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 public interface AddContactService extends Remote {
-    boolean addContacts(ContactDto ContactDto) throws RemoteException;
+    boolean addContacts( AddContactDto AddContactDto ) throws RemoteException;
 }

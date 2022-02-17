@@ -1,6 +1,5 @@
 package gov.iti.jets.presentation.controllers;
 
-import gov.iti.jets.commons.dtos.LoginDto;
 import gov.iti.jets.presentation.models.UserModel;
 import gov.iti.jets.presentation.util.ModelFactory;
 import gov.iti.jets.presentation.util.StageCoordinator;
@@ -17,8 +16,6 @@ import javafx.scene.control.TextField;
 import net.synedra.validatorfx.Validator;
 
 import java.net.URL;
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
 import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
@@ -95,17 +92,18 @@ public class LoginController implements Initializable {
 
     @FXML
     void onLoginButtonAction(ActionEvent event) {
-        LoginDto loginDto = new LoginDto(phoneNumberTextField.getText(), passwordTextField.getText());
-        try {
-            boolean isAuthenticated = loginDao.isAuthenticated(loginDto);
-            if(isAuthenticated){
-                stageCoordinator.switchToMainScene();//origin/add-contact
-            } else {
-                stageCoordinator.showErrorNotification( "Invalid phone number or password." );
-            }
-        } catch (NotBoundException | RemoteException e) {
-            stageCoordinator.showErrorNotification( "Failed to connect to server. Please try again later." );
-            e.printStackTrace();
-        }
+        stageCoordinator.switchToMainScene();
+//        LoginDto loginDto = new LoginDto(phoneNumberTextField.getText(), passwordTextField.getText());
+//        try {
+//            boolean isAuthenticated = loginDao.isAuthenticated(loginDto);
+//            if(isAuthenticated){
+//                stageCoordinator.switchToMainScene();//origin/add-contact
+//            } else {
+//                stageCoordinator.showErrorNotification( "Invalid phone number or password." );
+//            }
+//        } catch (NotBoundException | RemoteException e) {
+//            stageCoordinator.showErrorNotification( "Failed to connect to server. Please try again later." );
+//            e.printStackTrace();
+//        }
     }
 }

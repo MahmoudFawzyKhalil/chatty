@@ -2,9 +2,11 @@ package gov.iti.jets.presentation.customcontrols;
 
 import gov.iti.jets.presentation.util.StageCoordinator;
 import gov.iti.jets.presentation.util.UiValidator;
+import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
@@ -19,49 +21,42 @@ import java.util.ResourceBundle;
 public class AddContactTextField extends TextField implements Initializable {
     @FXML
     private TextField contactPhoneNumberTextField;
-
-    private Pane parent;
+    private Pane textFieldAddContactViewVBox;
     private List<TextField> list;
     private Button addContactButton;
     private Validator validator = UiValidator.getInstance().createValidator();
-    private StageCoordinator stageCoordinator = StageCoordinator.getInstance();
 
-
-    public AddContactTextField(Pane parent, List<TextField> list, Button addContactButton){
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/add-contact/AddContactTextField.fxml"));
-        loader.setController(this);
-        loader.setRoot(this);
+    public AddContactTextField( Pane textFieldAddContactViewVBox, List<TextField> list, Button addContactButton ) {
+        FXMLLoader loader = new FXMLLoader( getClass().getResource( "/views/add-contact/AddContactTextField.fxml" ) );
+        loader.setController( this );
+        loader.setRoot( this );
         this.list = list;
         this.addContactButton = addContactButton;
-        list.add(this);
+        list.add( this );
         try {
             loader.load();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        this.parent=parent;
+        this.textFieldAddContactViewVBox = textFieldAddContactViewVBox;
         setTextFieldListener();
+        validatePhoneNumberTextField();
+        addEnableButtonValidationListener();
     }
 
     private void setTextFieldListener() {
-        contactPhoneNumberTextField.textProperty().addListener(((observable, oldValue, newValue) -> {
-//            System.out.println(newValue.isEmpty());
-            int myIndex = parent.getChildren().indexOf(this);
-            if (myIndex >= 3){
-                stageCoordinator.showErrorNotification( "sorry maximum requests are 3 requests." );
-            }else{
-                if(!newValue.isEmpty() && myIndex==parent.getChildren().size()-1){
-                    parent.getChildren().add(new AddContactTextField(parent,list, addContactButton));
-                }/*else if(newValue.isEmpty()&&myIndex==parent.getChildren().size()-2&&)*/
+        contactPhoneNumberTextField.textProperty().addListener( (( observable, oldValue, newValue ) -> {
+            int lastTextFieldIndex = textFieldAddContactViewVBox.getChildren().indexOf( this );
 
+            if (!newValue.isEmpty() && lastTextFieldIndex == textFieldAddContactViewVBox.getChildren().size() - 1) {
+                textFieldAddContactViewVBox.getChildren().add( new AddContactTextField( textFieldAddContactViewVBox, list, addContactButton ) );
             }
-        }));
+        }) );
     }
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        validatePhoneNumberTextField();
-        addEnableButtonValidationListener();
+    public void initialize( URL location, ResourceBundle resources ) {
+
     }
 
     private void validatePhoneNumberTextField() {
@@ -77,10 +72,21 @@ public class AddContactTextField extends TextField implements Initializable {
                 .decorates( contactPhoneNumberTextField )
                 .immediate();
     }
+
     private void addEnableButtonValidationListener() {
         validator.containsErrorsProperty().addListener( e -> {
-            if (!validator.containsErrors() || this.getText().equals("")){
+            if (!validator.containsErrors()) {
                 addContactButton.setDisable( false );
+            }
+        } );
+
+        textFieldAddContactViewVBox.getChildren().addListener( new ListChangeListener<Node>() {
+            @Override
+            public void onChanged( Change<? extends Node> c ) {
+                var lastElement = (AddContactTextField) c.getList().get( c.getList().size() - 1 );
+                if (lastElement.textProperty().isEmpty().get()) {
+                    addContactButton.setDisable( false );
+                }
             }
         } );
     }
