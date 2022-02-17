@@ -9,11 +9,11 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
 public class LoginDaoImpl implements LoginDao {
-    private final ServiceFactory registryFactory = ServiceFactory.getInstance();
+    private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
 
     @Override
     public boolean isAuthenticated(LoginDto loginDto) throws NotBoundException, RemoteException {
-        LoginService loginService = registryFactory.getLoginService();
+        LoginService loginService = serviceFactory.getLoginService();
         return loginService.login(loginDto);
     }
 }
