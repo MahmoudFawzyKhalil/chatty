@@ -8,10 +8,11 @@ import javafx.scene.image.Image;
 import java.time.LocalDate;
 
 public class UserModel {
+    public static final Image DEFAULT_IMAGE = new Image( UserModel.class.getResource( "/images/person.png" ).toString() );
     private StringProperty phoneNumber = new SimpleStringProperty();
     private StringProperty displayName = new SimpleStringProperty();
     private StringProperty gender = new SimpleStringProperty();
-    private ObjectProperty<Image> profilePicture = new SimpleObjectProperty<>( new Image( getClass().getResource( "/images/user.png" ).toString() ) );
+    private ObjectProperty<Image> profilePicture = new SimpleObjectProperty<>( DEFAULT_IMAGE );
     private StringProperty email = new SimpleStringProperty();
     private StringProperty bio = new SimpleStringProperty();
     private ObjectProperty<LocalDate> birthDate = new SimpleObjectProperty<>();

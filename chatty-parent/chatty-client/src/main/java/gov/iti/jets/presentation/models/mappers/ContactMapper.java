@@ -5,7 +5,7 @@ import gov.iti.jets.presentation.models.ContactModel;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
-@Mapper
+@Mapper(uses = {ImageMapper.class, UserStatusMapper.class})
 public interface ContactMapper {
 
     ContactMapper INSTANCE = Mappers.getMapper( ContactMapper.class );
