@@ -2,9 +2,11 @@ package gov.iti.jets.commons.dtos;
 
 import gov.iti.jets.commons.util.ValidationUtil;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class ContactDto implements Serializable {
 
@@ -12,12 +14,11 @@ public class ContactDto implements Serializable {
     @Size(min = 11, max = 11)
     private String phoneNumber;
 
-    @NotNull
-    private String displayName;
+    private List<@NotNull @Pattern(regexp = "[0-9]{11}") String> phoneNumbers;
 
-    public ContactDto(String phoneNumber, String displayName) {
+    public ContactDto(String phoneNumber,List<String> phoneNumbers) {
         this.phoneNumber = phoneNumber;
-        this.displayName = displayName;
+        this.phoneNumber = phoneNumber;
 
         ValidationUtil.getInstance().validate(this);
     }
@@ -30,11 +31,11 @@ public class ContactDto implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getDisplayName() {
-        return displayName;
+    public List<String> getPhoneNumbers() {
+        return phoneNumbers;
     }
 
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
+    public void setPhoneNumbers(List<String> phoneNumbers) {
+        this.phoneNumbers = phoneNumbers;
     }
 }

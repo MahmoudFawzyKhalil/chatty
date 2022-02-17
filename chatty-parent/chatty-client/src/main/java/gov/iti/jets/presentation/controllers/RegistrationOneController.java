@@ -48,7 +48,7 @@ public class RegistrationOneController implements Initializable {
         validatePhoneNumberTextField();
         validateNameTextField();
         validatePasswordTextField();
-        validateConfirmPasswordTextField();
+        //validateConfirmPasswordTextField();
         addEnableButtonValidationListener();
     }
 

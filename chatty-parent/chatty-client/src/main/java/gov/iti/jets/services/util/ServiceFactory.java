@@ -1,5 +1,6 @@
 package gov.iti.jets.services.util;
 
+import gov.iti.jets.commons.remoteinterfaces.AddContactService;
 import gov.iti.jets.commons.remoteinterfaces.LoginService;
 
 import java.rmi.NotBoundException;
@@ -12,6 +13,8 @@ public class ServiceFactory {
     private Registry registry;
 
     private static LoginService loginService;
+    private static AddContactService addContactService;
+
 
     private ServiceFactory() {
         try {
@@ -29,9 +32,16 @@ public class ServiceFactory {
     public LoginService getLoginService() throws NotBoundException, RemoteException {
         if (loginService == null) {
             loginService = (LoginService) registry.lookup("LoginService");
-
         }
         return loginService;
     }
+
+    public AddContactService getAddContactService() throws NotBoundException, RemoteException {
+        if (addContactService == null) {
+            addContactService = (AddContactService) registry.lookup("AddContactService");
+        }
+        return addContactService;
+    }
+
 
 }

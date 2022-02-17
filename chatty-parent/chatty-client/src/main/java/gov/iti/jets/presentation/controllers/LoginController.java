@@ -99,7 +99,7 @@ public class LoginController implements Initializable {
         try {
             boolean isAuthenticated = loginDao.isAuthenticated(loginDto);
             if(isAuthenticated){
-                stageCoordinator.switchToMainScene();
+                stageCoordinator.switchToMainScene();//origin/add-contact
             } else {
                 stageCoordinator.showErrorNotification( "Invalid phone number or password." );
             }
