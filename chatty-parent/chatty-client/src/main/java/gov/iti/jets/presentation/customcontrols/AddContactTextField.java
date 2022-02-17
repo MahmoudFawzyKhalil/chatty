@@ -82,7 +82,7 @@ public class AddContactTextField extends TextField implements Initializable {
         textFieldAddContactViewVBox.getChildren().addListener( new ListChangeListener<Node>() {
             @Override
             public void onChanged( Change<? extends Node> c ) {
-                if (c.getList().size() == 0){
+                if (c.getList().isEmpty()){
                     return;
                 }
                 var lastElement = (AddContactTextField) c.getList().get( c.getList().size() - 1 );
