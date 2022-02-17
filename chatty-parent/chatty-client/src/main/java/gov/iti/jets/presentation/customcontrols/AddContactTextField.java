@@ -33,9 +33,9 @@ public class AddContactTextField extends TextField implements Initializable {
         contactPhoneNumberTextField.textProperty().addListener(((observable, oldValue, newValue) -> {
 //            System.out.println(newValue.isEmpty());
             int myIndex=parent.getChildren().indexOf(this);
-            if(!newValue.isEmpty()&&myIndex==parent.getChildren().size()-1){
+            if(!newValue.isEmpty()&&myIndex==parent.getChildren().size()-1)
                 parent.getChildren().add(new AddContactTextField(parent));
-            }/*else if(newValue.isEmpty()&&myIndex==parent.getChildren().size()-2&&)*/
+            /*else if(newValue.isEmpty()&&myIndex==parent.getChildren().size()-2&&)*/
         }));
     }
 
