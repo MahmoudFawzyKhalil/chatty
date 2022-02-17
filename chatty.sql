@@ -63,7 +63,8 @@ ALTER TABLE contacts
 ALTER TABLE invitations
     ADD CONSTRAINT FOREIGN KEY(contact_phone_number) REFERENCES users(phone_number),
     ADD CONSTRAINT FOREIGN KEY(contactee_phone_number) REFERENCES users(phone_number),
-    ADD CONSTRAINT PRIMARY KEY(contact_phone_number, contactee_phone_number);
+    ADD CONSTRAINT PRIMARY KEY(contact_phone_number, contactee_phone_number),
+    ADD CONSTRAINT CHECK (contact_phone_number != contactee_phone_number);
     
 ALTER TABLE group_chats_users
     ADD CONSTRAINT FOREIGN KEY(group_chat_id) REFERENCES group_chats(group_chat_id),
