@@ -4,10 +4,7 @@ import gov.iti.jets.commons.dtos.AddContactDto;
 import gov.iti.jets.repository.UserRepository;
 import gov.iti.jets.repository.util.ConnectionPool;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class UserRepositoryImpl implements UserRepository {
     @Override
@@ -35,9 +32,9 @@ public class UserRepositoryImpl implements UserRepository {
                 preparedStatement.setString(2, contacteePhoneNumber);
                 preparedStatement.addBatch();
             }
-            int[] resultSet = preparedStatement.executeBatch();
+            int[] numSucceeded = preparedStatement.executeBatch();
             connection.commit();
-            if (resultSet.length == 0)
+            if (numSucceeded.length > 0)
                 return true;
         } catch (SQLException e) {
             e.printStackTrace();

@@ -52,17 +52,19 @@ public class AddContactController implements Initializable {
             AddContactDto addContactDto = new AddContactDto( userModel.getPhoneNumber(), phoneNumbers );
             System.out.println( addContactDto );
             try {
-                boolean addContacts = addContactDao.addContacts( addContactDto );
-                if (addContacts) {
-                    stageCoordinator.switchToMainScene();
+                boolean addContactSucceeded = addContactDao.addContacts( addContactDto );
+                if (addContactSucceeded) {
+                    stageCoordinator.showMessageNotification( "Success!", "Successfuly added contacts." );
                 } else {
                     stageCoordinator.showErrorNotification( "Failed to add contacts. Please try again later." );
                 }
             } catch (NotBoundException | RemoteException e) {
                 stageCoordinator.showErrorNotification( "Failed to connect to server. Please try again later." );
                 e.printStackTrace();
+            } finally {
+                stageCoordinator.closeAddContactStage();
+                resetAddContactView();
             }
-            resetAddContactView();
         }
     }
 
@@ -91,6 +93,7 @@ public class AddContactController implements Initializable {
     private void resetAddContactView() {
         contactsVBox.getChildren().clear();
         contactsVBox.getChildren().add( new AddContactTextField( contactsVBox, phoneNumberTextFields, addContactButton ) );
+        phoneNumbers.clear();
     }
 
 }

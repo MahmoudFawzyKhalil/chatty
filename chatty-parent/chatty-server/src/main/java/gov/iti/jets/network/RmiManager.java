@@ -27,7 +27,6 @@ public class RmiManager {
         }
 
         registerServices();
-        addContactServices();
     }
 
     public static RmiManager getInstance() {
@@ -37,12 +36,6 @@ public class RmiManager {
     private void registerServices() {
         try {
             registry.rebind("LoginService", new LoginServiceImpl());
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-    }
-    private void addContactServices() {
-        try {
             registry.rebind("AddContactService", new AddContactServiceImpl());
         } catch (RemoteException e) {
             e.printStackTrace();
