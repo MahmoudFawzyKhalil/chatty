@@ -1,7 +1,5 @@
 package gov.iti.jets.presentation.models.mappers;
 
-import gov.iti.jets.commons.dtos.RegisterDto;
-import gov.iti.jets.presentation.models.RegisterModel;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -9,5 +7,5 @@ import org.mapstruct.factory.Mappers;
 public interface RegisterMapper {
     RegisterMapper INSTANCE = Mappers.getMapper(RegisterMapper.class);
 
-    RegisterDto registerModelToDto(RegisterModel registerModel);
+   // RegisterDto registerModelToDto(RegisterModel registerModel);
 }
