@@ -35,7 +35,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
 
     @Override
     public void loadUserModel( UserDto userDto ) throws RemoteException {
-        userDto = testUserDto();
+        //userDto = testUserDto();
         userModel.setPhoneNumber( userDto.getPhoneNumber() );
         userModel.setDisplayName( userDto.getDisplayName() );
         userModel.setGender( userDto.getGender() );
