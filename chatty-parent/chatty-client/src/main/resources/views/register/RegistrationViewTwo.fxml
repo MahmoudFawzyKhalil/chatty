@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
@@ -24,10 +25,14 @@
             </TextField>
             <HBox id="country-gender" alignment="CENTER" spacing="20.0">
                <children>
-                  <ChoiceBox fx:id="countryChoiceBox" maxWidth="1.7976931348623157E308" styleClass="input-field" HBox.hgrow="ALWAYS">
+                  <ChoiceBox fx:id="countryChoiceBox" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
                      <padding>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </padding>
+                     <styleClass>
+                        <String fx:value="input-field" />
+                        <String fx:value="choice-box" />
+                     </styleClass>
                   </ChoiceBox>
                   <ChoiceBox fx:id="genderChoiceBox" maxWidth="1.7976931348623157E308" styleClass="input-field" HBox.hgrow="ALWAYS">
                      <padding>

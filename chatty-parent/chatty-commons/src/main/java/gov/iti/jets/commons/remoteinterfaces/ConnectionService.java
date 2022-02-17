@@ -8,5 +8,5 @@ import java.rmi.RemoteException;
 public interface ConnectionService extends Remote {
     //TODO FailedToRegisterClientException
     void registerClient(String phoneNumber, Client client) throws RemoteException;
-    void unregisterClient(String phoneNumber);
+    void unregisterClient(String phoneNumber) throws RemoteException;
 }
