@@ -88,14 +88,24 @@ public class ChatController implements Initializable {
         addCurrentlyChattingWithListener();
         setUpListViewProperties();
         populateFontComboBoxes();
-        messageStyleMap.put( "bold", "bold" );
-        messageStyleMap.put( "underline", "true" );
-        messageStyleMap.put( "italic", "italic" );
-        messageStyleMap.put( "font-family", "'Comic Sans MS'" );
-        messageStyleMap.put( "font-size", "16px" );
-        messageStyleMap.put( "font-color", "red" );
-        messageStyleMap.put( "background-color", "blue" );
-            //TODO
+        initMessageStyleMap();
+        addMessageStyleMapListener();
+        addFontComboBoxListeners();
+
+        messageStyleMap.put( "italic", "" );
+    }
+
+    private void addFontComboBoxListeners() {
+        fontSizeComboBox.valueProperty().addListener( ( observable, oldValue, newValue ) -> {
+            messageStyleMap.put( "font-size", newValue );
+        } );
+
+        fontFamilyComboBox.valueProperty().addListener( ( observable, oldValue, newValue ) -> {
+            messageStyleMap.put( "font-family", newValue );
+        } );
+    }
+
+    private void addMessageStyleMapListener() {
         messageStyleMap.addListener( new MapChangeListener<String, String>() {
             @Override
             public void onChanged( Change<? extends String, ? extends String> change ) {
@@ -116,8 +126,16 @@ public class ChatController implements Initializable {
                 textBackgroundIndicatorCircle.setStyle( indicatorBackgroundColor );
             }
         } );
+    }
 
+    private void initMessageStyleMap() {
+        messageStyleMap.put( "bold", "" );
+        messageStyleMap.put( "underline", "" );
         messageStyleMap.put( "italic", "" );
+        messageStyleMap.put( "font-family", "" );
+        messageStyleMap.put( "font-size", "" );
+        messageStyleMap.put( "font-color", "" );
+        messageStyleMap.put( "background-color", "" );
     }
 
     private void preventRightClickOnTextStyleButton() {
