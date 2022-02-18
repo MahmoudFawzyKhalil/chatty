@@ -40,6 +40,13 @@ public class UpdateProfileModel {
         profilePicture.set(userModel.getProfilePicture());
     }
 
+    public void updateUserModel() {
+        userModel.setDisplayName(getDisplayName());
+        userModel.setBirthDate(getBirthDate());
+        bio.set(getBio());
+        userModel.setProfilePicture(getProfilePicture());
+    }
+
     public String getPhoneNumber() {
         return phoneNumber.get();
     }
@@ -95,4 +102,6 @@ public class UpdateProfileModel {
     public void setBirthDate(LocalDate birthDate) {
         this.birthDate.set(birthDate);
     }
+
+
 }
