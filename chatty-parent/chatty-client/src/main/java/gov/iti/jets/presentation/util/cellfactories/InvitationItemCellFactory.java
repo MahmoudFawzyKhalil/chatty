@@ -1,10 +1,8 @@
 package gov.iti.jets.presentation.util.cellfactories;
 
 import gov.iti.jets.commons.dtos.InvitationDecisionDto;
-import gov.iti.jets.presentation.customcontrols.GroupMemberItem;
 import gov.iti.jets.presentation.customcontrols.InvitationItem;
 import gov.iti.jets.presentation.erros.ErrorMessages;
-import gov.iti.jets.presentation.models.ContactModel;
 import gov.iti.jets.presentation.models.InvitationModel;
 import gov.iti.jets.presentation.models.UserModel;
 import gov.iti.jets.presentation.util.ModelFactory;
@@ -65,6 +63,8 @@ public class InvitationItemCellFactory implements Callback<ListView<InvitationMo
 
                             if (succeeded){
                                 StageCoordinator.getInstance().showMessageNotification("Friend request refused", "");
+                                userModel.getInvitations().removeIf( im -> im.getContactModel().getPhoneNumber()
+                                        .equals(invitationModel.getContactModel().getPhoneNumber()));
                             }
                         } catch (NotBoundException | RemoteException ex) {
                             StageCoordinator.getInstance().showErrorNotification(ErrorMessages.FAILED_TO_CONNECT);
