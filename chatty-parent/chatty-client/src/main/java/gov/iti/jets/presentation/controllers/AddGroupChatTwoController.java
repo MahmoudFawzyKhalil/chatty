@@ -48,7 +48,6 @@ public class AddGroupChatTwoController implements Initializable {
         addGroupPicCircleListener();
         validateGroupNameTextField();
         addEnableButtonValidationListener();
-        System.out.println(createGroupChatModel.getGroupMembersList().size());
     }
 
     private void validateGroupNameTextField() {
@@ -90,8 +89,8 @@ public class AddGroupChatTwoController implements Initializable {
     void onCreateButtonAction(ActionEvent event) {
         AddGroupChatDto addGroupChatDto = GroupChatMapper.INSTANCE.modelToAddGroupChatDto(createGroupChatModel);
         if (create(addGroupChatDto)) {
-            stageCoordinator.showMessageNotification("Success", "Created successfully");
             close();
+            stageCoordinator.showMessageNotification("Success", "Created successfully");
         }
 
     }

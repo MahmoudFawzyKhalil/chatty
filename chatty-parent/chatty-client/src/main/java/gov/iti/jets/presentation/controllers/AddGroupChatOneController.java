@@ -50,11 +50,11 @@ public class AddGroupChatOneController implements Initializable {
     void onNextButtonAction(ActionEvent event) {
         ObservableList<ContactModel> selected = getSelected();
         /*TODO
-        * disable next button
-        * set notify on popub not on stage
-        * */
+         * disable next button
+         * set notify on popub not on stage
+         * */
         if (selected.size() < 2) {
-            stageCoordinator.showErrorNotification(ErrorMessages.ADD_GROUP_SELECT);
+            stageCoordinator.showMessageNotification("Error", ErrorMessages.ADD_GROUP_SELECT);
         } else {
             createGroupChatModel.setGroupMembersList(selected);
             stageCoordinator.switchToAddGroupChatTwo();
