@@ -48,12 +48,12 @@ public class StageCoordinator {
                 e.printStackTrace();
             }
         }
-        setSceneStyleSheets( loginScene );
+        setSceneStyleSheets(loginScene);
         primaryStage.setScene(loginScene);
     }
 
-    private void setSceneStyleSheets( Scene scene ) {
-        scene.getStylesheets().add( getClass().getResource( "/styles/Base.css" ).toExternalForm() );
+    private void setSceneStyleSheets(Scene scene) {
+        scene.getStylesheets().add(getClass().getResource("/styles/Base.css").toExternalForm());
     }
 
     public void switchToRegisterSceneOne() {
@@ -67,7 +67,7 @@ public class StageCoordinator {
                 e.printStackTrace();
             }
         }
-        setSceneStyleSheets( registerSceneOne );
+        setSceneStyleSheets(registerSceneOne);
         primaryStage.setScene(registerSceneOne);
     }
 
@@ -83,7 +83,7 @@ public class StageCoordinator {
             }
         }
 
-        setSceneStyleSheets( registerSceneTwo );
+        setSceneStyleSheets(registerSceneTwo);
         primaryStage.setScene(registerSceneTwo);
     }
 
@@ -99,7 +99,7 @@ public class StageCoordinator {
             }
         }
 
-        setSceneStyleSheets( registerSceneThree );
+        setSceneStyleSheets(registerSceneThree);
         primaryStage.setScene(registerSceneThree);
     }
 
@@ -117,16 +117,31 @@ public class StageCoordinator {
         }
         primaryStage.setWidth(961);
         primaryStage.setHeight(531);
-        setSceneStyleSheets( mainScene );
+        setSceneStyleSheets(mainScene);
         primaryStage.setScene(mainScene);
     }
 
-    public void switchToAddGroupChatTwo(){
+    public void switchToAddGroupChatTwo() {
 
-        Stage addGroupStage=stageMap.get("addGroupStage");
-        if(addGroupStage!=null){
+        Stage addGroupStage = stageMap.get("addGroupStage");
+        if (addGroupStage != null) {
             setPopupStage(addGroupStage, "/views/add-group/AddGroupChatViewTwo.fxml");
         }
+    }
+
+    public void switchToConnectToServer() {
+        Scene connectToServerScene = sceneMap.get("connectToServerScene");
+        if (connectToServerScene == null) {
+            try {
+                Pane root = FXMLLoader.load(getClass().getResource("/views/connect-server/ConnectServerView.fxml"));
+                connectToServerScene = new Scene(root);
+                sceneMap.put("connectToServerScene", connectToServerScene);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        setSceneStyleSheets(connectToServerScene);
+        primaryStage.setScene(connectToServerScene);
     }
 
     public void clearSceneStagePaneMaps() {
@@ -184,35 +199,35 @@ public class StageCoordinator {
         scene.getRoot().setEffect(new DropShadow(10, Color.rgb(30, 30, 30)));
     }
 
-    public void showErrorNotification(String message){
+    public void showErrorNotification(String message) {
         SVGPath svgPath = new SVGPath();
-        svgPath.setFill( Color.web( "#EEEEEE" ) );
-        svgPath.setContent( "M16.5,22.5h3v3h-3Zm0-12h3v9h-3ZM17.985,3A15,15,0,1,0,33,18,14.993,14.993,0,0,0,17.985,3ZM18,30A12,12,0,1,1,30,18,12,12,0,0,1,18,30Z" );
-        svgPath.setScaleX( 0.7 );
-        svgPath.setScaleY( 0.7 );
+        svgPath.setFill(Color.web("#EEEEEE"));
+        svgPath.setContent("M16.5,22.5h3v3h-3Zm0-12h3v9h-3ZM17.985,3A15,15,0,1,0,33,18,14.993,14.993,0,0,0,17.985,3ZM18,30A12,12,0,1,1,30,18,12,12,0,0,1,18,30Z");
+        svgPath.setScaleX(0.7);
+        svgPath.setScaleY(0.7);
 
         Notifications thresholdNotification = Notifications.create()
                 .text(message)
-                .graphic( svgPath )
-                .owner( primaryStage )
-                .position( Pos.CENTER )
-                .hideAfter( Duration.INDEFINITE );
+                .graphic(svgPath)
+                .owner(primaryStage)
+                .position(Pos.CENTER)
+                .hideAfter(Duration.INDEFINITE);
 
         Notifications.create()
                 .text(message)
-                .graphic( svgPath )
-                .owner( primaryStage )
-                .position( Pos.CENTER )
-                .threshold( 1, thresholdNotification )
-                .hideAfter( Duration.INDEFINITE )
+                .graphic(svgPath)
+                .owner(primaryStage)
+                .position(Pos.CENTER)
+                .threshold(1, thresholdNotification)
+                .hideAfter(Duration.INDEFINITE)
                 .show();
     }
 
-    public void showMessageNotification(String senderName, String message){
+    public void showMessageNotification(String senderName, String message) {
         Notifications.create()
                 .title(senderName)
                 .text(message)
-                .hideAfter( Duration.seconds( 3 ) )
+                .hideAfter(Duration.seconds(3))
                 .hideCloseButton()
                 .show();
     }
