@@ -64,6 +64,7 @@ public class UpdateProfileController implements Initializable {
         try {
             UpdateProfileDto updateProfileDto = UpdateProfileMapper.INSTANCE.updateProfileModelToDto(updateProfileModel);
             if (updateProfileDao.update(updateProfileDto)) {
+                updateProfileModel.updateUserModel();
                 stageCoordinator.showMessageNotification("Success", "Updated Successfully");
             } else {
                 stageCoordinator.showErrorNotification(ErrorMessages.FAILED_Update);
