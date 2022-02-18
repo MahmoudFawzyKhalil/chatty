@@ -29,10 +29,8 @@ public class GroupChatRepositoryImpl implements GroupChatRepository {
                     groupChatEntity.setGroupChatId(resultSet.getInt("group_chat_id"));
                     groupChatEntity.setGroupChatName(resultSet.getString("group_chat_name"));
                     groupChatEntity.setGroupChatPicture(resultSet.getString("picture"));
-                    Optional<List<ContactEntity>> groupMemberList = getGroupMemberList(resultSet.getInt("group_chat_id"));
-                    if(!groupMemberList.isEmpty()){
-                        groupChatEntity.setGroupMembersList(groupMemberList.get());
-                    }
+                    List<ContactEntity> groupMemberList = getGroupMemberList(resultSet.getInt("group_chat_id"));
+                    groupChatEntity.setGroupMembersList(groupMemberList);
                     optionalGroupChatEntity = Optional.of(groupChatEntity);
                 }
             }
@@ -43,28 +41,48 @@ public class GroupChatRepositoryImpl implements GroupChatRepository {
     }
 
     @Override
-    public Optional<List<ContactEntity>> getGroupMemberList(int id) {
+    public List<ContactEntity> getGroupMemberList(int id) {
         ContactRepository contactRepository = RepositoryFactory.getInstance().getContactRepository();
-        Optional<List<ContactEntity>> optionalGroupMembersList = Optional.empty();
+        List<ContactEntity> groupMembersList = new ArrayList<>();
 
         try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement("select user_phone_number from group_chats_users where group_chat_id = ?");
         ) {
             statement.setInt(1, id);
             try (ResultSet resultSet = statement.executeQuery()) {
-                List<ContactEntity> groupMemberList = new ArrayList<>();
                 Optional<ContactEntity> contactEntity;
                 while(resultSet.next()) {
                     contactEntity = contactRepository.getContact(resultSet.getString("user_phone_number"));
                     if (!contactEntity.isEmpty()) {
-                        groupMemberList.add(contactEntity.get());
+                        groupMembersList.add(contactEntity.get());
                     }
                 }
-                optionalGroupMembersList = Optional.of(groupMemberList);
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-        return optionalGroupMembersList;
+        return groupMembersList;
+    }
+
+    @Override
+    public List<GroupChatEntity> getGroupChats(String phoneNumber) {
+        List<GroupChatEntity> groupChatList = new ArrayList<>();
+        try (Connection connection = ConnectionPool.getConnection();
+             PreparedStatement statement = connection.prepareStatement("select group_chat_id from group_chats_users where user_phone_number = ?");
+        ) {
+            statement.setString(1, phoneNumber);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                Optional<GroupChatEntity> groupChatEntity;
+                while(resultSet.next()) {
+                    groupChatEntity = getById(resultSet.getInt("group_chat_id"));
+                    if (!groupChatEntity.isEmpty()) {
+                        groupChatList.add(groupChatEntity.get());
+                    }
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return groupChatList;
     }
 }
