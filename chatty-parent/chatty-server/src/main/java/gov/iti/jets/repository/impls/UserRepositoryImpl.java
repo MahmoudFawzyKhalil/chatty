@@ -54,40 +54,6 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public Optional<UserEntity> getByPhoneNumber(String phoneNumber) {
-        CountryRepository countryRepository = RepositoryFactory.getInstance().getCountryRepository();
-        Optional<UserEntity> optionalUser = Optional.empty();
-        try (Connection connection = ConnectionPool.getConnection();
-
-             PreparedStatement preparedStatement = connection.prepareStatement("select phone_number, display_name,gender, email,picture, bio, user_password, birth_date,country_id, user_status_id from users where phone_number = ?")) {
-            preparedStatement.setString(1, phoneNumber);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                UserEntity userEntity = new UserEntity();
-                userEntity.setPhoneNumber(resultSet.getString("phone_number"));
-                userEntity.setDisplayName(resultSet.getString("display_name"));
-                userEntity.setGender(resultSet.getString("gender"));
-                userEntity.setEmail(resultSet.getString("email"));
-                userEntity.setUserPicture(resultSet.getString("picture"));
-                userEntity.setBio(resultSet.getString("bio"));
-                userEntity.setPassword(resultSet.getString("user_password"));
-                userEntity.setBirthDate(resultSet.getDate("birth_date").toLocalDate());
-                Optional<CountryEntity> countryEntityOptional = countryRepository.getById(resultSet.getInt("country_id"));
-                if (!countryEntityOptional.isEmpty()) {
-                    CountryEntity countryEntity = countryEntityOptional.get();
-                    userEntity.setCountry(countryEntity);
-                }
-                //TODO userEntity.setUserStatusId(resultSet.getInt("user_status_id"));
-                optionalUser = Optional.of(userEntity);
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return optionalUser;
-    }
-
-    @Override
     public boolean isFoundByPhoneNumber(String phoneNumber) {
         try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement("select phone_number from users where phone_number = ?")) {
@@ -135,7 +101,7 @@ public class UserRepositoryImpl implements UserRepository {
         }
         return false;
     }
-}
+
 
     @Override
     public Optional<UserEntity> getUserByPhoneNumber(String phoneNumber) {

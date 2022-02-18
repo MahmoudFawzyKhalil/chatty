@@ -7,5 +7,6 @@ import java.util.Optional;
 
 public interface InvitationsRepository {
 
-    Optional<List<ContactEntity>> getInvitations(String phoneNumber);
+    // TODO  MAKE IT A InvitationEntity
+    Optional<List<ContactEntity>> getInvitations( String phoneNumber);
 }

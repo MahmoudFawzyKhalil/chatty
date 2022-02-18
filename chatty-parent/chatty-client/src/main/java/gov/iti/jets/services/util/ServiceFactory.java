@@ -20,6 +20,7 @@ public class ServiceFactory {
     private RegisterService registerService;
     private CountryService countryService;
     private UpdateProfileService updateProfileService;
+    private ConnectionService connectionService;
 
 
     private ServiceFactory() {
