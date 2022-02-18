@@ -16,16 +16,15 @@ import java.util.Optional;
 
 public class InvitationsRepositoryImpl implements InvitationsRepository {
     @Override
-    public Optional<List<ContactEntity>> getInvitations(String phoneNumber) {
+    public List<ContactEntity> getInvitations(String phoneNumber) {
         ContactRepository contactRepository = RepositoryFactory.getInstance().getContactRepository();
-        Optional<List<ContactEntity>> optionalContactList = Optional.empty();
+        List<ContactEntity> contactList = new ArrayList<>();
 
         try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement("select sender from invitations where receiver = ?");
         ) {
             statement.setString(1, phoneNumber);
             try (ResultSet resultSet = statement.executeQuery()) {
-                List<ContactEntity> contactList = new ArrayList<>();
                 Optional<ContactEntity> contactEntity;
                 while(resultSet.next()) {
                     contactEntity = contactRepository.getContact(resultSet.getString("sender"));
@@ -33,12 +32,11 @@ public class InvitationsRepositoryImpl implements InvitationsRepository {
                         contactList.add(contactEntity.get());
                     }
                 }
-                    optionalContactList = Optional.of(contactList);
-                }
+            }
             } catch (SQLException ex) {
             ex.printStackTrace();
         }
-        return optionalContactList;
+        return contactList;
 
     }
 }
