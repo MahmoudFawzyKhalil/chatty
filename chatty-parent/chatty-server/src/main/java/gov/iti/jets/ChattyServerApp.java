@@ -2,10 +2,13 @@ package gov.iti.jets;
 
 import gov.iti.jets.network.RmiManager;
 import gov.iti.jets.presentation.util.StageCoordinator;
+import gov.iti.jets.repository.entities.ContactEntity;
 import gov.iti.jets.repository.util.RepositoryFactory;
 import gov.iti.jets.services.util.ServiceFactory;
 import javafx.application.Application;
 import javafx.stage.Stage;
+
+import java.util.Optional;
 
 
 public class ChattyServerApp extends Application {
@@ -21,6 +24,8 @@ public class ChattyServerApp extends Application {
         primaryStage.setMinWidth(940);
         primaryStage.setMinHeight(500);
         primaryStage.show();
+        Optional<ContactEntity> contactEntity = RepositoryFactory.getInstance().getContactRepository().getContact("11111111111");
+        System.out.println(contactEntity.get().getDisplayName());
 
     }
 

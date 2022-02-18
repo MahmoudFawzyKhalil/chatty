@@ -7,6 +7,9 @@ public class ContactEntity {
     private String profilePicture;
     private UserStatusEntity currentStatus;
 
+    public ContactEntity() {
+    }
+
     public ContactEntity(String phoneNumber, String displayName, String profilePicture, UserStatusEntity currentStatus) {
         this.phoneNumber = phoneNumber;
         this.displayName = displayName;

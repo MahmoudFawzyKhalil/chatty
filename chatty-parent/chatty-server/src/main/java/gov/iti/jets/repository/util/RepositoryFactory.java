@@ -1,13 +1,7 @@
 package gov.iti.jets.repository.util;
 
-import gov.iti.jets.repository.CountryRepository;
-import gov.iti.jets.repository.InvitationsRepository;
-import gov.iti.jets.repository.UserRepository;
-import gov.iti.jets.repository.UserStatusRepository;
-import gov.iti.jets.repository.impls.CountryRepositoryImpl;
-import gov.iti.jets.repository.impls.InvitationsRepositoryImpl;
-import gov.iti.jets.repository.impls.UserRepositoryImpl;
-import gov.iti.jets.repository.impls.UserStatusRepositoryImpl;
+import gov.iti.jets.repository.*;
+import gov.iti.jets.repository.impls.*;
 
 public class RepositoryFactory {
     private static final RepositoryFactory repositoryFactory = new RepositoryFactory();
@@ -15,6 +9,7 @@ public class RepositoryFactory {
     private final UserRepository userRepository = new UserRepositoryImpl();
     private final UserStatusRepository userStatusRepository = new UserStatusRepositoryImpl();
     private final InvitationsRepository invitationsRepository = new InvitationsRepositoryImpl();
+    private final ContactRepository contactRepository = new ContactRepositoryImpl();
 
     private  RepositoryFactory(){
 
@@ -35,4 +30,8 @@ public class RepositoryFactory {
     public  UserStatusRepository getUserStatusRepository(){ return userStatusRepository;}
 
     public  InvitationsRepository getInvitationsRepository(){ return invitationsRepository;}
+
+    public  ContactRepository getContactRepository(){
+        return contactRepository;
+    }
 }
