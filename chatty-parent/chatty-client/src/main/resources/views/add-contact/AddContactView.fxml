@@ -6,9 +6,11 @@
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.effect.ColorAdjust?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
 <BorderPane styleClass="shadow-pane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.presentation.controllers.AddContactController">
@@ -17,7 +19,14 @@
          <children>
             <HBox id="title" alignment="CENTER" spacing="10.0">
                <children>
-                  <Region prefHeight="36.0" prefWidth="37.0" styleClass="add-icon" />
+                  <ImageView fitHeight="36.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/new-user.png" />
+                     </image>
+                     <effect>
+                        <ColorAdjust brightness="1.0" contrast="0.01" />
+                     </effect>
+                  </ImageView>
                   <VBox alignment="CENTER">
                      <children>
                         <Label id="add-label" styleClass="add-label" text="Add Contacts">
