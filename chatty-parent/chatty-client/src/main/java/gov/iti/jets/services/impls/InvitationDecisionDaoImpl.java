@@ -12,17 +12,14 @@ public class InvitationDecisionDaoImpl implements InvitationDecisionDao {
     private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
 
     @Override
-    public boolean acceptInvite(InvitationDecisionDto InvitationDto) throws NotBoundException, RemoteException {
-        //return addContactService.addContacts( addContactDto );
-
+    public boolean acceptInvite(InvitationDecisionDto invitationDecisionDto) throws NotBoundException, RemoteException {
         InvitationDecisionService invitationDecisionService = serviceFactory.getInvitationDecisionService();
-        return false;
+        return invitationDecisionService.acceptInvite( invitationDecisionDto );
     }
 
     @Override
-    public boolean refuseInvite(InvitationDecisionDto InvitationDto) throws NotBoundException, RemoteException {
-        //AddContactService addContactService = registryFactory.getAddContactService();
-        //return addContactService.addContacts( addContactDto );
-        return false;
+    public boolean refuseInvite(InvitationDecisionDto invitationDecisionDto) throws NotBoundException, RemoteException {
+        InvitationDecisionService invitationDecisionService = serviceFactory.getInvitationDecisionService();
+        return invitationDecisionService.refuseInvite( invitationDecisionDto );
     }
 }

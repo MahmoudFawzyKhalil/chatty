@@ -1,17 +1,12 @@
 package gov.iti.jets;
 
 import gov.iti.jets.presentation.util.StageCoordinator;
-import gov.iti.jets.network.ClientImpl;
-import gov.iti.jets.services.util.DaoFactory;
 import javafx.application.Application;
 import javafx.stage.Stage;
-
-import java.rmi.RemoteException;
 
 
 public class ChattyClientApp extends Application {
     private StageCoordinator stageCoordinator = StageCoordinator.getInstance();
-    private final DaoFactory daoFactory = DaoFactory.getInstance();
 
     @Override
     public void start( Stage primaryStage ) {
@@ -24,11 +19,24 @@ public class ChattyClientApp extends Application {
         primaryStage.setMinHeight( 530 );
         primaryStage.show();
 
-        try {
-            ClientImpl.getInstance().loadUserModel( null );
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            ClientImpl.getInstance().loadUserModel( null );
+//        } catch (RemoteException e) {
+//            e.printStackTrace();
+//        }
+
+
+//      try {
+//            var result = DaoFactory.getInstance().getInvitationDecisionDao().refuseInvite(
+//                    new InvitationDecisionDto( "11111111111", "44444444444" ) );
+//            System.err.println(result);
+//            System.err.println("WTF BROOOOOOOOOOO");
+//        } catch (NotBoundException e) {
+//            e.printStackTrace();
+//        } catch (RemoteException e) {
+//            e.printStackTrace();
+//        }
+
     }
 
     public static void main( String[] args ) {

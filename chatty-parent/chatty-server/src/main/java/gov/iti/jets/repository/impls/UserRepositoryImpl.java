@@ -1,19 +1,20 @@
 package gov.iti.jets.repository.impls;
 
-import gov.iti.jets.repository.CountryRepository;
 import gov.iti.jets.commons.dtos.AddContactDto;
+import gov.iti.jets.repository.CountryRepository;
 import gov.iti.jets.repository.UserRepository;
 import gov.iti.jets.repository.entities.CountryEntity;
 import gov.iti.jets.repository.entities.UserEntity;
 import gov.iti.jets.repository.util.ConnectionPool;
 import gov.iti.jets.repository.util.RepositoryFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 import java.util.Optional;
-import java.sql.*;
 
 public class UserRepositoryImpl implements UserRepository {
-
+    private Logger logger = LoggerFactory.getLogger( UserRepositoryImpl.class );
 
     @Override
     public boolean isFoundByPhoneNumberAndPassword(String phoneNumber, String password) {
@@ -34,7 +35,11 @@ public class UserRepositoryImpl implements UserRepository {
     public boolean addContacts(AddContactDto addContactDto) {
         try (Connection connection = ConnectionPool.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("insert into invitations (sender, receiver) values(?,?)")) {
+
+            logger.info( "An attempt to add a contact was made: " + addContactDto.toString() );
+
             connection.setAutoCommit(false);
+
             for(String receiverPhoneNumber: addContactDto.getPhoneNumbers()) {
                 preparedStatement.setString(1, addContactDto.getPhoneNumber());
                 preparedStatement.setString(2, receiverPhoneNumber);

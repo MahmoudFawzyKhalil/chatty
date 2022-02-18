@@ -51,7 +51,6 @@ public class AddContactController implements Initializable {
             stageCoordinator.showErrorNotification( "Already friends." );
         else {
             AddContactDto addContactDto = new AddContactDto( userModel.getPhoneNumber(), phoneNumbers );
-            System.out.println( addContactDto );
             try {
                 boolean addContactSucceeded = addContactDao.addContacts( addContactDto );
                 if (addContactSucceeded) {

@@ -3,6 +3,8 @@ package gov.iti.jets.network;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -36,9 +38,10 @@ public class RmiManager {
     private void registerServices() {
         try {
             registry.rebind("LoginService", new LoginServiceImpl());
-            registry.rebind("AddContactService", new AddContactServiceImpl());
             registry.rebind("RegisterService", new RegisterServiceImpl());
             registry.rebind("CountryService", new CountryServiceImpl());
+            registry.rebind("AddContactService", new AddContactServiceImpl());
+            registry.rebind( "InvitationDecisionService", new InvitationDecisionServiceImpl() );
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -49,23 +52,25 @@ public class RmiManager {
             registry.unbind("LoginService");
             registry.unbind("AddContactService");
             registry.unbind("RegisterService");
+            registry.unbind( "CountryService" );
+            registry.unbind( "InvitationDecisionService" );
         } catch (RemoteException | NotBoundException e) {
             e.printStackTrace();
         }
-//        try {
-//            Runtime rt = Runtime.getRuntime();
-//            Process proc = rt.exec("cmd /c netstat -ano | findstr 1099");
-//            BufferedReader stdInput = new BufferedReader(new
-//                    InputStreamReader(proc.getInputStream()));
-//            String s;
-//            if ((s = stdInput.readLine()) != null) {
-//                int index = s.lastIndexOf(" ");
-//                String sc = s.substring(index);
-//                rt.exec("cmd /c Taskkill /PID" + sc + " /F");
-//            }
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+        try {
+            Runtime rt = Runtime.getRuntime();
+            Process proc = rt.exec("cmd /c netstat -ano | findstr 1099");
+            BufferedReader stdInput = new BufferedReader(new
+                    InputStreamReader(proc.getInputStream()));
+            String s;
+            if ((s = stdInput.readLine()) != null) {
+                int index = s.lastIndexOf(" ");
+                String sc = s.substring(index);
+                rt.exec("cmd /c Taskkill /PID" + sc + " /F");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

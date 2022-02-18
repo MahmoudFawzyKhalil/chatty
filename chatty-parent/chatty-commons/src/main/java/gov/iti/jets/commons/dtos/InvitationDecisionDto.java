@@ -35,4 +35,12 @@ public class InvitationDecisionDto implements Serializable {
     public void setSenderPhoneNumber(String senderPhoneNumber) {
         this.senderPhoneNumber = senderPhoneNumber;
     }
+
+    @Override
+    public String toString() {
+        return "InvitationDecisionDto{" +
+                "receiverPhoneNumber='" + receiverPhoneNumber + '\'' +
+                ", senderPhoneNumber='" + senderPhoneNumber + '\'' +
+                '}';
+    }
 }
