@@ -5,6 +5,7 @@ import gov.iti.jets.commons.dtos.*;
 import gov.iti.jets.presentation.models.UserModel;
 import gov.iti.jets.presentation.models.mappers.*;
 import gov.iti.jets.presentation.util.ModelFactory;
+import javafx.application.Platform;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -95,7 +96,8 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
 
     @Override
     public void addContact(ContactDto contactDto) throws RemoteException {
-        ContactDto contactDto1 = new ContactDto( "01117950455", "Hamada", "", new UserStatusDto( 3, "Busy" ));
-        userModel.getContacts().add( ContactMapper.INSTANCE.contactDtoToModel( contactDto1 ) );
+        Platform.runLater( () -> {
+            userModel.getContacts().add( ContactMapper.INSTANCE.contactDtoToModel( contactDto ) );
+        } );
     }
 }

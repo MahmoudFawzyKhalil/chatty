@@ -1,7 +1,6 @@
 package gov.iti.jets.network;
 
 
-import com.mysql.cj.xdevapi.ClientImpl;
 import gov.iti.jets.commons.callback.Client;
 import gov.iti.jets.commons.dtos.ContactDto;
 import gov.iti.jets.commons.dtos.InvitationDecisionDto;
@@ -46,13 +45,15 @@ public class InvitationDecisionServiceImpl extends UnicastRemoteObject implement
                     optionalReceiver = clients.getClient(receiverPhoneNumber);
                     optionalSender = clients.getClient(senderPhoneNumber);
                     System.out.println(receiverContactDto);
+
+                    if (optionalSender.isPresent()) {
+                        Client sender = optionalSender.get();
+                        sender.addContact(receiverContactDto);
+                    }
+
                     if (optionalReceiver.isPresent()) {
                         Client receiver = optionalReceiver.get();
                         receiver.addContact(senderContactDto);
-                        return true;
-                    } else if (optionalSender.isPresent()) {
-                        Client sender = optionalSender.get();
-                        sender.addContact(receiverContactDto);
                         return true;
                     }
                 }

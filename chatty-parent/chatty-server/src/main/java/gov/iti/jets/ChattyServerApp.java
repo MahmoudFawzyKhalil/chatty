@@ -2,6 +2,7 @@ package gov.iti.jets;
 
 import gov.iti.jets.network.RmiManager;
 import gov.iti.jets.presentation.util.StageCoordinator;
+import gov.iti.jets.repository.util.ConnectionPool;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -21,6 +22,7 @@ public class ChattyServerApp extends Application {
 
     @Override
     public void stop() throws Exception {
+        ConnectionPool.cleanup();
         rmiManager.close();
     }
 
