@@ -23,7 +23,7 @@ public class ConnectionPool {
         config.setJdbcUrl(properties.getProperty("url"));
         config.setUsername(properties.getProperty("username"));
         config.setPassword(properties.getProperty("password"));
-        config.setMaximumPoolSize(5);
+        config.setMaximumPoolSize(10);
         config.addDataSourceProperty("cachePrepStmts", properties.getProperty("cachePrepStmts"));
         config.addDataSourceProperty("prepStmtCacheSize", properties.getProperty("prepStmtCacheSize"));
         config.addDataSourceProperty("prepStmtCacheSqlLimit", properties.getProperty("prepStmtCacheSqlLimit"));

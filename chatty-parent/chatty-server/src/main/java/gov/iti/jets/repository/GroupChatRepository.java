@@ -8,5 +8,6 @@ import java.util.Optional;
 
 public interface GroupChatRepository {
     Optional<GroupChatEntity> getById(int id);
-    Optional<List<ContactEntity>> getGroupMemberList(int id);
+    List<ContactEntity> getGroupMemberList(int id);
+    List<GroupChatEntity> getGroupChats(String phoneNumber);
 }

@@ -47,8 +47,7 @@ public class ContactRepositoryImpl implements ContactRepository {
     }
 
     @Override
-    public Optional<List<ContactEntity>> getUserContacts(String phoneNumber) {
-        Optional<List<ContactEntity>> optionalContactList = Optional.empty();
+    public List<ContactEntity> getUserContacts(String phoneNumber) {
         List<ContactEntity> contactList = new ArrayList<>();
         Optional<ContactEntity> optionalContactEntity;
 
@@ -74,11 +73,10 @@ public class ContactRepositoryImpl implements ContactRepository {
                     }
                 }
             }
-            optionalContactList = Optional.of(contactList);
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return optionalContactList;
+        return contactList;
     }
 }

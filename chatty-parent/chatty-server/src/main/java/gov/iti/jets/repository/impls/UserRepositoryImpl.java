@@ -164,16 +164,15 @@ public class UserRepositoryImpl implements UserRepository {
                         UserStatusEntity userStatusEntity = userStatusOptional.get();
                         userEntity.setCurrentStatus(userStatusEntity);
                     }
-                    Optional<List<ContactEntity>> contactsListOptional = contactRepository.getUserContacts(resultSet.getString("phone_number"));
-                    if (!contactsListOptional.isEmpty()) {
-                        List<ContactEntity> contactsList = contactsListOptional.get();
-                        userEntity.setContactsList(contactsList);
-                    }/* TODO
-                    Optional<List<InvitationEntity>> invitationsListOptional = invitationsRepository.getInvitations(resultSet.getString("phone_number"));
-                    if (!contactsListOptional.isEmpty()) {
-                        List<ContactEntity> contactsList = contactsListOptional.get();
-                        userEntity.setContactsList(contactsList);
-                    }*/
+                    List<ContactEntity> contactsList = contactRepository.getUserContacts(resultSet.getString("phone_number"));
+                    userEntity.setContactsList(contactsList);
+
+                    List<InvitationEntity> invitationList = invitationsRepository.getInvitations(resultSet.getString("phone_number"));
+                    userEntity.setInvitationsList(invitationList);
+
+                    List<GroupChatEntity> groupChatList = groupChatRepository.getGroupChats(resultSet.getString("phone_number"));
+                    userEntity.setGroupChatList(groupChatList);
+
                     optionalUserEntity = Optional.of(userEntity);
                 }
             }

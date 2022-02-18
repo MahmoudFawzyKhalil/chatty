@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane styleClass="main-back-ground" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.presentation.controllers.ConnectServerController">
+   <children>
+      <VBox id="login-card" alignment="CENTER" maxHeight="-Infinity" maxWidth="450.0" prefWidth="400.0" spacing="15.0" styleClass="card" StackPane.alignment="CENTER">
+         <children>
+            <Label id="welcome-label" styleClass="header-label" text="Connect to server" />
+            <Label id="manually-label" maxWidth="1.7976931348623157E308" styleClass="info-label" text="Local connect" />
+            <HBox id="manual-hbox" alignment="CENTER" spacing="10.0">
+               <children>
+                  <TextField id="server-ip" fx:id="localServerIpTextField" promptText="Enter server ip" styleClass="input-field" HBox.hgrow="ALWAYS">
+                     <padding>
+                        <Insets bottom="7.0" left="7.0" right="7.0" top="7.0" />
+                     </padding>
+                  </TextField>
+                  <Button maxWidth="-Infinity" mnemonicParsing="false" onAction="#onLocalConnectButtonAction" prefWidth="85.0" styleClass="connect-button" text="Connect" />
+               </children>
+            </HBox>
+            <Label id="manually-label" maxWidth="1.7976931348623157E308" styleClass="info-label" text="Online connect" />
+            <HBox id="online-hbox" alignment="CENTER" spacing="10.0">
+               <children>
+                  <TextField id="server-ip" fx:id="onlineServerIpTextField" promptText="Enter server ip" styleClass="input-field" HBox.hgrow="ALWAYS">
+                     <padding>
+                        <Insets bottom="7.0" left="7.0" right="7.0" top="7.0" />
+                     </padding>
+                  </TextField>
+                  <Button maxWidth="-Infinity" mnemonicParsing="false" onAction="#onOnlineConnectButtonAction" prefWidth="85.0" styleClass="connect-button" text="Connect" />
+               </children>
+            </HBox>
+            <Label id="manually-label" maxWidth="1.7976931348623157E308" styleClass="info-label" text="Auto detect" />
+            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onAutoDetectButtonAction" styleClass="detect-button" text="Detect">
+               <padding>
+                  <Insets bottom="7.0" left="7.0" right="7.0" top="7.0" />
+               </padding>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </Button>
+         </children>
+         <padding>
+            <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+         </padding>
+      </VBox>
+   </children>
+   <stylesheets>
+      <URL value="@../../styles/Base.css" />
+      <URL value="@ConnectServerStyles.css" />
+   </stylesheets>
+</StackPane>
