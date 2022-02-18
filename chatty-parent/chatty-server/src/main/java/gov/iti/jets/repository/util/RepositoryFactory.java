@@ -10,6 +10,7 @@ public class RepositoryFactory {
     private final UserStatusRepository userStatusRepository = new UserStatusRepositoryImpl();
     private final InvitationsRepository invitationsRepository = new InvitationsRepositoryImpl();
     private final ContactRepository contactRepository = new ContactRepositoryImpl();
+    private final GroupChatRepository groupChatRepository = new GroupChatRepositoryImpl();
 
     private  RepositoryFactory(){
 
@@ -34,4 +35,6 @@ public class RepositoryFactory {
     public  ContactRepository getContactRepository(){
         return contactRepository;
     }
+
+    public GroupChatRepository getGroupChatRepository(){ return groupChatRepository;}
 }

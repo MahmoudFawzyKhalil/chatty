@@ -9,6 +9,9 @@ public class GroupChatEntity {
     private String groupChatPicture;
     private List<ContactEntity> groupMembersList;
 
+    public GroupChatEntity(){
+
+    }
     public GroupChatEntity(int groupChatId, String groupChatName, String groupChatPicture, List<ContactEntity> groupMembersList) {
         this.groupChatId = groupChatId;
         this.groupChatName = groupChatName;

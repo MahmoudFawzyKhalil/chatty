@@ -4,9 +4,9 @@ import gov.iti.jets.commons.dtos.UserStatusDto;
 import gov.iti.jets.repository.entities.UserStatusEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
+
 @Mapper
-public interface UserStatusMapper {
+ public  interface UserStatusMapper {
     UserStatusMapper INSTANCE = Mappers.getMapper(UserStatusMapper.class);
-    UserStatusDto userStatuesEntityToDto (UserStatusEntity userStatusEntity);
-    UserStatusEntity userStatusDtoToEntity (UserStatusDto userStatusDto);
+    UserStatusDto userStatusEntityToDto(UserStatusEntity userStatusEntity);
 }

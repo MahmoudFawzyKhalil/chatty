@@ -11,6 +11,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class ContactRepositoryImpl implements ContactRepository {
@@ -42,5 +44,41 @@ public class ContactRepositoryImpl implements ContactRepository {
             e.printStackTrace();
         }
         return optionalContactEntity;
+    }
+
+    @Override
+    public Optional<List<ContactEntity>> getUserContacts(String phoneNumber) {
+        Optional<List<ContactEntity>> optionalContactList = Optional.empty();
+        List<ContactEntity> contactList = new ArrayList<>();
+        Optional<ContactEntity> optionalContactEntity;
+
+        try (Connection connection = ConnectionPool.getConnection();
+             PreparedStatement statement1 = connection.prepareStatement("select contact_phone_number from contacts where contactee_phone_number = ?");
+             PreparedStatement statement2 = connection.prepareStatement("select contactee_phone_number from contacts where contact_phone_number = ?");
+        ) {
+            statement1.setString(1, phoneNumber);
+            statement2.setString(1, phoneNumber);
+            try (ResultSet resultSet = statement1.executeQuery()) {
+                while(resultSet.next()) {
+                    optionalContactEntity = getContact(resultSet.getString("contact_phone_number"));
+                    if(!optionalContactEntity.isEmpty()){
+                        contactList.add(optionalContactEntity.get());
+                    }
+                }
+            }
+            try (ResultSet resultSet = statement2.executeQuery()) {
+                while(resultSet.next()) {
+                    optionalContactEntity = getContact(resultSet.getString("contactee_phone_number"));
+                    if(!optionalContactEntity.isEmpty()){
+                        contactList.add(optionalContactEntity.get());
+                    }
+                }
+            }
+            optionalContactList = Optional.of(contactList);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return optionalContactList;
     }
 }

@@ -3,15 +3,20 @@ package gov.iti.jets.network;
 import gov.iti.jets.commons.callback.Client;
 import gov.iti.jets.commons.dtos.*;
 import gov.iti.jets.commons.remoteinterfaces.ConnectionService;
+import gov.iti.jets.repository.entities.UserEntity;
+import gov.iti.jets.repository.util.RepositoryFactory;
+import gov.iti.jets.repository.util.mappers.UserMapper;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class ConnectionServiceImpl extends UnicastRemoteObject implements ConnectionService {
 
+    private static final RepositoryFactory repositoryFactory = RepositoryFactory.getInstance();
     private Clients clients = Clients.getInstance();
     protected ConnectionServiceImpl() throws RemoteException {
     }
@@ -19,7 +24,10 @@ public class ConnectionServiceImpl extends UnicastRemoteObject implements Connec
     @Override
     public void registerClient(String phoneNumber, Client client) throws RemoteException {
         clients.addClient(phoneNumber,client);
-        UserDto userDto = testUserDto();
+        Optional<UserEntity> user =repositoryFactory.getUserRepository().getUserByPhoneNumber(phoneNumber);
+        System.out.println(user.get().getCurrentStatus().getStatusName()+"entity");
+        UserDto userDto = UserMapper.INSTANCE.userEntityToDto(user.get());
+        System.out.println(userDto.getCurrentStatus().getUserStatusName()+"dto");
         System.out.println("hi "+userDto);
         client.loadUserModel(userDto);
     }
