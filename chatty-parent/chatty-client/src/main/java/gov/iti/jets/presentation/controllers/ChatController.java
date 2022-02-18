@@ -28,10 +28,12 @@ import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 
 public class ChatController implements Initializable {
     private final UserModel userModel = ModelFactory.getInstance().getUserModel();
+    public ToggleButton boldToggleButton;
+    public ToggleButton italicToggleButton;
+    public ToggleButton underlineToggleButton;
     private ContactModel contactModel;
     private GroupChatModel groupChatModel;
 
@@ -72,37 +74,46 @@ public class ChatController implements Initializable {
     @FXML
     private ColorPicker messageTextColorPicker;
 
+    @FXML
+    private Circle textBackgroundIndicatorCircle;
+
+
     private ObservableMap<String, String> messageStyleMap = FXCollections.observableHashMap();
 
+    private String messageStyleString;
 
-    /*
-            -fx-font-weight
-            -fx-font-family
-            -fx-font-size
-            -fx-font-style
-            -fx-underline
-            -fx-fill*/
 
-    @Override
     public void initialize( URL location, ResourceBundle resources ) {
         preventRightClickOnTextStyleButton();
         addCurrentlyChattingWithListener();
         setUpListViewProperties();
         populateFontComboBoxes();
-        messageStyleMap.put( "bold", "-fx-font-weight: bold;" );
-        messageStyleMap.put( "underline", "-fx-underline: true;" );
-        messageStyleMap.put( "italic", "-fx-font-style: italic;" );
-        messageStyleMap.put( "font-family", "-fx-font-family: 'Comic Sans MS';" );
-        messageStyleMap.put( "font-size", "-fx-font-size: 16px;" );
-        messageStyleMap.put( "font-color", "-fx-fill: red;" );
-//        messageStyleMap.put( "chat-bubble-background", "-fx-background-color: grey;" );
-        messageStyleMap.put( "text-area-background", ".chat-text-area .scroll-pane: -fx-background-color: black;" );
+        messageStyleMap.put( "bold", "bold" );
+        messageStyleMap.put( "underline", "true" );
+        messageStyleMap.put( "italic", "italic" );
+        messageStyleMap.put( "font-family", "'Comic Sans MS'" );
+        messageStyleMap.put( "font-size", "16px" );
+        messageStyleMap.put( "font-color", "red" );
+        messageStyleMap.put( "background-color", "blue" );
             //TODO
         messageStyleMap.addListener( new MapChangeListener<String, String>() {
             @Override
             public void onChanged( Change<? extends String, ? extends String> change ) {
-                String textStyle = change.getMap().values().stream().collect( Collectors.joining(" ") );
-                chatTextArea.setStyle( textStyle );
+                String bold = messageStyleMap.get( "bold" ).isEmpty() ? "" : "-fx-font-weight: " + messageStyleMap.get( "bold" ) + "; ";
+                String underline = messageStyleMap.get( "underline" ).isEmpty() ? "" : "-fx-underline: " + messageStyleMap.get( "underline" ) + "; ";
+                String italic = messageStyleMap.get( "italic" ).isEmpty() ? "" : "-fx-font-style: " + messageStyleMap.get( "italic" ) + "; ";
+                String fontFamily = messageStyleMap.get( "font-family" ).isEmpty() ? "" : "-fx-font-family: " + messageStyleMap.get( "font-family" ) + "; ";
+                String fontSize = messageStyleMap.get( "font-size" ).isEmpty() ? "" : "-fx-font-size: " + messageStyleMap.get( "font-size" ) + "; ";
+                String textAreaFontColor = messageStyleMap.get( "font-color" ).isEmpty() ? "" : "-fx-text-fill: " + messageStyleMap.get( "font-color" ) + "; ";
+                String messageFontColor = messageStyleMap.get( "font-color" ).isEmpty() ? "" : "-fx-fill: " + messageStyleMap.get( "font-color" ) + "; ";
+                String messageBackgroundColor = messageStyleMap.get( "background-color" ).isEmpty() ? "" : "-fx-background-color: " + messageStyleMap.get( "background-color" ) + "; ";
+                String indicatorBackgroundColor = messageStyleMap.get( "background-color" ).isEmpty() ? "" : "-fx-fill: " + messageStyleMap.get( "background-color" ) + "; ";
+
+                String textAreaStyleString = bold + underline + italic + fontFamily + fontSize + textAreaFontColor + messageFontColor;
+                messageStyleString = bold + underline + italic + fontFamily + fontSize + messageFontColor + messageBackgroundColor;
+
+                chatTextArea.setStyle( textAreaStyleString );
+                textBackgroundIndicatorCircle.setStyle( indicatorBackgroundColor );
             }
         } );
 
@@ -236,20 +247,29 @@ public class ChatController implements Initializable {
 
     @FXML
     void onBoldToggleButtonAction( ActionEvent event ) {
-        /*
-         * Use an ArrayList<String> to store the text styles in them then concatenate it into one string
-         * to store in the MessageModel's cssStyleString properties + dtos' styleStringProperties
-         * */
+        if (boldToggleButton.isSelected()){
+            messageStyleMap.put( "bold", "bold" );
+        } else {
+            messageStyleMap.put( "bold", "" );
+        }
     }
 
     @FXML
     void onItalicToggleButtonAction( ActionEvent event ) {
-
+        if (italicToggleButton.isSelected()){
+            messageStyleMap.put( "italic", "italic" );
+        } else {
+            messageStyleMap.put( "italic", "" );
+        }
     }
 
     @FXML
     void onUnderlineToggleButtonAction( ActionEvent event ) {
-
+        if (underlineToggleButton.isSelected()){
+            messageStyleMap.put( "underline", "true" );
+        } else {
+            messageStyleMap.put( "underline", "" );
+        }
     }
 
     @FXML
@@ -259,5 +279,15 @@ public class ChatController implements Initializable {
 
     private void showTextStyleContextMenu() {
         textStyleContextMenu.show( textStyleButton, Side.RIGHT, 0, 0 );
+    }
+
+    public void onMessageTextColorPickerAction( ActionEvent actionEvent ) {
+        String colorString = "#" + messageTextColorPicker.getValue().toString().substring( 2, 8 );
+        messageStyleMap.put( "font-color", colorString );
+    }
+
+    public void onMessageBakckgroundColorPickerAction( ActionEvent actionEvent ) {
+        String colorString = "#" + messageBackgroundColorPicker.getValue().toString().substring( 2, 8 );
+        messageStyleMap.put( "background-color", colorString );
     }
 }
