@@ -1,38 +1,37 @@
 package gov.iti.jets.presentation.controllers;
 
-import gov.iti.jets.presentation.models.UserModel;
+import gov.iti.jets.commons.dtos.UpdateProfileDto;
+import gov.iti.jets.presentation.erros.ErrorMessages;
+import gov.iti.jets.presentation.models.UpdateProfileModel;
+import gov.iti.jets.presentation.models.mappers.UpdateProfileMapper;
 import gov.iti.jets.presentation.util.ModelFactory;
+import gov.iti.jets.presentation.util.StageCoordinator;
+import gov.iti.jets.services.UpdateProfileDao;
 import gov.iti.jets.services.util.DaoFactory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
+import javafx.scene.control.TextField;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 
 import java.net.URL;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.util.ResourceBundle;
 
-public class UpdateProfileController implements Initializable{
+public class UpdateProfileController implements Initializable {
 
-    private static final DaoFactory DAO_FACTORY = DaoFactory.getInstance();
-    private static final ModelFactory modelFactory = ModelFactory.getInstance();
-    private UserModel userModel;
+    private final StageCoordinator stageCoordinator = StageCoordinator.getInstance();
+    private final DaoFactory daoFactory = DaoFactory.getInstance();
+    private final UpdateProfileDao updateProfileDao = daoFactory.getUpdateProfileDao();
+    private UpdateProfileModel updateProfileModel = ModelFactory.getInstance().getUpdateProfileModel();
 
     @FXML
     private TextField bioTextField;
 
-    @FXML
-    private DatePicker birthDateDatePicker;
-
-    @FXML
-    private TextField emailTextField;
-
-    @FXML
-    private ChoiceBox<String> countryChoiceBox;
-
-    @FXML
-    private ChoiceBox<String> genderChoiceBox;
 
     @FXML
     private TextField nameTextField;
@@ -48,19 +47,31 @@ public class UpdateProfileController implements Initializable{
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        userModel = modelFactory.getUserModel();
-        bindProfilePicCircle();
-        nameTextField.textProperty().bind(userModel.displayNameProperty());
-        emailTextField.textProperty().bind(userModel.emailProperty());
-        bioTextField.textProperty().bind(userModel.bioProperty());
-        countryChoiceBox.valueProperty().bind(userModel.getCountry().countryNameProperty());
-        genderChoiceBox.valueProperty().bind(userModel.genderProperty());
-        birthDateDatePicker.valueProperty().bind(userModel.birthDateProperty());
+        nameTextField.textProperty().bindBidirectional(updateProfileModel.displayNameProperty());
+        bioTextField.textProperty().bindBidirectional(updateProfileModel.bioProperty());
+        addListenerProfilePictureCircle();
+    }
+
+    private void addListenerProfilePictureCircle() {
+        profilePictureCircle.setFill(new ImagePattern(updateProfileModel.getProfilePicture()));
+        updateProfileModel.profilePictureProperty().addListener(e -> {
+            profilePictureCircle.setFill(new ImagePattern(updateProfileModel.getProfilePicture()));
+        });
     }
 
     @FXML
     void onUpdateButtonAction(ActionEvent event) {
+        try {
+            UpdateProfileDto updateProfileDto = UpdateProfileMapper.INSTANCE.updateProfileModelToDto(updateProfileModel);
+            if (updateProfileDao.update(updateProfileDto)) {
+                stageCoordinator.showMessageNotification("Success", "Updated Successfully");
+            } else {
+                stageCoordinator.showErrorNotification(ErrorMessages.FAILED_Update);
+            }
 
+        } catch (NotBoundException | RemoteException e) {
+            stageCoordinator.showErrorNotification(ErrorMessages.FAILED_TO_CONNECT);
+        }
     }
 
     @FXML
@@ -68,11 +79,11 @@ public class UpdateProfileController implements Initializable{
 
     }
 
-    private void bindProfilePicCircle() {
-        profilePictureCircle.setFill( new ImagePattern( userModel.getProfilePicture() ) );
-        userModel.profilePictureProperty().addListener( e -> {
-            profilePictureCircle.setFill( new ImagePattern( userModel.getProfilePicture() ));
-        } );
-    }
+    /*private void bindProfilePicCircle() {
+        profilePictureCircle.setFill(new ImagePattern(userModel.getProfilePicture()));
+        userModel.profilePictureProperty().addListener(e -> {
+            profilePictureCircle.setFill(new ImagePattern(userModel.getProfilePicture()));
+        });
+    }*/
 }
 

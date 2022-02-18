@@ -5,4 +5,5 @@ public interface ErrorMessages {
     String PHONE_NUMBER_FOUND = "Phone number found before";
     String EMAIL_FOUND = "Email found before";
     String FAILED_REGISTER = "Failed to register";
+    String FAILED_Update = "Failed to update";
 }
