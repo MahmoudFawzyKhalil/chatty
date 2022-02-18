@@ -22,7 +22,7 @@ public class ModelFactory {
     }
 
     public UserModel getUserModel() {
-        return mockUserModel;
+        return userModel;
     }
 
     private void populateMockUserModel() {

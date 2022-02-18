@@ -58,4 +58,14 @@ public class ContactDto implements Serializable {
     public void setCurrentStatus( UserStatusDto currentStatus ) {
         this.currentStatus = currentStatus;
     }
+
+    @Override
+    public String toString() {
+        return "ContactDto{" +
+                "phoneNumber='" + phoneNumber + '\'' +
+                ", displayName='" + displayName + '\'' +
+                ", profilePicture='" + profilePicture + '\'' +
+                ", currentStatus=" + currentStatus +
+                '}';
+    }
 }

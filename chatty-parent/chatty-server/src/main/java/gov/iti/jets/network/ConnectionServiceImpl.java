@@ -24,10 +24,10 @@ public class ConnectionServiceImpl extends UnicastRemoteObject implements Connec
     @Override
     public void registerClient(String phoneNumber, Client client) throws RemoteException {
         clients.addClient(phoneNumber,client);
-        Optional<UserEntity> user =repositoryFactory.getUserRepository().getUserByPhoneNumber(phoneNumber);
-        System.out.println(user.get().getCurrentStatus().getStatusName()+"entity");
-        UserDto userDto = UserMapper.INSTANCE.userEntityToDto(user.get());
-        System.out.println(userDto.getCurrentStatus().getUserStatusName()+"dto");
+
+        Optional<UserEntity> userEntity = repositoryFactory.getUserRepository().getUserByPhoneNumber(phoneNumber);
+        UserDto userDto = UserMapper.INSTANCE.userEntityToDto(userEntity.get());
+
         System.out.println("hi "+userDto);
         client.loadUserModel(userDto);
     }
