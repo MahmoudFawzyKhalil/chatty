@@ -3,6 +3,8 @@ package gov.iti.jets.network;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -39,6 +41,8 @@ public class RmiManager {
             registry.rebind("ConnectionService",new ConnectionServiceImpl());
             registry.rebind("RegisterService", new RegisterServiceImpl());
             registry.rebind("CountryService", new CountryServiceImpl());
+            registry.rebind("AddContactService", new AddContactServiceImpl());
+            registry.rebind( "InvitationDecisionService", new InvitationDecisionServiceImpl() );
             registry.rebind("UpdateProfileService", new UpdateProfileServiceImpl());
         } catch (RemoteException e) {
             e.printStackTrace();
@@ -49,7 +53,10 @@ public class RmiManager {
     public void close() {
         try {
             registry.unbind("LoginService");
+            registry.unbind("AddContactService");
             registry.unbind("RegisterService");
+            registry.unbind( "CountryService" );
+            registry.unbind( "InvitationDecisionService" );
         } catch (RemoteException | NotBoundException e) {
             e.printStackTrace();
         }

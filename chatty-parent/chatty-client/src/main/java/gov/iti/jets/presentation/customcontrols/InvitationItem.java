@@ -47,4 +47,13 @@ public class InvitationItem extends VBox implements Initializable {
         friendNameLabel.textProperty().bind(invitationModel.getContactModel().displayNameProperty());
         friendPhoneNumberLabel.textProperty().bind(invitationModel.getContactModel().phoneNumberProperty());
     }
+
+    public Button getAcceptButton() {
+        return acceptButton;
+    }
+
+    public Button getRefuseButton() {
+        return refuseButton;
+    }
+
 }

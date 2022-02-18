@@ -2,6 +2,7 @@ package gov.iti.jets.presentation.controllers;
 
 import gov.iti.jets.commons.dtos.LoginDto;
 import gov.iti.jets.network.ClientImpl;
+import gov.iti.jets.commons.dtos.LoginDto;
 import gov.iti.jets.presentation.models.UserModel;
 import gov.iti.jets.presentation.util.ModelFactory;
 import gov.iti.jets.presentation.util.StageCoordinator;
@@ -99,7 +100,6 @@ public class LoginController implements Initializable {
 
     @FXML
     void onLoginButtonAction(ActionEvent event) {
-        stageCoordinator.switchToMainScene();
         LoginDto loginDto = new LoginDto(phoneNumberTextField.getText(), passwordTextField.getText());
         try {
             boolean isAuthenticated = loginDao.isAuthenticated(loginDto);

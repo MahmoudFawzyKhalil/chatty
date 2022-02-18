@@ -1,16 +1,19 @@
 package gov.iti.jets.repository.impls;
 
+import gov.iti.jets.commons.dtos.AddContactDto;
 import gov.iti.jets.repository.*;
 import gov.iti.jets.repository.entities.*;
 import gov.iti.jets.repository.util.ConnectionPool;
 import gov.iti.jets.repository.util.RepositoryFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 import java.util.List;
 import java.util.Optional;
 
 public class UserRepositoryImpl implements UserRepository {
-
+    private Logger logger = LoggerFactory.getLogger( UserRepositoryImpl.class );
 
     @Override
     public boolean isFoundByPhoneNumberAndPassword(String phoneNumber, String password) {
@@ -20,6 +23,30 @@ public class UserRepositoryImpl implements UserRepository {
             preparedStatement.setString(2, password);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next())
+                return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean addContacts(AddContactDto addContactDto) {
+        try (Connection connection = ConnectionPool.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement("insert into invitations (sender, receiver) values(?,?)")) {
+
+            logger.info( "An attempt to add a contact was made: " + addContactDto.toString() );
+
+            connection.setAutoCommit(false);
+
+            for(String receiverPhoneNumber: addContactDto.getPhoneNumbers()) {
+                preparedStatement.setString(1, addContactDto.getPhoneNumber());
+                preparedStatement.setString(2, receiverPhoneNumber);
+                preparedStatement.addBatch();
+            }
+            int[] numSucceeded = preparedStatement.executeBatch();
+            connection.commit();
+            if (numSucceeded.length > 0)
                 return true;
         } catch (SQLException e) {
             e.printStackTrace();
