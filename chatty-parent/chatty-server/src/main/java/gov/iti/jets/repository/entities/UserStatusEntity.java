@@ -1,27 +1,28 @@
 package gov.iti.jets.repository.entities;
 
 public class UserStatusEntity {
-    private int userStatusId;
-    private String userStatusName;
+    private int statusId;
+    private String statusName;
 
-    public UserStatusEntity(int userStatusId, String userStatusName) {
-        this.userStatusId = userStatusId;
-        this.userStatusName = userStatusName;
+    public UserStatusEntity(int statusId, String statusName) {
+        this.statusId = statusId;
+        this.statusName = statusName;
     }
 
-    public int getUserStatusId() {
-        return userStatusId;
+    public int getStatusId() {
+        return statusId;
     }
 
-    public void setUserStatusId(int userStatusId) {
-        this.userStatusId = userStatusId;
+    public void setStatusId(int statusId) {
+        this.statusId = statusId;
     }
 
-    public String getUserStatusName() {
-        return userStatusName;
+    public String getStatusName() {
+        return statusName;
     }
 
-    public void setUserStatusName(String userStatusName) {
-        this.userStatusName = userStatusName;
+    public void setStatusName(String statusName) {
+        this.statusName = statusName;
     }
 }
+

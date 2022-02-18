@@ -35,7 +35,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
 
     @Override
     public void loadUserModel( UserDto userDto ) throws RemoteException {
-        userDto = testUserDto();
+        //userDto = testUserDto();
         userModel.setPhoneNumber( userDto.getPhoneNumber() );
         userModel.setDisplayName( userDto.getDisplayName() );
         userModel.setGender( userDto.getGender() );
@@ -70,7 +70,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
         List<InvitationDto> invitationsList = new ArrayList<>();
         invitationsList.add( new InvitationDto( new ContactDto( "56565656565", "shaksho22", "", new UserStatusDto( 1, "Available" ) ) ) );
 
-        UserDto userDto = new UserDto( "07775000000", "Mahmoud", "M", null,
+        UserDto userDto = new UserDto( "11111111111", "Mahmoud", "M", null,
                 "mahmoud@gmail.com", "I like cookies.", LocalDate.of( 1998, 1, 21 ),
                 new CountryDto( 1, "Egypt" ), new UserStatusDto( 1, "Available" ),
                 contactsList, groupChatList, invitationsList);

@@ -23,33 +23,33 @@ public class ModelFactory {
     }
 
     public UserModel getUserModel() {
-        return mockUserModel;
+        return userModel;
     }
 
     private void populateMockUserModel() {
 
-        mockUserModel.setPhoneNumber("01117950455");
-        mockUserModel.setDisplayName("johnson123");
-        mockUserModel.setGender("F");
-        mockUserModel.setEmail("johnson123@gmaiil.com");
-        mockUserModel.setBio("I want to die.");
-        mockUserModel.setBirthDate(LocalDate.now());
-        mockUserModel.setCountry(new CountryModel(22, "Egypt"));
-        mockUserModel.setCurrentStatus(UserStatusModel.AVAILABLE);
-        mockUserModel.setCurrentlyChattingWith("hamada");
-        ContactModel cm1 = new ContactModel("12345678910", "salma77", UserStatusModel.AWAY);
-        cm1.getMesssages().add(new MessageModel("salma77", LocalDateTime.now(), "Hello it's me salma", "", "", false));
-        cm1.getMesssages().add(new MessageModel("You", LocalDateTime.now(), "Hello it's me johnson", "", "-fx-background-color: orange;", true));
-        cm1.getMesssages().add(new MessageModel("You", LocalDateTime.now(), "Hello it's me beeb", "-fx-fill: red; -fx-underline: true; -fx-font-family: 'Comic Sans MS'", "", true));
-        cm1.getMesssages().add(new MessageModel("You", LocalDateTime.now(), "Hello it's me johnson", "-fx-font-size: 24;", "", true));
-        cm1.getMesssages().add(new MessageModel("You", LocalDateTime.now(), "Hello it's me johnson", "", "", true));
-        cm1.getMesssages().add(new MessageModel("You", LocalDateTime.now(), "Hello it's me johnson", "", "", true));
-        cm1.getMesssages().add(new MessageModel("You", LocalDateTime.now(), "Hello it's me johnson", "", "", true));
-        cm1.getMesssages().add(new MessageModel("You", LocalDateTime.now(), "Hello it's me johnson", "", "", true));
-        ContactModel cm2 = new ContactModel("56789101132", "mohamed11", UserStatusModel.AVAILABLE);
-        cm2.getMesssages().add(new MessageModel("christine33", LocalDateTime.now(), "ana christine 3aml eh", "", "", false));
-        cm2.getMesssages().add(new MessageModel("You", LocalDateTime.now(), "ezayek ya christine", "", "", true));
-        mockUserModel.getContacts().addAll(cm1, cm2);
+        mockUserModel.setPhoneNumber( "11111111111" );
+        mockUserModel.setDisplayName( "johnson123" );
+        mockUserModel.setGender( "F" );
+        mockUserModel.setEmail( "johnson123@gmaiil.com" );
+        mockUserModel.setBio( "I want to die." );
+        mockUserModel.setBirthDate( LocalDate.now() );
+        mockUserModel.setCountry( new CountryModel( 22, "Egypt" ) );
+        mockUserModel.setCurrentStatus( UserStatusModel.AVAILABLE );
+        mockUserModel.setCurrentlyChattingWith( "hamada" );
+        ContactModel cm1 = new ContactModel("12345678910", "salma77", UserStatusModel.AWAY );
+        cm1.getMesssages().add( new MessageModel( "salma77", LocalDateTime.now(), "Hello it's me salma", "", "", false ) );
+        cm1.getMesssages().add( new MessageModel( "You", LocalDateTime.now(), "Hello it's me johnson", "", "-fx-background-color: orange;", true ) );
+        cm1.getMesssages().add( new MessageModel( "You", LocalDateTime.now(), "Hello it's me beeb", "-fx-fill: red; -fx-underline: true; -fx-font-family: 'Comic Sans MS'", "", true ) );
+        cm1.getMesssages().add( new MessageModel( "You", LocalDateTime.now(), "Hello it's me johnson", "-fx-font-size: 24;", "", true ) );
+        cm1.getMesssages().add( new MessageModel( "You", LocalDateTime.now(), "Hello it's me johnson", "", "", true ) );
+        cm1.getMesssages().add( new MessageModel( "You", LocalDateTime.now(), "Hello it's me johnson", "", "", true ) );
+        cm1.getMesssages().add( new MessageModel( "You", LocalDateTime.now(), "Hello it's me johnson", "", "", true ) );
+        cm1.getMesssages().add( new MessageModel( "You", LocalDateTime.now(), "Hello it's me johnson", "", "", true ) );
+        ContactModel cm2 = new ContactModel("56789101132", "mohamed11", UserStatusModel.AVAILABLE );
+        cm2.getMesssages().add( new MessageModel( "christine33", LocalDateTime.now(), "ana christine 3aml eh", "", "", false ) );
+        cm2.getMesssages().add( new MessageModel( "You", LocalDateTime.now(), "ezayek ya christine", "", "", true ) );
+        mockUserModel.getContacts().addAll( cm1, cm2 );
 
         GroupChatModel gcm1 = new GroupChatModel(55, "jets");
         gcm1.getMesssages().add(new MessageModel("hamada91", LocalDateTime.now(), "a group chat message walla eh eh", "", "", false));
@@ -78,4 +78,7 @@ public class ModelFactory {
         return updateProfileModel;
     }
 
+    public void clearUserModel() {
+        userModel.clear();
+    }
 }

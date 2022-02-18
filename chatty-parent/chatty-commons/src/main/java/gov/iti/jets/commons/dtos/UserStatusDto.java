@@ -7,6 +7,7 @@ import java.io.Serializable;
 
 public class UserStatusDto implements Serializable {
 
+
     @NotNull
     private int userStatusId;
 

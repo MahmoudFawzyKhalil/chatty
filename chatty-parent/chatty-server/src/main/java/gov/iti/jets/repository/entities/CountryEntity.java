@@ -1,8 +1,8 @@
 package gov.iti.jets.repository.entities;
 
 public class CountryEntity {
-    private int countryId;
 
+    private int countryId;
     private String countryName;
 
     public CountryEntity(int countryId, String countryName) {

@@ -1,17 +1,19 @@
 package gov.iti.jets.repository.impls;
 
-import gov.iti.jets.repository.CountryRepository;
-import gov.iti.jets.repository.UserRepository;
-import gov.iti.jets.repository.entities.CountryEntity;
-import gov.iti.jets.repository.entities.UserEntity;
+import gov.iti.jets.commons.dtos.AddContactDto;
+import gov.iti.jets.repository.*;
+import gov.iti.jets.repository.entities.*;
 import gov.iti.jets.repository.util.ConnectionPool;
 import gov.iti.jets.repository.util.RepositoryFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.*;
+import java.util.List;
 import java.util.Optional;
 
 public class UserRepositoryImpl implements UserRepository {
-
+    private Logger logger = LoggerFactory.getLogger( UserRepositoryImpl.class );
 
     @Override
     public boolean isFoundByPhoneNumberAndPassword(String phoneNumber, String password) {
@@ -21,6 +23,30 @@ public class UserRepositoryImpl implements UserRepository {
             preparedStatement.setString(2, password);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next())
+                return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean addContacts(AddContactDto addContactDto) {
+        try (Connection connection = ConnectionPool.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement("insert into invitations (sender, receiver) values(?,?)")) {
+
+            logger.info( "An attempt to add a contact was made: " + addContactDto.toString() );
+
+            connection.setAutoCommit(false);
+
+            for(String receiverPhoneNumber: addContactDto.getPhoneNumbers()) {
+                preparedStatement.setString(1, addContactDto.getPhoneNumber());
+                preparedStatement.setString(2, receiverPhoneNumber);
+                preparedStatement.addBatch();
+            }
+            int[] numSucceeded = preparedStatement.executeBatch();
+            connection.commit();
+            if (numSucceeded.length > 0)
                 return true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -52,40 +78,6 @@ public class UserRepositoryImpl implements UserRepository {
             }
         }
         return false;
-    }
-
-    @Override
-    public Optional<UserEntity> getByPhoneNumber(String phoneNumber) {
-        CountryRepository countryRepository = RepositoryFactory.getInstance().getCountryRepository();
-        Optional<UserEntity> optionalUser = Optional.empty();
-        try (Connection connection = ConnectionPool.getConnection();
-
-             PreparedStatement preparedStatement = connection.prepareStatement("select phone_number, display_name,gender, email,picture, bio, user_password, birth_date,country_id, user_status_id from users where phone_number = ?")) {
-            preparedStatement.setString(1, phoneNumber);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                UserEntity userEntity = new UserEntity();
-                userEntity.setPhoneNumber(resultSet.getString("phone_number"));
-                userEntity.setDisplayName(resultSet.getString("display_name"));
-                userEntity.setGender(resultSet.getString("gender"));
-                userEntity.setEmail(resultSet.getString("email"));
-                userEntity.setUserPicture(resultSet.getString("picture"));
-                userEntity.setBio(resultSet.getString("bio"));
-                userEntity.setPassword(resultSet.getString("user_password"));
-                userEntity.setBirthDate(resultSet.getDate("birth_date").toLocalDate());
-                Optional<CountryEntity> countryEntityOptional = countryRepository.getById(resultSet.getInt("country_id"));
-                if (!countryEntityOptional.isEmpty()) {
-                    CountryEntity countryEntity = countryEntityOptional.get();
-                    userEntity.setCountry(countryEntity);
-                }
-                userEntity.setUserStatusId(resultSet.getInt("user_status_id"));
-                optionalUser = Optional.of(userEntity);
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return optionalUser;
     }
 
     @Override
@@ -135,5 +127,61 @@ public class UserRepositoryImpl implements UserRepository {
             e.printStackTrace();
         }
         return false;
+    }
+
+
+    @Override
+    public Optional<UserEntity> getUserByPhoneNumber(String phoneNumber) {
+        ContactRepository contactRepository = RepositoryFactory.getInstance().getContactRepository();
+        UserStatusRepository userStatusRepository = RepositoryFactory.getInstance().getUserStatusRepository();
+        GroupChatRepository groupChatRepository = RepositoryFactory.getInstance().getGroupChatRepository();
+        CountryRepository countryRepository = RepositoryFactory.getInstance().getCountryRepository();
+        InvitationsRepository invitationsRepository = RepositoryFactory.getInstance().getInvitationsRepository();
+
+        Optional<UserEntity> optionalUserEntity = Optional.empty();
+
+        try (Connection connection = ConnectionPool.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement("select * from users where phone_number = ?")) {
+            preparedStatement.setString(1, phoneNumber);
+            try (ResultSet resultSet = preparedStatement.executeQuery();) {
+                if(resultSet.next()) {
+                    UserEntity userEntity = new UserEntity();
+                    userEntity.setPhoneNumber(resultSet.getString("phone_number"));
+                    userEntity.setDisplayName(resultSet.getString("display_name"));
+                    userEntity.setGender(resultSet.getString("gender"));
+                    userEntity.setEmail(resultSet.getString("email"));
+                    userEntity.setUserPicture(resultSet.getString("picture"));
+                    userEntity.setBio(resultSet.getString("bio"));
+                    userEntity.setPassword(resultSet.getString("user_password"));
+                    userEntity.setBirthDate(resultSet.getDate("birth_date").toLocalDate());
+                    Optional<CountryEntity> countryEntityOptional = countryRepository.getById(resultSet.getInt("country_id"));
+                    if (!countryEntityOptional.isEmpty()) {
+                        CountryEntity countryEntity = countryEntityOptional.get();
+                        userEntity.setCountry(countryEntity);
+                    }
+                    Optional<UserStatusEntity> userStatusOptional = userStatusRepository.getStatus(resultSet.getInt("user_status_id"));
+                    if (!userStatusOptional.isEmpty()) {
+                        UserStatusEntity userStatusEntity = userStatusOptional.get();
+                        userEntity.setCurrentStatus(userStatusEntity);
+                    }
+                    Optional<List<ContactEntity>> contactsListOptional = contactRepository.getUserContacts(resultSet.getString("phone_number"));
+                    if (!contactsListOptional.isEmpty()) {
+                        List<ContactEntity> contactsList = contactsListOptional.get();
+                        userEntity.setContactsList(contactsList);
+                    }/* TODO
+                    Optional<List<InvitationEntity>> invitationsListOptional = invitationsRepository.getInvitations(resultSet.getString("phone_number"));
+                    if (!contactsListOptional.isEmpty()) {
+                        List<ContactEntity> contactsList = contactsListOptional.get();
+                        userEntity.setContactsList(contactsList);
+                    }*/
+                    optionalUserEntity = Optional.of(userEntity);
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return optionalUserEntity;
     }
 }

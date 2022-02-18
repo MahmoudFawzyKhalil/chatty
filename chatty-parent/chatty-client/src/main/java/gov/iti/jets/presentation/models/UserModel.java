@@ -215,4 +215,21 @@ public class UserModel {
                 ", currentlyChattingWith=" + currentlyChattingWith +
                 '}';
     }
+
+    public void clear() {
+        UserModel emptyUserModel = new UserModel();
+        this.setPhoneNumber( emptyUserModel.getPhoneNumber() );
+        this.setDisplayName( emptyUserModel.getDisplayName() );
+        this.setGender( emptyUserModel.getGender() );
+        this.setProfilePicture( emptyUserModel.getProfilePicture() );
+        this.setEmail( emptyUserModel.getEmail() );
+        this.setBio( emptyUserModel.getBio() );
+        this.setBirthDate( emptyUserModel.getBirthDate() );
+        this.setCountry( emptyUserModel.getCountry() );
+        this.setCurrentStatus( emptyUserModel.getCurrentStatus() );
+        this.setContacts( emptyUserModel.getContacts() );
+        this.setGroupChats( emptyUserModel.getGroupChats() );
+        this.setInvitations( emptyUserModel.getInvitations() );
+        this.setCurrentlyChattingWith( emptyUserModel.getCurrentlyChattingWith() );
+    }
 }

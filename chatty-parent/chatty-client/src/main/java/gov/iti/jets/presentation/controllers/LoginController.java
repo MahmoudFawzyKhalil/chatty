@@ -1,9 +1,13 @@
 package gov.iti.jets.presentation.controllers;
 
+import gov.iti.jets.commons.dtos.LoginDto;
+import gov.iti.jets.network.ClientImpl;
+import gov.iti.jets.commons.dtos.LoginDto;
 import gov.iti.jets.presentation.models.UserModel;
 import gov.iti.jets.presentation.util.ModelFactory;
 import gov.iti.jets.presentation.util.StageCoordinator;
 import gov.iti.jets.presentation.util.UiValidator;
+import gov.iti.jets.services.ConnectionDao;
 import gov.iti.jets.services.LoginDao;
 import gov.iti.jets.services.util.DaoFactory;
 import javafx.event.ActionEvent;
@@ -16,6 +20,8 @@ import javafx.scene.control.TextField;
 import net.synedra.validatorfx.Validator;
 
 import java.net.URL;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
@@ -24,6 +30,8 @@ public class LoginController implements Initializable {
     private final ModelFactory modelFactory = ModelFactory.getInstance();
     private final DaoFactory daoFactory = DaoFactory.getInstance();
     private final LoginDao loginDao = daoFactory.getLoginService();
+    private final ConnectionDao connectionDao = daoFactory.getConnectionService();
+    private final ClientImpl client = ClientImpl.getInstance();
 
     private UserModel userModel;
 
@@ -92,18 +100,18 @@ public class LoginController implements Initializable {
 
     @FXML
     void onLoginButtonAction(ActionEvent event) {
-        stageCoordinator.switchToMainScene();
-//        LoginDto loginDto = new LoginDto(phoneNumberTextField.getText(), passwordTextField.getText());
-//        try {
-//            boolean isAuthenticated = loginDao.isAuthenticated(loginDto);
-//            if(isAuthenticated){
-//                stageCoordinator.switchToMainScene();
-//            } else {
-//                stageCoordinator.showErrorNotification( "Invalid phone number or password." );
-//            }
-//        } catch (NotBoundException | RemoteException e) {
-//            stageCoordinator.showErrorNotification( "Failed to connect to server. Please try again later." );
-//            e.printStackTrace();
-//        }
+        LoginDto loginDto = new LoginDto(phoneNumberTextField.getText(), passwordTextField.getText());
+        try {
+            boolean isAuthenticated = loginDao.isAuthenticated(loginDto);
+            if(isAuthenticated){
+                connectionDao.registerClient(phoneNumberTextField.getText(),client);
+                stageCoordinator.switchToMainScene();
+            } else {
+                stageCoordinator.showErrorNotification( "Invalid phone number or password." );
+            }
+        } catch (NotBoundException | RemoteException e) {
+            stageCoordinator.showErrorNotification( "Failed to connect to server. Please try again later." );
+            e.printStackTrace();
+        }
     }
 }

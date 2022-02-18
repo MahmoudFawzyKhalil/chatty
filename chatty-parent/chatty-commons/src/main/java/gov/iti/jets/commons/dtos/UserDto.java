@@ -155,4 +155,23 @@ public class UserDto implements Serializable {
     public void setInvitationsList( List<InvitationDto> invitationsList ) {
         this.invitationsList = invitationsList;
     }
+
+
+    @Override
+    public String toString() {
+        return "UserDto{" +
+                "phoneNumber='" + phoneNumber + '\'' +
+                ", displayName='" + displayName + '\'' +
+                ", gender='" + gender + '\'' +
+                ", email='" + email + '\'' +
+                ", birthDate=" + birthDate +
+                ", country=" + country +
+                ", currentStatus=" + currentStatus +
+                ", profilePicture='" + profilePicture + '\'' +
+                ", bio='" + bio + '\'' +
+                ", contactsList=" + contactsList +
+                ", groupChatList=" + groupChatList +
+                ", invitationsList=" + invitationsList +
+                '}';
+    }
 }

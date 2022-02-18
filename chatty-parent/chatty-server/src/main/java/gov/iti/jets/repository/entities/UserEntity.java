@@ -1,6 +1,8 @@
 package gov.iti.jets.repository.entities;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserEntity {
     private String phoneNumber;
@@ -9,15 +11,18 @@ public class UserEntity {
     private String gender;
     private String email;
     private String bio;
-    private  CountryEntity country;
+    private CountryEntity country;
     private String userPicture;
     private LocalDate birthDate;
-    private int userStatusId;
+    private UserStatusEntity currentStatus;
+    private List<InvitationEntity> invitationsList = new ArrayList<>();
+    private List<ContactEntity> contactsList = new ArrayList<>();
+    private List<GroupChatEntity> groupChatList = new ArrayList<>();
 
     public UserEntity() {
     }
 
-    public UserEntity(String phoneNumber, String password, String displayName, String gender, String email, String bio, CountryEntity country, String userPicture, LocalDate birthDate, int userStatusId) {
+    public UserEntity(String phoneNumber, String password, String displayName, String gender, String email, String bio, CountryEntity country, String userPicture, LocalDate birthDate, UserStatusEntity currentStatus, List<InvitationEntity> invitationsList, List<ContactEntity> contactsList, List<GroupChatEntity> groupChatList) {
         this.phoneNumber = phoneNumber;
         this.password = password;
         this.displayName = displayName;
@@ -27,7 +32,10 @@ public class UserEntity {
         this.country = country;
         this.userPicture = userPicture;
         this.birthDate = birthDate;
-        this.userStatusId = userStatusId;
+        this.currentStatus = currentStatus;
+        this.invitationsList = invitationsList;
+        this.contactsList = contactsList;
+        this.groupChatList = groupChatList;
     }
 
     public String getPhoneNumber() {
@@ -102,11 +110,36 @@ public class UserEntity {
         this.birthDate = birthDate;
     }
 
-    public int getUserStatusId() {
-        return userStatusId;
+    public UserStatusEntity getCurrentStatus() {
+        return currentStatus;
     }
 
-    public void setUserStatusId(int userStatusId) {
-        this.userStatusId = userStatusId;
+    public void setCurrentStatus(UserStatusEntity currentStatus) {
+        this.currentStatus = currentStatus;
+    }
+
+    public List<InvitationEntity> getInvitationsList() {
+        return invitationsList;
+    }
+
+    public void setInvitationsList(List<InvitationEntity> invitationsList) {
+        this.invitationsList = invitationsList;
+    }
+
+    public List<ContactEntity> getContactsList() {
+        return contactsList;
+    }
+
+    public void setContactsList(List<ContactEntity> contactsList) {
+        this.contactsList = contactsList;
+    }
+
+    public List<GroupChatEntity> getGroupChatList() {
+        return groupChatList;
+    }
+
+    public void setGroupChatList(List<GroupChatEntity> groupChatList) {
+        this.groupChatList = groupChatList;
     }
 }
+
