@@ -11,10 +11,10 @@ public class UserEntity {
     private String gender;
     private String email;
     private String bio;
-    private ContactEntity country;
+    private CountryEntity country;
     private String userPicture;
     private LocalDate birthDate;
-    private UserEntity currentStatus;
+    private UserStatusEntity currentStatus;
     private List<InvitationEntity> invitationsList = new ArrayList<>();
     private List<ContactEntity> contactsList = new ArrayList<>();
     private List<GroupChatEntity> groupChatList = new ArrayList<>();
@@ -22,7 +22,7 @@ public class UserEntity {
     public UserEntity() {
     }
 
-    public UserEntity(String phoneNumber, String password, String displayName, String gender, String email, String bio, ContactEntity country, String userPicture, LocalDate birthDate, UserEntity currentStatus, List<InvitationEntity> invitationsList, List<ContactEntity> contactsList, List<GroupChatEntity> groupChatList) {
+    public UserEntity(String phoneNumber, String password, String displayName, String gender, String email, String bio, CountryEntity country, String userPicture, LocalDate birthDate, UserStatusEntity currentStatus, List<InvitationEntity> invitationsList, List<ContactEntity> contactsList, List<GroupChatEntity> groupChatList) {
         this.phoneNumber = phoneNumber;
         this.password = password;
         this.displayName = displayName;
@@ -86,11 +86,11 @@ public class UserEntity {
         this.bio = bio;
     }
 
-    public ContactEntity getCountry() {
+    public CountryEntity getCountry() {
         return country;
     }
 
-    public void setCountry(ContactEntity country) {
+    public void setCountry(CountryEntity country) {
         this.country = country;
     }
 
@@ -110,11 +110,11 @@ public class UserEntity {
         this.birthDate = birthDate;
     }
 
-    public UserEntity getCurrentStatus() {
+    public UserStatusEntity getCurrentStatus() {
         return currentStatus;
     }
 
-    public void setCurrentStatus(UserEntity currentStatus) {
+    public void setCurrentStatus(UserStatusEntity currentStatus) {
         this.currentStatus = currentStatus;
     }
 
@@ -142,3 +142,4 @@ public class UserEntity {
         this.groupChatList = groupChatList;
     }
 }
+

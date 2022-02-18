@@ -78,7 +78,7 @@ public class UserRepositoryImpl implements UserRepository {
                     CountryEntity countryEntity = countryEntityOptional.get();
                     userEntity.setCountry(countryEntity);
                 }
-                userEntity.setUserStatusId(resultSet.getInt("user_status_id"));
+               //TODO userEntity.setUserStatusId(resultSet.getInt("user_status_id"));
                 optionalUser = Optional.of(userEntity);
             }
 
