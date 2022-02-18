@@ -14,9 +14,9 @@ public class InvitationRepositoryImpl implements InvitationRepository {
     @Override
     public boolean acceptInvite(InvitationDecisionDto invitationDecisionDto) {
         try (Connection connection = ConnectionPool.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("delete from invitations where contact_phone_number = ? and contactee_phone_number=?")) {
-            preparedStatement.setString(1, invitationDecisionDto.getReceiverPhoneNumber());
-            preparedStatement.setString(2, invitationDecisionDto.getSenderPhoneNumber());
+            PreparedStatement preparedStatement = connection.prepareStatement("delete from invitations where sender = ? and receiver = ?")) {
+            preparedStatement.setString(1, invitationDecisionDto.getSenderPhoneNumber());
+            preparedStatement.setString(2, invitationDecisionDto.getReceiverPhoneNumber());
             int numInvitationsDeleted = preparedStatement.executeUpdate();
 
             int numContactsInserted;
