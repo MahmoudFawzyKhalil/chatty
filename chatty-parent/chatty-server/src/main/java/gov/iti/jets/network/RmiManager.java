@@ -44,6 +44,7 @@ public class RmiManager {
             registry.rebind("AddContactService", new AddContactServiceImpl());
             registry.rebind( "InvitationDecisionService", new InvitationDecisionServiceImpl() );
             registry.rebind("UpdateProfileService", new UpdateProfileServiceImpl());
+            registry.rebind("SingleMessageService", new SingleMessageServiceImpl());
         } catch (RemoteException e) {
             e.printStackTrace();
 
@@ -59,6 +60,7 @@ public class RmiManager {
             registry.unbind("AddContactService");
             registry.unbind( "InvitationDecisionService" );
             registry.unbind( "UpdateProfileService" );
+            registry.unbind("SingleMessageService");
         } catch (RemoteException | NotBoundException e) {
             e.printStackTrace();
         }
