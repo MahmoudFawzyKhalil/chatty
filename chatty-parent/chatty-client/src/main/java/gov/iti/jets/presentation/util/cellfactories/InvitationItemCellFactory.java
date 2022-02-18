@@ -42,9 +42,14 @@ public class InvitationItemCellFactory implements Callback<ListView<InvitationMo
                     // Handle accept button
                     invitationItem.getAcceptButton().addEventHandler(ActionEvent.ACTION, e -> {
                         try {
-                            dao.acceptInvite(
+                            boolean succeeded = dao.acceptInvite(
                                     new InvitationDecisionDto(userModel.getPhoneNumber(),
                                             invitationModel.getContactModel().getPhoneNumber()));
+                            if (succeeded){
+                                StageCoordinator.getInstance().showMessageNotification("Friend request accepted", "");
+                                userModel.getInvitations().removeIf( im -> im.getContactModel().getPhoneNumber()
+                                        .equals(invitationModel.getContactModel().getPhoneNumber()));
+                            }
                         } catch (NotBoundException | RemoteException ex) {
                             StageCoordinator.getInstance().showErrorNotification(ErrorMessages.FAILED_TO_CONNECT);
                             ex.printStackTrace();
@@ -54,9 +59,13 @@ public class InvitationItemCellFactory implements Callback<ListView<InvitationMo
                     // Handle refuse button
                     invitationItem.getRefuseButton().addEventHandler(ActionEvent.ACTION, e -> {
                         try {
-                            dao.refuseInvite(
+                            boolean succeeded = dao.refuseInvite(
                                     new InvitationDecisionDto(userModel.getPhoneNumber(),
                                             invitationModel.getContactModel().getPhoneNumber()));
+
+                            if (succeeded){
+                                StageCoordinator.getInstance().showMessageNotification("Friend request refused", "");
+                            }
                         } catch (NotBoundException | RemoteException ex) {
                             StageCoordinator.getInstance().showErrorNotification(ErrorMessages.FAILED_TO_CONNECT);
                             ex.printStackTrace();

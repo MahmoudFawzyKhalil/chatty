@@ -33,11 +33,11 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public boolean addContacts(AddContactDto addContactDto) {
         try (Connection connection = ConnectionPool.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("insert into invitations values(?,?)")) {
+            PreparedStatement preparedStatement = connection.prepareStatement("insert into invitations (sender, receiver) values(?,?)")) {
             connection.setAutoCommit(false);
-            for(String contacteePhoneNumber: addContactDto.getPhoneNumbers()) {
+            for(String receiverPhoneNumber: addContactDto.getPhoneNumbers()) {
                 preparedStatement.setString(1, addContactDto.getPhoneNumber());
-                preparedStatement.setString(2, contacteePhoneNumber);
+                preparedStatement.setString(2, receiverPhoneNumber);
                 preparedStatement.addBatch();
             }
             int[] numSucceeded = preparedStatement.executeBatch();

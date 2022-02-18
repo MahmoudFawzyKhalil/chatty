@@ -19,15 +19,15 @@ public class InvitationRepositoryImpl implements InvitationRepository {
             preparedStatement.setString(2, invitationDecisionDto.getReceiverPhoneNumber());
             int numInvitationsDeleted = preparedStatement.executeUpdate();
 
-            int numContactsInserted;
+            int numContactsInserted = 0;
             try (PreparedStatement preparedStatement1 = connection.prepareStatement("insert into contacts values(?, ?)")) {
-                preparedStatement1.setString(1, invitationDecisionDto.getReceiverPhoneNumber());
-                preparedStatement1.setString(2, invitationDecisionDto.getSenderPhoneNumber());
+                preparedStatement1.setString(1, invitationDecisionDto.getSenderPhoneNumber());
+                preparedStatement1.setString(2, invitationDecisionDto.getReceiverPhoneNumber());
 
                 numContactsInserted = preparedStatement1.executeUpdate();
             }
 
-            if (numInvitationsDeleted >0 && numContactsInserted > 0) {
+            if (numInvitationsDeleted > 0 && numContactsInserted > 0) {
                     return true;
                 }
         } catch (SQLException e) {
@@ -39,13 +39,15 @@ public class InvitationRepositoryImpl implements InvitationRepository {
     @Override
     public boolean refuseInvite(InvitationDecisionDto invitationDecisionDto) {
         try (Connection connection = ConnectionPool.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("delete from invitations where contact_phone_number = ? and contactee_phone_number= ?")) {
-            preparedStatement.setString(1, invitationDecisionDto.getReceiverPhoneNumber());
-            preparedStatement.setString(2, invitationDecisionDto.getSenderPhoneNumber());
+            PreparedStatement preparedStatement = connection.prepareStatement("delete from invitations where sender = ? and receiver = ?")) {
+            preparedStatement.setString(1, invitationDecisionDto.getSenderPhoneNumber());
+            preparedStatement.setString(2, invitationDecisionDto.getReceiverPhoneNumber());
+
             int numInvitationsDeleted = preparedStatement.executeUpdate();
 
-            if (numInvitationsDeleted > 0)
+            if (numInvitationsDeleted > 0){
                 return true;
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
