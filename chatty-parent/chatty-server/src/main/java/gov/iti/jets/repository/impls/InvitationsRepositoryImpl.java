@@ -3,6 +3,7 @@ package gov.iti.jets.repository.impls;
 import gov.iti.jets.repository.ContactRepository;
 import gov.iti.jets.repository.InvitationsRepository;
 import gov.iti.jets.repository.entities.ContactEntity;
+import gov.iti.jets.repository.entities.InvitationEntity;
 import gov.iti.jets.repository.util.ConnectionPool;
 import gov.iti.jets.repository.util.RepositoryFactory;
 
@@ -16,9 +17,9 @@ import java.util.Optional;
 
 public class InvitationsRepositoryImpl implements InvitationsRepository {
     @Override
-    public List<ContactEntity> getInvitations(String phoneNumber) {
+    public List<InvitationEntity> getInvitations(String phoneNumber) {
         ContactRepository contactRepository = RepositoryFactory.getInstance().getContactRepository();
-        List<ContactEntity> contactList = new ArrayList<>();
+        List<InvitationEntity> invitationList = new ArrayList<>();
 
         try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement("select sender from invitations where receiver = ?");
@@ -29,14 +30,14 @@ public class InvitationsRepositoryImpl implements InvitationsRepository {
                 while(resultSet.next()) {
                     contactEntity = contactRepository.getContact(resultSet.getString("sender"));
                     if (!contactEntity.isEmpty()) {
-                        contactList.add(contactEntity.get());
+                        invitationList.add(new InvitationEntity(contactEntity.get()));
                     }
                 }
             }
             } catch (SQLException ex) {
             ex.printStackTrace();
         }
-        return contactList;
+        return invitationList;
 
     }
 }
