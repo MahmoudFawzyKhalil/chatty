@@ -175,6 +175,7 @@ public class ChatController implements Initializable {
         singleMessageDao.sendMessage(createMessageDto());
         MessageModel messageModel = SingleMessageMapper.INSTANCE.dtoToModel(createMessageDto());
         messageModel.setSentByMe(true);
+        messageModel.setSenderName(userModel.getDisplayName());
 
         if (groupChatModel == null && contactModel == null) {
             return;
@@ -194,7 +195,6 @@ public class ChatController implements Initializable {
 
     SingleMessageDto createMessageDto(){
         SingleMessageDto singleMessageDto = new SingleMessageDto();
-        singleMessageDto.setSenderName(userModel.getDisplayName());
         singleMessageDto.setMessageBody("Hello this is a test single message");
         singleMessageDto.setSenderPhoneNumber(userModel.getPhoneNumber());
         singleMessageDto.setReceiverPhoneNumber(userModel.getCurrentlyChattingWith());

@@ -19,10 +19,6 @@ public class SingleMessageDto implements Serializable {
     @NotNull
     private String messageBody;
 
-    @NotNull
-    @Size(min=3,max=20)
-    private String senderName;
-
     private LocalDateTime timeStamp;
 
     private String cssTextStyleString;
@@ -32,11 +28,10 @@ public class SingleMessageDto implements Serializable {
     public SingleMessageDto() {
     }
 
-    public SingleMessageDto(String receiverPhoneNumber, String senderPhoneNumber, String messageBody, String senderName, LocalDateTime timeStamp, String cssTextStyleString, String cssBubbleStyleString) {
+    public SingleMessageDto(String receiverPhoneNumber, String senderPhoneNumber, String messageBody, LocalDateTime timeStamp, String cssTextStyleString, String cssBubbleStyleString) {
         this.receiverPhoneNumber = receiverPhoneNumber;
         this.senderPhoneNumber = senderPhoneNumber;
         this.messageBody = messageBody;
-        this.senderName = senderName;
         this.timeStamp = timeStamp;
         this.cssTextStyleString = cssTextStyleString;
         this.cssBubbleStyleString = cssBubbleStyleString;
@@ -64,14 +59,6 @@ public class SingleMessageDto implements Serializable {
 
     public void setMessageBody(String messageBody) {
         this.messageBody = messageBody;
-    }
-
-    public String getSenderName() {
-        return senderName;
-    }
-
-    public void setSenderName(String senderName) {
-        this.senderName = senderName;
     }
 
     public LocalDateTime getTimeStamp() {

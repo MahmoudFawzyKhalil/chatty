@@ -91,6 +91,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
                 .findFirst();
 
         if(!optionalContactModel.isEmpty()){
+            messageModel.setSenderName(optionalContactModel.get().getDisplayName());
             Platform.runLater( () -> {
                 optionalContactModel.get().getMesssages().add(messageModel);
             } );
