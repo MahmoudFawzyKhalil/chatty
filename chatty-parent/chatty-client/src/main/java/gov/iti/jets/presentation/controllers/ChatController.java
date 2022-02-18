@@ -8,6 +8,8 @@ import gov.iti.jets.presentation.util.ModelFactory;
 import gov.iti.jets.presentation.util.PaneCoordinator;
 import gov.iti.jets.presentation.util.cellfactories.ChatBubbleCellFactory;
 import gov.iti.jets.presentation.util.cellfactories.NoSelectionModel;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -18,6 +20,7 @@ import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Font;
 
 import java.net.URL;
 import java.time.LocalDateTime;
@@ -55,10 +58,10 @@ public class ChatController implements Initializable {
     private Button textStyleButton;
 
     @FXML
-    private ChoiceBox<String> fontFamilyChoiceBox;
+    private ComboBox<String> fontFamilyComboBox;
 
     @FXML
-    private ChoiceBox<String> fontSizeChoiceBox;
+    private ComboBox<String> fontSizeComboBox;
 
     @FXML
     private ColorPicker messageBackgroundColorPicker;
@@ -72,6 +75,15 @@ public class ChatController implements Initializable {
         preventRightClickOnTextStyleButton();
         addCurrentlyChattingWithListener();
         setUpListViewProperties();
+
+        ObservableList<String> sizes = FXCollections.observableArrayList();
+        sizes.addAll( "10", "12", "14", "16", "18", "20", "22", "24" );
+        fontSizeComboBox.itemsProperty().set( sizes );
+        fontSizeComboBox.getSelectionModel().select( "12" );
+
+        ObservableList<String> fonts = FXCollections.observableArrayList(Font.getFontNames());
+        fontFamilyComboBox.itemsProperty().set( fonts );
+        fontFamilyComboBox.getSelectionModel().select("Helvetica");
     }
 
     private void preventRightClickOnTextStyleButton() {

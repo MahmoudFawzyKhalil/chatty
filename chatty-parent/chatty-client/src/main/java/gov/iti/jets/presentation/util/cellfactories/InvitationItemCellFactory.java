@@ -1,10 +1,8 @@
 package gov.iti.jets.presentation.util.cellfactories;
 
 import gov.iti.jets.commons.dtos.InvitationDecisionDto;
-import gov.iti.jets.presentation.customcontrols.GroupMemberItem;
 import gov.iti.jets.presentation.customcontrols.InvitationItem;
 import gov.iti.jets.presentation.erros.ErrorMessages;
-import gov.iti.jets.presentation.models.ContactModel;
 import gov.iti.jets.presentation.models.InvitationModel;
 import gov.iti.jets.presentation.models.UserModel;
 import gov.iti.jets.presentation.util.ModelFactory;
