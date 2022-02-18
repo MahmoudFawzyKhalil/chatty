@@ -7,10 +7,7 @@ import gov.iti.jets.repository.entities.GroupChatEntity;
 import gov.iti.jets.repository.util.ConnectionPool;
 import gov.iti.jets.repository.util.RepositoryFactory;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -51,7 +48,7 @@ public class GroupChatRepositoryImpl implements GroupChatRepository {
             statement.setInt(1, id);
             try (ResultSet resultSet = statement.executeQuery()) {
                 Optional<ContactEntity> contactEntity;
-                while(resultSet.next()) {
+                while (resultSet.next()) {
                     contactEntity = contactRepository.getContact(resultSet.getString("user_phone_number"));
                     if (!contactEntity.isEmpty()) {
                         groupMembersList.add(contactEntity.get());
@@ -73,7 +70,7 @@ public class GroupChatRepositoryImpl implements GroupChatRepository {
             statement.setString(1, phoneNumber);
             try (ResultSet resultSet = statement.executeQuery()) {
                 Optional<GroupChatEntity> groupChatEntity;
-                while(resultSet.next()) {
+                while (resultSet.next()) {
                     groupChatEntity = getById(resultSet.getInt("group_chat_id"));
                     if (!groupChatEntity.isEmpty()) {
                         groupChatList.add(groupChatEntity.get());
@@ -84,5 +81,92 @@ public class GroupChatRepositoryImpl implements GroupChatRepository {
             ex.printStackTrace();
         }
         return groupChatList;
+    }
+
+    @Override
+    public boolean addGroup(GroupChatEntity groupChatEntity) {
+        /*TODO
+         *
+         * pic
+         *
+         * */
+        try (Connection connection = ConnectionPool.getConnection();
+             PreparedStatement statement = connection.prepareStatement("insert into group_chats (group_chat_name) values (?) ", Statement.RETURN_GENERATED_KEYS);
+        ) {
+            statement.setString(1, groupChatEntity.getGroupChatName());
+            int affectedRows = statement.executeUpdate();
+            if (affectedRows == 1) {
+
+                try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        int groupId = generatedKeys.getInt(1);
+                        System.out.println(groupId + "   ;;;;;;;;;;;;;;;;;;;");
+                        if (addMembers(groupId, groupChatEntity.getGroupMembersList())) {
+                            return true;
+                        } else {
+                            deleteGroup(groupId);
+                            return false;
+                        }
+                    }
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean addMembers(int id, List<ContactEntity> groupMembersList) {
+        if (isFoundById(id)) {
+            try (Connection connection = ConnectionPool.getConnection();
+                 PreparedStatement preparedStatement = connection.prepareStatement("insert into group_chats_users (group_chat_id, user_phone_number) values(?, ?) ")) {
+                for (ContactEntity contactEntity : groupMembersList) {
+                    preparedStatement.setInt(1, id);
+                    preparedStatement.setString(2, contactEntity.getPhoneNumber());
+                    int effectedRows = preparedStatement.executeUpdate();
+                }
+
+                return true;
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean deleteGroup(int id) {
+        try (Connection connection = ConnectionPool.getConnection();
+             PreparedStatement statement = connection.prepareStatement("delete from group_chats where group_chat_id= ? ");
+        ) {
+            statement.setInt(1, id);
+            int affectedRows = statement.executeUpdate();
+            if (affectedRows == 1) {
+                return true;
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isFoundById(int id) {
+        try (Connection connection = ConnectionPool.getConnection();
+             PreparedStatement statement = connection.prepareStatement("select group_chat_id from group_chats where group_chat_id = ? ");
+        ) {
+            statement.setInt(1, id);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return true;
+                }
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return false;
     }
 }

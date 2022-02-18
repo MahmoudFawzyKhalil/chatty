@@ -1,5 +1,6 @@
 package gov.iti.jets.presentation.models.mappers;
 
+import gov.iti.jets.commons.dtos.AddGroupChatDto;
 import gov.iti.jets.commons.dtos.ContactDto;
 import gov.iti.jets.commons.dtos.GroupChatDto;
 import gov.iti.jets.presentation.models.ContactModel;
@@ -17,6 +18,8 @@ public interface GroupChatMapper {
     GroupChatMapper INSTANCE = Mappers.getMapper( GroupChatMapper.class );
 
     GroupChatModel dtoToModel( GroupChatDto groupChatDto );
+
+    AddGroupChatDto modelToAddGroupChatDto( GroupChatModel groupChatModel );
 
     default ObservableList<ContactModel> listToObservableList( List<ContactDto> list ){
         ObservableList<ContactModel> observableList = FXCollections.observableArrayList( ContactModel.extractor());

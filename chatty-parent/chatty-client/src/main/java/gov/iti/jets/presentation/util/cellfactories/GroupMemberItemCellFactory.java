@@ -19,7 +19,7 @@ public class GroupMemberItemCellFactory implements Callback<ListView<ContactMode
                     setGraphic(null);
                 } else if (contact != null) {
                     setText(null);
-                    setGraphic(new GroupMemberItem(contact)); //contact argument
+                    setGraphic(new GroupMemberItem(contact));
                 } else {
                     setText("null");
                     setGraphic(null);
