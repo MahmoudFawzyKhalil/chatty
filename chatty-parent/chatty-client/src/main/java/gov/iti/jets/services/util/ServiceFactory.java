@@ -1,9 +1,6 @@
 package gov.iti.jets.services.util;
 
-import gov.iti.jets.commons.remoteinterfaces.CountryService;
-import gov.iti.jets.commons.remoteinterfaces.AddContactService;
-import gov.iti.jets.commons.remoteinterfaces.LoginService;
-import gov.iti.jets.commons.remoteinterfaces.RegisterService;
+import gov.iti.jets.commons.remoteinterfaces.*;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -20,6 +17,7 @@ public class ServiceFactory {
 
     private static RegisterService registerService;
     private static CountryService countryService;
+    private static InvitationDecisionService invitationDecisionService;
 
     private ServiceFactory() {
         try {
@@ -57,7 +55,7 @@ public class ServiceFactory {
         return registerService;
     }
 
-    public CountryService getCountryService() throws NotBoundException, RemoteException {
+    public CountryService getCountryService()  throws NotBoundException, RemoteException {
         if (countryService == null) {
             countryService = (CountryService) registry.lookup("CountryService");
 
@@ -65,4 +63,11 @@ public class ServiceFactory {
         return countryService;
     }
 
+    public InvitationDecisionService getInvitationDecisionService() throws NotBoundException, RemoteException {
+        if (invitationDecisionService == null) {
+            invitationDecisionService = (InvitationDecisionService) registry.lookup("InvitationDecisionService");
+
+        }
+        return invitationDecisionService;
+    }
 }
