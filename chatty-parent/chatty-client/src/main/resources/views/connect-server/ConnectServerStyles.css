@@ -1,0 +1,51 @@
+.main-back-ground{
+    -fx-background-color:-main-dark;
+}
+
+.card{
+    -fx-background-color:-main-medium;
+    -fx-background-radius:15px;
+}
+
+.header-label{
+    -fx-text-fill:-main-light;
+    -fx-font-weight:bold;
+    -fx-font-size:24px;
+}
+
+
+.info-label{
+    -fx-text-fill:-main-light;
+    -fx-font-size:16px;
+}
+
+.input-field{
+    -fx-text-fill:-main-medium;
+    -fx-font-size: 16px;
+    -fx-background-radius:5px;
+    -fx-background-color: -main-light;
+}
+.connect-button {
+    -fx-background-color: -main-dark;
+    -fx-font-size: 16px;
+    -fx-text-fill: -main-light;
+    -fx-cursor:hand;
+    -fx-background-radius:5px;
+}
+
+.detect-button {
+    -fx-background-color: -main-dark;
+    -fx-font-size: 16px;
+    -fx-text-fill: -main-light;
+    -fx-cursor:hand;
+    -fx-background-radius:5px;
+}
+
+.connect-button:hover {
+    -fx-background-color: derive(-main-dark,-10%);
+}
+
+.detect-button:hover {
+    -fx-background-color: derive(-main-dark,-10%);
+}
+
