@@ -12,7 +12,7 @@ public class RmiManager {
     private final static RmiManager RMI_MANAGER = new RmiManager();
     private Registry registry;
 
-    private Logger logger = LoggerFactory.getLogger( RmiManager.class );
+    private Logger logger = LoggerFactory.getLogger(RmiManager.class);
 
     private RmiManager() {
         try {
@@ -23,7 +23,7 @@ public class RmiManager {
             } catch (RemoteException ex) {
                 ex.printStackTrace();
             }
-            logger.info( "Registry was already alive. Obtained registry already running at port 1099" );
+            logger.info("Registry was already alive. Obtained registry already running at port 1099");
         }
 
         registerServices();
@@ -39,6 +39,7 @@ public class RmiManager {
             registry.rebind("ConnectionService",new ConnectionServiceImpl());
             registry.rebind("RegisterService", new RegisterServiceImpl());
             registry.rebind("CountryService", new CountryServiceImpl());
+            registry.rebind("UpdateProfileService", new UpdateProfileServiceImpl());
         } catch (RemoteException e) {
             e.printStackTrace();
 

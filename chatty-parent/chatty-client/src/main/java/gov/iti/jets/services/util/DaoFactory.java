@@ -8,6 +8,7 @@ import gov.iti.jets.services.impls.ConnectionDaoImpl;
 import gov.iti.jets.services.impls.CountryDaoImpl;
 import gov.iti.jets.services.impls.LoginDaoImpl;
 import gov.iti.jets.services.impls.RegisterDaoImpl;
+import gov.iti.jets.services.impls.UpdateProfileDaoImpl;
 
 public class DaoFactory {
     private static final DaoFactory DAO_FACTORY = new DaoFactory();
@@ -16,6 +17,7 @@ public class DaoFactory {
     private static final ConnectionDao ConnectionDao = new ConnectionDaoImpl();
     private final RegisterDao registerDao = new RegisterDaoImpl();
     private final CountryDao countryDao = new CountryDaoImpl();
+    private final UpdateProfileDao updateProfileDao = new UpdateProfileDaoImpl();
 
     private DaoFactory() {
 
@@ -37,5 +39,9 @@ public class DaoFactory {
 
     public CountryDao getCountryDao() {
         return countryDao;
+    }
+
+    public UpdateProfileDao getUpdateProfileDao() {
+        return updateProfileDao;
     }
 }

@@ -24,7 +24,7 @@ public class RegisterDaoImpl implements RegisterDao {
     }
 
     @Override
-    public boolean validateEmail(String email) throws NotBoundException, RemoteException {
+    public boolean isFoundBefore(String email) throws NotBoundException, RemoteException {
         RegisterService registerService=serviceFactory.getRegisterService();
         return registerService.isFoundByEmail(email);
     }

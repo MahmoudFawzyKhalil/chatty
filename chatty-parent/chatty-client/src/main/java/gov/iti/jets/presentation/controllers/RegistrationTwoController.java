@@ -181,7 +181,7 @@ public class RegistrationTwoController implements Initializable {
 
     boolean isEmailFound() {
         try {
-            return registerDao.validateEmail(registerModel.getEmail());
+            return registerDao.isFoundBefore(registerModel.getEmail());
         } catch (NotBoundException | RemoteException e) {
             stageCoordinator.showErrorNotification(ErrorMessages.FAILED_TO_CONNECT);
         }

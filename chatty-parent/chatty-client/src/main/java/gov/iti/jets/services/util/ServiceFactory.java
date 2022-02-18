@@ -4,6 +4,7 @@ import gov.iti.jets.commons.remoteinterfaces.ConnectionService;
 import gov.iti.jets.commons.remoteinterfaces.CountryService;
 import gov.iti.jets.commons.remoteinterfaces.LoginService;
 import gov.iti.jets.commons.remoteinterfaces.RegisterService;
+import gov.iti.jets.commons.remoteinterfaces.UpdateProfileService;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -13,14 +14,13 @@ import java.rmi.registry.Registry;
 public class ServiceFactory {
     private static final ServiceFactory registryFactory = new ServiceFactory();
     private Registry registry;
-    private static LoginService loginService;
-    private static ConnectionService connectionService;
-    private static RegisterService registerService;
-    private static CountryService countryService;
 
-    public static ServiceFactory getInstance() {
-        return registryFactory;
-    }
+
+    private LoginService loginService;
+    private RegisterService registerService;
+    private CountryService countryService;
+    private UpdateProfileService updateProfileService;
+
 
     private ServiceFactory() {
         try {
@@ -29,6 +29,10 @@ public class ServiceFactory {
             e.printStackTrace();
         }
 
+    }
+
+    public static ServiceFactory getInstance() {
+        return registryFactory;
     }
 
     public LoginService getLoginService() throws NotBoundException, RemoteException {
@@ -59,6 +63,14 @@ public class ServiceFactory {
 
         }
         return countryService;
+    }
+
+    public UpdateProfileService getUpdateProfileService() throws NotBoundException, RemoteException {
+        if (updateProfileService == null) {
+            updateProfileService = (UpdateProfileService) registry.lookup("UpdateProfileService");
+
+        }
+        return updateProfileService;
     }
 
 }

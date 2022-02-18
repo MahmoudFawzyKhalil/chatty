@@ -40,7 +40,7 @@ public class UserRepositoryImpl implements UserRepository {
                 preparedStatement.setString(6, userEntity.getBio());
                 preparedStatement.setString(7, userEntity.getPassword());
                 preparedStatement.setDate(8, Date.valueOf(userEntity.getBirthDate()));
-                preparedStatement.setInt(9, userEntity.getCountry().getCountryId());//todo //////////////////////////////////////////////////////////////
+                preparedStatement.setInt(9, userEntity.getCountry().getCountryId());
                 int resultSet = preparedStatement.executeUpdate();
                 if (resultSet == 1) {
                     return true;
@@ -116,6 +116,28 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public boolean update(UserEntity userEntity) {
+        /*todo
+         * set image
+         * */
+        try (Connection connection = ConnectionPool.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement("update users set display_name = ? , bio = ? where phone_number = ?")) {
+
+            preparedStatement.setString(1, userEntity.getDisplayName());
+            preparedStatement.setString(2, userEntity.getBio());
+            preparedStatement.setString(3, userEntity.getPhoneNumber());
+            int resultSet = preparedStatement.executeUpdate();
+            if (resultSet == 1) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+}
+
+    @Override
     public Optional<UserEntity> getUserByPhoneNumber(String phoneNumber) {
         ContactRepository contactRepository = RepositoryFactory.getInstance().getContactRepository();
         UserStatusRepository userStatusRepository = RepositoryFactory.getInstance().getUserStatusRepository();
@@ -153,7 +175,7 @@ public class UserRepositoryImpl implements UserRepository {
                     if (!contactsListOptional.isEmpty()) {
                         List<ContactEntity> contactsList = contactsListOptional.get();
                         userEntity.setContactsList(contactsList);
-                    }/*
+                    }/* TODO
                     Optional<List<InvitationEntity>> invitationsListOptional = invitationsRepository.getInvitations(resultSet.getString("phone_number"));
                     if (!contactsListOptional.isEmpty()) {
                         List<ContactEntity> contactsList = contactsListOptional.get();
