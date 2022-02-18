@@ -11,4 +11,6 @@ public interface UserRepository {
     boolean isFoundByPhoneNumber(String phoneNumber);
 
     boolean isFoundByEmail(String email);
+
+    boolean update(UserEntity userEntity);
 }
