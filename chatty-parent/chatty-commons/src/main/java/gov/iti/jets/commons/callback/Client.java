@@ -14,4 +14,6 @@ public interface Client extends Remote {
     void receiveSingleMessage(MessageDto messageDto) throws RemoteException;
     void receiveInvitation(InvitationDto invitationDto) throws RemoteException;
     void updateContactList(List<ContactDto> dtos) throws RemoteException;
+    void addContact(ContactDto contactDto) throws RemoteException;
+
 }

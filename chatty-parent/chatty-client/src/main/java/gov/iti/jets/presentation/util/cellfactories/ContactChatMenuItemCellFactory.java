@@ -11,7 +11,6 @@ import javafx.util.Callback;
 public class ContactChatMenuItemCellFactory implements Callback<ListView<ContactModel>, ListCell<ContactModel>> {
 
     private final UserModel userModel = ModelFactory.getInstance().getUserModel();
-
     @Override
     public ListCell<ContactModel> call( ListView<ContactModel> param ) {
         ListCell<ContactModel> cell = new ListCell<>() {

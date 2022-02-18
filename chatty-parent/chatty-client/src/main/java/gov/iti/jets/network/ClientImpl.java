@@ -92,4 +92,10 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
     public void updateContactList( List<ContactDto> dtos ) throws RemoteException {
 
     }
+
+    @Override
+    public void addContact(ContactDto contactDto) throws RemoteException {
+        ContactDto contactDto1 = new ContactDto( "01117950455", "Hamada", "", new UserStatusDto( 3, "Busy" ));
+        userModel.getContacts().add( ContactMapper.INSTANCE.contactDtoToModel( contactDto1 ) );
+    }
 }
