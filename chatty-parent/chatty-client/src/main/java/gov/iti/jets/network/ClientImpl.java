@@ -7,6 +7,7 @@ import gov.iti.jets.presentation.models.MessageModel;
 import gov.iti.jets.presentation.models.UserModel;
 import gov.iti.jets.presentation.models.mappers.*;
 import gov.iti.jets.presentation.util.ModelFactory;
+import javafx.application.Platform;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -84,12 +85,15 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
     @Override
     public void receiveSingleMessage( SingleMessageDto singleMessageDto) throws RemoteException {
         MessageModel messageModel = SingleMessageMapper.INSTANCE.dtoToModel(singleMessageDto);
-        System.out.println(messageModel.getMessageBody());
+
         Optional <ContactModel> optionalContactModel = userModel.getContacts().stream()
                 .filter(cm->cm.getPhoneNumber().equals(singleMessageDto.getSenderPhoneNumber()))
                 .findFirst();
+
         if(!optionalContactModel.isEmpty()){
-            optionalContactModel.get().getMesssages().add(messageModel);
+            Platform.runLater( () -> {
+                optionalContactModel.get().getMesssages().add(messageModel);
+            } );
         }
     }
 
