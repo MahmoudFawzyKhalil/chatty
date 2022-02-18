@@ -54,7 +54,6 @@ public class ContactChatMenuItem extends HBox implements Initializable {
     }
 
     private void bindContactStatusCircle() {
-        System.err.println("WTF" + contactModel.getCurrentStatus().getUserStatusName());
         contactStatusCircle.setFill( StatusColors.getColorFromStatusName( contactModel.getCurrentStatus().getUserStatusName() ) );
         contactModel.currentStatusProperty().addListener( e -> {
             contactStatusCircle.setFill( StatusColors.getColorFromStatusName( contactModel.getCurrentStatus().getUserStatusName() ) );

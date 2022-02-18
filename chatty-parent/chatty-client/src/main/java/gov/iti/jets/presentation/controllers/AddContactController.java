@@ -47,9 +47,13 @@ public class AddContactController implements Initializable {
     void onAddButtonAction( ActionEvent event ) {
         getPhoneNumbers();
         System.out.println(phoneNumbers.size());
-        if (isFriend())
+        if (isFriend()){
             stageCoordinator.showErrorNotification( "Already friends." );
-        else {
+            stageCoordinator.closeAddContactStage();
+        } else if (isAddingSelf()){
+            stageCoordinator.showErrorNotification( "You can't add yourself." );
+            stageCoordinator.closeAddContactStage();
+        } else {
             AddContactDto addContactDto = new AddContactDto( userModel.getPhoneNumber(), phoneNumbers );
             try {
                 boolean addContactSucceeded = addContactDao.addContacts( addContactDto );
@@ -66,6 +70,15 @@ public class AddContactController implements Initializable {
                 resetAddContactView();
             }
         }
+    }
+
+    private boolean isAddingSelf() {
+        for (String contactPhoneNumber : phoneNumbers) {
+            if (contactPhoneNumber.equals( userModel.getPhoneNumber() )){
+                return true;
+            }
+        }
+        return false;
     }
 
     @FXML

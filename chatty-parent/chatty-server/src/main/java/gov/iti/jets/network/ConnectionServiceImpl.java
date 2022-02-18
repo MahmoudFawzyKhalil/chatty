@@ -36,6 +36,7 @@ public class ConnectionServiceImpl extends UnicastRemoteObject implements Connec
     public void unregisterClient(String phoneNumber) throws RemoteException {
         clients.removeClient(phoneNumber);
     }
+
     private UserDto testUserDto() {
 
         List<ContactDto> contactsList = new ArrayList<>();

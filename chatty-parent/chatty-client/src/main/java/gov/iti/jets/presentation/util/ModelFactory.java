@@ -78,4 +78,7 @@ public class ModelFactory {
         return updateProfileModel;
     }
 
+    public void clearUserModel() {
+        userModel.clear();
+    }
 }

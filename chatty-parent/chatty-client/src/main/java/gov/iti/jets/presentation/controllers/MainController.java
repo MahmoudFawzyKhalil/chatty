@@ -9,6 +9,8 @@ import gov.iti.jets.presentation.util.StageCoordinator;
 import gov.iti.jets.presentation.util.StatusColors;
 import gov.iti.jets.presentation.util.cellfactories.ContactChatMenuItemCellFactory;
 import gov.iti.jets.presentation.util.cellfactories.GroupChatMenuItemCellFactory;
+import gov.iti.jets.services.ConnectionDao;
+import gov.iti.jets.services.util.DaoFactory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -19,6 +21,8 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 
 import java.net.URL;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
@@ -26,6 +30,7 @@ public class MainController implements Initializable {
     private final StageCoordinator stageCoordinator = StageCoordinator.getInstance();
     private final PaneCoordinator paneCoordinator = PaneCoordinator.getInstance();
     private final UserModel userModel = ModelFactory.getInstance().getUserModel();
+    private final ConnectionDao connectionDao = DaoFactory.getInstance().getConnectionService();
 
     @FXML
     private ListView<ContactModel> contactChatsListView;
@@ -100,7 +105,15 @@ public class MainController implements Initializable {
 
     @FXML
     void onSignOutButtonAction( ActionEvent event ) {
-        stageCoordinator.clearSceneStagePaneMaps();
+//        stageCoordinator.clearSceneStagePaneMaps();
+
+        try {
+            connectionDao.unregisterClient( userModel.getPhoneNumber() );
+        } catch (NotBoundException | RemoteException e) {
+            e.printStackTrace();
+        }
+
+        ModelFactory.getInstance().clearUserModel();
         stageCoordinator.switchToLoginScene();
     }
 
