@@ -122,12 +122,11 @@ public class UserRepositoryImpl implements UserRepository {
          * set image
          * */
         try (Connection connection = ConnectionPool.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement("update users set display_name = ? , bio = ? , birth_date = ? where phone_number = ?")) {
+             PreparedStatement preparedStatement = connection.prepareStatement("update users set display_name = ? , bio = ? where phone_number = ?")) {
 
             preparedStatement.setString(1, userEntity.getDisplayName());
             preparedStatement.setString(2, userEntity.getBio());
-            preparedStatement.setDate(3, Date.valueOf(userEntity.getBirthDate()));
-            preparedStatement.setString(4, userEntity.getPhoneNumber());
+            preparedStatement.setString(3, userEntity.getPhoneNumber());
             int resultSet = preparedStatement.executeUpdate();
             if (resultSet == 1) {
                 return true;

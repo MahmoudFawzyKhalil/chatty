@@ -6,14 +6,12 @@ import gov.iti.jets.presentation.models.UpdateProfileModel;
 import gov.iti.jets.presentation.models.mappers.UpdateProfileMapper;
 import gov.iti.jets.presentation.util.ModelFactory;
 import gov.iti.jets.presentation.util.StageCoordinator;
-import gov.iti.jets.services.RegisterDao;
 import gov.iti.jets.services.UpdateProfileDao;
 import gov.iti.jets.services.util.DaoFactory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.ImagePattern;
@@ -29,14 +27,10 @@ public class UpdateProfileController implements Initializable {
     private final StageCoordinator stageCoordinator = StageCoordinator.getInstance();
     private final DaoFactory daoFactory = DaoFactory.getInstance();
     private final UpdateProfileDao updateProfileDao = daoFactory.getUpdateProfileDao();
-    private final RegisterDao registerDao = daoFactory.getRegisterDao();
     private UpdateProfileModel updateProfileModel = ModelFactory.getInstance().getUpdateProfileModel();
 
     @FXML
     private TextField bioTextField;
-
-    @FXML
-    private DatePicker birthDateDatePicker;
 
 
     @FXML
@@ -55,13 +49,7 @@ public class UpdateProfileController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         nameTextField.textProperty().bindBidirectional(updateProfileModel.displayNameProperty());
         bioTextField.textProperty().bindBidirectional(updateProfileModel.bioProperty());
-        birthDateDatePicker.valueProperty().bindBidirectional(updateProfileModel.birthDateProperty());
         addListenerProfilePictureCircle();
-        /*BorderPane pane; //TODO
-        pane.centerProperty().a
-        pane.ro().addListener(e->{
-            System.out.println("asdasdasdasd");
-        });*/
     }
 
     private void addListenerProfilePictureCircle() {

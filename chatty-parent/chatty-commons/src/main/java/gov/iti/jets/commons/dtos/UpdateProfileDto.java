@@ -2,11 +2,9 @@ package gov.iti.jets.commons.dtos;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 
 public class UpdateProfileDto implements Serializable {
     @NotNull
@@ -18,18 +16,14 @@ public class UpdateProfileDto implements Serializable {
     @NotNull
     @Email
     private String email;
-    @NotNull
-    @Past
-    private LocalDate birthDate;
     @Size(min = 0, max = 100)
     private String bio;
     private String profilePicture;
 
-    public UpdateProfileDto(String phoneNumber, String displayName, String email, LocalDate birthDate, String bio, String profilePicture) {
+    public UpdateProfileDto(String phoneNumber, String displayName, String email, String bio, String profilePicture) {
         this.phoneNumber = phoneNumber;
         this.displayName = displayName;
         this.email = email;
-        this.birthDate = birthDate;
         this.bio = bio;
         this.profilePicture = profilePicture;
     }
@@ -58,13 +52,6 @@ public class UpdateProfileDto implements Serializable {
         this.email = email;
     }
 
-    public LocalDate getBirthDate() {
-        return birthDate;
-    }
-
-    public void setBirthDate(LocalDate birthDate) {
-        this.birthDate = birthDate;
-    }
 
     public String getBio() {
         return bio;
