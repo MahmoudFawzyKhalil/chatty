@@ -62,7 +62,6 @@ public class ModelFactory {
     public GroupChatModel getCreateGroupChatModel() {
         if (createGroupChatModel == null) {
             createGroupChatModel = new GroupChatModel();
-            createGroupChatModel.setGroupMembersList(getUserModel().contactsProperty());
         }
         return createGroupChatModel;
     }
