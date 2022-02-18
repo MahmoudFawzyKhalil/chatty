@@ -5,6 +5,7 @@ import gov.iti.jets.presentation.models.ContactModel;
 import gov.iti.jets.presentation.models.GroupChatModel;
 import gov.iti.jets.presentation.models.MessageModel;
 import gov.iti.jets.presentation.models.UserModel;
+import gov.iti.jets.presentation.models.mappers.SingleMessageMapper;
 import gov.iti.jets.presentation.util.ModelFactory;
 import gov.iti.jets.presentation.util.PaneCoordinator;
 import gov.iti.jets.presentation.util.cellfactories.ChatBubbleCellFactory;
@@ -172,15 +173,15 @@ public class ChatController implements Initializable {
          *  This is part of the sendSingleMessage use case
          * */
         singleMessageDao.sendMessage(createMessageDto());
+        MessageModel messageModel = SingleMessageMapper.INSTANCE.dtoToModel(createMessageDto());
+        messageModel.setSentByMe(true);
 
         if (groupChatModel == null && contactModel == null) {
             return;
         }
 
         if (contactModel != null) {
-            contactModel.getMesssages().add( new MessageModel( "You", LocalDateTime.now(),
-                    "Hello from send message button.",
-                    "", "", true ) );
+            contactModel.getMesssages().add( messageModel);
             scrollChatMessagesListViewToLastMessage();
         } else {
             groupChatModel.getMesssages().add( new MessageModel( "You", LocalDateTime.now(),
@@ -188,10 +189,12 @@ public class ChatController implements Initializable {
                     "", "", true ) );
             scrollChatMessagesListViewToLastMessage();
         }
+        scrollChatMessagesListViewToLastMessage();
     }
 
     SingleMessageDto createMessageDto(){
         SingleMessageDto singleMessageDto = new SingleMessageDto();
+        singleMessageDto.setSenderName(userModel.getDisplayName());
         singleMessageDto.setMessageBody("Hello this is a test single message");
         singleMessageDto.setSenderPhoneNumber(userModel.getPhoneNumber());
         singleMessageDto.setReceiverPhoneNumber(userModel.getCurrentlyChattingWith());

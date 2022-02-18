@@ -16,9 +16,12 @@ public class SingleMessageServiceImpl extends UnicastRemoteObject implements Sin
 
     @Override
     public void sendMessage(SingleMessageDto singleMessageDto) throws RemoteException {
+        System.out.println(singleMessageDto.getMessageBody());
         Optional<Client> client  = clients.getClient(singleMessageDto.getReceiverPhoneNumber());
         if(!client.isEmpty()){
             client.get().receiveSingleMessage(singleMessageDto);
+        }else{
+            //TODO throw excpetion the user is not online
         }
     }
 }
