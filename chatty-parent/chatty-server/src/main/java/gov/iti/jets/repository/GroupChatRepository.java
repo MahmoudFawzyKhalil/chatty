@@ -9,4 +9,5 @@ import java.util.Optional;
 public interface GroupChatRepository {
     Optional<GroupChatEntity> getById(int id);
     List<ContactEntity> getGroupMemberList(int id);
+    List<GroupChatEntity> getGroupChats(String phoneNumber);
 }

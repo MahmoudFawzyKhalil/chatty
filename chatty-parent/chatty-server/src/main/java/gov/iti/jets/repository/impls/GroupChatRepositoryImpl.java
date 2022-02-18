@@ -63,4 +63,26 @@ public class GroupChatRepositoryImpl implements GroupChatRepository {
         }
         return groupMembersList;
     }
+
+    @Override
+    public List<GroupChatEntity> getGroupChats(String phoneNumber) {
+        List<GroupChatEntity> groupChatList = new ArrayList<>();
+        try (Connection connection = ConnectionPool.getConnection();
+             PreparedStatement statement = connection.prepareStatement("select group_chat_id from group_chats_users where user_phone_number = ?");
+        ) {
+            statement.setString(1, phoneNumber);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                Optional<GroupChatEntity> groupChatEntity;
+                while(resultSet.next()) {
+                    groupChatEntity = getById(resultSet.getInt("group_chat_id"));
+                    if (!groupChatEntity.isEmpty()) {
+                        groupChatList.add(groupChatEntity.get());
+                    }
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return groupChatList;
+    }
 }
