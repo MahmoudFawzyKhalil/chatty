@@ -34,6 +34,8 @@ public class InvitationController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+
+
         numberOfRequestsLabel.textProperty().bind(userModel.invitationsProperty().sizeProperty().asString());
 
         invitationListView.setCellFactory(new InvitationItemCellFactory());

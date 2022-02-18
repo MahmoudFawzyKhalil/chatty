@@ -46,6 +46,7 @@ public class AddContactController implements Initializable {
     @FXML
     void onAddButtonAction( ActionEvent event ) {
         getPhoneNumbers();
+        System.out.println(phoneNumbers.size());
         if (isFriend())
             stageCoordinator.showErrorNotification( "Already friends." );
         else {

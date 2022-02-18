@@ -1,5 +1,6 @@
 package gov.iti.jets.presentation.customcontrols;
 
+import gov.iti.jets.presentation.util.StageCoordinator;
 import gov.iti.jets.presentation.util.UiValidator;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
