@@ -8,17 +8,22 @@
     -fx-font-size:24px;
 }
 
+.card{
+    -fx-background-color:-main-medium;
+    -fx-background-radius:15px;
+}
+
 .update-profile-icon{
     -fx-background-color:-main-light;
     -fx-shape:"M23.385,22.115H14.615V13.346H8.769v8.769H0v5.846H8.769v8.769h5.846V27.962h8.769Zm29.231,2.923a8.769,8.769,0,1,0-2.66-17.129,14.423,14.423,0,0,1,2.631,8.36,14.707,14.707,0,0,1-2.631,8.36A8.739,8.739,0,0,0,52.615,25.038ZM38,25.038a8.769,8.769,0,1,0-8.769-8.769A8.733,8.733,0,0,0,38,25.038Zm19.351,6.314a10.815,10.815,0,0,1,4.034,8.3V45.5h8.769V39.654C70.154,35.152,63.226,32.375,57.351,31.352ZM38,30.885c-5.846,0-17.538,2.923-17.538,8.769V45.5H55.538V39.654C55.538,33.808,43.846,30.885,38,30.885Z" ;
 }
 
 
-.profile-vbox{
-    -fx-background-color: -main-light;
+.profile-stack-pane{
+    -fx-background-color: -main-dark;
 }
 
-.input-field{
+/*.input-field{
     -fx-text-fill:-main-dark;
     -fx-font-size: 16px;
     -fx-background-radius:20px;
@@ -26,6 +31,13 @@
     -fx-border-color: -main-dark;
     -fx-border-width: 1px;
     -fx-border-radius: 2px;
+}*/
+
+.input-field{
+    -fx-text-fill:-main-medium;
+    -fx-font-size: 16px;
+    -fx-background-radius:5px;
+    -fx-background-color: -main-light;
 }
 
 .next-button {
