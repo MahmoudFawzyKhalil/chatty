@@ -19,6 +19,8 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Side;
 import javafx.scene.control.*;
 import javafx.scene.input.ContextMenuEvent;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
@@ -80,7 +82,8 @@ public class ChatController implements Initializable {
 
     private ObservableMap<String, String> messageStyleMap = FXCollections.observableHashMap();
 
-    private String messageStyleString;
+    private String currentMessageTextStyleString;
+    private String currentMessageBubbleStyleString;
 
 
     public void initialize( URL location, ResourceBundle resources ) {
@@ -91,6 +94,7 @@ public class ChatController implements Initializable {
         initMessageStyleMap();
         addMessageStyleMapListener();
         addFontComboBoxListeners();
+        handleEnterKeyPressOnChatTextArea();
 
         messageStyleMap.put( "italic", "" );
     }
@@ -101,12 +105,13 @@ public class ChatController implements Initializable {
         } );
 
         fontFamilyComboBox.valueProperty().addListener( ( observable, oldValue, newValue ) -> {
-            messageStyleMap.put( "font-family", newValue );
+            messageStyleMap.put( "font-family", "'" + newValue + "'" );
         } );
     }
 
     private void addMessageStyleMapListener() {
         messageStyleMap.addListener( new MapChangeListener<String, String>() {
+
             @Override
             public void onChanged( Change<? extends String, ? extends String> change ) {
                 String bold = messageStyleMap.get( "bold" ).isEmpty() ? "" : "-fx-font-weight: " + messageStyleMap.get( "bold" ) + "; ";
@@ -120,7 +125,8 @@ public class ChatController implements Initializable {
                 String indicatorBackgroundColor = messageStyleMap.get( "background-color" ).isEmpty() ? "" : "-fx-fill: " + messageStyleMap.get( "background-color" ) + "; ";
 
                 String textAreaStyleString = bold + underline + italic + fontFamily + fontSize + textAreaFontColor + messageFontColor;
-                messageStyleString = bold + underline + italic + fontFamily + fontSize + messageFontColor + messageBackgroundColor;
+                currentMessageTextStyleString = bold + underline + italic + fontFamily + fontSize + messageFontColor;
+                currentMessageBubbleStyleString = messageBackgroundColor;
 
                 chatTextArea.setStyle( textAreaStyleString );
                 textBackgroundIndicatorCircle.setStyle( indicatorBackgroundColor );
@@ -177,9 +183,24 @@ public class ChatController implements Initializable {
         fontSizeComboBox.itemsProperty().set( sizes );
         fontSizeComboBox.getSelectionModel().select( "12" );
 
-        ObservableList<String> fonts = FXCollections.observableArrayList(Font.getFontNames());
+        ObservableList<String> fonts = FXCollections.observableArrayList( Font.getFontNames() );
         fontFamilyComboBox.itemsProperty().set( fonts );
-        fontFamilyComboBox.getSelectionModel().select("Helvetica");
+        fontFamilyComboBox.getSelectionModel().select( "Helvetica" );
+    }
+
+    private void handleEnterKeyPressOnChatTextArea() {
+        chatTextArea.addEventFilter( KeyEvent.KEY_PRESSED, keyEvent -> {
+            if (keyEvent.getCode() == KeyCode.ENTER && keyEvent.isShiftDown()) {
+                chatTextArea.appendText( "\n" );
+                return;
+            }
+
+            if (keyEvent.getCode() == KeyCode.ENTER) {
+                keyEvent.consume();
+                if (chatTextArea.getText().isEmpty()) return;
+                onSendMessageButtonAction( new ActionEvent() );
+            }
+        } );
     }
 
     private void bindToContactModel() {
@@ -265,7 +286,7 @@ public class ChatController implements Initializable {
 
     @FXML
     void onBoldToggleButtonAction( ActionEvent event ) {
-        if (boldToggleButton.isSelected()){
+        if (boldToggleButton.isSelected()) {
             messageStyleMap.put( "bold", "bold" );
         } else {
             messageStyleMap.put( "bold", "" );
@@ -274,7 +295,7 @@ public class ChatController implements Initializable {
 
     @FXML
     void onItalicToggleButtonAction( ActionEvent event ) {
-        if (italicToggleButton.isSelected()){
+        if (italicToggleButton.isSelected()) {
             messageStyleMap.put( "italic", "italic" );
         } else {
             messageStyleMap.put( "italic", "" );
@@ -283,7 +304,7 @@ public class ChatController implements Initializable {
 
     @FXML
     void onUnderlineToggleButtonAction( ActionEvent event ) {
-        if (underlineToggleButton.isSelected()){
+        if (underlineToggleButton.isSelected()) {
             messageStyleMap.put( "underline", "true" );
         } else {
             messageStyleMap.put( "underline", "" );
