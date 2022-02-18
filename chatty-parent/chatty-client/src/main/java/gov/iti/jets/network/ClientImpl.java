@@ -2,15 +2,19 @@ package gov.iti.jets.network;
 
 import gov.iti.jets.commons.callback.Client;
 import gov.iti.jets.commons.dtos.*;
+import gov.iti.jets.presentation.models.ContactModel;
+import gov.iti.jets.presentation.models.MessageModel;
 import gov.iti.jets.presentation.models.UserModel;
 import gov.iti.jets.presentation.models.mappers.*;
 import gov.iti.jets.presentation.util.ModelFactory;
+import javafx.application.Platform;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class ClientImpl extends UnicastRemoteObject implements Client {
 
@@ -79,8 +83,18 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
     }
 
     @Override
-    public void receiveSingleMessage( MessageDto messageDto ) throws RemoteException {
+    public void receiveSingleMessage( SingleMessageDto singleMessageDto) throws RemoteException {
+        MessageModel messageModel = SingleMessageMapper.INSTANCE.dtoToModel(singleMessageDto);
 
+        Optional <ContactModel> optionalContactModel = userModel.getContacts().stream()
+                .filter(cm->cm.getPhoneNumber().equals(singleMessageDto.getSenderPhoneNumber()))
+                .findFirst();
+
+        if(!optionalContactModel.isEmpty()){
+            Platform.runLater( () -> {
+                optionalContactModel.get().getMesssages().add(messageModel);
+            } );
+        }
     }
 
     @Override

@@ -53,10 +53,6 @@
     -fx-background-color: -main-dark;
     -fx-background-radius:0px 0px 15px 15px;
 }
-.add-icon{
-    -fx-shape:"M28.367,24.992A10.246,10.246,0,1,0,18.121,14.746,10.276,10.276,0,0,0,28.367,24.992Zm0,5.123c-6.788,0-20.492,3.458-20.492,10.246v5.123H48.859V40.361C48.859,33.573,35.155,30.115,28.367,30.115ZM11.371,18.081V11.25H7.956v6.831H1.125V21.5H7.956v6.831h3.415V21.5H18.2V18.081Z";
-    -fx-background-color: -main-light;
-}
 
 .transparent-color{
     -fx-background-color:rgba(0,0,0,0);

@@ -23,6 +23,7 @@ public class ServiceFactory {
     private UpdateProfileService updateProfileService;
     private ConnectionService connectionService;
     private AddGroupChatService addGroupChatService;
+    private static SingleMessageService singleMessageService;
 
 
     private ServiceFactory() {
@@ -100,5 +101,12 @@ public class ServiceFactory {
         return addGroupChatService;
     }
 
+
+    public SingleMessageService getSingleMessageService() throws NotBoundException, RemoteException{
+        if(singleMessageService==null){
+            singleMessageService = (SingleMessageService) registry.lookup("SingleMessageService");
+        }
+        return singleMessageService;
+    }
 
 }
