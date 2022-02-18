@@ -79,7 +79,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
     }
 
     @Override
-    public void receiveSingleMessage( MessageDto messageDto ) throws RemoteException {
+    public void receiveSingleMessage( SingleMessageDto singleMessageDto) throws RemoteException {
 
     }
 

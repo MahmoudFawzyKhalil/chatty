@@ -1,5 +1,6 @@
 package gov.iti.jets.presentation.controllers;
 
+import gov.iti.jets.commons.dtos.SingleMessageDto;
 import gov.iti.jets.presentation.models.ContactModel;
 import gov.iti.jets.presentation.models.GroupChatModel;
 import gov.iti.jets.presentation.models.MessageModel;
@@ -8,6 +9,8 @@ import gov.iti.jets.presentation.util.ModelFactory;
 import gov.iti.jets.presentation.util.PaneCoordinator;
 import gov.iti.jets.presentation.util.cellfactories.ChatBubbleCellFactory;
 import gov.iti.jets.presentation.util.cellfactories.NoSelectionModel;
+import gov.iti.jets.services.SingleMessageDao;
+import gov.iti.jets.services.util.DaoFactory;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -20,6 +23,8 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 
 import java.net.URL;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -28,6 +33,7 @@ public class ChatController implements Initializable {
     private final UserModel userModel = ModelFactory.getInstance().getUserModel();
     private ContactModel contactModel;
     private GroupChatModel groupChatModel;
+    private SingleMessageDao singleMessageDao = DaoFactory.getInstance().getSingleMessageDao();
 
 
     @FXML
@@ -158,13 +164,14 @@ public class ChatController implements Initializable {
     }
 
     @FXML
-    void onSendMessageButtonAction( ActionEvent event ) {
+    void onSendMessageButtonAction( ActionEvent event ) throws NotBoundException, RemoteException {
 
         /*
          * TODO
          *  Refactor this to use proper methods and to get the properties form the textStyleProperties
          *  This is part of the sendSingleMessage use case
          * */
+        singleMessageDao.sendMessage(createMessageDto());
 
         if (groupChatModel == null && contactModel == null) {
             return;
@@ -181,6 +188,18 @@ public class ChatController implements Initializable {
                     "", "", true ) );
             scrollChatMessagesListViewToLastMessage();
         }
+    }
+
+    SingleMessageDto createMessageDto(){
+        SingleMessageDto singleMessageDto = new SingleMessageDto();
+        singleMessageDto.setMessageBody("Hello this is a test single message");
+        singleMessageDto.setSenderPhoneNumber(userModel.getPhoneNumber());
+        singleMessageDto.setReceiverPhoneNumber(userModel.getCurrentlyChattingWith());
+        singleMessageDto.setTimeStamp(LocalDateTime.now());
+        singleMessageDto.setCssTextStyleString("");
+        singleMessageDto.setCssBubbleStyleString("");
+
+        return singleMessageDto;
     }
 
     @FXML

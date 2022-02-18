@@ -22,6 +22,7 @@ public class ServiceFactory {
     private static InvitationDecisionService invitationDecisionService;
     private UpdateProfileService updateProfileService;
     private ConnectionService connectionService;
+    private static SingleMessageService singleMessageService;
 
 
     private ServiceFactory() {
@@ -88,6 +89,13 @@ public class ServiceFactory {
 
         }
         return updateProfileService;
+    }
+
+    public SingleMessageService getSingleMessageService() throws NotBoundException, RemoteException{
+        if(singleMessageService==null){
+            singleMessageService = (SingleMessageService) registry.lookup("SingleMessageService");
+        }
+        return singleMessageService;
     }
 
 }
