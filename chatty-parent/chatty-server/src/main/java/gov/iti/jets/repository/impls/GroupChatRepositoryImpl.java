@@ -9,6 +9,7 @@ import gov.iti.jets.repository.util.RepositoryFactory;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -100,7 +101,6 @@ public class GroupChatRepositoryImpl implements GroupChatRepository {
                 try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
                         int groupId = generatedKeys.getInt(1);
-                        System.out.println(groupId + "   ;;;;;;;;;;;;;;;;;;;");
                         if (addMembers(groupId, groupChatEntity.getGroupMembersList())) {
                             return true;
                         } else {
@@ -121,13 +121,18 @@ public class GroupChatRepositoryImpl implements GroupChatRepository {
         if (isFoundById(id)) {
             try (Connection connection = ConnectionPool.getConnection();
                  PreparedStatement preparedStatement = connection.prepareStatement("insert into group_chats_users (group_chat_id, user_phone_number) values(?, ?) ")) {
+                connection.setAutoCommit(false);
+
                 for (ContactEntity contactEntity : groupMembersList) {
                     preparedStatement.setInt(1, id);
                     preparedStatement.setString(2, contactEntity.getPhoneNumber());
-                    int effectedRows = preparedStatement.executeUpdate();
+                    preparedStatement.addBatch();
                 }
-
-                return true;
+                int[] effectedRows = preparedStatement.executeBatch();
+                long countNotAdded = Arrays.stream(effectedRows).filter(el -> el != 1).count();
+                preparedStatement.clearBatch();
+                connection.setAutoCommit(true);
+                return countNotAdded == 0;
 
             } catch (SQLException e) {
                 e.printStackTrace();
