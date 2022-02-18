@@ -12,6 +12,7 @@ public class ModelFactory {
     private UserModel mockUserModel = new UserModel();
     private GroupChatModel createGroupChatModel;
     private final RegisterModel registerModel = new RegisterModel();
+    private UpdateProfileModel updateProfileModel;
 
     private ModelFactory() {
         populateMockUserModel();
@@ -66,8 +67,15 @@ public class ModelFactory {
         return createGroupChatModel;
     }
 
-    public  RegisterModel getRegisterModel(){
+    public RegisterModel getRegisterModel() {
         return registerModel;
+    }
+
+    public UpdateProfileModel getUpdateProfileModel() {
+        if (updateProfileModel == null) {
+            updateProfileModel = new UpdateProfileModel(getUserModel());
+        }
+        return updateProfileModel;
     }
 
 }
