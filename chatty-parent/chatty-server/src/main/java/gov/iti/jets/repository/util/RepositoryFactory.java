@@ -6,13 +6,15 @@ import gov.iti.jets.repository.impls.CountryRepositoryImpl;
 import gov.iti.jets.repository.impls.UserRepositoryImpl;
 
 public class RepositoryFactory {
-    private static final RepositoryFactory repositoryFactory=new RepositoryFactory();
-    private UserRepository userRepository = new UserRepositoryImpl();
-    private CountryRepository countryRepository = new CountryRepositoryImpl();
+    private static final RepositoryFactory repositoryFactory = new RepositoryFactory();
+    private final CountryRepository countryRepository = new CountryRepositoryImpl();
+    private final UserRepository userRepository = new UserRepositoryImpl();
+
     private  RepositoryFactory(){
 
     }
-    public static RepositoryFactory getInstance(){
+
+    public static RepositoryFactory getInstance() {
         return repositoryFactory;
     }
 
@@ -20,5 +22,7 @@ public class RepositoryFactory {
         return userRepository;
     }
 
-    public CountryRepository getCountryRepository(){ return countryRepository;}
+    public CountryRepository getCountryRepository() {
+        return countryRepository;
+    }
 }

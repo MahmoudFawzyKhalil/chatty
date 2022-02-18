@@ -1,13 +1,14 @@
 package gov.iti.jets.commons.dtos;
 
-import gov.iti.jets.commons.util.ValidationUtil;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.Size;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 
 public class RegisterDto implements Serializable {
-    //phone number ,name, password, email , birthdate, country, gender, bio ,image
     @NotNull
     @Size(min = 11, max = 11)
     private String phoneNumber;
@@ -24,26 +25,23 @@ public class RegisterDto implements Serializable {
     @Past
     private LocalDate birthDate;
     @NotNull
-    //ask
-    private int countryId;
+    private CountryDto country;
     @NotNull
     private String gender;
     @Size(min = 0, max = 100)
     private String bio;
-    //ask
     private String profilePicture;
 
-    public RegisterDto(String phoneNumber, String displayName, String password, String email, LocalDate birthDate, int countryId, String gender, String bio, String profilePicture) {
+    public RegisterDto(String phoneNumber, String displayName, String password, String email, LocalDate birthDate, CountryDto country, String gender, String bio, String profilePicture) {
         this.phoneNumber = phoneNumber;
         this.displayName = displayName;
         this.password = password;
         this.email = email;
         this.birthDate = birthDate;
-        this.countryId = countryId;
+        this.country = country;
         this.gender = gender;
         this.bio = bio;
         this.profilePicture = profilePicture;
-        ValidationUtil.getInstance().validate(this);
     }
 
     public String getPhoneNumber() {
@@ -86,12 +84,12 @@ public class RegisterDto implements Serializable {
         this.birthDate = birthDate;
     }
 
-    public int getCountryId() {
-        return countryId;
+    public CountryDto getCountry() {
+        return country;
     }
 
-    public void setCountryId(int countryId) {
-        this.countryId = countryId;
+    public void setCountry(CountryDto country) {
+        this.country = country;
     }
 
     public String getGender() {

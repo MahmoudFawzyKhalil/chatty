@@ -29,7 +29,8 @@ CREATE TABLE user_status(
     
 CREATE TABLE group_chats (
 	group_chat_id INT PRIMARY KEY AUTO_INCREMENT,
-    group_chat_name VARCHAR(50) NOT NULL
+    	group_chat_name VARCHAR(50) NOT NULL,
+	picture VARCHAR(250)
     );
     
 -- MANY TO MANY 
@@ -62,7 +63,8 @@ ALTER TABLE contacts
 ALTER TABLE invitations
     ADD CONSTRAINT FOREIGN KEY(contact_phone_number) REFERENCES users(phone_number),
     ADD CONSTRAINT FOREIGN KEY(contactee_phone_number) REFERENCES users(phone_number),
-    ADD CONSTRAINT PRIMARY KEY(contact_phone_number, contactee_phone_number);
+    ADD CONSTRAINT PRIMARY KEY(contact_phone_number, contactee_phone_number),
+    ADD CONSTRAINT CHECK (contact_phone_number != contactee_phone_number);
     
 ALTER TABLE group_chats_users
     ADD CONSTRAINT FOREIGN KEY(group_chat_id) REFERENCES group_chats(group_chat_id),

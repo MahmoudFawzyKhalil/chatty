@@ -25,3 +25,4 @@ public class UserStatusEntity {
         this.statusName = statusName;
     }
 }
+

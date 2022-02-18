@@ -42,7 +42,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
         userModel.setEmail( userDto.getEmail() );
         userModel.setBio( userDto.getBio() );
         userModel.setBirthDate( userDto.getBirthDate() );
-        userModel.setCountry( CountryMapper.INSTANCE.dtoToModel( userDto.getCountry() ) );
+        userModel.setCountry( CountryMapper.INSTANCE.countryDtoToModel( userDto.getCountry() ) );
         userModel.setCurrentStatus( UserStatusMapper.INSTANCE.dtoToModel( userDto.getCurrentStatus() ) );
         userModel.setProfilePicture( ImageMapper.getInstance().encodedStringToImage( userDto.getProfilePicture() ) );
 
