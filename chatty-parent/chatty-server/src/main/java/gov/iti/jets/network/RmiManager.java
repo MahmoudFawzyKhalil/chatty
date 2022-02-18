@@ -53,27 +53,31 @@ public class RmiManager {
     public void close() {
         try {
             registry.unbind("LoginService");
-            registry.unbind("AddContactService");
+            registry.unbind( "ConnectionService" );
             registry.unbind("RegisterService");
             registry.unbind( "CountryService" );
+            registry.unbind("AddContactService");
             registry.unbind( "InvitationDecisionService" );
+            registry.unbind( "UpdateProfileService" );
         } catch (RemoteException | NotBoundException e) {
             e.printStackTrace();
         }
-//        try {
-//            Runtime rt = Runtime.getRuntime();
-//            Process proc = rt.exec("cmd /c netstat -ano | findstr 1099");
-//            BufferedReader stdInput = new BufferedReader(new
-//                    InputStreamReader(proc.getInputStream()));
-//            String s;
-//            if ((s = stdInput.readLine()) != null) {
-//                int index = s.lastIndexOf(" ");
-//                String sc = s.substring(index);
-//                rt.exec("cmd /c Taskkill /PID" + sc + " /F");
-//            }
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+
+
+        try {
+            Runtime rt = Runtime.getRuntime();
+            Process proc = rt.exec("cmd /c netstat -ano | findstr 1099");
+            BufferedReader stdInput = new BufferedReader(new
+                    InputStreamReader(proc.getInputStream()));
+            String s;
+            if ((s = stdInput.readLine()) != null) {
+                int index = s.lastIndexOf(" ");
+                String sc = s.substring(index);
+                rt.exec("cmd /c Taskkill /PID" + sc + " /F");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
