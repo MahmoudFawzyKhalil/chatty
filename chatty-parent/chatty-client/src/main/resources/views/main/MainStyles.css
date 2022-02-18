@@ -176,6 +176,7 @@
 
 .chat-text-area{
     -fx-border-color: transparent, transparent, transparent;
+    -fx-control-inner-background: -fx-light;
     -fx-background-radius: 10, 10, 10;
     -fx-border-radius: 5;
     -fx-background-color: transparent, transparent, transparent;

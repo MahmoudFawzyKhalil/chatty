@@ -9,7 +9,9 @@ import gov.iti.jets.presentation.util.PaneCoordinator;
 import gov.iti.jets.presentation.util.cellfactories.ChatBubbleCellFactory;
 import gov.iti.jets.presentation.util.cellfactories.NoSelectionModel;
 import javafx.collections.FXCollections;
+import javafx.collections.MapChangeListener;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -26,6 +28,7 @@ import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class ChatController implements Initializable {
     private final UserModel userModel = ModelFactory.getInstance().getUserModel();
@@ -69,21 +72,41 @@ public class ChatController implements Initializable {
     @FXML
     private ColorPicker messageTextColorPicker;
 
+    private ObservableMap<String, String> messageStyleMap = FXCollections.observableHashMap();
+
+
+    /*
+            -fx-font-weight
+            -fx-font-family
+            -fx-font-size
+            -fx-font-style
+            -fx-underline
+            -fx-fill*/
 
     @Override
     public void initialize( URL location, ResourceBundle resources ) {
         preventRightClickOnTextStyleButton();
         addCurrentlyChattingWithListener();
         setUpListViewProperties();
+        populateFontComboBoxes();
+        messageStyleMap.put( "bold", "-fx-font-weight: bold;" );
+        messageStyleMap.put( "underline", "-fx-underline: true;" );
+        messageStyleMap.put( "italic", "-fx-font-style: italic;" );
+        messageStyleMap.put( "font-family", "-fx-font-family: 'Comic Sans MS';" );
+        messageStyleMap.put( "font-size", "-fx-font-size: 16px;" );
+        messageStyleMap.put( "font-color", "-fx-fill: red;" );
+//        messageStyleMap.put( "chat-bubble-background", "-fx-background-color: grey;" );
+        messageStyleMap.put( "text-area-background", ".chat-text-area .scroll-pane: -fx-background-color: black;" );
+            //TODO
+        messageStyleMap.addListener( new MapChangeListener<String, String>() {
+            @Override
+            public void onChanged( Change<? extends String, ? extends String> change ) {
+                String textStyle = change.getMap().values().stream().collect( Collectors.joining(" ") );
+                chatTextArea.setStyle( textStyle );
+            }
+        } );
 
-        ObservableList<String> sizes = FXCollections.observableArrayList();
-        sizes.addAll( "10", "12", "14", "16", "18", "20", "22", "24" );
-        fontSizeComboBox.itemsProperty().set( sizes );
-        fontSizeComboBox.getSelectionModel().select( "12" );
-
-        ObservableList<String> fonts = FXCollections.observableArrayList(Font.getFontNames());
-        fontFamilyComboBox.itemsProperty().set( fonts );
-        fontFamilyComboBox.getSelectionModel().select("Helvetica");
+        messageStyleMap.put( "italic", "" );
     }
 
     private void preventRightClickOnTextStyleButton() {
@@ -117,6 +140,17 @@ public class ChatController implements Initializable {
     private void setUpListViewProperties() {
         chatMessagesListView.setCellFactory( new ChatBubbleCellFactory() );
         chatMessagesListView.setSelectionModel( new NoSelectionModel<>() );
+    }
+
+    private void populateFontComboBoxes() {
+        ObservableList<String> sizes = FXCollections.observableArrayList();
+        sizes.addAll( "10", "12", "14", "16", "18", "20", "22", "24" );
+        fontSizeComboBox.itemsProperty().set( sizes );
+        fontSizeComboBox.getSelectionModel().select( "12" );
+
+        ObservableList<String> fonts = FXCollections.observableArrayList(Font.getFontNames());
+        fontFamilyComboBox.itemsProperty().set( fonts );
+        fontFamilyComboBox.getSelectionModel().select("Helvetica");
     }
 
     private void bindToContactModel() {
