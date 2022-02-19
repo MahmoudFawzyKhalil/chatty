@@ -7,5 +7,6 @@ import java.util.Map;
 
 public interface SingleMessageRepository {
     boolean insertMessage(SingleMessageEntity singleMessageEntity);
-    Map<String, List<SingleMessageEntity>> getMessage(String userPhoneNumber);
+    List<SingleMessageEntity> getMessagesList ();
+    Map<String, List<SingleMessageEntity>> getMessage(String userPhoneNumber) ;
 }

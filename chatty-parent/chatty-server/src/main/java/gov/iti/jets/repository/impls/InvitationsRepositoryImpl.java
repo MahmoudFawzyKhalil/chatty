@@ -2,10 +2,8 @@ package gov.iti.jets.repository.impls;
 
 import gov.iti.jets.repository.ContactRepository;
 import gov.iti.jets.repository.InvitationsRepository;
-import gov.iti.jets.repository.UserStatusRepository;
 import gov.iti.jets.repository.entities.ContactEntity;
 import gov.iti.jets.repository.entities.InvitationEntity;
-import gov.iti.jets.repository.entities.UserStatusEntity;
 import gov.iti.jets.repository.util.ConnectionPool;
 import gov.iti.jets.repository.util.RepositoryFactory;
 

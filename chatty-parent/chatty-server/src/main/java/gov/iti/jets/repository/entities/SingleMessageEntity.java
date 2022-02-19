@@ -1,8 +1,5 @@
 package gov.iti.jets.repository.entities;
 
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-
 import java.time.LocalDateTime;
 
 public class SingleMessageEntity {
@@ -14,6 +11,9 @@ public class SingleMessageEntity {
     private String cssTextStyleString;
     private String cssBubbleStyleString;
 
+    public SingleMessageEntity(){
+
+    }
     public SingleMessageEntity(String receiverPhoneNumber, String senderPhoneNumber, String messageBody, LocalDateTime timeStamp, String cssTextStyleString, String cssBubbleStyleString) {
         this.receiverPhoneNumber = receiverPhoneNumber;
         this.senderPhoneNumber = senderPhoneNumber;
