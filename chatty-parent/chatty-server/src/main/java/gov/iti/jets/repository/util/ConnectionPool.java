@@ -40,6 +40,10 @@ public class ConnectionPool {
         return properties;
     }
 
+    public static void cleanup(){
+        ds.close();
+    }
+
     public static Connection getConnection() throws SQLException {
         return ds.getConnection();
     }

@@ -1,5 +1,6 @@
 package gov.iti.jets.commons.dtos;
 
+import gov.iti.jets.commons.util.ValidationUtil;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -26,6 +27,8 @@ public class UpdateProfileDto implements Serializable {
         this.email = email;
         this.bio = bio;
         this.profilePicture = profilePicture;
+
+        ValidationUtil.getInstance().validate( this );
     }
 
     public String getPhoneNumber() {

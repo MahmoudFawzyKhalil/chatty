@@ -3,86 +3,107 @@
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.ColorPicker?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.ContextMenu?>
 <?import javafx.scene.control.CustomMenuItem?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
 <?import javafx.scene.shape.Circle?>
 
 <BorderPane id="center" fx:id="centerBorderPane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.presentation.controllers.ChatController">
    <bottom>
       <HBox id="message-area-container" alignment="CENTER_LEFT" fillHeight="false" prefHeight="80.0" styleClass="send-message-container" BorderPane.alignment="CENTER">
          <children>
-            <Button id="text-styling-button" fx:id="textStyleButton" mnemonicParsing="false" onAction="#onTextStyleButtonAction" prefWidth="25.0" styleClass="text-styling-button" stylesheets="@../main/MainStyles.css">
+            <StackPane>
                <HBox.margin>
                   <Insets left="10.0" />
                </HBox.margin>
-               <contextMenu>
-                  <ContextMenu id="extras-menu" fx:id="textStyleContextMenu" anchorLocation="CONTENT_BOTTOM_LEFT" anchorX="0.0" anchorY="0.0" styleClass="font-settings-popup-contextmenu" x="0.0" y="0.0">
-                     <items>
-                        <CustomMenuItem id="bla" hideOnClick="false" mnemonicParsing="false" styleClass="font-settings-popup-contextmenu" text="Unspecified Action">
-                           <content>
-                              <VBox id="extras-menu-container" prefWidth="200.0" spacing="5.0">
-                                 <children>
-                                    <HBox id="font-type" spacing="5.0">
+               <children>
+                  <Button id="text-styling-button" fx:id="textStyleButton" minWidth="25.0" mnemonicParsing="false" onAction="#onTextStyleButtonAction" prefWidth="25.0" styleClass="text-styling-button" stylesheets="@../main/MainStyles.css">
+                     <contextMenu>
+                        <ContextMenu id="extras-menu" fx:id="textStyleContextMenu" anchorLocation="CONTENT_BOTTOM_LEFT" anchorX="0.0" anchorY="0.0" styleClass="font-settings-popup-contextmenu" x="0.0" y="0.0">
+                           <items>
+                              <CustomMenuItem id="bla" hideOnClick="false" mnemonicParsing="false" styleClass="font-settings-popup-contextmenu" text="Unspecified Action">
+                                 <content>
+                                    <VBox id="extras-menu-container" prefWidth="200.0" spacing="5.0">
                                        <children>
-                                          <ToggleButton id="bold-toggle-button" mnemonicParsing="false" onAction="#onBoldToggleButtonAction" text="B" />
-                                          <ToggleButton id="italic-toggle-button" mnemonicParsing="false" onAction="#onItalicToggleButtonAction" text="I" />
-                                          <ToggleButton id="underline-toggle-button" mnemonicParsing="false" onAction="#onUnderlineToggleButtonAction" text="U" />
-                                       </children>
-                                    </HBox>
-                                    <HBox id="font-settings" spacing="10.0">
-                                       <children>
-                                          <ChoiceBox id="font-family-picker" fx:id="fontFamilyChoiceBox" prefWidth="130.0" styleClass="style-choice-boxes" />
-                                          <ChoiceBox id="font-size-picker" fx:id="fontSizeChoiceBox" prefWidth="70.0" styleClass="style-choice-boxes" />
-                                       </children>
-                                    </HBox>
-                                    <HBox id="color-pickers" spacing="10.0">
-                                       <children>
-                                          <VBox id="text-color-picker">
+                                          <HBox id="font-type" spacing="5.0">
                                              <children>
-                                                <Label id="text-color-label" text="Font" />
-                                                <ColorPicker id="text-color-picker" fx:id="messageTextColorPicker" />
+                                                <ToggleButton id="bold-toggle-button" fx:id="boldToggleButton" mnemonicParsing="false" onAction="#onBoldToggleButtonAction" text="B" />
+                                                <ToggleButton id="italic-toggle-button" fx:id="italicToggleButton" mnemonicParsing="false" onAction="#onItalicToggleButtonAction" text="I" />
+                                                <ToggleButton id="underline-toggle-button" fx:id="underlineToggleButton" mnemonicParsing="false" onAction="#onUnderlineToggleButtonAction" text="U" />
                                              </children>
-                                          </VBox>
-                                          <VBox id="background-color-picker">
+                                          </HBox>
+                                          <HBox id="font-settings" spacing="10.0">
                                              <children>
-                                                <Label id="background-label" text="Background" />
-                                                <ColorPicker id="background-color-picker" fx:id="messageBackgroundColorPicker" />
+                                                <ComboBox id="font-family-picker" fx:id="fontFamilyComboBox" prefWidth="130.0" styleClass="style-choice-boxes" />
+                                                <ComboBox id="font-size-picker" fx:id="fontSizeComboBox" prefWidth="70.0" styleClass="style-choice-boxes" />
                                              </children>
-                                          </VBox>
+                                          </HBox>
+                                          <HBox id="color-pickers" spacing="10.0">
+                                             <children>
+                                                <VBox id="text-color-picker">
+                                                   <children>
+                                                      <Label id="text-color-label" text="Font" />
+                                                      <ColorPicker id="text-color-picker" fx:id="messageTextColorPicker" onAction="#onMessageTextColorPickerAction">
+                                                         <value>
+                                                            <Color />
+                                                         </value>
+                                                      </ColorPicker>
+                                                   </children>
+                                                </VBox>
+                                                <VBox id="background-color-picker">
+                                                   <children>
+                                                      <Label id="background-label" text="Background" />
+                                                      <ColorPicker id="background-color-picker" fx:id="messageBackgroundColorPicker" onAction="#onMessageBakckgroundColorPickerAction">
+                                                         <value>
+                                                            <Color />
+                                                         </value>
+                                                      </ColorPicker>
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </HBox>
                                        </children>
-                                    </HBox>
-                                 </children>
-                                 <padding>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                 </padding>
-                              </VBox>
-                           </content>
-                        </CustomMenuItem>
-                     </items>
-                  </ContextMenu>
-               </contextMenu>
-            </Button>
-            <Button id="attach-button" mnemonicParsing="false" onAction="#onAttachFileButtonAction" prefWidth="25.0" styleClass="attach-button">
+                                       <padding>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </padding>
+                                    </VBox>
+                                 </content>
+                              </CustomMenuItem>
+                           </items>
+                        </ContextMenu>
+                     </contextMenu>
+                     <tooltip>
+                        <Tooltip text="Background Color">
+                           <graphic>
+                              <Circle fx:id="textBackgroundIndicatorCircle" fill="#86d320" radius="5.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                           </graphic>
+                        </Tooltip>
+                     </tooltip>
+                  </Button>
+               </children>
+            </StackPane>
+            <Button id="attach-button" minWidth="25.0" mnemonicParsing="false" onAction="#onAttachFileButtonAction" prefWidth="25.0" styleClass="attach-button">
                <HBox.margin>
                   <Insets left="10.0" right="10.0" />
                </HBox.margin>
             </Button>
-            <TextArea id="chat-text-area" fx:id="chatTextArea" prefHeight="35.0" styleClass="chat-text-area" HBox.hgrow="ALWAYS">
+            <TextArea id="chat-text-area" fx:id="chatTextArea" maxHeight="60.0" prefHeight="60.0" promptText="Type a message..." styleClass="chat-text-area" wrapText="true" HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets left="10.0" />
                </HBox.margin>
             </TextArea>
-            <Button id="send-button" mnemonicParsing="false" onAction="#onSendMessageButtonAction" prefWidth="25.0" styleClass="send-button">
+            <Button id="send-button" minWidth="27.0" mnemonicParsing="false" onAction="#onSendMessageButtonAction" prefWidth="25.0" styleClass="send-button">
                <HBox.margin>
                   <Insets left="20.0" right="20.0" />
                </HBox.margin>

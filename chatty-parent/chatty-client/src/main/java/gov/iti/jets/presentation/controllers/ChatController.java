@@ -12,6 +12,10 @@ import gov.iti.jets.presentation.util.cellfactories.ChatBubbleCellFactory;
 import gov.iti.jets.presentation.util.cellfactories.NoSelectionModel;
 import gov.iti.jets.services.SingleMessageDao;
 import gov.iti.jets.services.util.DaoFactory;
+import javafx.collections.FXCollections;
+import javafx.collections.MapChangeListener;
+import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -19,9 +23,12 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Side;
 import javafx.scene.control.*;
 import javafx.scene.input.ContextMenuEvent;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Font;
 
 import java.net.URL;
 import java.rmi.NotBoundException;
@@ -32,6 +39,9 @@ import java.util.ResourceBundle;
 
 public class ChatController implements Initializable {
     private final UserModel userModel = ModelFactory.getInstance().getUserModel();
+    public ToggleButton boldToggleButton;
+    public ToggleButton italicToggleButton;
+    public ToggleButton underlineToggleButton;
     private ContactModel contactModel;
     private GroupChatModel groupChatModel;
     private SingleMessageDao singleMessageDao = DaoFactory.getInstance().getSingleMessageDao();
@@ -62,10 +72,10 @@ public class ChatController implements Initializable {
     private Button textStyleButton;
 
     @FXML
-    private ChoiceBox<String> fontFamilyChoiceBox;
+    private ComboBox<String> fontFamilyComboBox;
 
     @FXML
-    private ChoiceBox<String> fontSizeChoiceBox;
+    private ComboBox<String> fontSizeComboBox;
 
     @FXML
     private ColorPicker messageBackgroundColorPicker;
@@ -73,12 +83,72 @@ public class ChatController implements Initializable {
     @FXML
     private ColorPicker messageTextColorPicker;
 
+    @FXML
+    private Circle textBackgroundIndicatorCircle;
 
-    @Override
+
+    private ObservableMap<String, String> messageStyleMap = FXCollections.observableHashMap();
+
+    private String currentMessageTextStyleString;
+    private String currentMessageBubbleStyleString;
+
+
     public void initialize( URL location, ResourceBundle resources ) {
         preventRightClickOnTextStyleButton();
         addCurrentlyChattingWithListener();
         setUpListViewProperties();
+        populateFontComboBoxes();
+        initMessageStyleMap();
+        addMessageStyleMapListener();
+        addFontComboBoxListeners();
+        handleEnterKeyPressOnChatTextArea();
+
+        messageStyleMap.put( "italic", "" );
+    }
+
+    private void addFontComboBoxListeners() {
+        fontSizeComboBox.valueProperty().addListener( ( observable, oldValue, newValue ) -> {
+            messageStyleMap.put( "font-size", newValue );
+        } );
+
+        fontFamilyComboBox.valueProperty().addListener( ( observable, oldValue, newValue ) -> {
+            messageStyleMap.put( "font-family", "'" + newValue + "'" );
+        } );
+    }
+
+    private void addMessageStyleMapListener() {
+        messageStyleMap.addListener( new MapChangeListener<String, String>() {
+
+            @Override
+            public void onChanged( Change<? extends String, ? extends String> change ) {
+                String bold = messageStyleMap.get( "bold" ).isEmpty() ? "" : "-fx-font-weight: " + messageStyleMap.get( "bold" ) + "; ";
+                String underline = messageStyleMap.get( "underline" ).isEmpty() ? "" : "-fx-underline: " + messageStyleMap.get( "underline" ) + "; ";
+                String italic = messageStyleMap.get( "italic" ).isEmpty() ? "" : "-fx-font-style: " + messageStyleMap.get( "italic" ) + "; ";
+                String fontFamily = messageStyleMap.get( "font-family" ).isEmpty() ? "" : "-fx-font-family: " + messageStyleMap.get( "font-family" ) + "; ";
+                String fontSize = messageStyleMap.get( "font-size" ).isEmpty() ? "" : "-fx-font-size: " + messageStyleMap.get( "font-size" ) + "; ";
+                String textAreaFontColor = messageStyleMap.get( "font-color" ).isEmpty() ? "" : "-fx-text-fill: " + messageStyleMap.get( "font-color" ) + "; ";
+                String messageFontColor = messageStyleMap.get( "font-color" ).isEmpty() ? "" : "-fx-fill: " + messageStyleMap.get( "font-color" ) + "; ";
+                String messageBackgroundColor = messageStyleMap.get( "background-color" ).isEmpty() ? "" : "-fx-background-color: " + messageStyleMap.get( "background-color" ) + "; ";
+                String indicatorBackgroundColor = messageStyleMap.get( "background-color" ).isEmpty() ? "" : "-fx-fill: " + messageStyleMap.get( "background-color" ) + "; ";
+
+                String textAreaStyleString = bold + underline + italic + fontFamily + fontSize + textAreaFontColor + messageFontColor;
+                currentMessageTextStyleString = bold + underline + italic + fontFamily + fontSize + messageFontColor;
+                currentMessageBubbleStyleString = messageBackgroundColor;
+
+                chatTextArea.setStyle( textAreaStyleString );
+                textBackgroundIndicatorCircle.setStyle( indicatorBackgroundColor );
+            }
+        } );
+    }
+
+    private void initMessageStyleMap() {
+        messageStyleMap.put( "bold", "" );
+        messageStyleMap.put( "underline", "" );
+        messageStyleMap.put( "italic", "" );
+        messageStyleMap.put( "font-family", "" );
+        messageStyleMap.put( "font-size", "" );
+        messageStyleMap.put( "font-color", "" );
+        messageStyleMap.put( "background-color", "" );
     }
 
     private void preventRightClickOnTextStyleButton() {
@@ -112,6 +182,32 @@ public class ChatController implements Initializable {
     private void setUpListViewProperties() {
         chatMessagesListView.setCellFactory( new ChatBubbleCellFactory() );
         chatMessagesListView.setSelectionModel( new NoSelectionModel<>() );
+    }
+
+    private void populateFontComboBoxes() {
+        ObservableList<String> sizes = FXCollections.observableArrayList();
+        sizes.addAll( "10", "12", "14", "16", "18", "20", "22", "24" );
+        fontSizeComboBox.itemsProperty().set( sizes );
+        fontSizeComboBox.getSelectionModel().select( "12" );
+
+        ObservableList<String> fonts = FXCollections.observableArrayList( Font.getFontNames() );
+        fontFamilyComboBox.itemsProperty().set( fonts );
+        fontFamilyComboBox.getSelectionModel().select( "Helvetica" );
+    }
+
+    private void handleEnterKeyPressOnChatTextArea() {
+        chatTextArea.addEventFilter( KeyEvent.KEY_PRESSED, keyEvent -> {
+            if (keyEvent.getCode() == KeyCode.ENTER && keyEvent.isShiftDown()) {
+                chatTextArea.appendText( "\n" );
+                return;
+            }
+
+            if (keyEvent.getCode() == KeyCode.ENTER) {
+                keyEvent.consume();
+                if (chatTextArea.getText().isEmpty()) return;
+                onSendMessageButtonAction( new ActionEvent() );
+            }
+        } );
     }
 
     private void bindToContactModel() {
@@ -165,23 +261,30 @@ public class ChatController implements Initializable {
     }
 
     @FXML
-    void onSendMessageButtonAction( ActionEvent event ) throws NotBoundException, RemoteException {
+    void onSendMessageButtonAction( ActionEvent event ) {
 
         /*
          * TODO
          *  Refactor this to use proper methods and to get the properties form the textStyleProperties
          *  This is part of the sendSingleMessage use case
          * */
-        singleMessageDao.sendMessage(createMessageDto());
+        try {
+            singleMessageDao.sendMessage(createMessageDto());
+        } catch (NotBoundException e) {
+            e.printStackTrace();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
         MessageModel messageModel = SingleMessageMapper.INSTANCE.dtoToModel(createMessageDto());
         messageModel.setSentByMe(true);
+        messageModel.setSenderName(userModel.getDisplayName());
 
         if (groupChatModel == null && contactModel == null) {
             return;
         }
 
         if (contactModel != null) {
-            contactModel.getMesssages().add( messageModel);
+            contactModel.getMesssages().add(messageModel);
             scrollChatMessagesListViewToLastMessage();
         } else {
             groupChatModel.getMesssages().add( new MessageModel( "You", LocalDateTime.now(),
@@ -192,16 +295,14 @@ public class ChatController implements Initializable {
         scrollChatMessagesListViewToLastMessage();
     }
 
-    SingleMessageDto createMessageDto(){
+    private SingleMessageDto createMessageDto(){
         SingleMessageDto singleMessageDto = new SingleMessageDto();
-        singleMessageDto.setSenderName(userModel.getDisplayName());
-        singleMessageDto.setMessageBody("Hello this is a test single message");
+        singleMessageDto.setMessageBody(chatTextArea.getText());
         singleMessageDto.setSenderPhoneNumber(userModel.getPhoneNumber());
         singleMessageDto.setReceiverPhoneNumber(userModel.getCurrentlyChattingWith());
         singleMessageDto.setTimeStamp(LocalDateTime.now());
-        singleMessageDto.setCssTextStyleString("");
-        singleMessageDto.setCssBubbleStyleString("");
-
+        singleMessageDto.setCssTextStyleString(currentMessageTextStyleString);
+        singleMessageDto.setCssBubbleStyleString(currentMessageBubbleStyleString);
         return singleMessageDto;
     }
 
@@ -212,20 +313,29 @@ public class ChatController implements Initializable {
 
     @FXML
     void onBoldToggleButtonAction( ActionEvent event ) {
-        /*
-         * Use an ArrayList<String> to store the text styles in them then concatenate it into one string
-         * to store in the MessageModel's cssStyleString properties + dtos' styleStringProperties
-         * */
+        if (boldToggleButton.isSelected()) {
+            messageStyleMap.put( "bold", "bold" );
+        } else {
+            messageStyleMap.put( "bold", "" );
+        }
     }
 
     @FXML
     void onItalicToggleButtonAction( ActionEvent event ) {
-
+        if (italicToggleButton.isSelected()) {
+            messageStyleMap.put( "italic", "italic" );
+        } else {
+            messageStyleMap.put( "italic", "" );
+        }
     }
 
     @FXML
     void onUnderlineToggleButtonAction( ActionEvent event ) {
-
+        if (underlineToggleButton.isSelected()) {
+            messageStyleMap.put( "underline", "true" );
+        } else {
+            messageStyleMap.put( "underline", "" );
+        }
     }
 
     @FXML
@@ -235,5 +345,15 @@ public class ChatController implements Initializable {
 
     private void showTextStyleContextMenu() {
         textStyleContextMenu.show( textStyleButton, Side.RIGHT, 0, 0 );
+    }
+
+    public void onMessageTextColorPickerAction( ActionEvent actionEvent ) {
+        String colorString = "#" + messageTextColorPicker.getValue().toString().substring( 2, 8 );
+        messageStyleMap.put( "font-color", colorString );
+    }
+
+    public void onMessageBakckgroundColorPickerAction( ActionEvent actionEvent ) {
+        String colorString = "#" + messageBackgroundColorPicker.getValue().toString().substring( 2, 8 );
+        messageStyleMap.put( "background-color", colorString );
     }
 }

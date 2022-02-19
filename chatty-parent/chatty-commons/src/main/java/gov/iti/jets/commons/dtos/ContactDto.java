@@ -13,25 +13,24 @@ public class ContactDto implements Serializable {
     private String phoneNumber;
 
     @NotNull
-
     private String displayName;
     private String profilePicture;
     private UserStatusDto currentStatus;
 
-    public ContactDto( String phoneNumber, String displayName, String profilePicture, UserStatusDto currentStatus ) {
+    public ContactDto(String phoneNumber, String displayName, String profilePicture, UserStatusDto currentStatus) {
         this.phoneNumber = phoneNumber;
         this.displayName = displayName;
         this.profilePicture = profilePicture;
         this.currentStatus = currentStatus;
 
-        ValidationUtil.getInstance().validate( this );
+        ValidationUtil.getInstance().validate(this);
     }
 
     public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber( String phoneNumber ) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
@@ -39,7 +38,7 @@ public class ContactDto implements Serializable {
         return displayName;
     }
 
-    public void setDisplayName( String displayName ) {
+    public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
 
@@ -47,7 +46,7 @@ public class ContactDto implements Serializable {
         return profilePicture;
     }
 
-    public void setProfilePicture( String profilePicture ) {
+    public void setProfilePicture(String profilePicture) {
         this.profilePicture = profilePicture;
     }
 
@@ -55,7 +54,7 @@ public class ContactDto implements Serializable {
         return currentStatus;
     }
 
-    public void setCurrentStatus( UserStatusDto currentStatus ) {
+    public void setCurrentStatus(UserStatusDto currentStatus) {
         this.currentStatus = currentStatus;
     }
 

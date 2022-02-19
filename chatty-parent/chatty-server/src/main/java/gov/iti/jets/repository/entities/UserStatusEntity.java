@@ -8,7 +8,9 @@ public class UserStatusEntity {
         this.statusId = statusId;
         this.statusName = statusName;
     }
+    public  UserStatusEntity(){
 
+    }
     public int getStatusId() {
         return statusId;
     }

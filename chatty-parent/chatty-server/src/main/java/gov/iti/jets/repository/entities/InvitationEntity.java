@@ -4,6 +4,9 @@ public class InvitationEntity {
 
     private ContactEntity contactEntity;
 
+    public InvitationEntity() {
+    }
+
     public InvitationEntity(ContactEntity contactEntity) {
         this.contactEntity = contactEntity;
     }

@@ -21,6 +21,8 @@ public class DaoFactory {
     private final InvitationDecisionDao invitationDecisionDao = new InvitationDecisionDaoImpl();
     private final SingleMessageDao singleMessageDao = new SingleMessageDaoImpl();
 
+    private final AddGroupChatDao addGroupChatDao = new AddGroupChatDaoImpl();
+
 
     private DaoFactory() {
 
@@ -33,7 +35,10 @@ public class DaoFactory {
     public LoginDao getLoginService() {
         return LoginDao;
     }
-    public ConnectionDao getConnectionService(){ return ConnectionDao;}
+
+    public ConnectionDao getConnectionService() {
+        return ConnectionDao;
+    }
 
 
     public RegisterDao getRegisterDao() {
@@ -43,11 +48,14 @@ public class DaoFactory {
     public CountryDao getCountryDao() {
         return countryDao;
     }
-    public AddContactDao getAddContactService(){
+
+    public AddContactDao getAddContactService() {
         return addContactDao;
     }
 
-    public InvitationDecisionDao getInvitationDecisionDao() {return invitationDecisionDao;}
+    public InvitationDecisionDao getInvitationDecisionDao() {
+        return invitationDecisionDao;
+    }
 
     public UpdateProfileDao getUpdateProfileDao() {
         return updateProfileDao;
@@ -55,5 +63,9 @@ public class DaoFactory {
 
     public SingleMessageDao getSingleMessageDao(){
         return singleMessageDao;
+    }
+
+    public AddGroupChatDao getAddGroupChatDao() {
+        return addGroupChatDao;
     }
 }

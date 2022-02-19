@@ -48,4 +48,14 @@ public class ContactEntity {
     public void setCurrentStatus(UserStatusEntity currentStatus) {
         this.currentStatus = currentStatus;
     }
+
+    @Override
+    public String toString() {
+        return "ContactEntity{" +
+                "phoneNumber='" + phoneNumber + '\'' +
+                ", displayName='" + displayName + '\'' +
+                ", profilePicture='" + profilePicture + '\'' +
+                ", currentStatus=" + currentStatus +
+                '}';
+    }
 }
