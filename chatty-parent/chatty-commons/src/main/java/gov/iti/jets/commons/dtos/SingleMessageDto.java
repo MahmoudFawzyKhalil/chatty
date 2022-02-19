@@ -1,5 +1,6 @@
 package gov.iti.jets.commons.dtos;
 
+import gov.iti.jets.commons.util.ValidationUtil;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -19,10 +20,13 @@ public class SingleMessageDto implements Serializable {
     @NotNull
     private String messageBody;
 
+    @NotNull
     private LocalDateTime timeStamp;
 
+    @NotNull
     private String cssTextStyleString;
 
+    @NotNull
     private String cssBubbleStyleString;
 
     public SingleMessageDto() {
@@ -35,6 +39,8 @@ public class SingleMessageDto implements Serializable {
         this.timeStamp = timeStamp;
         this.cssTextStyleString = cssTextStyleString;
         this.cssBubbleStyleString = cssBubbleStyleString;
+
+        ValidationUtil.getInstance().validate( this );
     }
 
     public String getReceiverPhoneNumber() {

@@ -1,5 +1,6 @@
 package gov.iti.jets.commons.dtos;
 
+import gov.iti.jets.commons.util.ValidationUtil;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
@@ -38,6 +39,8 @@ public class RegisterDto implements Serializable {
         this.gender = gender;
         this.bio = bio;
         this.profilePicture = profilePicture;
+
+        ValidationUtil.getInstance().validate( this );
     }
 
     public String getPhoneNumber() {
