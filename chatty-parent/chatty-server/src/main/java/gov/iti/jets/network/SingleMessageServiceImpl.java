@@ -28,5 +28,6 @@ public class SingleMessageServiceImpl extends UnicastRemoteObject implements Sin
         }
         SingleMessageEntity singleMessageEntity = SingleMessageMapper.INSTANCE.dtoToEntity(singleMessageDto);
         repositoryFactory.getSingleMessageRepository().insertMessage(singleMessageEntity);
+//        repositoryFactory.getSingleMessageRepository().getMessage(singleMessageDto.getSenderPhoneNumber());
     }
 }

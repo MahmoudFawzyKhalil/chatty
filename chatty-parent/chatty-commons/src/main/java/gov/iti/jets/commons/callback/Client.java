@@ -5,6 +5,7 @@ import gov.iti.jets.commons.dtos.*;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
+import java.util.Map;
 
 public interface Client extends Remote {
     void loadUserModel(UserDto userDto) throws RemoteException;
@@ -18,4 +19,5 @@ public interface Client extends Remote {
     void updateContactList(List<ContactDto> dtos) throws RemoteException;
     void addContact(ContactDto contactDto) throws RemoteException;
     void addInvitation(InvitationDto senderInvitationDto)throws RemoteException;
+    void loadSingleMessages(Map<String,List<SingleMessageDto>> messagesMap)throws RemoteException;
 }

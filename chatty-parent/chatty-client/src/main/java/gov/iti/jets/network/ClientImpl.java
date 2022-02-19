@@ -17,6 +17,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class ClientImpl extends UnicastRemoteObject implements Client {
@@ -135,6 +136,11 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
             InvitationModel invitationModel = InvitationMapper.INSTANCE.dtoToModel( receiverInvitationDto );
             userModel.getInvitations().add( invitationModel );
         } );
+    }
+
+    @Override
+    public void loadSingleMessages(Map<String, List<SingleMessageDto>> messagesmap) throws RemoteException {
+
     }
 
 
