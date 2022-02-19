@@ -2,15 +2,12 @@ package gov.iti.jets.network;
 
 import gov.iti.jets.commons.callback.Client;
 import gov.iti.jets.commons.dtos.*;
-import gov.iti.jets.presentation.models.ContactModel;
-import gov.iti.jets.presentation.models.GroupChatModel;
-import gov.iti.jets.presentation.models.MessageModel;
-import gov.iti.jets.presentation.models.ContactModel;
-import gov.iti.jets.presentation.models.InvitationModel;
-import gov.iti.jets.presentation.models.UserModel;
+import gov.iti.jets.presentation.models.*;
 import gov.iti.jets.presentation.models.mappers.*;
 import gov.iti.jets.presentation.util.ModelFactory;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -65,6 +62,35 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
         for (InvitationDto invitationDto : userDto.getInvitationsList()) {
             userModel.getInvitations().add(InvitationMapper.INSTANCE.dtoToModel(invitationDto));
         }
+    }
+
+    @Override
+    public void loadSingleMessages(Map<String, List<SingleMessageDto>> messagesMap) throws RemoteException {
+
+        messagesMap.forEach((k, v) -> {
+            Optional<ContactModel> optionalContactModel = userModel.getContacts().stream()
+                    .filter(cm -> cm.getPhoneNumber().equals(k))
+                    .findFirst();
+
+            List<MessageModel> messageModelList = new ArrayList<>();
+            for(SingleMessageDto messageDto : v){
+                MessageModel messageModel = SingleMessageMapper.INSTANCE.dtoToModel(messageDto);
+                if(messageDto.getSenderPhoneNumber().equals(userModel.getPhoneNumber())){
+                    messageModel.setSentByMe(true);
+                    messageModel.setSenderName(userModel.getDisplayName());
+                }
+                else{
+                    messageModel.setSenderName(optionalContactModel.get().getDisplayName());
+                }
+                messageModelList.add(messageModel);
+            }
+            if(!optionalContactModel.isEmpty()){
+                ObservableList<MessageModel> messageModels = FXCollections.observableArrayList(messageModelList);
+                Platform.runLater(()->{
+                        optionalContactModel.get().setMesssages(messageModels);
+                });
+            }
+        });
     }
 
     private UserDto testUserDto() {
@@ -137,11 +163,5 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
             userModel.getInvitations().add( invitationModel );
         } );
     }
-
-    @Override
-    public void loadSingleMessages(Map<String, List<SingleMessageDto>> messagesmap) throws RemoteException {
-
-    }
-
 
 }

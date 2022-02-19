@@ -31,13 +31,15 @@ public class ConnectionServiceImpl extends UnicastRemoteObject implements Connec
         System.out.println("hi "+userDto);
         client.loadUserModel(userDto);
 
-        Map<String,List<SingleMessageEntity>> messagesListEntity = repositoryFactory.getSingleMessageRepository().getMessage(phoneNumber);
-        Map<String,List<SingleMessageDto>> messageDtoList = new HashMap<>();
-        messagesListEntity.forEach((k, v) -> {
+        Map<String,List<SingleMessageEntity>> messagesMapEntity = repositoryFactory.getSingleMessageRepository().getMessage(phoneNumber);
+        Map<String,List<SingleMessageDto>> messagesMapDto = new HashMap<>();
+        messagesMapEntity.forEach((k, v) -> {
                     List<SingleMessageDto> messageDto = SingleMessageMapper.INSTANCE.entityListToDtoList(v);
-                    messageDtoList.put(k,messageDto);
+                    messagesMapDto.put(k,messageDto);
                 });
-        client.loadSingleMessages(messageDtoList);
+        client.loadSingleMessages(messagesMapDto);
+
+
     }
 
     @Override
