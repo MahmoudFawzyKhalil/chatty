@@ -38,7 +38,6 @@ public class UserRepositoryImpl implements UserRepository {
             logger.info( "An attempt to add a contact was made: " + addContactDto.toString() );
 
             connection.setAutoCommit(false);
-
             for(String receiverPhoneNumber: addContactDto.getPhoneNumbers()) {
                 preparedStatement.setString(1, addContactDto.getPhoneNumber());
                 preparedStatement.setString(2, receiverPhoneNumber);

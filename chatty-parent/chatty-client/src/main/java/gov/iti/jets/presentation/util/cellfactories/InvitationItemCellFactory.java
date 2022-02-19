@@ -63,6 +63,8 @@ public class InvitationItemCellFactory implements Callback<ListView<InvitationMo
 
                             if (succeeded){
                                 StageCoordinator.getInstance().showMessageNotification("Friend request refused", "");
+                                userModel.getInvitations().removeIf( im -> im.getContactModel().getPhoneNumber()
+                                        .equals(invitationModel.getContactModel().getPhoneNumber()));
                             }
                         } catch (NotBoundException | RemoteException ex) {
                             StageCoordinator.getInstance().showErrorNotification(ErrorMessages.FAILED_TO_CONNECT);

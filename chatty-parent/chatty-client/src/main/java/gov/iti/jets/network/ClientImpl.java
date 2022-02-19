@@ -4,6 +4,8 @@ import gov.iti.jets.commons.callback.Client;
 import gov.iti.jets.commons.dtos.*;
 import gov.iti.jets.presentation.models.ContactModel;
 import gov.iti.jets.presentation.models.MessageModel;
+import gov.iti.jets.presentation.models.ContactModel;
+import gov.iti.jets.presentation.models.InvitationModel;
 import gov.iti.jets.presentation.models.UserModel;
 import gov.iti.jets.presentation.models.mappers.*;
 import gov.iti.jets.presentation.util.ModelFactory;
@@ -106,5 +108,23 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
     @Override
     public void updateContactList( List<ContactDto> dtos ) throws RemoteException {
 
+    }
+
+    @Override
+    public void addContact(ContactDto contactDto) throws RemoteException {
+        Platform.runLater( () -> {
+            ContactModel contactModel = ContactMapper.INSTANCE.contactDtoToModel( contactDto );
+            userModel.getContacts().add( contactModel );
+
+            userModel.getInvitations().removeIf(invitationModel -> invitationModel.getContactModel().getPhoneNumber().equals(contactModel.getPhoneNumber()));
+        } );
+    }
+
+    @Override
+    public void addInvitation(InvitationDto receiverInvitationDto) throws RemoteException {
+        Platform.runLater( () -> {
+            InvitationModel invitationModel = InvitationMapper.INSTANCE.dtoToModel( receiverInvitationDto );
+            userModel.getInvitations().add( invitationModel );
+        } );
     }
 }
