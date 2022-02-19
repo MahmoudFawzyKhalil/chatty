@@ -306,6 +306,19 @@ public class ChatController implements Initializable {
         return singleMessageDto;
     }
 
+/*    private GroupMessageDto createGroupMessageDto(){
+        TODO use getCurrentlyChattingWith to return a String that has the group Id, convert that to an Integer
+        on receiver side, use the List<ContactModel> inside the GroupChatModel to figure out who sent the message
+
+
+        1. On login, make client send a List<Integer> groupIds to the
+        server and have the server assign the Client to the
+        groupMap
+
+        2. create GroupChatMessageDto
+
+    }*/
+
     @FXML
     void onAttachFileButtonAction( ActionEvent event ) {
 

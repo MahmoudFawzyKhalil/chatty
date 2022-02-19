@@ -13,6 +13,12 @@ public class Clients {
     private static final Clients INSTANCE = new Clients();
     private final Map<String, Client> clientMap = new HashMap<>();
     private final Map<Integer, List<Client>> groupMap = new HashMap<>();
+
+    public void registerClientGroups(List<Integer> groupIds, Client client){
+        // TODO add client to List<Client> in groupMap for every groupId
+        // if List<Client> is null then create it
+    }
+
     Logger logger = LoggerFactory.getLogger(Clients.class);
 
     public static Clients getInstance() {

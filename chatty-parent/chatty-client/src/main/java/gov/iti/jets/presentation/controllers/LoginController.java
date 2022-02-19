@@ -2,7 +2,6 @@ package gov.iti.jets.presentation.controllers;
 
 import gov.iti.jets.commons.dtos.LoginDto;
 import gov.iti.jets.network.ClientImpl;
-import gov.iti.jets.commons.dtos.LoginDto;
 import gov.iti.jets.presentation.models.UserModel;
 import gov.iti.jets.presentation.util.ModelFactory;
 import gov.iti.jets.presentation.util.StageCoordinator;
@@ -105,6 +104,7 @@ public class LoginController implements Initializable {
             boolean isAuthenticated = loginDao.isAuthenticated(loginDto);
             if(isAuthenticated){
                 connectionDao.registerClient(phoneNumberTextField.getText(),client);
+                // TODO connectionDao.registerGroups(List<Integer> groupIds);
                 stageCoordinator.switchToMainScene();
             } else {
                 stageCoordinator.showErrorNotification( "Invalid phone number or password." );
