@@ -4,13 +4,16 @@ import gov.iti.jets.commons.dtos.LoginDto;
 import gov.iti.jets.commons.dtos.StatusNotificationDto;
 import gov.iti.jets.commons.enums.StatusNotificationType;
 import gov.iti.jets.network.ClientImpl;
+import gov.iti.jets.presentation.models.ContactModel;
 import gov.iti.jets.presentation.models.UserModel;
+import gov.iti.jets.presentation.models.UserStatusModel;
 import gov.iti.jets.presentation.util.ModelFactory;
 import gov.iti.jets.presentation.util.StageCoordinator;
 import gov.iti.jets.presentation.util.UiValidator;
 import gov.iti.jets.services.ConnectionDao;
 import gov.iti.jets.services.LoginDao;
 import gov.iti.jets.services.util.DaoFactory;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -107,11 +110,32 @@ public class LoginController implements Initializable {
             boolean isAuthenticated = loginDao.isAuthenticated(loginDto);
             if(isAuthenticated){
                 connectionDao.registerClient(phoneNumberTextField.getText(), client);
+
                 var notificationDto = new StatusNotificationDto( userModel.getPhoneNumber(),
                         StatusNotificationType.valueOf( userModel.getCurrentStatus().getUserStatusName() ) );
-                List<String> contactsToNotify = userModel.getContacts().stream().map( cm -> cm.getPhoneNumber() ).collect( Collectors.toList());
-                connectionDao.notifyOthersOfStatusUpdate( notificationDto, contactsToNotify );
+                List<String> contactsPhoneNumbers = userModel.getContacts()
+                        .stream()
+                        .map( ContactModel::getPhoneNumber )
+                        .collect( Collectors.toList());
+
+                connectionDao.notifyOthersOfStatusUpdate( notificationDto, contactsPhoneNumbers );
+
+                List<String> offlineContactsPhoneNumbers = connectionDao.getOfflineContacts(contactsPhoneNumbers);
+
+                offlineContactsPhoneNumbers.forEach( phoneNumber -> {
+                    userModel.getContacts()
+                            .stream()
+                            .filter( cm -> cm.getPhoneNumber().equals( phoneNumber ) )
+                            .findFirst()
+                            .ifPresent( contactModel -> {
+                                Platform.runLater( () -> {
+                                    contactModel.setCurrentStatus( UserStatusModel.OFFLINE );
+                                } );
+                            } );
+                } );
+
                 stageCoordinator.switchToMainScene();
+
             } else {
                 stageCoordinator.showErrorNotification( "Invalid phone number or password." );
             }

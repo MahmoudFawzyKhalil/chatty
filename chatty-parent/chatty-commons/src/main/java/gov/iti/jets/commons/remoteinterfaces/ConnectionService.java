@@ -12,4 +12,5 @@ public interface ConnectionService extends Remote {
     void registerClient(String phoneNumber, Client client) throws RemoteException;
     void unregisterClient(String phoneNumber) throws RemoteException;
     void notifyOthersOfStatusUpdate( StatusNotificationDto statusNotificationDto, List<String> contactsToNotifyPhoneNumbers ) throws  RemoteException;
+    List<String> getOfflineContacts( List<String> contactsPhoneNumbers) throws RemoteException;
 }

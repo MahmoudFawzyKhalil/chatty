@@ -13,21 +13,28 @@ import java.util.List;
 public class ConnectionDaoImpl implements ConnectionDao {
 
     private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
+
     @Override
-    public void registerClient(String phoneNumber, Client client) throws NotBoundException,RemoteException {
+    public void registerClient( String phoneNumber, Client client ) throws NotBoundException, RemoteException {
         ConnectionService connectionService = serviceFactory.getConnectionService();
-        connectionService.registerClient(phoneNumber,client);
+        connectionService.registerClient( phoneNumber, client );
     }
 
     @Override
-    public void unregisterClient(String phoneNumber) throws NotBoundException,RemoteException{
+    public void unregisterClient( String phoneNumber ) throws NotBoundException, RemoteException {
         ConnectionService connectionService = serviceFactory.getConnectionService();
-        connectionService.unregisterClient(phoneNumber);
+        connectionService.unregisterClient( phoneNumber );
     }
 
     @Override
     public void notifyOthersOfStatusUpdate( StatusNotificationDto statusNotificationDto, List<String> contactsToNotifyPhoneNumbers ) throws NotBoundException, RemoteException {
         ConnectionService connectionService = serviceFactory.getConnectionService();
         connectionService.notifyOthersOfStatusUpdate( statusNotificationDto, contactsToNotifyPhoneNumbers );
+    }
+
+    @Override
+    public List<String> getOfflineContacts( List<String> contactsPhoneNumbers ) throws NotBoundException, RemoteException {
+        ConnectionService connectionService = serviceFactory.getConnectionService();
+        return connectionService.getOfflineContacts( contactsPhoneNumbers );
     }
 }

@@ -1,5 +1,7 @@
 package gov.iti.jets.presentation.controllers;
 
+import gov.iti.jets.commons.dtos.StatusNotificationDto;
+import gov.iti.jets.commons.enums.StatusNotificationType;
 import gov.iti.jets.presentation.models.ContactModel;
 import gov.iti.jets.presentation.models.GroupChatModel;
 import gov.iti.jets.presentation.models.UserModel;
@@ -23,7 +25,9 @@ import javafx.scene.shape.Circle;
 import java.net.URL;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class MainController implements Initializable {
 
@@ -81,16 +85,38 @@ public class MainController implements Initializable {
     @FXML
     void onAvailableStatusMenuItemAction( ActionEvent event ) {
         userStatusCircle.setFill( StatusColors.AVAILABLE_STATUS_COLOR );
-    }
-
-    @FXML
-    void onAwayStatusMenuItemAction( ActionEvent event ) {
-        userStatusCircle.setFill( StatusColors.AWAY_STATUS_COLOR );
+        notifyOthersOfStatusUpdate(StatusNotificationType.Available);
     }
 
     @FXML
     void onBusyStatusMenuItemAction( ActionEvent event ) {
         userStatusCircle.setFill( StatusColors.BUSY_STATUS_COLOR );
+        notifyOthersOfStatusUpdate(StatusNotificationType.Busy);
+    }
+
+    @FXML
+    void onAwayStatusMenuItemAction( ActionEvent event ) {
+        userStatusCircle.setFill( StatusColors.AWAY_STATUS_COLOR );
+        notifyOthersOfStatusUpdate(StatusNotificationType.Away);
+    }
+
+    private void notifyOthersOfStatusUpdate(StatusNotificationType type) {
+        try {
+            connectionDao.notifyOthersOfStatusUpdate( createStatusNotificationDto(type), createContactsToNotifyList() );
+        } catch (NotBoundException | RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private List<String> createContactsToNotifyList() {
+        return userModel.getContacts()
+                .stream()
+                .map( ContactModel::getPhoneNumber )
+                .collect( Collectors.toList());
+    }
+
+    private StatusNotificationDto createStatusNotificationDto(StatusNotificationType type) {
+        return new StatusNotificationDto( userModel.getPhoneNumber(), type );
     }
 
     @FXML
