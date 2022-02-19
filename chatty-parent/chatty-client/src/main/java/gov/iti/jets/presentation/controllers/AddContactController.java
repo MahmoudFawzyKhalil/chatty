@@ -1,13 +1,18 @@
 package gov.iti.jets.presentation.controllers;
 
 import gov.iti.jets.commons.dtos.AddContactDto;
+import gov.iti.jets.commons.dtos.InvitationDecisionDto;
 import gov.iti.jets.presentation.customcontrols.AddContactTextField;
+import gov.iti.jets.presentation.erros.ErrorMessages;
 import gov.iti.jets.presentation.models.ContactModel;
+import gov.iti.jets.presentation.models.InvitationModel;
 import gov.iti.jets.presentation.models.UserModel;
 import gov.iti.jets.presentation.util.ModelFactory;
 import gov.iti.jets.presentation.util.StageCoordinator;
 import gov.iti.jets.services.AddContactDao;
+import gov.iti.jets.services.InvitationDecisionDao;
 import gov.iti.jets.services.util.DaoFactory;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -20,6 +25,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class AddContactController implements Initializable {
@@ -31,6 +37,7 @@ public class AddContactController implements Initializable {
     private UserModel userModel = modelFactory.getUserModel();
     private List<TextField> phoneNumberTextFields = new ArrayList<>();
     private List<String> phoneNumbers = new ArrayList<>();
+    private InvitationDecisionDao invitationDecisionDao = DaoFactory.getInstance().getInvitationDecisionDao();
 
     @FXML
     private Button addContactButton;
@@ -54,14 +61,19 @@ public class AddContactController implements Initializable {
             stageCoordinator.showErrorNotification( "You can't add yourself." );
             stageCoordinator.closeAddContactStage();
         } else {
-            AddContactDto addContactDto = new AddContactDto( userModel.getPhoneNumber(), phoneNumbers );
             try {
-                boolean addContactSucceeded = addContactDao.addContacts( addContactDto );
-                if (addContactSucceeded) {
-                    stageCoordinator.showMessageNotification( "Success!", "Successfuly added contacts." );
-                } else {
-                    stageCoordinator.showErrorNotification( "Failed to add contacts. Please try again later." );
+                isSentInvitationBefore();
+                AddContactDto addContactDto = new AddContactDto( userModel.getPhoneNumber(), phoneNumbers );
+                System.out.println(addContactDto + " " + phoneNumbers.size());
+                if (!phoneNumbers.isEmpty()){
+                    boolean addContactSucceeded = addContactDao.addContacts( addContactDto );
+                    if (addContactSucceeded) {
+                        stageCoordinator.showMessageNotification( "Success!", "Successfully added contacts." );
+                    } else {
+                        stageCoordinator.showErrorNotification( "Failed to add contacts. Please try again later." );
+                    }
                 }
+
             } catch (NotBoundException | RemoteException e) {
                 stageCoordinator.showErrorNotification( "Failed to connect to server. Please try again later." );
                 e.printStackTrace();
@@ -94,6 +106,31 @@ public class AddContactController implements Initializable {
             }
         }
         return false;
+    }
+
+    private void isSentInvitationBefore() {
+        for (String invitedNumber : phoneNumbers) {
+            for (InvitationModel invitationModel : userModel.getInvitations()) {
+                if (invitedNumber.equals(invitationModel.getContactModel().getPhoneNumber())) {
+                    Platform.runLater( () -> {
+                    try {
+                            boolean succeeded = invitationDecisionDao.acceptInvite(new InvitationDecisionDto(userModel.getPhoneNumber(),
+                                    invitationModel.getContactModel().getPhoneNumber()));
+                            System.out.println(succeeded);
+                            if (succeeded) {
+                                userModel.getInvitations().removeIf(im -> im.getContactModel().getPhoneNumber()
+                                        .equals(invitationModel.getContactModel().getPhoneNumber()));
+                                phoneNumbers.remove(invitedNumber);
+                                System.out.println(phoneNumbers);
+                            }
+                    } catch (NotBoundException | RemoteException ex) {
+                        StageCoordinator.getInstance().showErrorNotification(ErrorMessages.FAILED_TO_CONNECT);
+                        ex.printStackTrace();
+                    }
+                    });
+                }
+            }
+        }
     }
 
     private void getPhoneNumbers() {
