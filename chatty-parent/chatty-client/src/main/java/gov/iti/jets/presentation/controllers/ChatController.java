@@ -261,14 +261,20 @@ public class ChatController implements Initializable {
     }
 
     @FXML
-    void onSendMessageButtonAction( ActionEvent event ) throws NotBoundException, RemoteException {
+    void onSendMessageButtonAction( ActionEvent event ) {
 
         /*
          * TODO
          *  Refactor this to use proper methods and to get the properties form the textStyleProperties
          *  This is part of the sendSingleMessage use case
          * */
-        singleMessageDao.sendMessage(createMessageDto());
+        try {
+            singleMessageDao.sendMessage(createMessageDto());
+        } catch (NotBoundException e) {
+            e.printStackTrace();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
         MessageModel messageModel = SingleMessageMapper.INSTANCE.dtoToModel(createMessageDto());
         messageModel.setSentByMe(true);
         messageModel.setSenderName(userModel.getDisplayName());
@@ -278,7 +284,7 @@ public class ChatController implements Initializable {
         }
 
         if (contactModel != null) {
-            contactModel.getMesssages().add( messageModel);
+            contactModel.getMesssages().add(messageModel);
             scrollChatMessagesListViewToLastMessage();
         } else {
             groupChatModel.getMesssages().add( new MessageModel( "You", LocalDateTime.now(),
@@ -289,15 +295,14 @@ public class ChatController implements Initializable {
         scrollChatMessagesListViewToLastMessage();
     }
 
-    SingleMessageDto createMessageDto(){
+    private SingleMessageDto createMessageDto(){
         SingleMessageDto singleMessageDto = new SingleMessageDto();
-        singleMessageDto.setMessageBody("Hello this is a test single message");
+        singleMessageDto.setMessageBody(chatTextArea.getText());
         singleMessageDto.setSenderPhoneNumber(userModel.getPhoneNumber());
         singleMessageDto.setReceiverPhoneNumber(userModel.getCurrentlyChattingWith());
         singleMessageDto.setTimeStamp(LocalDateTime.now());
-        singleMessageDto.setCssTextStyleString("");
-        singleMessageDto.setCssBubbleStyleString("");
-
+        singleMessageDto.setCssTextStyleString(currentMessageTextStyleString);
+        singleMessageDto.setCssBubbleStyleString(currentMessageBubbleStyleString);
         return singleMessageDto;
     }
 
