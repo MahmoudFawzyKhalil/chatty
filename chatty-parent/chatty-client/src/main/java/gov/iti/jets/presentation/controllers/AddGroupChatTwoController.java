@@ -2,6 +2,7 @@ package gov.iti.jets.presentation.controllers;
 
 import gov.iti.jets.commons.dtos.AddGroupChatDto;
 import gov.iti.jets.presentation.erros.ErrorMessages;
+import gov.iti.jets.presentation.models.ContactModel;
 import gov.iti.jets.presentation.models.GroupChatModel;
 import gov.iti.jets.presentation.models.UserModel;
 import gov.iti.jets.presentation.models.mappers.GroupChatMapper;
@@ -44,6 +45,8 @@ public class AddGroupChatTwoController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        ContactModel myContactModel = new ContactModel(userModel.getPhoneNumber(),userModel.getDisplayName(),userModel.getCurrentStatus());
+        createGroupChatModel.getGroupMembersList().add(myContactModel);
         createGroupChatModel.groupChatNameProperty().bind(groupNameTextField.textProperty());
         addGroupPicCircleListener();
         validateGroupNameTextField();

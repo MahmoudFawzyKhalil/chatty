@@ -85,7 +85,7 @@ public class GroupChatRepositoryImpl implements GroupChatRepository {
     }
 
     @Override
-    public boolean addGroup(GroupChatEntity groupChatEntity) {
+    public int addGroup(GroupChatEntity groupChatEntity) {
         /*TODO
          *
          * pic
@@ -102,10 +102,10 @@ public class GroupChatRepositoryImpl implements GroupChatRepository {
                     if (generatedKeys.next()) {
                         int groupId = generatedKeys.getInt(1);
                         if (addMembers(groupId, groupChatEntity.getGroupMembersList())) {
-                            return true;
+                            return groupId;
                         } else {
                             deleteGroup(groupId);
-                            return false;
+                            return -1;
                         }
                     }
                 }
@@ -113,7 +113,7 @@ public class GroupChatRepositoryImpl implements GroupChatRepository {
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-        return false;
+        return -1;
     }
 
     @Override

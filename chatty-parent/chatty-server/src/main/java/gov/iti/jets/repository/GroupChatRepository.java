@@ -13,7 +13,7 @@ public interface GroupChatRepository {
 
     List<GroupChatEntity> getGroupChats(String phoneNumber);
 
-    boolean addGroup(GroupChatEntity groupChatEntity);
+    int addGroup(GroupChatEntity groupChatEntity);
 
     boolean addMembers(int id, List<ContactEntity> groupMembersList);
 

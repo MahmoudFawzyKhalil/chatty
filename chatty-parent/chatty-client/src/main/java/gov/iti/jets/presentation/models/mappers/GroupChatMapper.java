@@ -15,17 +15,19 @@ import java.util.List;
 @Mapper(uses = {ImageMapper.class})
 public interface GroupChatMapper {
 
-    GroupChatMapper INSTANCE = Mappers.getMapper( GroupChatMapper.class );
+    GroupChatMapper INSTANCE = Mappers.getMapper(GroupChatMapper.class);
 
-    GroupChatModel dtoToModel( GroupChatDto groupChatDto );
+    GroupChatModel dtoToModel(GroupChatDto groupChatDto);
 
-    AddGroupChatDto modelToAddGroupChatDto( GroupChatModel groupChatModel );
+    AddGroupChatDto modelToAddGroupChatDto(GroupChatModel groupChatModel);
 
-    default ObservableList<ContactModel> listToObservableList( List<ContactDto> list ){
-        ObservableList<ContactModel> observableList = FXCollections.observableArrayList( ContactModel.extractor());
+    GroupChatModel AddGroupChatDtoToModel(AddGroupChatDto addGroupChatDto);
+
+    default ObservableList<ContactModel> listToObservableList(List<ContactDto> list) {
+        ObservableList<ContactModel> observableList = FXCollections.observableArrayList(ContactModel.extractor());
 
         for (ContactDto contactDto : list) {
-            observableList.add( ContactMapper.INSTANCE.contactDtoToModel( contactDto ) );
+            observableList.add(ContactMapper.INSTANCE.contactDtoToModel(contactDto));
         }
 
         return observableList;
