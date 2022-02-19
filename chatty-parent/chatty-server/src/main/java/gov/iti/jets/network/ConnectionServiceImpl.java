@@ -23,18 +23,31 @@ public class ConnectionServiceImpl extends UnicastRemoteObject implements Connec
 
     @Override
     public void registerClient(String phoneNumber, Client client) throws RemoteException {
-        clients.addClient(phoneNumber,client);
-
-        Optional<UserEntity> userEntity = repositoryFactory.getUserRepository().getUserByPhoneNumber(phoneNumber);
-        UserDto userDto = UserMapper.INSTANCE.userEntityToDto(userEntity.get());
-
-        System.out.println("hi "+userDto);
-        client.loadUserModel(userDto);
+        Optional<UserEntity> userEntityOptional = repositoryFactory.getUserRepository().getUserByPhoneNumber(phoneNumber);
+        if (userEntityOptional.isPresent()){
+            UserDto userDto = UserMapper.INSTANCE.userEntityToDto(userEntityOptional.get());
+            client.loadUserModel(userDto);
+            clients.addClient(phoneNumber, client);
+        }
     }
 
     @Override
     public void unregisterClient(String phoneNumber) throws RemoteException {
         clients.removeClient(phoneNumber);
+    }
+
+    @Override
+    public void notifyOthersOfStatusUpdate( StatusNotificationDto statusNotificationDto, List<String> contactsToNotifyPhoneNumbers ) throws RemoteException {
+
+        for (var contactPhoneNumber : contactsToNotifyPhoneNumbers){
+            clients.getClient( contactPhoneNumber ).ifPresent( client -> {
+                try {
+                    client.notifyOfStatusUpdate( statusNotificationDto );
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            } );
+        }
     }
 
     private UserDto testUserDto() {

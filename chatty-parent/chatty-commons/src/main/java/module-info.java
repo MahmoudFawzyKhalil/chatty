@@ -19,4 +19,5 @@ module chatty.commons {
     exports gov.iti.jets.commons.remoteinterfaces;
     exports gov.iti.jets.commons.dtos;
     exports gov.iti.jets.commons.callback;
+    exports gov.iti.jets.commons.enums;
 }

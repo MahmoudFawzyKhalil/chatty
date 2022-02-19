@@ -1,5 +1,6 @@
 package gov.iti.jets.presentation.models;
 
+import gov.iti.jets.commons.enums.StatusNotificationType;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -12,6 +13,28 @@ public class UserStatusModel {
     public static final UserStatusModel AVAILABLE = new UserStatusModel(1, "Available");
     public static final UserStatusModel AWAY = new UserStatusModel(2, "Away");
     public static final UserStatusModel BUSY = new UserStatusModel(3, "Busy");
+    public static final UserStatusModel OFFLINE = new UserStatusModel(4, "Offline");
+
+    public static UserStatusModel getStatusModelFromNotificationType( StatusNotificationType type ){
+        UserStatusModel result = null;
+
+        switch (type){
+            case Away:
+                result = AWAY;
+                break;
+            case Available:
+                result = AVAILABLE;
+                break;
+            case Busy:
+                result = BUSY;
+                break;
+            case Offline:
+                result = OFFLINE;
+                break;
+        }
+
+        return result;
+    }
 
     public UserStatusModel(int userStatusId, String userStatusName){
         this.userStatusId.set(userStatusId);

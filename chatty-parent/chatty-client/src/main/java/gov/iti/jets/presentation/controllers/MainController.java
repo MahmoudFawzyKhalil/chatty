@@ -105,8 +105,6 @@ public class MainController implements Initializable {
 
     @FXML
     void onSignOutButtonAction( ActionEvent event ) {
-//        stageCoordinator.clearSceneStagePaneMaps();
-
         try {
             connectionDao.unregisterClient( userModel.getPhoneNumber() );
         } catch (NotBoundException | RemoteException e) {

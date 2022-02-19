@@ -1,8 +1,9 @@
 package gov.iti.jets.presentation.controllers;
 
 import gov.iti.jets.commons.dtos.LoginDto;
+import gov.iti.jets.commons.dtos.StatusNotificationDto;
+import gov.iti.jets.commons.enums.StatusNotificationType;
 import gov.iti.jets.network.ClientImpl;
-import gov.iti.jets.commons.dtos.LoginDto;
 import gov.iti.jets.presentation.models.UserModel;
 import gov.iti.jets.presentation.util.ModelFactory;
 import gov.iti.jets.presentation.util.StageCoordinator;
@@ -22,7 +23,9 @@ import net.synedra.validatorfx.Validator;
 import java.net.URL;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class LoginController implements Initializable {
 
@@ -32,8 +35,7 @@ public class LoginController implements Initializable {
     private final LoginDao loginDao = daoFactory.getLoginService();
     private final ConnectionDao connectionDao = daoFactory.getConnectionService();
     private final ClientImpl client = ClientImpl.getInstance();
-
-    private UserModel userModel;
+    private UserModel userModel = modelFactory.getUserModel();
 
     private Validator validator = UiValidator.getInstance().createValidator();
 
@@ -104,7 +106,11 @@ public class LoginController implements Initializable {
         try {
             boolean isAuthenticated = loginDao.isAuthenticated(loginDto);
             if(isAuthenticated){
-                connectionDao.registerClient(phoneNumberTextField.getText(),client);
+                connectionDao.registerClient(phoneNumberTextField.getText(), client);
+                var notificationDto = new StatusNotificationDto( userModel.getPhoneNumber(),
+                        StatusNotificationType.valueOf( userModel.getCurrentStatus().getUserStatusName() ) );
+                List<String> contactsToNotify = userModel.getContacts().stream().map( cm -> cm.getPhoneNumber() ).collect( Collectors.toList());
+                connectionDao.notifyOthersOfStatusUpdate( notificationDto, contactsToNotify );
                 stageCoordinator.switchToMainScene();
             } else {
                 stageCoordinator.showErrorNotification( "Invalid phone number or password." );

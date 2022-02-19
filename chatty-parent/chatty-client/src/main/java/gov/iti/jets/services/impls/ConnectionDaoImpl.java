@@ -1,12 +1,14 @@
 package gov.iti.jets.services.impls;
 
 import gov.iti.jets.commons.callback.Client;
+import gov.iti.jets.commons.dtos.StatusNotificationDto;
 import gov.iti.jets.commons.remoteinterfaces.ConnectionService;
 import gov.iti.jets.services.ConnectionDao;
 import gov.iti.jets.services.util.ServiceFactory;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.List;
 
 public class ConnectionDaoImpl implements ConnectionDao {
 
@@ -21,5 +23,11 @@ public class ConnectionDaoImpl implements ConnectionDao {
     public void unregisterClient(String phoneNumber) throws NotBoundException,RemoteException{
         ConnectionService connectionService = serviceFactory.getConnectionService();
         connectionService.unregisterClient(phoneNumber);
+    }
+
+    @Override
+    public void notifyOthersOfStatusUpdate( StatusNotificationDto statusNotificationDto, List<String> contactsToNotifyPhoneNumbers ) throws NotBoundException, RemoteException {
+        ConnectionService connectionService = serviceFactory.getConnectionService();
+        connectionService.notifyOthersOfStatusUpdate( statusNotificationDto, contactsToNotifyPhoneNumbers );
     }
 }
