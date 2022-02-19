@@ -10,6 +10,7 @@ import gov.iti.jets.repository.util.mappers.GroupChatMapper;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.Optional;
 
 public class AddGroupChatChatServiceImpl extends UnicastRemoteObject implements AddGroupChatService {
     private Clients clients = Clients.getInstance();
@@ -20,15 +21,16 @@ public class AddGroupChatChatServiceImpl extends UnicastRemoteObject implements 
 
     @Override
     public boolean addGroup(AddGroupChatDto addGroupChatDto) throws RemoteException {
-        /*TODO
-         * get contacts
-         * */
         GroupChatEntity groupChatEntity = GroupChatMapper.INSTANCE.addGroupChatDtoToEntity(addGroupChatDto);
+
         int groupId = groupChatRepository.addGroup(groupChatEntity);
+
         if (groupId != -1) {
-            groupChatEntity.setGroupChatId(groupId);
-            GroupChatDto groupChatDto = GroupChatMapper.INSTANCE.groupChatEntityToDto(groupChatEntity);
-            clients.addGroup(groupChatDto);
+            Optional<GroupChatEntity> addedGroupEntity = groupChatRepository.getById(groupId);
+            if (addedGroupEntity.isPresent()) {
+                GroupChatDto groupChatDto = GroupChatMapper.INSTANCE.groupChatEntityToDto(addedGroupEntity.get());
+                clients.addGroup(groupChatDto);
+            }
         }
         return groupId != -1;
     }
