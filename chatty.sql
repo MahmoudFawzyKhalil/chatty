@@ -46,8 +46,24 @@ CREATE TABLE group_chats_users(
 	group_chat_id INT NOT NULL,
 	user_phone_number VARCHAR(50) NOT NULL
     );
+    
+CREATE TABLE single_messages (
+    message_id INT PRIMARY KEY AUTO_INCREMENT, 
+    sender_phone_number  VARCHAR(50) NOT NULL,
+    receiver_phone_number  VARCHAR(50) NOT NULL,
+    message_body VARCHAR(500) NOT NULL,
+    css_bubble_style VARCHAR(100),
+    css_text_style VARCHAR(500),
+    time_stamp TIMESTAMP NOT NULL
+);
+
 
 -- CONSTRAINTS
+
+ALTER TABLE single_messages
+    ADD CONSTRAINT FOREIGN KEY (sender_phone_number) REFERENCES users(phone_number),
+    ADD CONSTRAINT FOREIGN KEY (receiver_phone_number) REFERENCES users(phone_number);
+
 
 ALTER TABLE users 
     ADD CONSTRAINT FOREIGN KEY(country_id) REFERENCES countries(country_id),
