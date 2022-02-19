@@ -42,9 +42,10 @@ public class RmiManager {
             registry.rebind("RegisterService", new RegisterServiceImpl());
             registry.rebind("CountryService", new CountryServiceImpl());
             registry.rebind("AddContactService", new AddContactServiceImpl());
-            registry.rebind( "InvitationDecisionService", new InvitationDecisionServiceImpl() );
+            registry.rebind("InvitationDecisionService", new InvitationDecisionServiceImpl());
             registry.rebind("UpdateProfileService", new UpdateProfileServiceImpl());
             registry.rebind("SingleMessageService", new SingleMessageServiceImpl());
+            registry.rebind("AddGroupChatService", new AddGroupChatChatServiceImpl());
         } catch (RemoteException e) {
             e.printStackTrace();
 
@@ -54,12 +55,12 @@ public class RmiManager {
     public void close() {
         try {
             registry.unbind("LoginService");
-            registry.unbind( "ConnectionService" );
+            registry.unbind("ConnectionService");
             registry.unbind("RegisterService");
-            registry.unbind( "CountryService" );
+            registry.unbind("CountryService");
             registry.unbind("AddContactService");
-            registry.unbind( "InvitationDecisionService" );
-            registry.unbind( "UpdateProfileService" );
+            registry.unbind("InvitationDecisionService");
+            registry.unbind("UpdateProfileService");
             registry.unbind("SingleMessageService");
         } catch (RemoteException | NotBoundException e) {
             e.printStackTrace();

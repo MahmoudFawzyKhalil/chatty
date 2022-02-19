@@ -6,4 +6,5 @@ public interface ErrorMessages {
     String EMAIL_FOUND = "Email found before";
     String FAILED_REGISTER = "Failed to register";
     String FAILED_Update = "Failed to update";
+    String ADD_GROUP_SELECT = "You need to select two contacts at least";
 }

@@ -22,6 +22,7 @@ public class ServiceFactory {
     private static InvitationDecisionService invitationDecisionService;
     private UpdateProfileService updateProfileService;
     private ConnectionService connectionService;
+    private AddGroupChatService addGroupChatService;
     private static SingleMessageService singleMessageService;
 
 
@@ -55,11 +56,12 @@ public class ServiceFactory {
 
 
     public ConnectionService getConnectionService() throws NotBoundException, RemoteException {
-        if(connectionService == null){
+        if (connectionService == null) {
             connectionService = (ConnectionService) registry.lookup("ConnectionService");
         }
         return connectionService;
     }
+
     public RegisterService getRegisterService() throws NotBoundException, RemoteException {
         if (registerService == null) {
             registerService = (RegisterService) registry.lookup("RegisterService");
@@ -68,7 +70,7 @@ public class ServiceFactory {
         return registerService;
     }
 
-    public CountryService getCountryService()  throws NotBoundException, RemoteException {
+    public CountryService getCountryService() throws NotBoundException, RemoteException {
         if (countryService == null) {
             countryService = (CountryService) registry.lookup("CountryService");
 
@@ -83,6 +85,7 @@ public class ServiceFactory {
         }
         return invitationDecisionService;
     }
+
     public UpdateProfileService getUpdateProfileService() throws NotBoundException, RemoteException {
         if (updateProfileService == null) {
             updateProfileService = (UpdateProfileService) registry.lookup("UpdateProfileService");
@@ -90,6 +93,14 @@ public class ServiceFactory {
         }
         return updateProfileService;
     }
+
+    public AddGroupChatService getAddGroupService() throws NotBoundException, RemoteException {
+        if (addGroupChatService == null) {
+            addGroupChatService = (AddGroupChatService) registry.lookup("AddGroupChatService");
+        }
+        return addGroupChatService;
+    }
+
 
     public SingleMessageService getSingleMessageService() throws NotBoundException, RemoteException{
         if(singleMessageService==null){

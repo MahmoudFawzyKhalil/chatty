@@ -187,7 +187,9 @@ public class StageCoordinator {
             Pane root = fxmlLoader.load();
             Scene scene = new Scene(root);
             setPopUpSceneStyle(scene);
+            setSceneStyleSheets(scene);
             stage.setScene(scene);
+
 
         } catch (IOException e) {
             e.printStackTrace();
