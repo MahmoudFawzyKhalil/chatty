@@ -28,7 +28,7 @@ public class ConnectionServiceImpl extends UnicastRemoteObject implements Connec
         Optional<UserEntity> userEntity = repositoryFactory.getUserRepository().getUserByPhoneNumber(phoneNumber);
         UserDto userDto = UserMapper.INSTANCE.userEntityToDto(userEntity.get());
 
-        System.out.println("hi "+userDto);
+//        System.out.println("hi "+userDto);
         client.loadUserModel(userDto);
     }
 

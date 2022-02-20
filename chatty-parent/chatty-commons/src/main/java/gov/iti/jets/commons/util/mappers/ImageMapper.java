@@ -50,7 +50,12 @@ public class ImageMapper {
         if (encodedString == null || encodedString.isEmpty()) {
             return defaultImage;
         }
-        byte[] bytes = Base64.getDecoder().decode(encodedString);
-        return new Image(new ByteArrayInputStream(bytes));
+        byte[] bytes;
+        try {
+            bytes = Base64.getDecoder().decode(encodedString);
+            return new Image(new ByteArrayInputStream(bytes));
+        } catch (IllegalArgumentException e) {
+            return defaultImage;
+        }
     }
 }

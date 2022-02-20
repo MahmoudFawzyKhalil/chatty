@@ -1,5 +1,8 @@
 package gov.iti.jets.network.util;
 
+import gov.iti.jets.commons.util.mappers.ImageMapper;
+import javafx.scene.image.Image;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -13,5 +16,11 @@ public class ImageDecoderImpl implements ImageDecoder {
             stream.write(data);
             return true;
         }
+    }
+
+    @Override
+    public String decode(String imgPath) {
+        Image image = new Image(imgPath);
+        return ImageMapper.getInstance().imageToEncodedString(image);
     }
 }
