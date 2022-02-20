@@ -1,6 +1,7 @@
 package gov.iti.jets.network;
 
 import gov.iti.jets.commons.callback.Client;
+import gov.iti.jets.commons.dtos.SingleMessageDto;
 import gov.iti.jets.commons.dtos.StatusNotificationDto;
 import gov.iti.jets.commons.dtos.UserDto;
 import gov.iti.jets.commons.remoteinterfaces.ConnectionService;
@@ -26,7 +27,10 @@ public class ConnectionServiceImpl extends UnicastRemoteObject implements Connec
 
         Optional<UserEntity> userEntity = repositoryFactory.getUserRepository().getUserByPhoneNumber(phoneNumber);
 
-        System.out.println("hi "+userDto);
+        UserDto userDto = UserMapper.INSTANCE.userEntityToDto(userEntity.get());
+
+        // Must be called before loading messages from db!
+        client.loadUserModel(userDto);
 
         Map<String,List<SingleMessageEntity>> messagesMapEntity = repositoryFactory.getSingleMessageRepository().getMessage(phoneNumber);
         Map<String,List<SingleMessageDto>> messagesMapDto = new HashMap<>();
@@ -36,9 +40,7 @@ public class ConnectionServiceImpl extends UnicastRemoteObject implements Connec
         });
         client.loadSingleMessages(messagesMapDto);
 
-
-        UserDto userDto = UserMapper.INSTANCE.userEntityToDto(userEntity.get());
-        client.loadUserModel(userDto);
+        // Must be called last!
         clients.addClient(phoneNumber,client);
     }
 
