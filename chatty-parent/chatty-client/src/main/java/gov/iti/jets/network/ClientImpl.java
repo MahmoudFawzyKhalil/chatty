@@ -2,12 +2,8 @@ package gov.iti.jets.network;
 
 import gov.iti.jets.commons.callback.Client;
 import gov.iti.jets.commons.dtos.*;
-import gov.iti.jets.presentation.models.ContactModel;
-import gov.iti.jets.presentation.models.GroupChatModel;
-import gov.iti.jets.presentation.models.MessageModel;
-import gov.iti.jets.presentation.models.ContactModel;
-import gov.iti.jets.presentation.models.InvitationModel;
-import gov.iti.jets.presentation.models.UserModel;
+import gov.iti.jets.commons.util.mappers.ImageMapper;
+import gov.iti.jets.presentation.models.*;
 import gov.iti.jets.presentation.models.mappers.*;
 import gov.iti.jets.presentation.util.ModelFactory;
 import javafx.application.Platform;

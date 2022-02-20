@@ -1,6 +1,6 @@
 package gov.iti.jets.commons.dtos;
 
-import gov.iti.jets.commons.util.ValidationUtil;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
@@ -20,6 +20,10 @@ public class RegisterDto implements Serializable {
     private String password;
 
     @NotNull
+    @Email
+    private String email;
+
+    @NotNull
     @Past
     private LocalDate birthDate;
     @NotNull
@@ -30,17 +34,17 @@ public class RegisterDto implements Serializable {
     private String bio;
     private String profilePicture;
 
-    public RegisterDto(String phoneNumber, String displayName, String password, LocalDate birthDate, CountryDto country, String gender, String bio, String profilePicture) {
+
+    public RegisterDto(String phoneNumber, String displayName, String password, String email, LocalDate birthDate, CountryDto country, String gender, String bio, String profilePicture) {
         this.phoneNumber = phoneNumber;
         this.displayName = displayName;
         this.password = password;
+        this.email = email;
         this.birthDate = birthDate;
         this.country = country;
         this.gender = gender;
         this.bio = bio;
         this.profilePicture = profilePicture;
-
-        ValidationUtil.getInstance().validate( this );
     }
 
     public String getPhoneNumber() {
@@ -65,6 +69,14 @@ public class RegisterDto implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public LocalDate getBirthDate() {
