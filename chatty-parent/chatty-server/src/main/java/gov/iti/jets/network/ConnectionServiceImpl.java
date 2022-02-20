@@ -3,16 +3,16 @@ package gov.iti.jets.network;
 import gov.iti.jets.commons.callback.Client;
 import gov.iti.jets.commons.dtos.*;
 import gov.iti.jets.commons.remoteinterfaces.ConnectionService;
+import gov.iti.jets.repository.entities.SingleMessageEntity;
 import gov.iti.jets.repository.entities.UserEntity;
 import gov.iti.jets.repository.util.RepositoryFactory;
+import gov.iti.jets.repository.util.mappers.SingleMessageMapper;
 import gov.iti.jets.repository.util.mappers.UserMapper;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class ConnectionServiceImpl extends UnicastRemoteObject implements ConnectionService {
 
@@ -30,6 +30,16 @@ public class ConnectionServiceImpl extends UnicastRemoteObject implements Connec
 
         System.out.println("hi "+userDto);
         client.loadUserModel(userDto);
+
+        Map<String,List<SingleMessageEntity>> messagesMapEntity = repositoryFactory.getSingleMessageRepository().getMessage(phoneNumber);
+        Map<String,List<SingleMessageDto>> messagesMapDto = new HashMap<>();
+        messagesMapEntity.forEach((k, v) -> {
+                    List<SingleMessageDto> messageDto = SingleMessageMapper.INSTANCE.entityListToDtoList(v);
+                    messagesMapDto.put(k,messageDto);
+                });
+        client.loadSingleMessages(messagesMapDto);
+
+
     }
 
     @Override
