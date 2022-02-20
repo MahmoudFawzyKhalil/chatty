@@ -3,11 +3,15 @@ package gov.iti.jets.network;
 import gov.iti.jets.commons.callback.Client;
 import gov.iti.jets.commons.dtos.ContactDto;
 import gov.iti.jets.commons.dtos.GroupChatDto;
+import gov.iti.jets.commons.dtos.StatusNotificationDto;
+import gov.iti.jets.commons.enums.StatusNotificationType;
+import gov.iti.jets.repository.util.RepositoryFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.rmi.RemoteException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Clients {
     private static final Clients INSTANCE = new Clients();
@@ -61,10 +65,29 @@ public class Clients {
         logger.info("Client that attempted: " + clientMap.get(phoneNumber));
     }
 
-    public Optional<Client> removeClient(String phoneNumber) throws RemoteException {
+    public Optional<Client> removeClient(String phoneNumber)  {
         logger.info("A client attempted to log out: " + phoneNumber);
+
+
+        List<String> contactsToNotify = RepositoryFactory.getInstance()
+                .getContactRepository()
+                .getUserContacts( phoneNumber )
+                .stream()
+                .map( ce -> ce.getPhoneNumber() )
+                .collect( Collectors.toList() );
+
+        StatusNotificationDto dto = new StatusNotificationDto( phoneNumber, StatusNotificationType.Offline );
+
+        for (var contact : contactsToNotify){
+            getClient( contact ).ifPresent( client -> {
+                try {
+                    client.notifyOfStatusUpdate( dto );
+                } catch (RemoteException e) {
+                    removeClient( contact );
+                }
+            } );
+        }
+
         return Optional.ofNullable(clientMap.remove(phoneNumber));
     }
-
-
 }
