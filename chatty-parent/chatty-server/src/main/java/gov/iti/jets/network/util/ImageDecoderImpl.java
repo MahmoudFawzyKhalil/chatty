@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Base64;
 
-public class DecodeImageImpl implements DecodeImage {
+public class ImageDecoderImpl implements ImageDecoder {
     @Override
     public boolean save(String imgBase64,String path) throws IOException {
         byte[] data = Base64.getDecoder().decode(imgBase64);

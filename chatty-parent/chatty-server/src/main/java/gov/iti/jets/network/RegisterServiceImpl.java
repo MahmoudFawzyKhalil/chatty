@@ -2,8 +2,8 @@ package gov.iti.jets.network;
 
 import gov.iti.jets.commons.dtos.RegisterDto;
 import gov.iti.jets.commons.remoteinterfaces.RegisterService;
-import gov.iti.jets.network.util.DecodeImage;
-import gov.iti.jets.network.util.DecodeImageImpl;
+import gov.iti.jets.network.util.ImageDecoder;
+import gov.iti.jets.network.util.ImageDecoderImpl;
 import gov.iti.jets.repository.UserRepository;
 import gov.iti.jets.repository.entities.UserEntity;
 import gov.iti.jets.repository.util.RepositoryFactory;
@@ -17,7 +17,7 @@ public class RegisterServiceImpl extends UnicastRemoteObject implements Register
 
     private RepositoryFactory repositoryFactory = RepositoryFactory.getInstance();
     private UserRepository userRepository = repositoryFactory.getUserRepository();
-    private DecodeImage decodeImage = new DecodeImageImpl();
+    private ImageDecoder imageDecoder = new ImageDecoderImpl();
 
     protected RegisterServiceImpl() throws RemoteException {
     }
@@ -27,7 +27,7 @@ public class RegisterServiceImpl extends UnicastRemoteObject implements Register
         UserEntity userEntity = UserMapper.INSTANCE.registerDtoToEntity(registerDto);
         try {
             String picURL = "DB/profile-pic/" + registerDto.getPhoneNumber() + ".bmp";
-            decodeImage.save(registerDto.getProfilePicture(), picURL);
+            imageDecoder.save(registerDto.getProfilePicture(), picURL);
             userEntity.setUserPicture(picURL);
         } catch (IOException e) {
             e.printStackTrace();
