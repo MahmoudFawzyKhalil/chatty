@@ -84,23 +84,25 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
     @Override
     public void receiveSingleMessage(SingleMessageDto singleMessageDto) throws RemoteException {
         MessageModel messageModel = SingleMessageMapper.INSTANCE.dtoToModel(singleMessageDto);
-
         Optional<ContactModel> optionalContactModel = userModel.getContacts().stream()
                 .filter(cm -> cm.getPhoneNumber().equals(singleMessageDto.getSenderPhoneNumber()))
                 .findFirst();
 
-        if (!optionalContactModel.isEmpty()) {
+        if (optionalContactModel.isPresent()) {
             messageModel.setSenderName(optionalContactModel.get().getDisplayName());
             Platform.runLater(() -> {
+                messageModel.senderProfilePictureProperty().bind(optionalContactModel.get().profilePictureProperty());
                 optionalContactModel.get().getMesssages().add(messageModel);
+
             });
         }
+
     }
 
     @Override
     public void addGroupChat(GroupChatDto groupChatDto) throws RemoteException {
         GroupChatModel groupChatModel = GroupChatMapper.INSTANCE.dtoToModel(groupChatDto);
-        Platform.runLater(()->{
+        Platform.runLater(() -> {
             userModel.getGroupChats().add(groupChatModel);
         });
     }
@@ -117,20 +119,20 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
 
     @Override
     public void addContact(ContactDto contactDto) throws RemoteException {
-        Platform.runLater( () -> {
-            ContactModel contactModel = ContactMapper.INSTANCE.contactDtoToModel( contactDto );
-            userModel.getContacts().add( contactModel );
+        Platform.runLater(() -> {
+            ContactModel contactModel = ContactMapper.INSTANCE.contactDtoToModel(contactDto);
+            userModel.getContacts().add(contactModel);
 
             userModel.getInvitations().removeIf(invitationModel -> invitationModel.getContactModel().getPhoneNumber().equals(contactModel.getPhoneNumber()));
-        } );
+        });
     }
 
     @Override
     public void addInvitation(InvitationDto receiverInvitationDto) throws RemoteException {
-        Platform.runLater( () -> {
-            InvitationModel invitationModel = InvitationMapper.INSTANCE.dtoToModel( receiverInvitationDto );
-            userModel.getInvitations().add( invitationModel );
-        } );
+        Platform.runLater(() -> {
+            InvitationModel invitationModel = InvitationMapper.INSTANCE.dtoToModel(receiverInvitationDto);
+            userModel.getInvitations().add(invitationModel);
+        });
     }
 
 

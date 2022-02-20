@@ -51,11 +51,8 @@ public class ImageMapper {
             return defaultImage;
         }
         byte[] bytes;
-        try {
-            bytes = Base64.getDecoder().decode(encodedString);
-            return new Image(new ByteArrayInputStream(bytes));
-        } catch (IllegalArgumentException e) {
-            return defaultImage;
-        }
+        bytes = Base64.getDecoder().decode(encodedString);
+        return new Image(new ByteArrayInputStream(bytes));
+
     }
 }
