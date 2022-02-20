@@ -17,6 +17,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.ImagePattern;
@@ -47,6 +48,9 @@ public class MainController implements Initializable {
 
     @FXML
     private Circle userStatusCircle;
+
+    @FXML
+    private ToggleButton chatBotToggleButton;
 
     @Override
     public void initialize( URL location, ResourceBundle resources ) {
@@ -121,7 +125,15 @@ public class MainController implements Initializable {
 
     @FXML
     void onChatBotButtonAction( ActionEvent event ) {
-        paneCoordinator.switchToChatPane();
+        if (chatBotToggleButton.isSelected()){
+            userModel.setIsUsingChatBot( true );
+            stageCoordinator.showMessageNotification( "ChatBot is now active", "Hello, world!" );
+            System.err.println("IS USING CHATBOT: " + userModel.getIsUsingChatBot());
+        } else {
+            userModel.setIsUsingChatBot( false );
+            stageCoordinator.showMessageNotification( "ChatBot is now turned off", "Goodbye, cruel world!" );
+            System.err.println("IS USING CHATBOT: " + userModel.getIsUsingChatBot());
+        }
     }
 
     @FXML

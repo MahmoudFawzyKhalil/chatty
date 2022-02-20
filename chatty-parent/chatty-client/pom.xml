@@ -22,6 +22,11 @@
             <artifactId>chatty-commons</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.google</groupId>
+            <artifactId>Ab</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>

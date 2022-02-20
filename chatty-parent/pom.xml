@@ -23,6 +23,13 @@
     <dependencyManagement>
         <dependencies>
 
+            <!-- ChatBot -->
+            <dependency>
+                <groupId>com.google</groupId>
+                <artifactId>Ab</artifactId>
+                <version>0.0.4.3</version>
+            </dependency>
+
             <!-- Database -->
             <dependency>
                 <groupId>mysql</groupId>

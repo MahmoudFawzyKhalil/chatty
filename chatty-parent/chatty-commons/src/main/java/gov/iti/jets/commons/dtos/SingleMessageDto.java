@@ -29,6 +29,8 @@ public class SingleMessageDto implements Serializable {
     @NotNull
     private String cssBubbleStyleString;
 
+    private boolean isSentByChatBot = false;
+
     public SingleMessageDto() {
     }
 
@@ -89,5 +91,27 @@ public class SingleMessageDto implements Serializable {
 
     public void setCssBubbleStyleString(String cssBubbleStyleString) {
         this.cssBubbleStyleString = cssBubbleStyleString;
+    }
+
+    public boolean isSentByChatBot() {
+        return isSentByChatBot;
+    }
+
+    public void setSentByChatBot( boolean sentByChatBot ) {
+        isSentByChatBot = sentByChatBot;
+    }
+
+
+    @Override
+    public String toString() {
+        return "SingleMessageDto{" +
+                "receiverPhoneNumber='" + receiverPhoneNumber + '\'' +
+                ", senderPhoneNumber='" + senderPhoneNumber + '\'' +
+                ", messageBody='" + messageBody + '\'' +
+                ", timeStamp=" + timeStamp +
+                ", cssTextStyleString='" + cssTextStyleString + '\'' +
+                ", cssBubbleStyleString='" + cssBubbleStyleString + '\'' +
+                ", isSentByChatBot=" + isSentByChatBot +
+                '}';
     }
 }

@@ -7,6 +7,7 @@ import gov.iti.jets.repository.entities.SingleMessageEntity;
 import gov.iti.jets.repository.util.RepositoryFactory;
 import gov.iti.jets.repository.util.mappers.SingleMessageMapper;
 
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Optional;
@@ -22,7 +23,11 @@ public class SingleMessageServiceImpl extends UnicastRemoteObject implements Sin
     public void sendMessage(SingleMessageDto singleMessageDto) throws RemoteException {
         Optional<Client> client  = clients.getClient(singleMessageDto.getReceiverPhoneNumber());
         if(!client.isEmpty()){
-            client.get().receiveSingleMessage(singleMessageDto);
+            try {
+                client.get().receiveSingleMessage(singleMessageDto);
+            } catch (NotBoundException e) {
+                e.printStackTrace();
+            }
         }else{
             //TODO throw excpetion the user is not online
         }
