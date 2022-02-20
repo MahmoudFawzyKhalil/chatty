@@ -2,16 +2,14 @@ package gov.iti.jets.network;
 
 import gov.iti.jets.commons.callback.Client;
 import gov.iti.jets.commons.dtos.*;
-import gov.iti.jets.presentation.models.ContactModel;
-import gov.iti.jets.presentation.models.GroupChatModel;
-import gov.iti.jets.presentation.models.MessageModel;
-import gov.iti.jets.presentation.models.ContactModel;
-import gov.iti.jets.presentation.models.InvitationModel;
-import gov.iti.jets.presentation.models.UserModel;
+import gov.iti.jets.presentation.models.*;
 import gov.iti.jets.presentation.models.mappers.*;
 import gov.iti.jets.presentation.util.ModelFactory;
+import gov.iti.jets.services.ChatBotService;
+import gov.iti.jets.services.util.ServiceFactory;
 import javafx.application.Platform;
 
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.time.LocalDate;
@@ -22,6 +20,7 @@ import java.util.Optional;
 public class ClientImpl extends UnicastRemoteObject implements Client {
 
     private final transient UserModel userModel = ModelFactory.getInstance().getUserModel();
+    private final ChatBotService chatBotService = ServiceFactory.getInstance().getChatBotService();
     private static ClientImpl INSTANCE;
 
     static {
@@ -86,19 +85,27 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
     }
 
     @Override
-    public void receiveSingleMessage(SingleMessageDto singleMessageDto) throws RemoteException {
-        MessageModel messageModel = SingleMessageMapper.INSTANCE.dtoToModel(singleMessageDto);
-
+    public void receiveSingleMessage(SingleMessageDto singleMessageDto) throws RemoteException, NotBoundException {
         Optional<ContactModel> optionalContactModel = userModel.getContacts().stream()
                 .filter(cm -> cm.getPhoneNumber().equals(singleMessageDto.getSenderPhoneNumber()))
                 .findFirst();
+
+        MessageModel messageModel = SingleMessageMapper.INSTANCE.dtoToModel(singleMessageDto);
 
         if (!optionalContactModel.isEmpty()) {
             messageModel.setSenderName(optionalContactModel.get().getDisplayName());
             Platform.runLater(() -> {
                 optionalContactModel.get().getMesssages().add(messageModel);
             });
+
+            if (userModel.getIsUsingChatBot() && !singleMessageDto.isSentByChatBot()){
+                MessageModel reply = chatBotService.formulateAndSendChatBotReply(singleMessageDto);
+                Platform.runLater( () -> {
+                    optionalContactModel.get().getMesssages().add( reply );
+                });
+            }
         }
+
     }
 
     @Override
