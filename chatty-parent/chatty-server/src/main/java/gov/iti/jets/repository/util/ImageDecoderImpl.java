@@ -1,4 +1,4 @@
-package gov.iti.jets.network.util;
+package gov.iti.jets.repository.util;
 
 import gov.iti.jets.commons.util.mappers.ImageMapper;
 import javafx.scene.image.Image;
