@@ -85,7 +85,7 @@ public class Clients {
                 groupMap.put(groupId, clientList);
             } else {
                 groupMap.get(groupId).add(client);
-            } // TODO
+            }
         }
     }
 
