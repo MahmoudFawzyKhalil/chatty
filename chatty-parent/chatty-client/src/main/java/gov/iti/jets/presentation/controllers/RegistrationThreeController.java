@@ -38,8 +38,10 @@ public class RegistrationThreeController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         bindProfilePicCircle();
         fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Images", "*.jpeg", "*.jpg", "*.png")
+                new FileChooser.ExtensionFilter("Images", "*.jpeg", "*.jpg", "*.png","*.bmp")
         );
+
+
 
     }
 

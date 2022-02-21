@@ -109,9 +109,6 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public boolean update(UserEntity userEntity) {
-        /*todo
-         * set image
-         * */
         try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement("update users set display_name = ? , bio = ? where phone_number = ?")) {
 

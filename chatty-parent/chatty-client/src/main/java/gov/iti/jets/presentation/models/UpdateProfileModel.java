@@ -40,6 +40,13 @@ public class UpdateProfileModel {
         profilePicture.set(userModel.getProfilePicture());
     }
 
+    public boolean isChanged() {
+        boolean changed;
+        changed = !getDisplayName().equals(userModel.getDisplayName());
+        changed |= !getBio().equals(userModel.getBio());
+        return changed;
+    }
+
     public void updateUserModel() {
         userModel.setDisplayName(getDisplayName());
         userModel.setBirthDate(getBirthDate());
