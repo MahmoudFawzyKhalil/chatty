@@ -13,6 +13,7 @@ import gov.iti.jets.presentation.util.cellfactories.ContactChatMenuItemCellFacto
 import gov.iti.jets.presentation.util.cellfactories.GroupChatMenuItemCellFactory;
 import gov.iti.jets.services.ConnectionDao;
 import gov.iti.jets.services.util.DaoFactory;
+import gov.iti.jets.services.util.ServiceFactory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -51,6 +52,7 @@ public class MainController implements Initializable {
 
     @FXML
     private ToggleButton chatBotToggleButton;
+    private ServiceFactory serviceFactory = ServiceFactory.getInstance();
 
     @Override
     public void initialize( URL location, ResourceBundle resources ) {
@@ -151,6 +153,7 @@ public class MainController implements Initializable {
 
         ModelFactory.getInstance().clearUserModel();
         stageCoordinator.switchToLoginScene();
+        serviceFactory.shutdown();
     }
 
     @FXML

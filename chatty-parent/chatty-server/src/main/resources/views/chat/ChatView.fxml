@@ -1,1 +1,142 @@
-{\rtf1}
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ColorPicker?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.CustomMenuItem?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.shape.Circle?>
+
+<BorderPane id="center" fx:id="centerBorderPane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.presentation.controllers.ChatController">
+   <bottom>
+      <HBox id="message-area-container" alignment="CENTER_LEFT" fillHeight="false" prefHeight="80.0" styleClass="send-message-container" BorderPane.alignment="CENTER">
+         <children>
+            <StackPane>
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+               <children>
+                  <Button id="text-styling-button" fx:id="textStyleButton" minWidth="25.0" mnemonicParsing="false" onAction="#onTextStyleButtonAction" prefWidth="25.0" styleClass="text-styling-button" stylesheets="@../main/MainStyles.css">
+                     <contextMenu>
+                        <ContextMenu id="extras-menu" fx:id="textStyleContextMenu" anchorLocation="CONTENT_BOTTOM_LEFT" anchorX="0.0" anchorY="0.0" styleClass="font-settings-popup-contextmenu" x="0.0" y="0.0">
+                           <items>
+                              <CustomMenuItem id="bla" hideOnClick="false" mnemonicParsing="false" styleClass="font-settings-popup-contextmenu" text="Unspecified Action">
+                                 <content>
+                                    <VBox id="extras-menu-container" prefWidth="200.0" spacing="5.0">
+                                       <children>
+                                          <HBox id="font-type" spacing="5.0">
+                                             <children>
+                                                <ToggleButton id="bold-toggle-button" fx:id="boldToggleButton" mnemonicParsing="false" onAction="#onBoldToggleButtonAction" text="B" />
+                                                <ToggleButton id="italic-toggle-button" fx:id="italicToggleButton" mnemonicParsing="false" onAction="#onItalicToggleButtonAction" text="I" />
+                                                <ToggleButton id="underline-toggle-button" fx:id="underlineToggleButton" mnemonicParsing="false" onAction="#onUnderlineToggleButtonAction" text="U" />
+                                             </children>
+                                          </HBox>
+                                          <HBox id="font-settings" spacing="10.0">
+                                             <children>
+                                                <ComboBox id="font-family-picker" fx:id="fontFamilyComboBox" prefWidth="130.0" styleClass="style-choice-boxes" />
+                                                <ComboBox id="font-size-picker" fx:id="fontSizeComboBox" prefWidth="70.0" styleClass="style-choice-boxes" />
+                                             </children>
+                                          </HBox>
+                                          <HBox id="color-pickers" spacing="10.0">
+                                             <children>
+                                                <VBox id="text-color-picker">
+                                                   <children>
+                                                      <Label id="text-color-label" text="Font" />
+                                                      <ColorPicker id="text-color-picker" fx:id="messageTextColorPicker" onAction="#onMessageTextColorPickerAction">
+                                                         <value>
+                                                            <Color />
+                                                         </value>
+                                                      </ColorPicker>
+                                                   </children>
+                                                </VBox>
+                                                <VBox id="background-color-picker">
+                                                   <children>
+                                                      <Label id="background-label" text="Background" />
+                                                      <ColorPicker id="background-color-picker" fx:id="messageBackgroundColorPicker" onAction="#onMessageBakckgroundColorPickerAction">
+                                                         <value>
+                                                            <Color />
+                                                         </value>
+                                                      </ColorPicker>
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </padding>
+                                    </VBox>
+                                 </content>
+                              </CustomMenuItem>
+                           </items>
+                        </ContextMenu>
+                     </contextMenu>
+                     <tooltip>
+                        <Tooltip text="Background Color">
+                           <graphic>
+                              <Circle fx:id="textBackgroundIndicatorCircle" fill="#86d320" radius="5.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                           </graphic>
+                        </Tooltip>
+                     </tooltip>
+                  </Button>
+               </children>
+            </StackPane>
+            <Button id="attach-button" minWidth="25.0" mnemonicParsing="false" onAction="#onAttachFileButtonAction" prefWidth="25.0" styleClass="attach-button">
+               <HBox.margin>
+                  <Insets left="10.0" right="10.0" />
+               </HBox.margin>
+            </Button>
+            <TextArea id="chat-text-area" fx:id="chatTextArea" maxHeight="60.0" prefHeight="60.0" promptText="Type a message..." styleClass="chat-text-area" wrapText="true" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </TextArea>
+            <Button id="send-button" minWidth="27.0" mnemonicParsing="false" onAction="#onSendMessageButtonAction" prefWidth="25.0" styleClass="send-button">
+               <HBox.margin>
+                  <Insets left="20.0" right="20.0" />
+               </HBox.margin>
+            </Button>
+         </children>
+      </HBox>
+   </bottom>
+   <top>
+      <HBox id="chat-name-header" alignment="CENTER_LEFT" prefHeight="70.0" styleClass="send-message-container" BorderPane.alignment="CENTER">
+         <children>
+            <StackPane>
+               <children>
+                  <Circle id="profile-pic" fx:id="contactOrGroupPicCircle" fill="WHITE" radius="25.0" stroke="TRANSPARENT" strokeType="INSIDE">
+                     <StackPane.margin>
+                        <Insets left="20.0" />
+                     </StackPane.margin>
+                  </Circle>
+                  <Circle id="status-color" fx:id="contactStatusCircle" fill="#48ff48" radius="6.0" stroke="TRANSPARENT" strokeType="INSIDE" translateX="-3.0" translateY="-10.0" visible="false" StackPane.alignment="BOTTOM_RIGHT" />
+               </children>
+            </StackPane>
+            <Label id="contact-chat-name" fx:id="contactOrGroupNameLabel" styleClass="contact-chat-name" text="Christine Nedaa">
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </Label>
+         </children>
+      </HBox>
+   </top>
+   <stylesheets>
+      <URL value="@../main/MainStyles.css" />
+      <URL value="@../../styles/Base.css" />
+   </stylesheets>
+   <center>
+      <ListView fx:id="chatMessagesListView" styleClass="chat-list-view" BorderPane.alignment="CENTER" />
+   </center>
+</BorderPane>

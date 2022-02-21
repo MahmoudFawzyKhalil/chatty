@@ -2,9 +2,7 @@ package gov.iti.jets.network;
 
 import gov.iti.jets.commons.callback.Client;
 import gov.iti.jets.commons.dtos.*;
-import gov.iti.jets.presentation.models.*;
 import gov.iti.jets.commons.enums.StatusNotificationType;
-import gov.iti.jets.presentation.models.*;
 import gov.iti.jets.presentation.models.*;
 import gov.iti.jets.presentation.models.mappers.*;
 import gov.iti.jets.presentation.util.ModelFactory;
@@ -27,7 +25,8 @@ import java.util.Optional;
 public class ClientImpl extends UnicastRemoteObject implements Client {
 
     private final transient UserModel userModel = ModelFactory.getInstance().getUserModel();
-    private final ChatBotService chatBotService = ServiceFactory.getInstance().getChatBotService();
+    private final transient ServiceFactory serviceFactory = ServiceFactory.getInstance();
+    private final transient ChatBotService chatBotService = serviceFactory.getChatBotService();
     private final transient StageCoordinator stageCoordinator = StageCoordinator.getInstance();
     private static ClientImpl INSTANCE;
 
@@ -100,6 +99,16 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
                 });
             }
         });
+    }
+
+    @Override
+    public void notifyOfServerShutDown() throws RemoteException {
+        Platform.runLater( () -> {
+            stageCoordinator.showErrorNotification( "Server has shutdown. Please contact your server administrator" );
+            ModelFactory.getInstance().clearUserModel();
+            stageCoordinator.switchToLoginScene();
+        } );
+        serviceFactory.shutdown();
     }
 
     private UserDto testUserDto() {

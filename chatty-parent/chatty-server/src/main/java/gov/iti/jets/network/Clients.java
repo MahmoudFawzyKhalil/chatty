@@ -31,6 +31,10 @@ public class Clients {
         return groupMap.get(groupId);
     }
 
+    public Collection<Client> getAllClients(){
+        return clientMap.values();
+    }
+
     public void addGroup(GroupChatDto groupChatDto) throws RemoteException {
         logger.info("new group added: " + groupChatDto.getGroupChatId());
         List<Client> clients = getClients(groupChatDto.getGroupMembersList());
@@ -89,5 +93,11 @@ public class Clients {
         }
 
         return Optional.ofNullable(clientMap.remove(phoneNumber));
+    }
+
+    public void signOutAllClients() {
+        //TODO
+        clientMap.clear();
+        groupMap.clear();
     }
 }
