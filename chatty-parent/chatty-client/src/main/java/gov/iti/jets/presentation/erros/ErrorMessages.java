@@ -7,4 +7,5 @@ public interface ErrorMessages {
     String FAILED_REGISTER = "Failed to register";
     String FAILED_Update = "Failed to update";
     String ADD_GROUP_SELECT = "You need to select two contacts at least";
+    String IMAGE_LENGTH = "Image size should not be greater than 2mb";
 }

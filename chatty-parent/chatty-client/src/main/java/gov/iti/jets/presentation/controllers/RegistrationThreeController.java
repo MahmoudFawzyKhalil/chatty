@@ -38,9 +38,8 @@ public class RegistrationThreeController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         bindProfilePicCircle();
         fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Images", "*.jpeg", "*.jpg", "*.png","*.bmp")
+                new FileChooser.ExtensionFilter("Images", "*.jpeg", "*.jpg", "*.png", "*.bmp")
         );
-
 
 
     }
@@ -49,6 +48,11 @@ public class RegistrationThreeController implements Initializable {
     void onUploadPictureHyperLinkAction(ActionEvent event) {
         File selectedFile = fileChooser.showOpenDialog(null);
         if (selectedFile != null) {
+            double fileLen = selectedFile.length() / (double) (1024 * 1024);
+            if (fileLen > 2) {
+                stageCoordinator.showErrorNotification(ErrorMessages.IMAGE_LENGTH);
+                return;
+            }
             Image selectedImage = new Image(selectedFile.getPath());
             registerModel.setProfilePicture(selectedImage);
         }

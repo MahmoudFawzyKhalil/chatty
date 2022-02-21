@@ -126,6 +126,11 @@ public class AddGroupChatTwoController implements Initializable {
     void onUploadPictureHyperLinkAction(ActionEvent event) {
         File selectedFile = fileChooser.showOpenDialog(null);
         if (selectedFile != null) {
+            double fileLen = selectedFile.length() / (double) (1024 * 1024);
+            if (fileLen > 2) {
+                stageCoordinator.showErrorNotification(ErrorMessages.IMAGE_LENGTH);
+                return;
+            }
             Image image=new Image(selectedFile.getPath());
             createGroupChatModel.setGroupChatPicture(image);
         }
