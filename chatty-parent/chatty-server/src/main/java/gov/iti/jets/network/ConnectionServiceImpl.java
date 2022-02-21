@@ -14,6 +14,8 @@ import gov.iti.jets.repository.util.mappers.UserMapper;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
+import java.time.LocalDate;
+import java.util.*;
 
 public class ConnectionServiceImpl extends UnicastRemoteObject implements ConnectionService {
 
@@ -47,6 +49,11 @@ public class ConnectionServiceImpl extends UnicastRemoteObject implements Connec
     @Override
     public void unregisterClient(String phoneNumber) throws RemoteException {
         clients.removeClient(phoneNumber);
+    }
+
+    @Override
+    public void registerGroups(List<Integer> groupIds, Client client) throws RemoteException {
+        clients.registerClientGroups(groupIds,client);
     }
 
     @Override

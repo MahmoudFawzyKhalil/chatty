@@ -9,7 +9,11 @@ import java.util.List;
 
 public interface ConnectionDao {
    void registerClient(String phoneNumber, Client client) throws NotBoundException, RemoteException;
+
    void unregisterClient(String phoneNumber) throws NotBoundException, RemoteException;
+
+   void registerGroups(List<Integer> groupIds, Client client) throws NotBoundException, RemoteException;
+
    void notifyOthersOfStatusUpdate( StatusNotificationDto statusNotificationDto, List<String> contactsToNotifyPhoneNumbers ) throws NotBoundException, RemoteException;
    List<String> getOfflineContacts( List<String> contactsPhoneNumbers ) throws  NotBoundException, RemoteException;
 }

@@ -37,4 +37,11 @@ public class ConnectionDaoImpl implements ConnectionDao {
         ConnectionService connectionService = serviceFactory.getConnectionService();
         return connectionService.getOfflineContacts( contactsPhoneNumbers );
     }
+
+    @Override
+    public void registerGroups(List<Integer> groupIds, Client client) throws NotBoundException,RemoteException{
+        ConnectionService connectionService = serviceFactory.getConnectionService();
+        connectionService.registerGroups(groupIds, client);
+    }
+
 }

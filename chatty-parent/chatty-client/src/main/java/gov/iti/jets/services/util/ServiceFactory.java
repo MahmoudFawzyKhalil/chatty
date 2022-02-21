@@ -25,6 +25,7 @@ public class ServiceFactory {
     private AddGroupChatService addGroupChatService;
     private static SingleMessageService singleMessageService;
     private ChatBotService chatBotService;
+    private static GroupMessageService groupMessageService;
 
 
     private ServiceFactory() {
@@ -109,12 +110,18 @@ public class ServiceFactory {
         }
         return singleMessageService;
     }
-    
+
     public ChatBotService getChatBotService(){
         if (chatBotService == null){
             chatBotService = new ChatBotServiceImpl();
         }
         return chatBotService;
+    }
+    public GroupMessageService getGroupMessageService()throws NotBoundException, RemoteException{
+        if(groupMessageService==null){
+            groupMessageService = (GroupMessageService) registry.lookup("GroupMessageService");
+        }
+        return groupMessageService;
     }
 
 }

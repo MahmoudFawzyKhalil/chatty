@@ -1,9 +1,10 @@
-package gov.iti.jets.network;
+package gov.iti.jets.presentation.network;
 
 import gov.iti.jets.commons.callback.Client;
 import gov.iti.jets.commons.dtos.*;
 import gov.iti.jets.presentation.models.*;
 import gov.iti.jets.commons.enums.StatusNotificationType;
+import gov.iti.jets.presentation.models.*;
 import gov.iti.jets.presentation.models.*;
 import gov.iti.jets.presentation.models.*;
 import gov.iti.jets.presentation.models.mappers.*;
@@ -143,6 +144,43 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
             }
         }
 
+    }
+
+    @Override
+    public void receiveGroupMessage(GroupMessageDto groupMessageDto) throws RemoteException {
+
+        if (userModel.getPhoneNumber().equals( groupMessageDto.getSenderPhoneNumber() )){
+            return;
+        }
+
+        MessageModel messageModel = GroupMessageMapper.INSTANCE.dtoToModel( groupMessageDto );
+
+        var groupChatModelOptional = userModel.getGroupChats()
+                .stream()
+                .filter( gc -> gc.getGroupChatId() == groupMessageDto.getGroupChatId() )
+                .findFirst();
+
+        if (groupChatModelOptional.isPresent()){
+
+            GroupChatModel groupChatModel = groupChatModelOptional.get();
+
+            var senderOptional = groupChatModel
+                    .getGroupMembersList()
+                    .stream()
+                    .filter( gm -> gm.getPhoneNumber().equals( groupMessageDto.getSenderPhoneNumber() ) )
+                    .findFirst();
+
+
+            if (senderOptional.isPresent()){
+                ContactModel sender = senderOptional.get();
+                messageModel.senderNameProperty().bind( sender.displayNameProperty() );
+                messageModel.senderProfilePictureProperty().bind( sender.profilePictureProperty() );
+            }
+
+            Platform.runLater( () -> {
+                groupChatModel.getMesssages().add( messageModel );
+            } );
+        }
     }
 
     @Override

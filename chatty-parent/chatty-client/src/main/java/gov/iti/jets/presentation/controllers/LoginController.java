@@ -1,6 +1,8 @@
 package gov.iti.jets.presentation.controllers;
 
 import gov.iti.jets.commons.dtos.LoginDto;
+import gov.iti.jets.presentation.network.ClientImpl;
+import gov.iti.jets.presentation.models.GroupChatModel;
 import gov.iti.jets.commons.dtos.StatusNotificationDto;
 import gov.iti.jets.commons.enums.StatusNotificationType;
 import gov.iti.jets.network.ClientImpl;
@@ -13,6 +15,7 @@ import gov.iti.jets.presentation.util.UiValidator;
 import gov.iti.jets.services.ConnectionDao;
 import gov.iti.jets.services.LoginDao;
 import gov.iti.jets.services.util.DaoFactory;
+import javafx.collections.ObservableList;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -26,6 +29,8 @@ import net.synedra.validatorfx.Validator;
 import java.net.URL;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
@@ -38,6 +43,7 @@ public class LoginController implements Initializable {
     private final LoginDao loginDao = daoFactory.getLoginService();
     private final ConnectionDao connectionDao = daoFactory.getConnectionService();
     private final ClientImpl client = ClientImpl.getInstance();
+    private List<Integer> groupIdsList = new ArrayList<>();
     private UserModel userModel = modelFactory.getUserModel();
 
     private Validator validator = UiValidator.getInstance().createValidator();
@@ -109,6 +115,8 @@ public class LoginController implements Initializable {
         try {
             boolean isAuthenticated = loginDao.isAuthenticated(loginDto);
             if(isAuthenticated){
+                connectionDao.registerClient(phoneNumberTextField.getText(),client);
+                connectionDao.registerGroups(getGroupIdsList(userModel.getGroupChats()), client);
                 connectionDao.registerClient(phoneNumberTextField.getText(), client);
 
                 var notificationDto = new StatusNotificationDto( userModel.getPhoneNumber(),
@@ -143,5 +151,11 @@ public class LoginController implements Initializable {
             stageCoordinator.showErrorNotification( "Failed to connect to server. Please try again later." );
             e.printStackTrace();
         }
+    }
+    private List<Integer> getGroupIdsList(ObservableList<GroupChatModel> groupChatModels){
+        for (GroupChatModel groupChatModel : groupChatModels){
+            groupIdsList.add(groupChatModel.getGroupChatId());
+        }
+        return groupIdsList;
     }
 }

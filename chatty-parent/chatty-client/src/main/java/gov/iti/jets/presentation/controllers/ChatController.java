@@ -1,15 +1,15 @@
 package gov.iti.jets.presentation.controllers;
 
+import gov.iti.jets.commons.dtos.GroupMessageDto;
 import gov.iti.jets.commons.dtos.SingleMessageDto;
-import gov.iti.jets.presentation.models.ContactModel;
-import gov.iti.jets.presentation.models.GroupChatModel;
-import gov.iti.jets.presentation.models.MessageModel;
-import gov.iti.jets.presentation.models.UserModel;
+import gov.iti.jets.presentation.models.*;
+import gov.iti.jets.presentation.models.mappers.GroupMessageMapper;
 import gov.iti.jets.presentation.models.mappers.SingleMessageMapper;
 import gov.iti.jets.presentation.util.ModelFactory;
 import gov.iti.jets.presentation.util.PaneCoordinator;
 import gov.iti.jets.presentation.util.cellfactories.ChatBubbleCellFactory;
 import gov.iti.jets.presentation.util.cellfactories.NoSelectionModel;
+import gov.iti.jets.services.GroupMessageDao;
 import gov.iti.jets.services.SingleMessageDao;
 import gov.iti.jets.services.util.DaoFactory;
 import javafx.collections.FXCollections;
@@ -45,7 +45,7 @@ public class ChatController implements Initializable {
     private ContactModel contactModel;
     private GroupChatModel groupChatModel;
     private SingleMessageDao singleMessageDao = DaoFactory.getInstance().getSingleMessageDao();
-
+    private GroupMessageDao groupMessageDao = DaoFactory.getInstance().getGroupMessageDao();
 
     @FXML
     private BorderPane centerBorderPane;
@@ -268,8 +268,11 @@ public class ChatController implements Initializable {
          *  Refactor this to use proper methods and to get the properties form the textStyleProperties
          *  This is part of the sendSingleMessage use case
          * */
+
+
         try {
             singleMessageDao.sendMessage(createMessageDto());
+
         } catch (NotBoundException e) {
             e.printStackTrace();
         } catch (RemoteException e) {
@@ -287,9 +290,20 @@ public class ChatController implements Initializable {
             contactModel.getMesssages().add(messageModel);
             scrollChatMessagesListViewToLastMessage();
         } else {
-            groupChatModel.getMesssages().add( new MessageModel( "You", LocalDateTime.now(),
-                    "Hello from send message button.",
-                    "", "", true ) );
+            try {
+                System.out.println("hereeee");
+
+                groupMessageDao.sendGroupMessage(createGroupMessageDto());
+            } catch (NotBoundException e) {
+                e.printStackTrace();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+            MessageModel groupMessageModel = GroupMessageMapper.INSTANCE.dtoToModel(createGroupMessageDto());
+            groupMessageModel.setSentByMe(true);
+            groupMessageModel.setSenderName(userModel.getDisplayName());
+
+            groupChatModel.getMesssages().add(groupMessageModel);
             scrollChatMessagesListViewToLastMessage();
         }
         scrollChatMessagesListViewToLastMessage();
@@ -304,6 +318,19 @@ public class ChatController implements Initializable {
         singleMessageDto.setCssTextStyleString(currentMessageTextStyleString);
         singleMessageDto.setCssBubbleStyleString(currentMessageBubbleStyleString);
         return singleMessageDto;
+    }
+
+    private GroupMessageDto createGroupMessageDto(){
+        Integer groupId = Integer.valueOf(userModel.getCurrentlyChattingWith());
+        GroupMessageDto groupMessageDto = new GroupMessageDto();
+        groupMessageDto.setGroupChatId(groupId);
+        groupMessageDto.setSenderPhoneNumber(userModel.getPhoneNumber());
+        groupMessageDto.setMessageBody(chatTextArea.getText());
+        groupMessageDto.setTimeStamp(LocalDateTime.now());
+        groupMessageDto.setCssTextStyleString(currentMessageTextStyleString);
+        groupMessageDto.setCssBubbleStyleString(currentMessageBubbleStyleString);
+        return groupMessageDto;
+
     }
 
     @FXML
@@ -356,4 +383,5 @@ public class ChatController implements Initializable {
         String colorString = "#" + messageBackgroundColorPicker.getValue().toString().substring( 2, 8 );
         messageStyleMap.put( "background-color", colorString );
     }
+
 }
