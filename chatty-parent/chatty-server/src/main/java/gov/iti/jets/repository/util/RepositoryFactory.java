@@ -18,6 +18,7 @@ public class RepositoryFactory {
     private final ContactRepository contactRepository = new ContactRepositoryImpl();
     private final GroupChatRepository groupChatRepository = new GroupChatRepositoryImpl();
     private final InvitationRepository invitationRepository = new InvitationRepositoryImpl();
+    private final DashboardRepository dashboardRepository = new DashboardRepositoryImpl();
 
     private  RepositoryFactory(){
 
@@ -48,4 +49,8 @@ public class RepositoryFactory {
     }
 
     public GroupChatRepository getGroupChatRepository(){ return groupChatRepository;}
+
+    public DashboardRepository getDashboardRepository() {
+        return dashboardRepository;
+    }
 }

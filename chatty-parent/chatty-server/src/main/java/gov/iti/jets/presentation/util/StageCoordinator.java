@@ -2,6 +2,7 @@ package gov.iti.jets.presentation.util;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -44,19 +45,23 @@ public class StageCoordinator {
         primaryStage.setScene(loginScene);
     }
 
-    public void switchToChatScene() {
-        Scene chatScene = sceneMap.get("chatScene");
-        if (chatScene == null){
+
+    public void switchToMainScene() {
+        Scene mainScene = sceneMap.get("mainScene");
+        if (mainScene == null) {
             try {
-                Pane root = FXMLLoader.load(getClass().getResource("/views/chat/ChatView.fxml"));
-                chatScene = new Scene(root);
-                sceneMap.put("chatScene", chatScene);
+                BorderPane mainSceneBorderPane = FXMLLoader.load(getClass().getResource("/views/main/MainView.fxml"));
+//                paneCoordinator.initPane(mainSceneBorderPane);
+                mainScene = new Scene(mainSceneBorderPane, 960, 530);
+                sceneMap.put("mainScene", mainScene);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-
-        primaryStage.setScene(chatScene);
+        primaryStage.setWidth(961);
+        primaryStage.setHeight(531);
+//        setSceneStyleSheets(mainScene);
+        primaryStage.setScene(mainScene);
     }
 
     public void setStageResizable(boolean value){

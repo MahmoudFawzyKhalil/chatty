@@ -1,5 +1,6 @@
 package gov.iti.jets.presentation.controllers;
 
+import gov.iti.jets.presentation.models.DashboardDataModel;
 import gov.iti.jets.presentation.models.UserModel;
 import gov.iti.jets.presentation.util.ModelFactory;
 import gov.iti.jets.presentation.util.StageCoordinator;
@@ -20,6 +21,7 @@ public class LoginController implements Initializable {
     private final StageCoordinator stageCoordinator = StageCoordinator.getInstance();
     private final ModelFactory modelFactory = ModelFactory.getInstance();
     private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
+    private DashboardDataModel dashboardDataModel = ModelFactory.getInstance().dashboardDataModel();
 
     UserModel userModel;
     
@@ -41,13 +43,16 @@ public class LoginController implements Initializable {
         Image image = new Image(imageFile.getAbsolutePath());
         userModel.setUserImage(image);
     }
+    @FXML
+    void onCreateAccountHyperLinkAction(ActionEvent event) {
+    }
 
     @FXML
-    void onYallaButtonAction(ActionEvent event) {
-        if (nameTextField.getText().isEmpty()) return;
+    void onLoginButtonAction(ActionEvent event) {
+//        if (nameTextField.getText().isEmpty()) return;
 
-        userModel.setUserName(nameTextField.getText());
-        stageCoordinator.switchToChatScene();
+//        userModel.setUserName(nameTextField.getText());
+        stageCoordinator.switchToMainScene();
         stageCoordinator.setStageResizable(true);
     }
 }
