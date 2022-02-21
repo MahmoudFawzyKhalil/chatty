@@ -24,6 +24,7 @@ public class ServiceFactory {
     private ConnectionService connectionService;
     private AddGroupChatService addGroupChatService;
     private static SingleMessageService singleMessageService;
+    private static GroupMessageService groupMessageService;
 
 
     private ServiceFactory() {
@@ -107,6 +108,12 @@ public class ServiceFactory {
             singleMessageService = (SingleMessageService) registry.lookup("SingleMessageService");
         }
         return singleMessageService;
+    }
+    public GroupMessageService getGroupMessageService()throws NotBoundException, RemoteException{
+        if(groupMessageService==null){
+            groupMessageService = (GroupMessageService) registry.lookup("GroupMessageService");
+        }
+        return groupMessageService;
     }
 
 }

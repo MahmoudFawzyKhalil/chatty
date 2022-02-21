@@ -3,9 +3,9 @@ package gov.iti.jets.network;
 import gov.iti.jets.commons.callback.Client;
 import gov.iti.jets.commons.dtos.ContactDto;
 import gov.iti.jets.commons.dtos.GroupChatDto;
+import gov.iti.jets.commons.dtos.GroupMessageDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.rmi.RemoteException;
 import java.util.*;
 
@@ -14,10 +14,6 @@ public class Clients {
     private final Map<String, Client> clientMap = new HashMap<>();
     private final Map<Integer, List<Client>> groupMap = new HashMap<>();
 
-    public void registerClientGroups(List<Integer> groupIds, Client client){
-        // TODO add client to List<Client> in groupMap for every groupId
-        // if List<Client> is null then create it
-    }
 
     Logger logger = LoggerFactory.getLogger(Clients.class);
 
@@ -57,6 +53,15 @@ public class Clients {
         }
     }
 
+    public void addMessagesTo(GroupChatDto groupChatDto, GroupMessageDto groupMessageDto) throws RemoteException {
+        List<Client> clients = getClients(groupChatDto.getGroupMembersList());
+
+        for (Client client : clients) {
+            client.receiveGroupMessage(groupMessageDto);
+
+        }
+    }
+
 
     // We add the phone number as an argument to avoid having to make a remote call to the client just to get their phone number!
     public void addClient(String phoneNumber, Client client) {
@@ -69,8 +74,29 @@ public class Clients {
 
     public Optional<Client> removeClient(String phoneNumber) throws RemoteException {
         logger.info("A client attempted to log out: " + phoneNumber);
+        if (clientMap.get(phoneNumber) != null){
+            unregisterClientGroups(clientMap.get(phoneNumber));
+        }
         return Optional.ofNullable(clientMap.remove(phoneNumber));
     }
 
+    public void registerClientGroups(List<Integer> groupIds, Client client){
+        for (Integer groupId:groupIds){
+            if(groupMap.get(groupId) == null){
+                List<Client> clientList = new ArrayList<>();
+                clientList.add(client);
+                groupMap.put(groupId, clientList);
+            }
+            groupMap.get(groupId).add(client);
+
+        }
+    }
+    public void unregisterClientGroups(Client client){
+        for (Integer groupId:groupMap.keySet()){
+            if(groupMap.get(groupId).contains(client)){
+                groupMap.get(groupId).remove(client);
+            }
+        }
+    }
 
 }

@@ -7,6 +7,7 @@ import gov.iti.jets.services.util.ServiceFactory;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.List;
 
 public class ConnectionDaoImpl implements ConnectionDao {
 
@@ -22,4 +23,11 @@ public class ConnectionDaoImpl implements ConnectionDao {
         ConnectionService connectionService = serviceFactory.getConnectionService();
         connectionService.unregisterClient(phoneNumber);
     }
+
+    @Override
+    public void registerGroups(List<Integer> groupIds, Client client) throws NotBoundException,RemoteException{
+        ConnectionService connectionService = serviceFactory.getConnectionService();
+        connectionService.registerGroups(groupIds, client);
+    }
+
 }

@@ -10,14 +10,13 @@ import gov.iti.jets.repository.util.mappers.UserMapper;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class ConnectionServiceImpl extends UnicastRemoteObject implements ConnectionService {
 
     private static final RepositoryFactory repositoryFactory = RepositoryFactory.getInstance();
     private Clients clients = Clients.getInstance();
+
     protected ConnectionServiceImpl() throws RemoteException {
     }
 
@@ -36,6 +35,12 @@ public class ConnectionServiceImpl extends UnicastRemoteObject implements Connec
     public void unregisterClient(String phoneNumber) throws RemoteException {
         clients.removeClient(phoneNumber);
     }
+
+    @Override
+    public void registerGroups(List<Integer> groupIds, Client client) throws RemoteException {
+            clients.registerClientGroups(groupIds,client);
+    }
+
 
     private UserDto testUserDto() {
 

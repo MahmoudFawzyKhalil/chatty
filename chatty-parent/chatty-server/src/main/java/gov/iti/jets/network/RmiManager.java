@@ -46,6 +46,8 @@ public class RmiManager {
             registry.rebind("UpdateProfileService", new UpdateProfileServiceImpl());
             registry.rebind("SingleMessageService", new SingleMessageServiceImpl());
             registry.rebind("AddGroupChatService", new AddGroupChatChatServiceImpl());
+            registry.rebind("GroupMessageService", new GroupMessageServiceImpl());
+
         } catch (RemoteException e) {
             e.printStackTrace();
 
@@ -62,6 +64,7 @@ public class RmiManager {
             registry.unbind("InvitationDecisionService");
             registry.unbind("UpdateProfileService");
             registry.unbind("SingleMessageService");
+            registry.unbind("GroupMessageService");
         } catch (RemoteException | NotBoundException e) {
             e.printStackTrace();
         }

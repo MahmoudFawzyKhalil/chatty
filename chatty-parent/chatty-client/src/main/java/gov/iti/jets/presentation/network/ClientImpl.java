@@ -1,11 +1,10 @@
-package gov.iti.jets.network;
+package gov.iti.jets.presentation.network;
 
 import gov.iti.jets.commons.callback.Client;
 import gov.iti.jets.commons.dtos.*;
 import gov.iti.jets.presentation.models.ContactModel;
 import gov.iti.jets.presentation.models.GroupChatModel;
 import gov.iti.jets.presentation.models.MessageModel;
-import gov.iti.jets.presentation.models.ContactModel;
 import gov.iti.jets.presentation.models.InvitationModel;
 import gov.iti.jets.presentation.models.UserModel;
 import gov.iti.jets.presentation.models.mappers.*;
@@ -99,6 +98,34 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
                 optionalContactModel.get().getMesssages().add(messageModel);
             });
         }
+    }
+
+    @Override
+    public void receiveGroupMessage(GroupMessageDto groupMessageDto) throws RemoteException {
+        MessageModel messageModel = GroupMessageMapper.INSTANCE.dtoToModel(groupMessageDto);
+
+        Optional<ContactModel> optionalContactModel = userModel.getContacts().stream()
+                .filter(cm -> cm.getPhoneNumber().equals(groupMessageDto.getSenderPhoneNumber()))
+                .findFirst();
+
+        Optional<GroupChatModel> optionalGroupChatModel = userModel.getGroupChats().stream()
+                .filter(cm -> cm.getGroupChatId() == (groupMessageDto.getGroupChatId()))
+                .findFirst();
+
+            messageModel.setSenderName(groupMessageDto.getSenderPhoneNumber());
+        if(!optionalContactModel.isEmpty() ) {
+            messageModel.setSenderName(optionalContactModel.get().getDisplayName());
+            if (!optionalGroupChatModel.isEmpty()){
+                Platform.runLater(() -> {
+                    optionalGroupChatModel.get().getMesssages().add(messageModel);
+                });
+            }
+        }
+
+
+
+
+
     }
 
     @Override

@@ -1,7 +1,8 @@
 package gov.iti.jets.presentation.controllers;
 
 import gov.iti.jets.commons.dtos.LoginDto;
-import gov.iti.jets.network.ClientImpl;
+import gov.iti.jets.presentation.network.ClientImpl;
+import gov.iti.jets.presentation.models.GroupChatModel;
 import gov.iti.jets.presentation.models.UserModel;
 import gov.iti.jets.presentation.util.ModelFactory;
 import gov.iti.jets.presentation.util.StageCoordinator;
@@ -9,6 +10,7 @@ import gov.iti.jets.presentation.util.UiValidator;
 import gov.iti.jets.services.ConnectionDao;
 import gov.iti.jets.services.LoginDao;
 import gov.iti.jets.services.util.DaoFactory;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -21,6 +23,8 @@ import net.synedra.validatorfx.Validator;
 import java.net.URL;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
@@ -31,8 +35,8 @@ public class LoginController implements Initializable {
     private final LoginDao loginDao = daoFactory.getLoginService();
     private final ConnectionDao connectionDao = daoFactory.getConnectionService();
     private final ClientImpl client = ClientImpl.getInstance();
-
-    private UserModel userModel;
+    private List<Integer> groupIdsList = new ArrayList<>();
+    private UserModel userModel = ModelFactory.getInstance().getUserModel();
 
     private Validator validator = UiValidator.getInstance().createValidator();
 
@@ -104,6 +108,7 @@ public class LoginController implements Initializable {
             boolean isAuthenticated = loginDao.isAuthenticated(loginDto);
             if(isAuthenticated){
                 connectionDao.registerClient(phoneNumberTextField.getText(),client);
+                connectionDao.registerGroups(getGroupIdsList(userModel.getGroupChats()), client);
                 // TODO connectionDao.registerGroups(List<Integer> groupIds);
                 stageCoordinator.switchToMainScene();
             } else {
@@ -113,5 +118,12 @@ public class LoginController implements Initializable {
             stageCoordinator.showErrorNotification( "Failed to connect to server. Please try again later." );
             e.printStackTrace();
         }
+    }
+    private List<Integer> getGroupIdsList(ObservableList<GroupChatModel> groupChatModels){
+        for (GroupChatModel groupChatModel : groupChatModels){
+            System.out.println(groupChatModel.getGroupChatId());
+            groupIdsList.add(groupChatModel.getGroupChatId());
+        }
+        return groupIdsList;
     }
 }
