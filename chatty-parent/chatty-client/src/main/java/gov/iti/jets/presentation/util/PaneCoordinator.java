@@ -37,13 +37,13 @@ public class PaneCoordinator {
                 e.printStackTrace();
             }
         }
-        userModel.setCurrentlyChattingWith( null );
+        userModel.setCurrentlyChattingWith(null);
         mainSceneBorderPane.setCenter(invitationPane);
     }
 
     public void clearPaneMap() {
         paneMap.clear();
-        userModel.setCurrentlyChattingWith( null );
+        userModel.setCurrentlyChattingWith(null);
     }
 
     public void switchToChatPane() {
@@ -51,7 +51,7 @@ public class PaneCoordinator {
         mainSceneBorderPane.setCenter(chatPane);
     }
 
-    private void loadChatPane(){
+    private void loadChatPane() {
         Pane chatPane = paneMap.get("chatPane");
         if (chatPane == null) {
             try {
@@ -73,8 +73,8 @@ public class PaneCoordinator {
                 e.printStackTrace();
             }
         }
-
-        userModel.setCurrentlyChattingWith( null );
+        ModelFactory.getInstance().getUpdateProfileModel().resetData();
+        userModel.setCurrentlyChattingWith(null);
         mainSceneBorderPane.setCenter(updateProfilePane);
     }
 

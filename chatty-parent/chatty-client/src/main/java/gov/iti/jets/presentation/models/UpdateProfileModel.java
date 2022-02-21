@@ -33,7 +33,7 @@ public class UpdateProfileModel {
         this.userModel = userModel;
     }
 
-    private void resetData() {
+    public void resetData() {
         displayName.set(userModel.getDisplayName());
         birthDate.set(userModel.getBirthDate());
         bio.set(userModel.getBio());
