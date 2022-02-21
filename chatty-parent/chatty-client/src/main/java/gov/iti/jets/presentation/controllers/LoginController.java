@@ -1,22 +1,21 @@
 package gov.iti.jets.presentation.controllers;
 
 import gov.iti.jets.commons.dtos.LoginDto;
-import gov.iti.jets.presentation.network.ClientImpl;
-import gov.iti.jets.presentation.models.GroupChatModel;
 import gov.iti.jets.commons.dtos.StatusNotificationDto;
 import gov.iti.jets.commons.enums.StatusNotificationType;
-import gov.iti.jets.network.ClientImpl;
 import gov.iti.jets.presentation.models.ContactModel;
+import gov.iti.jets.presentation.models.GroupChatModel;
 import gov.iti.jets.presentation.models.UserModel;
 import gov.iti.jets.presentation.models.UserStatusModel;
+import gov.iti.jets.presentation.network.ClientImpl;
 import gov.iti.jets.presentation.util.ModelFactory;
 import gov.iti.jets.presentation.util.StageCoordinator;
 import gov.iti.jets.presentation.util.UiValidator;
 import gov.iti.jets.services.ConnectionDao;
 import gov.iti.jets.services.LoginDao;
 import gov.iti.jets.services.util.DaoFactory;
-import javafx.collections.ObservableList;
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -30,7 +29,6 @@ import java.net.URL;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
@@ -117,7 +115,6 @@ public class LoginController implements Initializable {
             if(isAuthenticated){
                 connectionDao.registerClient(phoneNumberTextField.getText(),client);
                 connectionDao.registerGroups(getGroupIdsList(userModel.getGroupChats()), client);
-                connectionDao.registerClient(phoneNumberTextField.getText(), client);
 
                 var notificationDto = new StatusNotificationDto( userModel.getPhoneNumber(),
                         StatusNotificationType.valueOf( userModel.getCurrentStatus().getUserStatusName() ) );
