@@ -55,9 +55,8 @@ public class Clients {
 
     public void addMessagesTo(GroupChatDto groupChatDto, GroupMessageDto groupMessageDto) throws RemoteException {
         List<Client> clients = getClients(groupChatDto.getGroupMembersList());
-
         for (Client client : clients) {
-            client.receiveGroupMessage(groupMessageDto);
+            client.receiveGroupMessage(groupChatDto, groupMessageDto);
 
         }
     }

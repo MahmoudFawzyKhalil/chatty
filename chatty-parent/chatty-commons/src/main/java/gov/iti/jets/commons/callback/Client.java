@@ -11,8 +11,7 @@ public interface Client extends Remote {
 
     void receiveSingleMessage(SingleMessageDto singleMessageDto) throws RemoteException;
 
-    void receiveGroupMessage(GroupMessageDto groupMessageDto) throws RemoteException;
-
+    void receiveGroupMessage(GroupChatDto groupChatDto, GroupMessageDto groupMessageDto) throws RemoteException;
     void addGroupChat(GroupChatDto groupChatDto) throws RemoteException;
 
     void receiveInvitation(InvitationDto invitationDto) throws RemoteException;

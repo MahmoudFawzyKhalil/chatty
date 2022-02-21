@@ -101,7 +101,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
     }
 
     @Override
-    public void receiveGroupMessage(GroupMessageDto groupMessageDto) throws RemoteException {
+    public void receiveGroupMessage(GroupChatDto groupChatDto, GroupMessageDto groupMessageDto) throws RemoteException {
         MessageModel messageModel = GroupMessageMapper.INSTANCE.dtoToModel(groupMessageDto);
 
         Optional<ContactModel> optionalContactModel = userModel.getContacts().stream()
@@ -112,15 +112,23 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
                 .filter(cm -> cm.getGroupChatId() == (groupMessageDto.getGroupChatId()))
                 .findFirst();
 
-            messageModel.setSenderName(groupMessageDto.getSenderPhoneNumber());
-        if(!optionalContactModel.isEmpty() ) {
+
+        if(!optionalContactModel.isEmpty()) {
             messageModel.setSenderName(optionalContactModel.get().getDisplayName());
             if (!optionalGroupChatModel.isEmpty()){
                 Platform.runLater(() -> {
                     optionalGroupChatModel.get().getMesssages().add(messageModel);
                 });
             }
+        }else if(optionalContactModel.isEmpty() && !groupMessageDto.getSenderPhoneNumber().equals(userModel.getPhoneNumber())){
+            messageModel.setSenderName(groupMessageDto.getSenderPhoneNumber());
+            if (!optionalGroupChatModel.isEmpty()){
+                Platform.runLater(() -> {
+                    optionalGroupChatModel.get().getMesssages().add(messageModel);
+                });
+            }
         }
+
 
 
 
