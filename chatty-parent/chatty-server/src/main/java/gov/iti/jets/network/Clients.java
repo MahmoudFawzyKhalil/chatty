@@ -52,13 +52,12 @@ public class Clients {
             client.addGroupChat(groupChatDto);
         }
     }
-
-    public void addMessagesTo(GroupChatDto groupChatDto, GroupMessageDto groupMessageDto) throws RemoteException {
-        List<Client> clients = getClients(groupChatDto.getGroupMembersList());
+                                                            //TODO DONT SEND GROUPCHATDTO ANYWHERE
+    public void sendMessageToOnlineClientsOfAGroupChat( GroupChatDto groupChatDto, GroupMessageDto groupMessageDto) throws RemoteException {
+        List <Client> clients = groupMap.get( groupMessageDto.getGroupChatId() );
         for (Client client : clients) {
             client.receiveGroupMessage(groupChatDto, groupMessageDto);
-
-        }
+        } //TODO
     }
 
 
@@ -85,11 +84,12 @@ public class Clients {
                 List<Client> clientList = new ArrayList<>();
                 clientList.add(client);
                 groupMap.put(groupId, clientList);
-            }
-            groupMap.get(groupId).add(client);
-
+            } else {
+                groupMap.get(groupId).add(client);
+            } // TODO
         }
     }
+
     public void unregisterClientGroups(Client client){
         for (Integer groupId:groupMap.keySet()){
             if(groupMap.get(groupId).contains(client)){

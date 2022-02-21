@@ -1,6 +1,5 @@
 package gov.iti.jets.network;
 
-import gov.iti.jets.commons.callback.Client;
 import gov.iti.jets.commons.dtos.GroupChatDto;
 import gov.iti.jets.commons.dtos.GroupMessageDto;
 import gov.iti.jets.commons.remoteinterfaces.GroupMessageService;
@@ -11,7 +10,6 @@ import gov.iti.jets.repository.util.mappers.GroupChatMapper;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.List;
 import java.util.Optional;
 
 public class GroupMessageServiceImpl extends UnicastRemoteObject implements GroupMessageService {
@@ -29,7 +27,7 @@ public class GroupMessageServiceImpl extends UnicastRemoteObject implements Grou
             Optional<GroupChatEntity> addedGroupEntity = groupChatRepository.getById(groupId);
             if (addedGroupEntity.isPresent()) {
                 GroupChatDto groupChatDto = GroupChatMapper.INSTANCE.groupChatEntityToDto(addedGroupEntity.get());
-                clients.addMessagesTo(groupChatDto, groupMessageDto);
+                clients.sendMessageToOnlineClientsOfAGroupChat(groupChatDto, groupMessageDto);
             }
         }
 

@@ -2,11 +2,7 @@ package gov.iti.jets.presentation.network;
 
 import gov.iti.jets.commons.callback.Client;
 import gov.iti.jets.commons.dtos.*;
-import gov.iti.jets.presentation.models.ContactModel;
-import gov.iti.jets.presentation.models.GroupChatModel;
-import gov.iti.jets.presentation.models.MessageModel;
-import gov.iti.jets.presentation.models.InvitationModel;
-import gov.iti.jets.presentation.models.UserModel;
+import gov.iti.jets.presentation.models.*;
 import gov.iti.jets.presentation.models.mappers.*;
 import gov.iti.jets.presentation.util.ModelFactory;
 import javafx.application.Platform;
@@ -102,38 +98,39 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
 
     @Override
     public void receiveGroupMessage(GroupChatDto groupChatDto, GroupMessageDto groupMessageDto) throws RemoteException {
-        MessageModel messageModel = GroupMessageMapper.INSTANCE.dtoToModel(groupMessageDto);
 
-        Optional<ContactModel> optionalContactModel = userModel.getContacts().stream()
-                .filter(cm -> cm.getPhoneNumber().equals(groupMessageDto.getSenderPhoneNumber()))
-                .findFirst();
-
-        Optional<GroupChatModel> optionalGroupChatModel = userModel.getGroupChats().stream()
-                .filter(cm -> cm.getGroupChatId() == (groupMessageDto.getGroupChatId()))
-                .findFirst();
-
-
-        if(!optionalContactModel.isEmpty()) {
-            messageModel.setSenderName(optionalContactModel.get().getDisplayName());
-            if (!optionalGroupChatModel.isEmpty()){
-                Platform.runLater(() -> {
-                    optionalGroupChatModel.get().getMesssages().add(messageModel);
-                });
-            }
-        }else if(optionalContactModel.isEmpty() && !groupMessageDto.getSenderPhoneNumber().equals(userModel.getPhoneNumber())){
-            messageModel.setSenderName(groupMessageDto.getSenderPhoneNumber());
-            if (!optionalGroupChatModel.isEmpty()){
-                Platform.runLater(() -> {
-                    optionalGroupChatModel.get().getMesssages().add(messageModel);
-                });
-            }
+        if (userModel.getPhoneNumber().equals( groupMessageDto.getSenderPhoneNumber() )){
+            return;
         }
 
+        MessageModel messageModel = GroupMessageMapper.INSTANCE.dtoToModel( groupMessageDto );
+
+        var groupChatModelOptional = userModel.getGroupChats()
+                .stream()
+                .filter( gc -> gc.getGroupChatId() == groupMessageDto.getGroupChatId() )
+                .findFirst();
+
+        if (groupChatModelOptional.isPresent()){
+
+            GroupChatModel groupChatModel = groupChatModelOptional.get();
+
+            var senderOptional = groupChatModel
+                    .getGroupMembersList()
+                    .stream()
+                    .filter( gm -> gm.getPhoneNumber().equals( groupMessageDto.getSenderPhoneNumber() ) )
+                    .findFirst();
 
 
+            if (senderOptional.isPresent()){
+                ContactModel sender = senderOptional.get();
+                messageModel.senderNameProperty().bind( sender.displayNameProperty() );
+                messageModel.senderProfilePictureProperty().bind( sender.profilePictureProperty() );
+            }
 
-
-
+            Platform.runLater( () -> {
+                groupChatModel.getMesssages().add( messageModel );
+            } );
+        }
     }
 
     @Override
