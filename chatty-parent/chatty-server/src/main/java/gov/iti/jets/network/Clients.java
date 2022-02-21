@@ -52,12 +52,11 @@ public class Clients {
             client.addGroupChat(groupChatDto);
         }
     }
-                                                            //TODO DONT SEND GROUPCHATDTO ANYWHERE
-    public void sendMessageToOnlineClientsOfAGroupChat( GroupChatDto groupChatDto, GroupMessageDto groupMessageDto) throws RemoteException {
+    public void sendMessageToOnlineClientsOfAGroupChat( GroupMessageDto groupMessageDto) throws RemoteException {
         List <Client> clients = groupMap.get( groupMessageDto.getGroupChatId() );
         for (Client client : clients) {
-            client.receiveGroupMessage(groupChatDto, groupMessageDto);
-        } //TODO
+            client.receiveGroupMessage(groupMessageDto);
+        }
     }
 
 

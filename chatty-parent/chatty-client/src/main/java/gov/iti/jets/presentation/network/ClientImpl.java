@@ -97,7 +97,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
     }
 
     @Override
-    public void receiveGroupMessage(GroupChatDto groupChatDto, GroupMessageDto groupMessageDto) throws RemoteException {
+    public void receiveGroupMessage(GroupMessageDto groupMessageDto) throws RemoteException {
 
         if (userModel.getPhoneNumber().equals( groupMessageDto.getSenderPhoneNumber() )){
             return;

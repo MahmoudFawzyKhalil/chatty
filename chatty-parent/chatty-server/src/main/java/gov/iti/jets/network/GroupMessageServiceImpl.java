@@ -15,7 +15,6 @@ import java.util.Optional;
 public class GroupMessageServiceImpl extends UnicastRemoteObject implements GroupMessageService {
 
     private Clients clients = Clients.getInstance();
-    private GroupChatRepository groupChatRepository = RepositoryFactory.getInstance().getGroupChatRepository();
 
     protected GroupMessageServiceImpl() throws RemoteException {
     }
@@ -24,11 +23,7 @@ public class GroupMessageServiceImpl extends UnicastRemoteObject implements Grou
     public void sendGroupMessage(GroupMessageDto groupMessageDto) throws RemoteException {
         int groupId = groupMessageDto.getGroupChatId();
         if (groupId != -1) {
-            Optional<GroupChatEntity> addedGroupEntity = groupChatRepository.getById(groupId);
-            if (addedGroupEntity.isPresent()) {
-                GroupChatDto groupChatDto = GroupChatMapper.INSTANCE.groupChatEntityToDto(addedGroupEntity.get());
-                clients.sendMessageToOnlineClientsOfAGroupChat(groupChatDto, groupMessageDto);
-            }
+                clients.sendMessageToOnlineClientsOfAGroupChat(groupMessageDto);
         }
 
     }

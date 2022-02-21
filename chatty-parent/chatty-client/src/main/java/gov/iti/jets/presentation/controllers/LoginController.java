@@ -109,7 +109,6 @@ public class LoginController implements Initializable {
             if(isAuthenticated){
                 connectionDao.registerClient(phoneNumberTextField.getText(),client);
                 connectionDao.registerGroups(getGroupIdsList(userModel.getGroupChats()), client);
-                // TODO connectionDao.registerGroups(List<Integer> groupIds);
                 stageCoordinator.switchToMainScene();
             } else {
                 stageCoordinator.showErrorNotification( "Invalid phone number or password." );
@@ -121,7 +120,6 @@ public class LoginController implements Initializable {
     }
     private List<Integer> getGroupIdsList(ObservableList<GroupChatModel> groupChatModels){
         for (GroupChatModel groupChatModel : groupChatModels){
-            System.out.println(groupChatModel.getGroupChatId());
             groupIdsList.add(groupChatModel.getGroupChatId());
         }
         return groupIdsList;
