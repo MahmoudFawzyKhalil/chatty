@@ -45,6 +45,10 @@ public class Clients {
         return clients;
     }
 
+    public int getCountOnlineUsers(){
+        return clientMap.size();
+    }
+
     public void addGroupTo(List<Client> clients, GroupChatDto groupChatDto) throws RemoteException {
         for (Client client : clients) {
             client.addGroupChat(groupChatDto);

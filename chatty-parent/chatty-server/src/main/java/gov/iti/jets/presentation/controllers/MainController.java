@@ -101,6 +101,7 @@ public class MainController implements Initializable {
 
     }
 
+    private DashboardRepositoryImpl dashboardRepository = new DashboardRepositoryImpl();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

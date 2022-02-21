@@ -21,7 +21,6 @@ public class LoginController implements Initializable {
     private final StageCoordinator stageCoordinator = StageCoordinator.getInstance();
     private final ModelFactory modelFactory = ModelFactory.getInstance();
     private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
-    private DashboardDataModel dashboardDataModel = ModelFactory.getInstance().dashboardDataModel();
 
     UserModel userModel;
     

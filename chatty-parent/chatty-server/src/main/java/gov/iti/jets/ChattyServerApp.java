@@ -24,6 +24,7 @@ public class ChattyServerApp extends Application {
         DashboardRepositoryImpl dashboardRepository = new DashboardRepositoryImpl();
 
         System.out.println(dashboardRepository.getFemaleUsersNumber());
+        System.out.println(dashboardRepository.getMaleUsersNumber());
     }
 
     @Override
