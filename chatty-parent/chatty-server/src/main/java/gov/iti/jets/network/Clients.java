@@ -3,6 +3,7 @@ package gov.iti.jets.network;
 import gov.iti.jets.commons.callback.Client;
 import gov.iti.jets.commons.dtos.ContactDto;
 import gov.iti.jets.commons.dtos.GroupChatDto;
+import gov.iti.jets.commons.dtos.UpdateProfilePicDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,6 +22,10 @@ public class Clients {
 
     public Optional<Client> getClient(String phoneNumber) {
         return Optional.ofNullable(clientMap.get(phoneNumber));
+    }
+
+    public void notifyUserContactsPicChange() {
+
     }
 
     public List<Client> getGroupClients(int groupId) {
@@ -67,4 +72,14 @@ public class Clients {
     }
 
 
+    public void notifyContactPicChange(List<String> contactsPhoneNumber, UpdateProfilePicDto updateProfilePicDto) throws RemoteException {
+
+
+        for (String phoneNumber : contactsPhoneNumber) {
+            Optional<Client> client = getClient(phoneNumber);
+            if (client.isPresent()) {
+                client.get().notifyContactPicChange(updateProfilePicDto);
+            }
+        }
+    }
 }

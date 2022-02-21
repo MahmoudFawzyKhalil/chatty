@@ -135,5 +135,15 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
         });
     }
 
+    @Override
+    public void notifyContactPicChange(UpdateProfilePicDto updateProfilePicDto)  {
+        Optional<ContactModel>changedContactModel=userModel.getContacts().stream().filter(c->c.getPhoneNumber().equals(updateProfilePicDto.getPhoneNumber())).findFirst();
+        changedContactModel.ifPresent(c->{
+            Platform.runLater(()->{
+                c.setProfilePicture(ImageMapper.getInstance().encodedStringToImage(updateProfilePicDto.getPictureBase46()));
+            });
+        });
+    }
+
 
 }

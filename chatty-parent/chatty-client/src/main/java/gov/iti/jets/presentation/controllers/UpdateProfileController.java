@@ -1,6 +1,7 @@
 package gov.iti.jets.presentation.controllers;
 
 import gov.iti.jets.commons.dtos.UpdateProfileDto;
+import gov.iti.jets.commons.dtos.UpdateProfilePicDto;
 import gov.iti.jets.commons.util.mappers.ImageMapper;
 import gov.iti.jets.presentation.erros.ErrorMessages;
 import gov.iti.jets.presentation.models.UpdateProfileModel;
@@ -103,7 +104,8 @@ public class UpdateProfileController implements Initializable {
             Image image = new Image(selectedFile.getPath());
             String imageBase64 = ImageMapper.getInstance().imageToEncodedString(image);
             try {
-                boolean updated = updateProfileDao.updatePicture(imageBase64, userModel.getPhoneNumber());
+                UpdateProfilePicDto updateProfilePicDto = new UpdateProfilePicDto(userModel.getPhoneNumber(),imageBase64);
+                boolean updated = updateProfileDao.updatePicture(updateProfilePicDto);
                 if (updated) {
                     updateProfileModel.setProfilePicture(image);
                     updateProfileModel.updateUserModelPicture();
@@ -115,6 +117,7 @@ public class UpdateProfileController implements Initializable {
 
             } catch (NotBoundException | RemoteException e) {
                 stageCoordinator.showErrorNotification(ErrorMessages.FAILED_TO_CONNECT);
+                e.printStackTrace();
             }
 
 
