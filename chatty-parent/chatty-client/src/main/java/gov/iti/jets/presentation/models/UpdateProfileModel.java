@@ -47,10 +47,11 @@ public class UpdateProfileModel {
         return changed;
     }
 
-    public void updateUserModel() {
+    public void updateUserModelData() {
         userModel.setDisplayName(getDisplayName());
-        userModel.setBirthDate(getBirthDate());
-        bio.set(getBio());
+        userModel.setBio(getBio());
+    }
+    public  void updateUserModelPicture(){
         userModel.setProfilePicture(getProfilePicture());
     }
 

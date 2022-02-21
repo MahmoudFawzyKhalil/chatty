@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class UserRepositoryImpl implements UserRepository {
-    private Logger logger = LoggerFactory.getLogger( UserRepositoryImpl.class );
+    private Logger logger = LoggerFactory.getLogger(UserRepositoryImpl.class);
 
     @Override
     public boolean isFoundByPhoneNumberAndPassword(String phoneNumber, String password) {
@@ -33,12 +33,12 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public boolean addContacts(AddContactDto addContactDto) {
         try (Connection connection = ConnectionPool.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("insert into invitations (sender, receiver) values(?,?)")) {
+             PreparedStatement preparedStatement = connection.prepareStatement("insert into invitations (sender, receiver) values(?,?)")) {
 
-            logger.info( "An attempt to add a contact was made: " + addContactDto.toString() );
+            logger.info("An attempt to add a contact was made: " + addContactDto.toString());
 
             connection.setAutoCommit(false);
-            for(String receiverPhoneNumber: addContactDto.getPhoneNumbers()) {
+            for (String receiverPhoneNumber : addContactDto.getPhoneNumbers()) {
                 preparedStatement.setString(1, addContactDto.getPhoneNumber());
                 preparedStatement.setString(2, receiverPhoneNumber);
                 preparedStatement.addBatch();
@@ -108,6 +108,23 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public boolean updatePicture(String imgPath, String phoneNumber) {
+        try (Connection connection = ConnectionPool.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement("update users set picture = ? where phone_number = ?")) {
+
+            preparedStatement.setString(1, imgPath);
+            preparedStatement.setString(2, phoneNumber);
+            int resultSet = preparedStatement.executeUpdate();
+            if (resultSet == 1) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
     public boolean update(UserEntity userEntity) {
         try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement("update users set display_name = ? , bio = ? where phone_number = ?")) {
@@ -140,7 +157,7 @@ public class UserRepositoryImpl implements UserRepository {
              PreparedStatement preparedStatement = connection.prepareStatement("select * from users where phone_number = ?")) {
             preparedStatement.setString(1, phoneNumber);
             try (ResultSet resultSet = preparedStatement.executeQuery();) {
-                if(resultSet.next()) {
+                if (resultSet.next()) {
                     UserEntity userEntity = new UserEntity();
                     userEntity.setPhoneNumber(resultSet.getString("phone_number"));
                     userEntity.setDisplayName(resultSet.getString("display_name"));

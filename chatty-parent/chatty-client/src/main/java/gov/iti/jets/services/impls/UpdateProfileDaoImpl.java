@@ -14,4 +14,10 @@ public class UpdateProfileDaoImpl implements UpdateProfileDao {
         UpdateProfileService updateProfileService = ServiceFactory.getInstance().getUpdateProfileService();
         return updateProfileService.updateProfile(updateProfileDto);
     }
+
+    @Override
+    public boolean updatePicture(String imageBase64,String phoneNumber) throws NotBoundException, RemoteException {
+        UpdateProfileService updateProfileService = ServiceFactory.getInstance().getUpdateProfileService();
+        return updateProfileService.updateProfilePicture(imageBase64,phoneNumber);
+    }
 }

@@ -1,6 +1,7 @@
 package gov.iti.jets.presentation.controllers;
 
 import gov.iti.jets.commons.dtos.UpdateProfileDto;
+import gov.iti.jets.commons.util.mappers.ImageMapper;
 import gov.iti.jets.presentation.erros.ErrorMessages;
 import gov.iti.jets.presentation.models.UpdateProfileModel;
 import gov.iti.jets.presentation.models.UserModel;
@@ -84,7 +85,7 @@ public class UpdateProfileController implements Initializable {
         try {
             UpdateProfileDto updateProfileDto = UpdateProfileMapper.INSTANCE.updateProfileModelToDto(updateProfileModel);
             if (updateProfileDao.update(updateProfileDto)) {
-                updateProfileModel.updateUserModel();
+                updateProfileModel.updateUserModelData();
                 stageCoordinator.showMessageNotification("Success", "Updated Successfully");
             } else {
                 stageCoordinator.showErrorNotification(ErrorMessages.FAILED_Update);
@@ -100,7 +101,23 @@ public class UpdateProfileController implements Initializable {
         File selectedFile = fileChooser.showOpenDialog(null);
         if (selectedFile != null) {
             Image image = new Image(selectedFile.getPath());
-            updateProfileModel.setProfilePicture(image);
+            String imageBase64 = ImageMapper.getInstance().imageToEncodedString(image);
+            try {
+                boolean updated = updateProfileDao.updatePicture(imageBase64, userModel.getPhoneNumber());
+                if (updated) {
+                    updateProfileModel.setProfilePicture(image);
+                    updateProfileModel.updateUserModelPicture();
+                    stageCoordinator.showMessageNotification("Success", "Updated Successfully");
+
+                } else {
+                    stageCoordinator.showErrorNotification(ErrorMessages.FAILED_Update);
+                }
+
+            } catch (NotBoundException | RemoteException e) {
+                stageCoordinator.showErrorNotification(ErrorMessages.FAILED_TO_CONNECT);
+            }
+
+
         }
     }
 
@@ -114,7 +131,7 @@ public class UpdateProfileController implements Initializable {
     private void validateNameTextField() {
         validator.createCheck()
                 .dependsOn("userName", nameTextField.textProperty())
-                .dependsOn("bio",bioTextField.textProperty())
+                .dependsOn("bio", bioTextField.textProperty())
                 .withMethod(c -> {
                     String userName = c.get("userName");
                     if (!UiValidator.USER_NAME_PATTERN.matcher(userName).matches() || userName.length() > 12 || userName.length() < 3) {
@@ -129,7 +146,6 @@ public class UpdateProfileController implements Initializable {
                 .decorates(nameTextField)
                 .immediate();
     }
-
 
 
     private void validateBioTextField() {

@@ -7,4 +7,6 @@ import java.rmi.RemoteException;
 
 public interface UpdateProfileService extends Remote {
     boolean updateProfile(UpdateProfileDto updateProfileDto) throws RemoteException;
+
+    boolean updateProfilePicture(String imageBase64,String phoneNumber) throws  RemoteException;
 }
