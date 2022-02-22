@@ -7,7 +7,7 @@ import gov.iti.jets.presentation.models.ContactModel;
 import gov.iti.jets.presentation.models.GroupChatModel;
 import gov.iti.jets.presentation.models.UserModel;
 import gov.iti.jets.presentation.models.UserStatusModel;
-import gov.iti.jets.presentation.network.ClientImpl;
+import gov.iti.jets.network.ClientImpl;
 import gov.iti.jets.presentation.util.ModelFactory;
 import gov.iti.jets.presentation.util.StageCoordinator;
 import gov.iti.jets.presentation.util.UiValidator;

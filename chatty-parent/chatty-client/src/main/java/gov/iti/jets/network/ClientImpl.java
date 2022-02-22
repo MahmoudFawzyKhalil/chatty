@@ -1,11 +1,8 @@
-package gov.iti.jets.presentation.network;
+package gov.iti.jets.network;
 
 import gov.iti.jets.commons.callback.Client;
 import gov.iti.jets.commons.dtos.*;
-import gov.iti.jets.presentation.models.*;
 import gov.iti.jets.commons.enums.StatusNotificationType;
-import gov.iti.jets.presentation.models.*;
-import gov.iti.jets.presentation.models.*;
 import gov.iti.jets.presentation.models.*;
 import gov.iti.jets.presentation.models.mappers.*;
 import gov.iti.jets.presentation.util.ModelFactory;
@@ -19,7 +16,6 @@ import javafx.collections.ObservableList;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +24,7 @@ import java.util.Optional;
 public class ClientImpl extends UnicastRemoteObject implements Client {
 
     private final transient UserModel userModel = ModelFactory.getInstance().getUserModel();
-    private final ChatBotService chatBotService = ServiceFactory.getInstance().getChatBotService();
+    private final transient ChatBotService chatBotService = ServiceFactory.getInstance().getChatBotService();
     private final transient StageCoordinator stageCoordinator = StageCoordinator.getInstance();
     private static ClientImpl INSTANCE;
 
@@ -50,7 +46,6 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
 
     @Override
     public void loadUserModel( UserDto userDto ) throws RemoteException {
-        //userDto = testUserDto();
         userModel.setPhoneNumber( userDto.getPhoneNumber() );
         userModel.setDisplayName( userDto.getDisplayName() );
         userModel.setGender( userDto.getGender() );
@@ -101,25 +96,6 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
                 });
             }
         });
-    }
-
-    private UserDto testUserDto() {
-
-        List<ContactDto> contactsList = new ArrayList<>();
-        contactsList.add( new ContactDto( "01117950455", "Hamada", "", new UserStatusDto( 3, "Busy" ) ) );
-
-        List<GroupChatDto> groupChatList = new ArrayList<>();
-        groupChatList.add( new GroupChatDto( 5, "HAHA", "", new ArrayList<>() ) );
-
-        List<InvitationDto> invitationsList = new ArrayList<>();
-        invitationsList.add( new InvitationDto( new ContactDto( "56565656565", "shaksho22", "", new UserStatusDto( 1, "Available" ) ) ) );
-
-        UserDto userDto = new UserDto( "11111111111", "Mahmoud", "M", null,
-                "mahmoud@gmail.com", "I like cookies.", LocalDate.of( 1998, 1, 21 ),
-                new CountryDto( 1, "Egypt" ), new UserStatusDto( 1, "Available" ),
-                contactsList, groupChatList, invitationsList );
-
-        return userDto;
     }
 
     @Override
