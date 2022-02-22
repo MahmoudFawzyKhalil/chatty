@@ -47,3 +47,25 @@
 .hyperlink:hover {
     -fx-underline: true;
 }
+
+
+
+.check-box {
+    selected-box-color: -main-light;
+    box-color: -main-light;
+    mark-color: white;
+    -fx-text-fill: -main-light;
+}
+
+.check-box:selected > .box {
+    -fx-background-color: selected-box-color;
+}
+
+.check-box > .box {
+    -fx-background-color: box-color;
+}
+
+.check-box:selected > .box > .mark,
+.check-box:indeterminate  > .box > .mark {
+    -fx-background-color: -main-dark;
+}
