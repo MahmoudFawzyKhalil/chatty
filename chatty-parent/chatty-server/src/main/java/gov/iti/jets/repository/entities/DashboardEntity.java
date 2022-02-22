@@ -8,17 +8,17 @@ public class DashboardEntity {
     int femaleUsers;
     int maleUsers;
     int onlineUsers;
-    int offlineUsers;
+    int allUsers;
     Map<String, Integer> usersByCountry = new HashMap<>();
 
     public DashboardEntity() {
     }
 
-    public DashboardEntity(int femaleUsers, int maleUsers, int onlineUsers, int offlineUsers, Map<String, Integer> usersByCountry) {
+    public DashboardEntity(int femaleUsers, int maleUsers, int onlineUsers, int allUsers, Map<String, Integer> usersByCountry) {
         this.femaleUsers = femaleUsers;
         this.maleUsers = maleUsers;
         this.onlineUsers = onlineUsers;
-        this.offlineUsers = offlineUsers;
+        this.allUsers = allUsers;
         this.usersByCountry = usersByCountry;
     }
 
@@ -46,12 +46,12 @@ public class DashboardEntity {
         this.onlineUsers = onlineUsers;
     }
 
-    public int getOfflineUsers() {
-        return offlineUsers;
+    public int getAllUsers() {
+        return allUsers;
     }
 
-    public void setOfflineUsers(int offlineUsers) {
-        this.offlineUsers = offlineUsers;
+    public void setAllUsers(int allUsers) {
+        this.allUsers = allUsers;
     }
 
     public Map<String, Integer> getUsersByCountry() {

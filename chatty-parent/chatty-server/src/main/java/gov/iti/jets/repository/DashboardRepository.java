@@ -1,9 +1,10 @@
 package gov.iti.jets.repository;
 
+import java.util.Map;
+
 public interface DashboardRepository {
     int getFemaleUsersNumber();
     int getMaleUsersNumber();
-    int getOnlineUsersNumber();
-    int getOfflineUsersNumber();
-    int getUserNumberByCountry();
+    int getAllUsersNumber();
+    Map<String,Integer> getUserNumberByCountry();
 }

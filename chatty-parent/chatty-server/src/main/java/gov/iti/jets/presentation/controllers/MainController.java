@@ -11,6 +11,7 @@ package gov.iti.jets.presentation.controllers;
 //import gov.iti.jets.presentation.util.cellfactories.GroupChatMenuItemCellFactory;
 //import gov.iti.jets.services.ConnectionDao;
 //import gov.iti.jets.services.util.DaoFactory;
+import gov.iti.jets.network.Clients;
 import gov.iti.jets.repository.DashboardRepository;
 import gov.iti.jets.repository.entities.DashboardEntity;
 import gov.iti.jets.repository.impls.DashboardRepositoryImpl;
@@ -34,7 +35,7 @@ import java.rmi.RemoteException;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
-
+    private final Clients clients =  Clients.getInstance();
     @FXML
     private ListView<?> contactChatsListView;
 
@@ -105,29 +106,30 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
         XYChart.Series<String,Number> onlineUserBarChart = new XYChart.Series<>();
         onlineUserBarChart.setName("Online Users");
-        onlineUserBarChart.getData().add(new XYChart.Data<>("Online", 120));
+        onlineUserBarChart.getData().add(new XYChart.Data<>("Online", clients.getCountOnlineUsers()));
 
         XYChart.Series<String,Number> offlineUserBarChart = new XYChart.Series<>();
         offlineUserBarChart.setName("Offline Users");
-        offlineUserBarChart.getData().add(new XYChart.Data<>("Offline", 50));
+        offlineUserBarChart.getData().add(new XYChart.Data<>("Offline", (dashboardRepository.getAllUsersNumber()-clients.getCountOnlineUsers())));
         onlineUsersBarChart.getData().addAll(onlineUserBarChart,offlineUserBarChart);
 
         XYChart.Series<String,Number> maleUserBarChart = new XYChart.Series<>();
         maleUserBarChart.setName("Male Users");
-        maleUserBarChart.getData().add(new XYChart.Data<>("Male", 90));
+        maleUserBarChart.getData().add(new XYChart.Data<>("Male", dashboardRepository.getMaleUsersNumber()));
 
         XYChart.Series<String,Number> femaleUserBarChart = new XYChart.Series<>();
         femaleUserBarChart.setName("Female Users");
-        femaleUserBarChart.getData().add(new XYChart.Data<>("Female", 140));
+        femaleUserBarChart.getData().add(new XYChart.Data<>("Female", dashboardRepository.getFemaleUsersNumber()));
         gendersBarChart.getData().addAll(maleUserBarChart,femaleUserBarChart);
 
-        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
-                new PieChart.Data("Egypt",30),
-                new PieChart.Data("US",20),
-                new PieChart.Data("UK",70),
-                new PieChart.Data("China",35));
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
+        for(int i=0; i<100; i++){
+            pieChartData.add(new PieChart.Data("keykeykey", i));
+        }
+
         countryPieChart.setData(pieChartData);
 
         System.out.println();
