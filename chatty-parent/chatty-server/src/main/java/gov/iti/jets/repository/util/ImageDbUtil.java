@@ -16,7 +16,7 @@ public class ImageDbUtil {
         dbFolder.mkdir();
         File profileDbFolder = new File(profileDbPath);
         profileDbFolder.mkdir();
-        File groupDbFolder = new File(profileDbPath);
+        File groupDbFolder = new File(groupDbPath);
         groupDbFolder.mkdir();
     }
 
