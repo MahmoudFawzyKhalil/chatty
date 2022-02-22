@@ -2,6 +2,8 @@ package gov.iti.jets.network;
 
 import gov.iti.jets.commons.callback.Client;
 import gov.iti.jets.commons.dtos.*;
+import gov.iti.jets.commons.util.mappers.ImageMapper;
+import gov.iti.jets.presentation.models.*;
 import gov.iti.jets.commons.enums.StatusNotificationType;
 import gov.iti.jets.presentation.models.*;
 import gov.iti.jets.presentation.models.mappers.*;
@@ -106,10 +108,12 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
 
         MessageModel messageModel = SingleMessageMapper.INSTANCE.dtoToModel(singleMessageDto);
 
-        if (!optionalContactModel.isEmpty()) {
+        if (optionalContactModel.isPresent()) {
             messageModel.setSenderName( optionalContactModel.get().getDisplayName() );
             Platform.runLater( () -> {
+                messageModel.senderProfilePictureProperty().bind(optionalContactModel.get().profilePictureProperty());
                 optionalContactModel.get().getMesssages().add( messageModel );
+
             } );
 
             if (userModel.getIsUsingChatBot() && !singleMessageDto.isSentByChatBot()){
@@ -157,6 +161,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
                 groupChatModel.getMesssages().add( messageModel );
             } );
         }
+
     }
 
     @Override
@@ -179,20 +184,20 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
 
     @Override
     public void addContact( ContactDto contactDto ) throws RemoteException {
-        Platform.runLater( () -> {
-            ContactModel contactModel = ContactMapper.INSTANCE.contactDtoToModel( contactDto );
-            userModel.getContacts().add( contactModel );
+        Platform.runLater(() -> {
+            ContactModel contactModel = ContactMapper.INSTANCE.contactDtoToModel(contactDto);
+            userModel.getContacts().add(contactModel);
 
             userModel.getInvitations().removeIf( invitationModel -> invitationModel.getContactModel().getPhoneNumber().equals( contactModel.getPhoneNumber() ) );
-        } );
+        });
     }
 
     @Override
     public void addInvitation( InvitationDto receiverInvitationDto ) throws RemoteException {
-        Platform.runLater( () -> {
-            InvitationModel invitationModel = InvitationMapper.INSTANCE.dtoToModel( receiverInvitationDto );
-            userModel.getInvitations().add( invitationModel );
-        } );
+        Platform.runLater(() -> {
+            InvitationModel invitationModel = InvitationMapper.INSTANCE.dtoToModel(receiverInvitationDto);
+            userModel.getInvitations().add(invitationModel);
+        });
     }
 
     @Override
@@ -208,6 +213,16 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
                         stageCoordinator.showMessageNotification( contactModel.getDisplayName() + " is now " + newStatus.name(), "" );
                     } );
                 } );
+    }
+
+    @Override
+    public void notifyContactPicChange(UpdateProfilePicDto updateProfilePicDto)  {
+        Optional<ContactModel>changedContactModel=userModel.getContacts().stream().filter(c->c.getPhoneNumber().equals(updateProfilePicDto.getPhoneNumber())).findFirst();
+        changedContactModel.ifPresent(c->{
+            Platform.runLater(()->{
+                c.setProfilePicture(ImageMapper.getInstance().encodedStringToImage(updateProfilePicDto.getPictureBase46()));
+            });
+        });
     }
 
 

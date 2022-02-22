@@ -20,4 +20,6 @@ public interface GroupChatRepository {
     boolean deleteGroup(int id);
 
     boolean isFoundById(int id);
+
+    boolean updatePicture(int groupId, String picURL);
 }

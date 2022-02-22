@@ -6,6 +6,7 @@ module chatty.commons {
     requires javafx.controls;
     requires javafx.fxml;
     requires org.controlsfx.controls;
+    requires transitive javafx.swing;
 
     // Utils
     // Hibernate Validator
@@ -20,4 +21,6 @@ module chatty.commons {
     exports gov.iti.jets.commons.dtos;
     exports gov.iti.jets.commons.callback;
     exports gov.iti.jets.commons.enums;
+    exports gov.iti.jets.commons.util.mappers;
+    opens gov.iti.jets.commons.util.mappers to org.mapstruct;
 }

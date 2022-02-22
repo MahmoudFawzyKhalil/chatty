@@ -15,9 +15,12 @@ public class AddGroupChatDto implements Serializable {
     @Min(2)
     private List<ContactDto> groupMembersList;
 
-    public AddGroupChatDto(String groupChatName, List<ContactDto> groupMembersList) {
+    private String groupChatPicture;
+
+    public AddGroupChatDto(String groupChatName, List<ContactDto> groupMembersList, String groupChatPicture) {
         this.groupChatName = groupChatName;
         this.groupMembersList = groupMembersList;
+        this.groupChatPicture = groupChatPicture;
     }
 
     public String getGroupChatName() {
@@ -34,5 +37,13 @@ public class AddGroupChatDto implements Serializable {
 
     public void setGroupMembersList(List<ContactDto> groupMembersList) {
         this.groupMembersList = groupMembersList;
+    }
+
+    public String getGroupChatPicture() {
+        return groupChatPicture;
+    }
+
+    public void setGroupChatPicture(String groupChatPicture) {
+        this.groupChatPicture = groupChatPicture;
     }
 }
