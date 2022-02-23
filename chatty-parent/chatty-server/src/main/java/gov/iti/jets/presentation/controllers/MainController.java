@@ -49,6 +49,9 @@ public class MainController implements Initializable {
     private BarChart<String, Number> gendersBarChart;
 
     @FXML
+    private BarChart<String, Number> countryBarChart;
+
+    @FXML
     private PieChart countryPieChart;
 
     @FXML
@@ -125,12 +128,19 @@ public class MainController implements Initializable {
         femaleUserBarChart.getData().add(new XYChart.Data<>("Female", dashboardRepository.getFemaleUsersNumber()));
         gendersBarChart.getData().addAll(maleUserBarChart,femaleUserBarChart);
 
-        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
-        for(int i=0; i<100; i++){
-            pieChartData.add(new PieChart.Data("keykeykey", i));
+//        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
+
+        for(String key: dashboardRepository.getUserNumberByCountry().keySet()){
+            XYChart.Series<String,Number> countryChart = new XYChart.Series<>();
+            countryChart.setName(key);
+            countryChart.getData().add(new XYChart.Data<>(key,dashboardRepository.getUserNumberByCountry().get(key)));
+//            dashboardRepository.getUserNumberByCountry().get();
+            countryBarChart.getData().addAll(countryChart);
         }
 
-        countryPieChart.setData(pieChartData);
+
+
+//        countryPieChart.setData(pieChartData);
 
         System.out.println();
     }

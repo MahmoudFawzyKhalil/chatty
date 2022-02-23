@@ -5,7 +5,6 @@
 <?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
-<?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ContextMenu?>
 <?import javafx.scene.control.Label?>
@@ -53,18 +52,36 @@
                      <children>
                         <Button id="dashboard-button" mnemonicParsing="false" onAction="#onInvitationsButtonAction" prefHeight="22.0" prefWidth="34.0" styleClass="dashboard-button">
                            <tooltip>
-                              <Tooltip text="Friend Requests" />
+                              <Tooltip text="Dashbaord" />
                            </tooltip></Button>
                      </children>
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
                   </StackPane>
-                  <StackPane id="broadcast-button-container">
+                  <StackPane id="refresh-button-container" layoutX="10.0" layoutY="112.0">
                      <children>
-                        <Button id="broadcast-button" mnemonicParsing="false" onAction="#onChatBotButtonAction" prefHeight="33.0" prefWidth="31.0" styleClass="on-off-button">
+                        <Button id="refresh-button" mnemonicParsing="false" onAction="#onInvitationsButtonAction" prefHeight="20.0" prefWidth="30.0" styleClass="refresh-button">
                            <tooltip>
-                              <Tooltip text="Chatbot" />
+                              <Tooltip text="Refresh Dashbaord" />
+                           </tooltip>
+                        </Button>
+                     </children>
+                  </StackPane>
+                  <StackPane id="broadcast-button-container" layoutX="10.0" layoutY="112.0">
+                     <children>
+                        <Button id="broadcast-button" mnemonicParsing="false" onAction="#onInvitationsButtonAction" prefHeight="25.0" prefWidth="34.0" styleClass="broadcast-button" text="Broadcast Message">
+                           <tooltip>
+                              <Tooltip text="Broadcast Message" />
+                           </tooltip>
+                        </Button>
+                     </children>
+                  </StackPane>
+                  <StackPane id="on-off-button-container">
+                     <children>
+                        <Button id="on-off-button" mnemonicParsing="false" onAction="#onChatBotButtonAction" prefHeight="28.0" prefWidth="25.0" styleClass="on-off-button">
+                           <tooltip>
+                              <Tooltip text="On/Off Server" />
                            </tooltip></Button>
                      </children>
                   </StackPane>
@@ -138,7 +155,14 @@
                      <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </padding></Label>
-                  <PieChart fx:id="countryPieChart" />
+                  <BarChart fx:id="countryBarChart">
+                    <xAxis>
+                      <CategoryAxis side="BOTTOM" />
+                    </xAxis>
+                    <yAxis>
+                      <NumberAxis side="LEFT" />
+                    </yAxis>
+                  </BarChart>
                </children>
             </HBox>
          </children>
