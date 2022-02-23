@@ -2,8 +2,8 @@ package gov.iti.jets.services.impls;
 
 import gov.iti.jets.commons.dtos.LoginDto;
 import gov.iti.jets.commons.remoteinterfaces.LoginService;
+import gov.iti.jets.presentation.datasaved.LoginData;
 import gov.iti.jets.services.LoginDao;
-import gov.iti.jets.services.util.CipherUtil;
 import gov.iti.jets.services.util.ServiceFactory;
 
 import java.io.*;
@@ -24,24 +24,53 @@ public class LoginDaoImpl implements LoginDao {
         return isLogged;
     }
 
+    @Override
+    public Optional<LoginData> getLoginDate() {
+        try {
+            File file = new File("myData.chatty");
+            if (file.exists()) {
+                try (ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(file))) {
+                    LoginData loginData = (LoginData) objectInputStream.readObject();
+                    System.out.println(loginData);
+                    loginData.deCipherAll();
+                    System.out.println(loginData);
+
+
+                    return Optional.of(loginData);
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return Optional.empty();
+    }
+
+
     private void saveLoggedData(LoginDto loginDto) {
-        CipherUtil cipherUtil = CipherUtil.getInstance();
-        String encryptedPhone = cipherUtil.encrypt(loginDto.getPhoneNumber());
-        String encryptedPassword = cipherUtil.encrypt(loginDto.getPassword());
+        LoginData loginData = LoginData.getInstance();
+        loginData.setPhoneNumber(loginDto.getPhoneNumber());
+        loginData.setPassword(loginDto.getPassword());
+        loginData.setCiphered(false);
+        loginData.cipherAll();
+        save(loginData);
+    }
+
+    @Override
+    public void save(LoginData loginData) {
         try {
             File file = new File("myData.chatty");
             file.createNewFile();
-            try (FileWriter fileWriter = new FileWriter(file);) {
-                fileWriter.write(encryptedPhone + "\n" + encryptedPassword);
-                fileWriter.flush();
-                System.out.println(cipherUtil.decrypt(encryptedPassword));
+            try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(file))) {
+                objectOutputStream.writeObject(loginData);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public Optional<LoginDto> loadIfFileExist() {
+    /*public Optional<LoginDto> loadIfFileExist() {
         CipherUtil cipherUtil = CipherUtil.getInstance();
 
 
@@ -59,5 +88,5 @@ public class LoginDaoImpl implements LoginDao {
             e.printStackTrace();
         }
         return Optional.empty();
-    }
+    }*/
 }

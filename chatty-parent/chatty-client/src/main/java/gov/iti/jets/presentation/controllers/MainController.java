@@ -1,5 +1,6 @@
 package gov.iti.jets.presentation.controllers;
 
+import gov.iti.jets.presentation.datasaved.LoginData;
 import gov.iti.jets.presentation.models.ContactModel;
 import gov.iti.jets.presentation.models.GroupChatModel;
 import gov.iti.jets.presentation.models.UserModel;
@@ -10,6 +11,7 @@ import gov.iti.jets.presentation.util.StatusColors;
 import gov.iti.jets.presentation.util.cellfactories.ContactChatMenuItemCellFactory;
 import gov.iti.jets.presentation.util.cellfactories.GroupChatMenuItemCellFactory;
 import gov.iti.jets.services.ConnectionDao;
+import gov.iti.jets.services.LoginDao;
 import gov.iti.jets.services.util.DaoFactory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -31,7 +33,8 @@ public class MainController implements Initializable {
     private final PaneCoordinator paneCoordinator = PaneCoordinator.getInstance();
     private final UserModel userModel = ModelFactory.getInstance().getUserModel();
     private final ConnectionDao connectionDao = DaoFactory.getInstance().getConnectionService();
-
+    private final LoginDao loginDao = DaoFactory.getInstance().getLoginService();
+    private LoginData loginData = LoginData.getInstance();
     @FXML
     private ListView<ContactModel> contactChatsListView;
 
@@ -45,82 +48,84 @@ public class MainController implements Initializable {
     private Circle userStatusCircle;
 
     @Override
-    public void initialize( URL location, ResourceBundle resources ) {
+    public void initialize(URL location, ResourceBundle resources) {
         bindProfilePicCircle();
         bindContactChatsListView();
         bindGroupChatsListView();
     }
 
     private void bindProfilePicCircle() {
-        userProfilePicCircle.setFill( new ImagePattern( userModel.getProfilePicture() ) );
-        userModel.profilePictureProperty().addListener( e -> {
-            userProfilePicCircle.setFill( new ImagePattern( userModel.getProfilePicture() ) );
-        } );
+        userProfilePicCircle.setFill(new ImagePattern(userModel.getProfilePicture()));
+        userModel.profilePictureProperty().addListener(e -> {
+            userProfilePicCircle.setFill(new ImagePattern(userModel.getProfilePicture()));
+        });
     }
 
     private void bindContactChatsListView() {
-        contactChatsListView.itemsProperty().bind( userModel.contactsProperty() );
-        contactChatsListView.setCellFactory( new ContactChatMenuItemCellFactory() );
+        contactChatsListView.itemsProperty().bind(userModel.contactsProperty());
+        contactChatsListView.setCellFactory(new ContactChatMenuItemCellFactory());
     }
 
     private void bindGroupChatsListView() {
-        groupChatsListView.setCellFactory( new GroupChatMenuItemCellFactory() );
-        groupChatsListView.itemsProperty().bind( userModel.groupChatsProperty() );
+        groupChatsListView.setCellFactory(new GroupChatMenuItemCellFactory());
+        groupChatsListView.itemsProperty().bind(userModel.groupChatsProperty());
     }
 
     @FXML
-    void onAddContactButtonAction( ActionEvent event ) {
+    void onAddContactButtonAction(ActionEvent event) {
         stageCoordinator.showAddContactStage();
     }
 
     @FXML
-    void onAddGroupButtonAction( ActionEvent event ) {
+    void onAddGroupButtonAction(ActionEvent event) {
         stageCoordinator.showAddGroupStage();
     }
 
     @FXML
-    void onAvailableStatusMenuItemAction( ActionEvent event ) {
-        userStatusCircle.setFill( StatusColors.AVAILABLE_STATUS_COLOR );
+    void onAvailableStatusMenuItemAction(ActionEvent event) {
+        userStatusCircle.setFill(StatusColors.AVAILABLE_STATUS_COLOR);
     }
 
     @FXML
-    void onAwayStatusMenuItemAction( ActionEvent event ) {
-        userStatusCircle.setFill( StatusColors.AWAY_STATUS_COLOR );
+    void onAwayStatusMenuItemAction(ActionEvent event) {
+        userStatusCircle.setFill(StatusColors.AWAY_STATUS_COLOR);
     }
 
     @FXML
-    void onBusyStatusMenuItemAction( ActionEvent event ) {
-        userStatusCircle.setFill( StatusColors.BUSY_STATUS_COLOR );
+    void onBusyStatusMenuItemAction(ActionEvent event) {
+        userStatusCircle.setFill(StatusColors.BUSY_STATUS_COLOR);
     }
 
     @FXML
-    void onChatBotButtonAction( ActionEvent event ) {
+    void onChatBotButtonAction(ActionEvent event) {
         paneCoordinator.switchToChatPane();
     }
 
     @FXML
-    void onInvitationsButtonAction( ActionEvent event ) {
+    void onInvitationsButtonAction(ActionEvent event) {
         paneCoordinator.switchToInvitationPane();
     }
 
     @FXML
-    void onSignOutButtonAction( ActionEvent event ) {
+    void onSignOutButtonAction(ActionEvent event) {
 //        stageCoordinator.clearSceneStagePaneMaps();
 
         try {
-            connectionDao.unregisterClient( userModel.getPhoneNumber() );
+            connectionDao.unregisterClient(userModel.getPhoneNumber());
         } catch (NotBoundException | RemoteException e) {
             e.printStackTrace();
         }
 
         ModelFactory.getInstance().clearUserModel();
+        loginData.setLoadAll(false);
+        loginDao.save(loginData);
         stageCoordinator.switchToLoginScene();
     }
 
     @FXML
-    void onUserProfilePicCircleMouseClicked( MouseEvent event ) {
+    void onUserProfilePicCircleMouseClicked(MouseEvent event) {
 
-        if (event.getButton().equals( MouseButton.SECONDARY )) {
+        if (event.getButton().equals(MouseButton.SECONDARY)) {
             return;
         }
 

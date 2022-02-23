@@ -2,6 +2,7 @@ package gov.iti.jets.presentation.controllers;
 
 import gov.iti.jets.commons.dtos.LoginDto;
 import gov.iti.jets.network.ClientImpl;
+import gov.iti.jets.presentation.datasaved.LoginData;
 import gov.iti.jets.presentation.models.UserModel;
 import gov.iti.jets.presentation.util.ModelFactory;
 import gov.iti.jets.presentation.util.StageCoordinator;
@@ -18,6 +19,7 @@ import net.synedra.validatorfx.Validator;
 import java.net.URL;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
@@ -54,6 +56,18 @@ public class LoginController implements Initializable {
         validatePhoneNumberTextField();
         validatePasswordTextField();
         addEnableButtonValidationListener();
+        setFields();
+    }
+
+    private void setFields() {
+        Optional<LoginData> optionalLoginDataDto = loginDao.getLoginDate();
+        if (optionalLoginDataDto.isPresent()) {
+            LoginData loginData = optionalLoginDataDto.get();
+            phoneNumberTextField.setText(loginData.getPhoneNumber());
+            if (loginData.isLoadAll()) {
+                passwordTextField.setText(loginData.getPassword());
+            }
+        }
     }
 
     private void validatePasswordTextField() {
