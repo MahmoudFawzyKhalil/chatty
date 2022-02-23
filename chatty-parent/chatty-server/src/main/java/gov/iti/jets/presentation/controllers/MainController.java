@@ -1,42 +1,78 @@
 package gov.iti.jets.presentation.controllers;
 
 import gov.iti.jets.network.RmiManager;
+import gov.iti.jets.presentation.util.PaneCoordinator;
 import gov.iti.jets.presentation.util.StageCoordinator;
 import gov.iti.jets.services.ServerNotificationsService;
 import gov.iti.jets.services.util.ServiceFactory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.chart.BarChart;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ResourceBundle;
 
-public class MainServerController implements Initializable {
+public class MainController implements Initializable {
 
     private final RmiManager rmiManager = RmiManager.getInstance();
     private final StageCoordinator stageCoordinator = StageCoordinator.getInstance();
     private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
     private final ServerNotificationsService serverNotificationsService = serviceFactory.getServerNotificationsService();
+    private final PaneCoordinator paneCoordinator = PaneCoordinator.getInstance();
 
     @FXML
-    private ToggleButton startStopServiceToggleButton;
+    private VBox dashboardPane;
+
     @FXML
-    private TextArea announcementTextArea;
+    private Button announcementsButton;
+
     @FXML
-    private Button sendMessageButton;
+    private Button chartsButton;
+
+    @FXML
+    private BarChart<String, Number> countryBarChart;
+
+    @FXML
+    private BarChart<String, Number> gendersBarChart;
+
+    @FXML
+    private BarChart<String, Number> onlineUsersBarChart;
+
+    @FXML
+    private Button refreshButton;
+
+    @FXML
+    private ToggleButton serviceButton;
 
     @Override
     public void initialize( URL location, ResourceBundle resources ) {
-
+        paneCoordinator.initDashboardPane(dashboardPane);
     }
 
-    public void onServiceToggleButtonAction( ActionEvent actionEvent ) {
-        if(startStopServiceToggleButton.isSelected()){
+    @FXML
+    void onAnnouncementsButtonAction(ActionEvent event) {
+        serverNotificationsService.sendAnnouncementToClients(null); //TODO
+    }
+
+    @FXML
+    void onChartsButtonAction(ActionEvent event) {
+        //TODO charts button action
+    }
+
+    @FXML
+    void onRefreshButtonAction(ActionEvent event) {
+        //TODO refresh data
+    }
+
+    @FXML
+    void onServiceButtonAction(ActionEvent event) {
+        if(serviceButton.isSelected()){
             startServices();
         } else {
             stopServices();
@@ -65,9 +101,5 @@ public class MainServerController implements Initializable {
             e.printStackTrace();
         }
     }
-
-    public void onSendMessageButtonAction( ActionEvent actionEvent ) {
-        // TODO
-        //  This method should send announcements to all online users
-    }
 }
+

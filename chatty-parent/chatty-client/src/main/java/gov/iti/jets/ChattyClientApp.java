@@ -33,6 +33,7 @@ public class ChattyClientApp extends Application {
     public void stop() throws Exception {
         super.stop();
         try {
+            System.exit( 0 );
             DaoFactory.getInstance().getConnectionService().unregisterClient( ModelFactory.getInstance().getUserModel().getPhoneNumber() );
         } catch (NotBoundException | RemoteException e) {
             e.printStackTrace();
