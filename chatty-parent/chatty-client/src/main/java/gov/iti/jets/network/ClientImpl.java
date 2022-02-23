@@ -111,6 +111,13 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
         serviceFactory.shutdown();
     }
 
+    @Override
+    public void receiveAnnouncement( AnnouncementDto announcementDto ) throws RemoteException {
+        Platform.runLater( () -> {
+            stageCoordinator.showAdminNotification( announcementDto );
+        } );
+    }
+
     private UserDto testUserDto() {
 
         List<ContactDto> contactsList = new ArrayList<>();

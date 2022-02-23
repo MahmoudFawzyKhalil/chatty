@@ -95,8 +95,7 @@ public class Clients {
         return Optional.ofNullable(clientMap.remove(phoneNumber));
     }
 
-    public void signOutAllClients() {
-        //TODO
+    public void clearAllClients() {
         clientMap.clear();
         groupMap.clear();
     }

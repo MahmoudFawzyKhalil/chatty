@@ -40,7 +40,7 @@ public class StageCoordinator {
         Scene mainServerScene = sceneMap.get("mainServerScene");
         if (mainServerScene == null) {
             try {
-                BorderPane mainSceneBorderPane = FXMLLoader.load(getClass().getResource("/views/main/MainServerView.fxml"));
+                BorderPane mainSceneBorderPane = FXMLLoader.load(getClass().getResource("/views/main/MainView.fxml"));
                 paneCoordinator.initPane(mainSceneBorderPane);
                 mainServerScene = new Scene(mainSceneBorderPane, 960, 530);
                 sceneMap.put("mainServerScene", mainServerScene);

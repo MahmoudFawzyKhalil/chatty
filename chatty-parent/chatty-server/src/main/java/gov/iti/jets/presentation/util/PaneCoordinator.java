@@ -1,11 +1,10 @@
 package gov.iti.jets.presentation.util;
 
 import gov.iti.jets.presentation.models.ServerModel;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,21 +27,11 @@ public class PaneCoordinator {
     }
 
     public void switchToDashboardPane() {
-        Pane dashboardPane = paneMap.get("dashboardPane");
-        if (dashboardPane == null) {
-            try {
-                dashboardPane = FXMLLoader.load(getClass().getResource("/views/dashboard/DashboardView.fxml"));
-                paneMap.put("dashboardPane", dashboardPane);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        mainSceneBorderPane.setCenter(dashboardPane);
+        mainSceneBorderPane.setCenter(paneMap.get( "dashboardPane" ));
     }
 
     public void switchToChatPane() {
-        Pane chatPane = paneMap.get("chatPane");
-        mainSceneBorderPane.setCenter(chatPane);
+        mainSceneBorderPane.setCenter(paneMap.get("chatPane"));
     }
 
     private void loadChatPane() {
@@ -55,5 +44,9 @@ public class PaneCoordinator {
                 e.printStackTrace();
             }
         }*/
+    }
+
+    public void initDashboardPane( VBox dashboardPane ) {
+        paneMap.put("dashboardPane", dashboardPane);
     }
 }

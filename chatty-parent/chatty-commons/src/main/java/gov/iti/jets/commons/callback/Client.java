@@ -25,4 +25,6 @@ public interface Client extends Remote {
     void loadSingleMessages(Map<String,List<SingleMessageDto>> messagesMap)throws RemoteException;
 
     void notifyOfServerShutDown() throws RemoteException;
+
+    void receiveAnnouncement( AnnouncementDto announcementDto ) throws RemoteException;
 }
