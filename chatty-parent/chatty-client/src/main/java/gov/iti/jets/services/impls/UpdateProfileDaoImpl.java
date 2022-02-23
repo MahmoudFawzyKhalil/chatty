@@ -1,6 +1,7 @@
 package gov.iti.jets.services.impls;
 
 import gov.iti.jets.commons.dtos.UpdateProfileDto;
+import gov.iti.jets.commons.dtos.UpdateProfilePicDto;
 import gov.iti.jets.commons.remoteinterfaces.UpdateProfileService;
 import gov.iti.jets.services.UpdateProfileDao;
 import gov.iti.jets.services.util.ServiceFactory;
@@ -13,5 +14,11 @@ public class UpdateProfileDaoImpl implements UpdateProfileDao {
     public boolean update(UpdateProfileDto updateProfileDto) throws NotBoundException, RemoteException {
         UpdateProfileService updateProfileService = ServiceFactory.getInstance().getUpdateProfileService();
         return updateProfileService.updateProfile(updateProfileDto);
+    }
+
+    @Override
+    public boolean updatePicture(UpdateProfilePicDto updateProfilePicDto) throws NotBoundException, RemoteException {
+        UpdateProfileService updateProfileService = ServiceFactory.getInstance().getUpdateProfileService();
+        return updateProfileService.updateProfilePicture(updateProfilePicDto);
     }
 }

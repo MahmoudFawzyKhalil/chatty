@@ -12,14 +12,14 @@ public class ChattyServerApp extends Application {
     private RmiManager rmiManager = RmiManager.getInstance();
 
     @Override
-    public void start(Stage primaryStage){
+    public void start(Stage primaryStage) {
         // stageCoordinator.initStage(primaryStage);
         // stageCoordinator.switchToLoginScene();
         primaryStage.setMinWidth(940);
         primaryStage.setMinHeight(500);
         primaryStage.show();
-    }
 
+    }
     @Override
     public void stop() throws Exception {
         ConnectionPool.cleanup();

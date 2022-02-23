@@ -19,14 +19,12 @@ public class UpdateProfileDto implements Serializable {
     private String email;
     @Size(min = 0, max = 100)
     private String bio;
-    private String profilePicture;
 
-    public UpdateProfileDto(String phoneNumber, String displayName, String email, String bio, String profilePicture) {
+    public UpdateProfileDto(String phoneNumber, String displayName, String email, String bio) {
         this.phoneNumber = phoneNumber;
         this.displayName = displayName;
         this.email = email;
         this.bio = bio;
-        this.profilePicture = profilePicture;
 
         ValidationUtil.getInstance().validate( this );
     }
@@ -62,13 +60,5 @@ public class UpdateProfileDto implements Serializable {
 
     public void setBio(String bio) {
         this.bio = bio;
-    }
-
-    public String getProfilePicture() {
-        return profilePicture;
-    }
-
-    public void setProfilePicture(String profilePicture) {
-        this.profilePicture = profilePicture;
     }
 }

@@ -1,35 +1,49 @@
 package gov.iti.jets.network;
 
 import gov.iti.jets.commons.callback.Client;
-import gov.iti.jets.commons.dtos.*;
+import gov.iti.jets.commons.dtos.SingleMessageDto;
+import gov.iti.jets.commons.dtos.StatusNotificationDto;
+import gov.iti.jets.commons.dtos.UserDto;
 import gov.iti.jets.commons.remoteinterfaces.ConnectionService;
+import gov.iti.jets.repository.entities.SingleMessageEntity;
 import gov.iti.jets.repository.entities.UserEntity;
 import gov.iti.jets.repository.util.RepositoryFactory;
+import gov.iti.jets.repository.util.mappers.SingleMessageMapper;
 import gov.iti.jets.repository.util.mappers.UserMapper;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class ConnectionServiceImpl extends UnicastRemoteObject implements ConnectionService {
 
     private static final RepositoryFactory repositoryFactory = RepositoryFactory.getInstance();
-    private Clients clients = Clients.getInstance();
+    private transient Clients clients = Clients.getInstance();
     protected ConnectionServiceImpl() throws RemoteException {
     }
 
     @Override
     public void registerClient(String phoneNumber, Client client) throws RemoteException {
-        clients.addClient(phoneNumber,client);
 
         Optional<UserEntity> userEntity = repositoryFactory.getUserRepository().getUserByPhoneNumber(phoneNumber);
+
         UserDto userDto = UserMapper.INSTANCE.userEntityToDto(userEntity.get());
 
-        System.out.println("hi "+userDto);
+        // Must be called before loading messages from db!
         client.loadUserModel(userDto);
+
+        Map<String,List<SingleMessageEntity>> messagesMapEntity = repositoryFactory.getSingleMessageRepository().getMessage(phoneNumber);
+        Map<String,List<SingleMessageDto>> messagesMapDto = new HashMap<>();
+        messagesMapEntity.forEach((k, v) -> {
+            List<SingleMessageDto> messageDto = SingleMessageMapper.INSTANCE.entityListToDtoList(v);
+            messagesMapDto.put(k,messageDto);
+        });
+        client.loadSingleMessages(messagesMapDto);
+
+        // Must be called last!
+        clients.addClient(phoneNumber,client);
     }
 
     @Override
@@ -37,22 +51,36 @@ public class ConnectionServiceImpl extends UnicastRemoteObject implements Connec
         clients.removeClient(phoneNumber);
     }
 
-    private UserDto testUserDto() {
+    @Override
+    public void registerGroups(List<Integer> groupIds, Client client) throws RemoteException {
+        clients.registerClientGroups(groupIds,client);
+    }
 
-        List<ContactDto> contactsList = new ArrayList<>();
-        contactsList.add( new ContactDto( "01117950455", "Reem", "", new UserStatusDto( 3, "Busy" ) ) );
+    @Override
+    public void notifyOthersOfStatusUpdate( StatusNotificationDto statusNotificationDto, List<String> contactsToNotifyPhoneNumbers ) throws RemoteException {
 
-        List<GroupChatDto> groupChatList = new ArrayList<>();
-        groupChatList.add( new GroupChatDto( 5, "Mariam", "", new ArrayList<>() ) );
+        for (var contactPhoneNumber : contactsToNotifyPhoneNumbers){
+            clients.getClient( contactPhoneNumber ).ifPresent( client -> {
+                try {
+                    client.notifyOfStatusUpdate( statusNotificationDto );
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            } );
+        }
+    }
 
-        List<InvitationDto> invitationsList = new ArrayList<>();
-        invitationsList.add( new InvitationDto( new ContactDto( "56565656565", "shaksho22", "", new UserStatusDto( 1, "Available" ) ) ) );
+    @Override
+    public List<String> getOfflineContacts( List<String> contactsPhoneNumbers ) throws RemoteException {
 
-        UserDto userDto = new UserDto( "07775000000", "Salma", "F", null,
-                "mahmoud@gmail.com", "I like cookies.", LocalDate.of( 1998, 1, 21 ),
-                new CountryDto( 1, "Egypt" ), new UserStatusDto( 1, "Available" ),
-                contactsList, groupChatList, invitationsList);
+        List<String> offlineContactNumbers = new ArrayList<>();
 
-        return userDto;
+        for (String phoneNumber : contactsPhoneNumbers){
+           if( clients.getClient( phoneNumber ).isEmpty()){
+               offlineContactNumbers.add( phoneNumber );
+           }
+        }
+
+        return offlineContactNumbers;
     }
 }

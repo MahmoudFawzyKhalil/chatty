@@ -20,6 +20,7 @@ public class DaoFactory {
     private static final AddContactDao addContactDao = new AddContactDaoImpl();
     private final InvitationDecisionDao invitationDecisionDao = new InvitationDecisionDaoImpl();
     private final SingleMessageDao singleMessageDao = new SingleMessageDaoImpl();
+    private final GroupMessageDao groupMessageDao = new GroupMessageDaoImpl();
 
     private final AddGroupChatDao addGroupChatDao = new AddGroupChatDaoImpl();
 
@@ -64,6 +65,11 @@ public class DaoFactory {
     public SingleMessageDao getSingleMessageDao(){
         return singleMessageDao;
     }
+
+    public GroupMessageDao getGroupMessageDao(){
+        return groupMessageDao;
+    }
+
 
     public AddGroupChatDao getAddGroupChatDao() {
         return addGroupChatDao;

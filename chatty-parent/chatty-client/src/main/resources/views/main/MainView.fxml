@@ -9,6 +9,7 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.image.Image?>
@@ -63,10 +64,11 @@
                   </StackPane>
                   <StackPane id="chatbot-button-container">
                      <children>
-                        <Button id="chatbot-button" mnemonicParsing="false" onAction="#onChatBotButtonAction" prefHeight="33.0" prefWidth="31.0" styleClass="chatbot-button">
+                        <ToggleButton id="chatbot-button" fx:id="chatBotToggleButton" mnemonicParsing="false" onAction="#onChatBotButtonAction" prefHeight="33.0" prefWidth="31.0" styleClass="chatbot-button">
                            <tooltip>
                               <Tooltip text="Chatbot" />
-                           </tooltip></Button>
+                           </tooltip>
+                        </ToggleButton>
                      </children>
                   </StackPane>
                   <StackPane id="signout-button-container">

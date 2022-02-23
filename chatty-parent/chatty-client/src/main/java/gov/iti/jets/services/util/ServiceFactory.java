@@ -1,8 +1,8 @@
 package gov.iti.jets.services.util;
 
-import gov.iti.jets.commons.remoteinterfaces.ConnectionService;
 import gov.iti.jets.commons.remoteinterfaces.*;
-import gov.iti.jets.commons.remoteinterfaces.UpdateProfileService;
+import gov.iti.jets.services.ChatBotService;
+import gov.iti.jets.services.impls.ChatBotServiceImpl;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -24,6 +24,8 @@ public class ServiceFactory {
     private ConnectionService connectionService;
     private AddGroupChatService addGroupChatService;
     private static SingleMessageService singleMessageService;
+    private ChatBotService chatBotService;
+    private static GroupMessageService groupMessageService;
 
 
     private ServiceFactory() {
@@ -107,6 +109,19 @@ public class ServiceFactory {
             singleMessageService = (SingleMessageService) registry.lookup("SingleMessageService");
         }
         return singleMessageService;
+    }
+
+    public ChatBotService getChatBotService(){
+        if (chatBotService == null){
+            chatBotService = new ChatBotServiceImpl();
+        }
+        return chatBotService;
+    }
+    public GroupMessageService getGroupMessageService()throws NotBoundException, RemoteException{
+        if(groupMessageService==null){
+            groupMessageService = (GroupMessageService) registry.lookup("GroupMessageService");
+        }
+        return groupMessageService;
     }
 
 }

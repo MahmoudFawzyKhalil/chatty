@@ -22,6 +22,7 @@ public class UserModel {
     private ListProperty<GroupChatModel> groupChats = new SimpleListProperty<>( FXCollections.observableArrayList( GroupChatModel.extractor() ) );
     private ListProperty<InvitationModel> invitations = new SimpleListProperty<>( FXCollections.observableArrayList( InvitationModel.extractor() ) );
     private final StringProperty currentlyChattingWith = new SimpleStringProperty();
+    private final BooleanProperty isUsingChatBot = new SimpleBooleanProperty();
 
     public UserModel() {
 
@@ -231,5 +232,17 @@ public class UserModel {
         this.setGroupChats( emptyUserModel.getGroupChats() );
         this.setInvitations( emptyUserModel.getInvitations() );
         this.setCurrentlyChattingWith( emptyUserModel.getCurrentlyChattingWith() );
+    }
+
+    public boolean getIsUsingChatBot() {
+        return isUsingChatBot.get();
+    }
+
+    public BooleanProperty isUsingChatBotProperty() {
+        return isUsingChatBot;
+    }
+
+    public void setIsUsingChatBot( boolean isUsingChatBot ) {
+        this.isUsingChatBot.set( isUsingChatBot );
     }
 }

@@ -3,6 +3,7 @@ package gov.iti.jets.presentation.models.mappers;
 import gov.iti.jets.commons.dtos.AddGroupChatDto;
 import gov.iti.jets.commons.dtos.ContactDto;
 import gov.iti.jets.commons.dtos.GroupChatDto;
+import gov.iti.jets.commons.util.mappers.ImageMapper;
 import gov.iti.jets.presentation.models.ContactModel;
 import gov.iti.jets.presentation.models.GroupChatModel;
 import javafx.collections.FXCollections;
