@@ -371,9 +371,3 @@ INSERT INTO `chatty`.`group_chats_users` (`group_chat_id`, `user_phone_number`) 
 INSERT INTO `chatty`.`group_chats_users` (`group_chat_id`, `user_phone_number`) VALUES ('2', '44444444444');
 
 INSERT INTO `chatty`.`invitations` (`sender`, `receiver`) VALUES ('11111111111', '33333333333');
-
-
-
-
-
-
