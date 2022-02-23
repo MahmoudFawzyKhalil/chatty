@@ -10,6 +10,8 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 
+import java.io.File;
+
 @Mapper(uses = {ContactMapper.class})
 public interface GroupChatMapper {
     GroupChatMapper INSTANCE = Mappers.getMapper(GroupChatMapper.class);
@@ -22,12 +24,15 @@ public interface GroupChatMapper {
     GroupChatDto groupChatEntityToDto(GroupChatEntity groupChatEntity);
 
     @Named("groupPicDto")
-    default String groupPictureGroupEntityToDto(String userPic) {
-
-        if (userPic == null || userPic.isEmpty()) {
+    default String groupPictureGroupEntityToDto(String groupPicPath) {
+        if (groupPicPath == null) {
+            return "";
+        }
+        File file = new File(groupPicPath);
+        if (groupPicPath.isEmpty() || !file.exists()) {
             return "";
         } else {
-            Image image = new Image(userPic);
+            Image image = new Image(groupPicPath);
             return ImageMapper.getInstance().imageToEncodedString(image);
         }
     }

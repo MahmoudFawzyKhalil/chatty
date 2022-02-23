@@ -11,6 +11,8 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 
+import java.io.File;
+
 @Mapper(uses = {CountryMapper.class, ContactMapper.class, GroupChatMapper.class, InvitationMapper.class, UserStatusMapper.class})
 public interface UserMapper {
 
@@ -29,12 +31,15 @@ public interface UserMapper {
     UserEntity updateProfileDtoToEntity(UpdateProfileDto updateProfileDto);
 
     @Named("userPicDto")
-    default String userPictureUserEntityToDto(String userPic) {
-
-        if (userPic == null || userPic.isEmpty()) {
+    default String userPictureUserEntityToDto(String userPicPath) {
+        if (userPicPath == null) {
+            return "";
+        }
+        File file = new File(userPicPath);
+        if (userPicPath.isEmpty() || !file.exists()) {
             return "";
         } else {
-            Image image = new Image(userPic);
+            Image image = new Image(userPicPath);
             return ImageMapper.getInstance().imageToEncodedString(image);
         }
     }
