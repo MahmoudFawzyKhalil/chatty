@@ -3,6 +3,7 @@ package gov.iti.jets;
 import gov.iti.jets.network.RmiManager;
 import gov.iti.jets.presentation.util.StageCoordinator;
 import gov.iti.jets.repository.util.ConnectionPool;
+import gov.iti.jets.services.util.ServerDiscoveryUtil;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -19,6 +20,7 @@ public class ChattyServerApp extends Application {
         primaryStage.setMinHeight(500);
         primaryStage.show();
 
+        ServerDiscoveryUtil.getInstance().startDiscoveryListener();
     }
     @Override
     public void stop() throws Exception {
