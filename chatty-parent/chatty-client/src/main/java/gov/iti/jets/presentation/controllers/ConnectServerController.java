@@ -10,12 +10,10 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class ConnectServerController implements Initializable {
-    private StageCoordinator stageCoordinator=StageCoordinator.getInstance();
+    private StageCoordinator stageCoordinator = StageCoordinator.getInstance();
     @FXML
-    private TextField localServerIpTextField;
+    private TextField serverIpTextField;
 
-    @FXML
-    private TextField onlineServerIpTextField;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -24,16 +22,11 @@ public class ConnectServerController implements Initializable {
 
     @FXML
     void onAutoDetectButtonAction(ActionEvent event) {
-        stageCoordinator.showErrorNotification("asdasd");
+        stageCoordinator.switchToLoginScene();
     }
 
     @FXML
     void onLocalConnectButtonAction(ActionEvent event) {
-
-    }
-
-    @FXML
-    void onOnlineConnectButtonAction(ActionEvent event) {
 
     }
 }

@@ -24,6 +24,7 @@ import javafx.util.StringConverter;
 import net.synedra.validatorfx.Validator;
 
 import java.net.URL;
+import java.rmi.ConnectException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.time.LocalDate;
@@ -91,6 +92,11 @@ public class RegistrationTwoController implements Initializable {
             List<CountryDto> countryDtos = countryDao.getAll();
             List<CountryModel> countries = CountryMapper.INSTANCE.dtoListToModel(countryDtos);
             this.countryModels = countries.stream().collect(Collectors.toCollection(FXCollections::observableArrayList));
+        } catch (ConnectException c) {
+            StageCoordinator.getInstance().showErrorNotification("Failed to connect to server. Please try again later.");
+            ModelFactory.getInstance().clearUserModel();
+            ModelFactory.getInstance().clearUserModel();
+            StageCoordinator.getInstance().switchToConnectToServer();
         } catch (NotBoundException | RemoteException e) {
             e.printStackTrace();
         }
@@ -182,6 +188,11 @@ public class RegistrationTwoController implements Initializable {
     boolean isEmailFound() {
         try {
             return registerDao.isFoundBefore(registerModel.getEmail());
+        } catch (ConnectException c) {
+            StageCoordinator.getInstance().showErrorNotification("Failed to connect to server. Please try again later.");
+            ModelFactory.getInstance().clearUserModel();
+            ModelFactory.getInstance().clearUserModel();
+            StageCoordinator.getInstance().switchToConnectToServer();
         } catch (NotBoundException | RemoteException e) {
             stageCoordinator.showErrorNotification(ErrorMessages.FAILED_TO_CONNECT);
         }

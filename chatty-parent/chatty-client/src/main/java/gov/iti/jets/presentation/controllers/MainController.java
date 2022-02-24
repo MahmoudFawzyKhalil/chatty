@@ -24,6 +24,7 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 
 import java.net.URL;
+import java.rmi.ConnectException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.List;
@@ -107,6 +108,11 @@ public class MainController implements Initializable {
     private void notifyOthersOfStatusUpdate(StatusNotificationType type) {
         try {
             connectionDao.notifyOthersOfStatusUpdate( createStatusNotificationDto(type), createContactsToNotifyList() );
+        } catch (ConnectException c) {
+            StageCoordinator.getInstance().showErrorNotification("Failed to connect to server. Please try again later.");
+            ModelFactory.getInstance().clearUserModel();
+            ModelFactory.getInstance().clearUserModel();
+            StageCoordinator.getInstance().switchToConnectToServer();
         } catch (NotBoundException | RemoteException e) {
             e.printStackTrace();
         }
@@ -145,6 +151,12 @@ public class MainController implements Initializable {
     void onSignOutButtonAction( ActionEvent event ) {
         try {
             connectionDao.unregisterClient( userModel.getPhoneNumber() );
+        }
+        catch (ConnectException c) {
+            StageCoordinator.getInstance().showErrorNotification("Failed to connect to server. Please try again later.");
+            ModelFactory.getInstance().clearUserModel();
+            ModelFactory.getInstance().clearUserModel();
+            StageCoordinator.getInstance().switchToConnectToServer();
         } catch (NotBoundException | RemoteException e) {
             e.printStackTrace();
         }

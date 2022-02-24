@@ -17,7 +17,7 @@
             <Label id="manually-label" maxWidth="1.7976931348623157E308" styleClass="info-label" text="Connect via IP address" />
             <HBox id="manual-hbox" alignment="CENTER" spacing="10.0">
                <children>
-                  <TextField id="server-ip" fx:id="localServerIpTextField" promptText="Enter server IP address" styleClass="input-field" HBox.hgrow="ALWAYS">
+                  <TextField id="server-ip" fx:id="serverIpTextField" promptText="Enter server IP address" styleClass="input-field" HBox.hgrow="ALWAYS">
                      <padding>
                         <Insets bottom="7.0" left="7.0" right="7.0" top="7.0" />
                      </padding>

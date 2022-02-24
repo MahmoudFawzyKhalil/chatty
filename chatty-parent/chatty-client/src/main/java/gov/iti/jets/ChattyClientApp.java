@@ -5,6 +5,8 @@ import gov.iti.jets.presentation.util.StageCoordinator;
 import gov.iti.jets.services.util.DaoFactory;
 import javafx.application.Application;
 import javafx.stage.Stage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -12,20 +14,20 @@ import java.rmi.RemoteException;
 
 public class ChattyClientApp extends Application {
     private StageCoordinator stageCoordinator = StageCoordinator.getInstance();
-
+    private Logger logger = LoggerFactory.getLogger(ChattyClientApp.class);
     @Override
-    public void start( Stage primaryStage ) {
-        stageCoordinator.initStage( primaryStage );
-        stageCoordinator.switchToLoginScene();
+    public void start(Stage primaryStage) {
+        stageCoordinator.initStage(primaryStage);
+        stageCoordinator.switchToConnectToServer();
 
-        primaryStage.setWidth( 960 );
-        primaryStage.setHeight( 530 );
-        primaryStage.setMinWidth( 960 );
-        primaryStage.setMinHeight( 530 );
+        primaryStage.setWidth(960);
+        primaryStage.setHeight(530);
+        primaryStage.setMinWidth(960);
+        primaryStage.setMinHeight(530);
         primaryStage.show();
     }
 
-    public static void main( String[] args ) {
+    public static void main(String[] args) {
         Application.launch();
     }
 
@@ -33,9 +35,10 @@ public class ChattyClientApp extends Application {
     public void stop() throws Exception {
         super.stop();
         try {
-            DaoFactory.getInstance().getConnectionService().unregisterClient( ModelFactory.getInstance().getUserModel().getPhoneNumber() );
+            DaoFactory.getInstance().getConnectionService().unregisterClient(ModelFactory.getInstance().getUserModel().getPhoneNumber());
         } catch (NotBoundException | RemoteException e) {
-            e.printStackTrace();
+
+            logger.info("No Connection");
         }
     }
 }
