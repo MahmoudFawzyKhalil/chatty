@@ -31,9 +31,15 @@ public class UpdateProfileServiceImpl extends UnicastRemoteObject implements Upd
     }
 
     @Override
-    public boolean updateProfile(UpdateProfileDto updateProfileDto) {
+    public boolean updateProfile(UpdateProfileDto updateProfileDto) throws RemoteException{
         UserEntity userEntity = UserMapper.INSTANCE.updateProfileDtoToEntity(updateProfileDto);
-        return userRepository.update(userEntity);
+        boolean isUpdated = userRepository.update(userEntity);
+        if(isUpdated){
+            List<ContactEntity> contacts = contactRepository.getUserContacts(updateProfileDto.getPhoneNumber());
+            List<String> phoneNumbers = contacts.stream().map(ContactEntity::getPhoneNumber).collect(Collectors.toList());
+            clients.notifyContactProfileChange(phoneNumbers, updateProfileDto);
+        }
+        return isUpdated;
     }
 
     @Override
