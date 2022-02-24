@@ -25,4 +25,6 @@ public interface Client extends Remote {
     void notifyOfStatusUpdate( StatusNotificationDto dto) throws RemoteException;
     void loadSingleMessages(Map<String,List<SingleMessageDto>> messagesMap)throws RemoteException;
     void notifyContactPicChange(UpdateProfilePicDto updateProfilePicDto) throws RemoteException;
+
+    void notifyContactProfileChange(UpdateProfileDto updateProfileDto)throws RemoteException;
 }

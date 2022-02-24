@@ -1,13 +1,9 @@
 package gov.iti.jets.network;
 
 import gov.iti.jets.commons.callback.Client;
-import gov.iti.jets.commons.dtos.ContactDto;
-import gov.iti.jets.commons.dtos.GroupChatDto;
-import gov.iti.jets.commons.dtos.StatusNotificationDto;
+import gov.iti.jets.commons.dtos.*;
 import gov.iti.jets.commons.enums.StatusNotificationType;
 import gov.iti.jets.repository.util.RepositoryFactory;
-import gov.iti.jets.commons.dtos.GroupMessageDto;
-import gov.iti.jets.commons.dtos.UpdateProfilePicDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.rmi.RemoteException;
@@ -135,6 +131,15 @@ public class Clients {
             Optional<Client> client = getClient(phoneNumber);
             if (client.isPresent()) {
                 client.get().notifyContactPicChange(updateProfilePicDto);
+            }
+        }
+    }
+
+    public void notifyContactProfileChange(List<String> contactsPhoneNumber, UpdateProfileDto updateProfileDto) throws RemoteException {
+        for (String phoneNumber : contactsPhoneNumber) {
+            Optional<Client> client = getClient(phoneNumber);
+            if (client.isPresent()) {
+                client.get().notifyContactProfileChange(updateProfileDto);
             }
         }
     }

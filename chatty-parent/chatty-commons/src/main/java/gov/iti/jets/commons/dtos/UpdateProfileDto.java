@@ -1,7 +1,6 @@
 package gov.iti.jets.commons.dtos;
 
 import gov.iti.jets.commons.util.ValidationUtil;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -14,19 +13,16 @@ public class UpdateProfileDto implements Serializable {
     @NotNull
     @Size(min = 3, max = 20)
     private String displayName;
-    @NotNull
-    @Email
-    private String email;
+
     @Size(min = 0, max = 100)
     private String bio;
 
-    public UpdateProfileDto(String phoneNumber, String displayName, String email, String bio) {
+    public UpdateProfileDto(String phoneNumber, String displayName, String bio) {
         this.phoneNumber = phoneNumber;
         this.displayName = displayName;
-        this.email = email;
         this.bio = bio;
 
-        ValidationUtil.getInstance().validate( this );
+        ValidationUtil.getInstance().validate(this);
     }
 
     public String getPhoneNumber() {
@@ -44,15 +40,6 @@ public class UpdateProfileDto implements Serializable {
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
 
     public String getBio() {
         return bio;
