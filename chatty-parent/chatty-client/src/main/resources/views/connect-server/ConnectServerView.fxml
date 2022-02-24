@@ -14,10 +14,10 @@
       <VBox id="login-card" alignment="CENTER" maxHeight="-Infinity" maxWidth="450.0" prefWidth="400.0" spacing="15.0" styleClass="card" StackPane.alignment="CENTER">
          <children>
             <Label id="welcome-label" styleClass="header-label" text="Connect to server" />
-            <Label id="manually-label" maxWidth="1.7976931348623157E308" styleClass="info-label" text="Local connect" />
+            <Label id="manually-label" maxWidth="1.7976931348623157E308" styleClass="info-label" text="Connect via IP address" />
             <HBox id="manual-hbox" alignment="CENTER" spacing="10.0">
                <children>
-                  <TextField id="server-ip" fx:id="localServerIpTextField" promptText="Enter server ip" styleClass="input-field" HBox.hgrow="ALWAYS">
+                  <TextField id="server-ip" fx:id="localServerIpTextField" promptText="Enter server IP address" styleClass="input-field" HBox.hgrow="ALWAYS">
                      <padding>
                         <Insets bottom="7.0" left="7.0" right="7.0" top="7.0" />
                      </padding>
@@ -25,17 +25,7 @@
                   <Button maxWidth="-Infinity" mnemonicParsing="false" onAction="#onLocalConnectButtonAction" prefWidth="85.0" styleClass="connect-button" text="Connect" />
                </children>
             </HBox>
-            <Label id="manually-label" maxWidth="1.7976931348623157E308" styleClass="info-label" text="Online connect" />
-            <HBox id="online-hbox" alignment="CENTER" spacing="10.0">
-               <children>
-                  <TextField id="server-ip" fx:id="onlineServerIpTextField" promptText="Enter server ip" styleClass="input-field" HBox.hgrow="ALWAYS">
-                     <padding>
-                        <Insets bottom="7.0" left="7.0" right="7.0" top="7.0" />
-                     </padding>
-                  </TextField>
-                  <Button maxWidth="-Infinity" mnemonicParsing="false" onAction="#onOnlineConnectButtonAction" prefWidth="85.0" styleClass="connect-button" text="Connect" />
-               </children>
-            </HBox>
+            <HBox id="online-hbox" alignment="CENTER" spacing="10.0" />
             <Label id="manually-label" maxWidth="1.7976931348623157E308" styleClass="info-label" text="Auto detect" />
             <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onAutoDetectButtonAction" styleClass="detect-button" text="Detect">
                <padding>
