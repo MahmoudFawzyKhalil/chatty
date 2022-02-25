@@ -4,6 +4,7 @@ import gov.iti.jets.commons.callback.Client;
 import gov.iti.jets.commons.dtos.*;
 import gov.iti.jets.commons.enums.StatusNotificationType;
 import gov.iti.jets.commons.util.mappers.ImageMapper;
+import gov.iti.jets.presentation.models.*;
 import gov.iti.jets.presentation.models.mappers.*;
 import gov.iti.jets.presentation.util.ModelFactory;
 import gov.iti.jets.presentation.util.StageCoordinator;

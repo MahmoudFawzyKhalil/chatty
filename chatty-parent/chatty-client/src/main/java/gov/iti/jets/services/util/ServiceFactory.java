@@ -24,7 +24,7 @@ public class ServiceFactory {
     private AddGroupChatService addGroupChatService;
     private SingleMessageService singleMessageService;
     private ChatBotService chatBotService;
-    private static GroupMessageService groupMessageService;
+    private GroupMessageService groupMessageService;
 
 
     private ServiceFactory() {
@@ -133,5 +133,6 @@ public class ServiceFactory {
         addGroupChatService = null;
         singleMessageService = null;
         chatBotService = null;
+        groupMessageService = null;
     }
 }
