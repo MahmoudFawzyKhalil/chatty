@@ -16,10 +16,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.util.StringConverter;
 import net.synedra.validatorfx.Validator;
 
@@ -28,6 +25,7 @@ import java.rmi.ConnectException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
@@ -36,8 +34,8 @@ public class RegistrationTwoController implements Initializable {
     private final StageCoordinator stageCoordinator = StageCoordinator.getInstance();
     private final ModelFactory modelFactory = ModelFactory.getInstance();
     private final RegisterModel registerModel = modelFactory.getRegisterModel();
-    private CountryDao countryDao = DaoFactory.getInstance().getCountryDao();
-    private RegisterDao registerDao = DaoFactory.getInstance().getRegisterDao();
+    private final CountryDao countryDao = DaoFactory.getInstance().getCountryDao();
+    private final RegisterDao registerDao = DaoFactory.getInstance().getRegisterDao();
 
     @FXML
     private TextField bioTextField;
@@ -65,7 +63,7 @@ public class RegistrationTwoController implements Initializable {
     private ObservableList<CountryModel> countryModels;
 
 
-    private Validator validator = UiValidator.getInstance().createValidator();
+    private final Validator validator = UiValidator.getInstance().createValidator();
 
 
     @Override
@@ -84,7 +82,22 @@ public class RegistrationTwoController implements Initializable {
         validateCountryComboBox();
         validateBirthDateDatePicker();
         addEnableButtonValidationListener();
+        setDatePickerDefaults();
 
+    }
+
+    private void setDatePickerDefaults() {
+        birthDateDatePicker.setDayCellFactory(param -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                LocalDate now = LocalDate.now();
+                long diff = ChronoUnit.YEARS.between(date, now);
+                this.setDisable(empty || diff < 10 );
+            }
+        });
+
+        birthDateDatePicker.setValue( LocalDate.ofYearDay( 2000, 1 ) );
     }
 
     private void loadCountries() {
