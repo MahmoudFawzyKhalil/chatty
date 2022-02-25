@@ -132,6 +132,8 @@ public class LoginController implements Initializable {
             try {
                 boolean isAuthenticated = loginDao.isAuthenticated(loginDto);
                 if (isAuthenticated) {
+                    Platform.runLater(stageCoordinator::showLoginLoadingDataSplashStage);
+
                     connectionDao.registerClient(phoneNumberTextField.getText(), client);
                     connectionDao.registerGroups(getGroupIdsList(userModel.getGroupChats()), client);
 
@@ -160,6 +162,7 @@ public class LoginController implements Initializable {
                     Platform.runLater(() -> {
                         passwordTextField.clear();
                         ModelFactory.getInstance().getUpdateProfileModel().resetData();
+                        Platform.runLater(stageCoordinator::closeLoadLoginDataSplashStage);
                         stageCoordinator.switchToMainScene();
                     });
 
@@ -170,6 +173,7 @@ public class LoginController implements Initializable {
                 }
             } catch (NoSuchObjectException | NotBoundException | ConnectException c) {
                 Platform.runLater(() -> {
+                    stageCoordinator.closeLoadLoginDataSplashStage();
                     ServiceFactory.getInstance().shutdown();
                     stageCoordinator.showErrorNotification("Failed to connect to server. Please try again later.");
                     ModelFactory.getInstance().clearUserModel();
@@ -178,6 +182,7 @@ public class LoginController implements Initializable {
                 });
             } catch (RemoteException e) {
                 Platform.runLater(() -> {
+                    stageCoordinator.closeLoadLoginDataSplashStage();
                     stageCoordinator.showErrorNotification("Failed to connect to server. Please try again later.");
                     e.printStackTrace();
                 });

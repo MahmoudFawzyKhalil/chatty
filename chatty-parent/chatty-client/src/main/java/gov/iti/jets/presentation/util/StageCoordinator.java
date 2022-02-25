@@ -43,8 +43,8 @@ public class StageCoordinator {
     }
 
     private void setAppIconAndTitle() {
-        primaryStage.getIcons().add( new Image(StageCoordinator.class.getResource( "/images/appIcon.png" ).toString()) );
-        primaryStage.setTitle( "Chatty" );
+        primaryStage.getIcons().add(new Image(StageCoordinator.class.getResource("/images/appIcon.png").toString()));
+        primaryStage.setTitle("Chatty");
     }
 
     public void switchToLoginScene() {
@@ -173,6 +173,13 @@ public class StageCoordinator {
         stageMap.get("addGroupStage").close();
     }
 
+    public void closeLoadLoginDataSplashStage() {
+        Stage loadLoginDataSplashStage=stageMap.get("loadLoginDataSplashStage");
+        if(loadLoginDataSplashStage!=null){
+            loadLoginDataSplashStage.close();
+        }
+    }
+
 
     public void showAddContactStage() {
         Stage addContactStage = new Stage();
@@ -189,6 +196,15 @@ public class StageCoordinator {
         setPopupStage(autoDetectStage, "/views/auto-detect/AutoDetect.fxml");
         stageMap.put("autoDetectStage", autoDetectStage);
         autoDetectStage.show();
+
+    }
+
+    public void showLoginLoadingDataSplashStage() {
+        Stage loadLoginDataSplashStage = new Stage();
+        setPopupStageStyle(loadLoginDataSplashStage);
+        setPopupStage(loadLoginDataSplashStage, "/views/login/LoadDataSplash.fxml");
+        stageMap.put("loadLoginDataSplashStage", loadLoginDataSplashStage);
+        loadLoginDataSplashStage.show();
 
     }
 
