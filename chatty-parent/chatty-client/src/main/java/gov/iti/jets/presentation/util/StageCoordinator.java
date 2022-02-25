@@ -2,6 +2,7 @@ package gov.iti.jets.presentation.util;
 
 import gov.iti.jets.commons.dtos.AnnouncementDto;
 import gov.iti.jets.presentation.customcontrols.ReceivedAnnouncementBubble;
+import gov.iti.jets.services.util.ServiceFactory;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -142,6 +143,7 @@ public class StageCoordinator {
                 e.printStackTrace();
             }
         }
+        ServiceFactory.getInstance().shutdown();
         setSceneStyleSheets(connectToServerScene);
         primaryStage.setScene(connectToServerScene);
     }
@@ -250,8 +252,8 @@ public class StageCoordinator {
                 .show();
     }
 
-    public void showAdminNotification( AnnouncementDto announcementDto) {
-        var receivedAnnouncementBubble = new ReceivedAnnouncementBubble( announcementDto );
+    public void showAdminNotification(AnnouncementDto announcementDto) {
+        var receivedAnnouncementBubble = new ReceivedAnnouncementBubble(announcementDto);
 
         Notifications.create()
                 .graphic(receivedAnnouncementBubble)
