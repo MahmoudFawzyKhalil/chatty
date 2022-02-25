@@ -26,6 +26,7 @@ import javafx.scene.control.TextField;
 import net.synedra.validatorfx.Validator;
 
 import java.net.URL;
+import java.rmi.ConnectException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -72,34 +73,34 @@ public class LoginController implements Initializable {
                 .withMethod(c -> {
                     String password = c.get("password");
                     if (password.length() < 8 || password.length() > 20) {
-                        c.error( "Please enter a valid password between 8 and 20 characters long." );
-                        loginButton.setDisable( true );
+                        c.error("Please enter a valid password between 8 and 20 characters long.");
+                        loginButton.setDisable(true);
                     }
-                } )
-                .decorates( passwordTextField )
+                })
+                .decorates(passwordTextField)
                 .immediate();
     }
 
     private void validatePhoneNumberTextField() {
         validator.createCheck()
-                .dependsOn( "phoneNumber", phoneNumberTextField.textProperty() )
-                .withMethod( c -> {
-                    String phoneNumber = c.get( "phoneNumber" );
-                    if (!UiValidator.PHONE_NUMBER_PATTERN.matcher( phoneNumber ).matches()) {
-                        c.error( "Please enter a valid 11 digit phone number." );
-                        loginButton.setDisable( true );
+                .dependsOn("phoneNumber", phoneNumberTextField.textProperty())
+                .withMethod(c -> {
+                    String phoneNumber = c.get("phoneNumber");
+                    if (!UiValidator.PHONE_NUMBER_PATTERN.matcher(phoneNumber).matches()) {
+                        c.error("Please enter a valid 11 digit phone number.");
+                        loginButton.setDisable(true);
                     }
-                } )
-                .decorates( phoneNumberTextField )
+                })
+                .decorates(phoneNumberTextField)
                 .immediate();
     }
 
     private void addEnableButtonValidationListener() {
-        validator.containsErrorsProperty().addListener( e -> {
-            if (!validator.containsErrors()){
-                loginButton.setDisable( false );
+        validator.containsErrorsProperty().addListener(e -> {
+            if (!validator.containsErrors()) {
+                loginButton.setDisable(false);
             }
-        } );
+        });
     }
 
     @FXML
@@ -112,45 +113,51 @@ public class LoginController implements Initializable {
         LoginDto loginDto = new LoginDto(phoneNumberTextField.getText(), passwordTextField.getText());
         try {
             boolean isAuthenticated = loginDao.isAuthenticated(loginDto);
-            if(isAuthenticated){
-                connectionDao.registerClient(phoneNumberTextField.getText(),client);
+            if (isAuthenticated) {
+                connectionDao.registerClient(phoneNumberTextField.getText(), client);
                 connectionDao.registerGroups(getGroupIdsList(userModel.getGroupChats()), client);
 
-                var notificationDto = new StatusNotificationDto( userModel.getPhoneNumber(),
-                        StatusNotificationType.valueOf( userModel.getCurrentStatus().getUserStatusName() ) );
+                var notificationDto = new StatusNotificationDto(userModel.getPhoneNumber(),
+                        StatusNotificationType.valueOf(userModel.getCurrentStatus().getUserStatusName()));
                 List<String> contactsPhoneNumbers = userModel.getContacts()
                         .stream()
-                        .map( ContactModel::getPhoneNumber )
-                        .collect( Collectors.toList());
+                        .map(ContactModel::getPhoneNumber)
+                        .collect(Collectors.toList());
 
-                connectionDao.notifyOthersOfStatusUpdate( notificationDto, contactsPhoneNumbers );
+                connectionDao.notifyOthersOfStatusUpdate(notificationDto, contactsPhoneNumbers);
 
                 List<String> offlineContactsPhoneNumbers = connectionDao.getOfflineContacts(contactsPhoneNumbers);
 
-                offlineContactsPhoneNumbers.forEach( phoneNumber -> {
+                offlineContactsPhoneNumbers.forEach(phoneNumber -> {
                     userModel.getContacts()
                             .stream()
-                            .filter( cm -> cm.getPhoneNumber().equals( phoneNumber ) )
+                            .filter(cm -> cm.getPhoneNumber().equals(phoneNumber))
                             .findFirst()
-                            .ifPresent( contactModel -> {
-                                Platform.runLater( () -> {
-                                    contactModel.setCurrentStatus( UserStatusModel.OFFLINE );
-                                } );
-                            } );
-                } );
+                            .ifPresent(contactModel -> {
+                                Platform.runLater(() -> {
+                                    contactModel.setCurrentStatus(UserStatusModel.OFFLINE);
+                                });
+                            });
+                });
 
                 stageCoordinator.switchToMainScene();
 
             } else {
-                stageCoordinator.showErrorNotification( "Invalid phone number or password." );
+                stageCoordinator.showErrorNotification("Invalid phone number or password.");
             }
+        } catch (ConnectException c) {
+            stageCoordinator.showErrorNotification("Failed to connect to server. Please try again later.");
+            ModelFactory.getInstance().clearUserModel();
+            modelFactory.clearUserModel();
+            stageCoordinator.switchToConnectToServer();
         } catch (NotBoundException | RemoteException e) {
-            stageCoordinator.showErrorNotification( "Failed to connect to server. Please try again later." );
+            stageCoordinator.showErrorNotification("Failed to connect to server. Please try again later.");
             e.printStackTrace();
         }
     }
-    private List<Integer> getGroupIdsList(ObservableList<GroupChatModel> groupChatModels){
-        for (GroupChatModel groupChatModel : groupChatModels){
+
+    private List<Integer> getGroupIdsList(ObservableList<GroupChatModel> groupChatModels) {
+        for (GroupChatModel groupChatModel : groupChatModels) {
             groupIdsList.add(groupChatModel.getGroupChatId());
         }
         return groupIdsList;

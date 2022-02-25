@@ -1,5 +1,7 @@
 package gov.iti.jets.presentation.util;
 
+import gov.iti.jets.commons.dtos.AnnouncementDto;
+import gov.iti.jets.presentation.customcontrols.ReceivedAnnouncementBubble;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -150,6 +152,10 @@ public class StageCoordinator {
         paneCoordinator.clearPaneMap();
     }
 
+    public void closeAutoDetectStage() {
+        stageMap.get("autoDetectStage").close();
+    }
+
     public void closeAddContactStage() {
         stageMap.get("addContactStage").close();
     }
@@ -158,12 +164,22 @@ public class StageCoordinator {
         stageMap.get("addGroupStage").close();
     }
 
+
     public void showAddContactStage() {
         Stage addContactStage = new Stage();
         setPopupStageStyle(addContactStage);
         setPopupStage(addContactStage, "/views/add-contact/AddContactView.fxml");
         stageMap.put("addContactStage", addContactStage);
         addContactStage.show();
+
+    }
+
+    public void showAutoDetectStage() {
+        Stage autoDetectStage = new Stage();
+        setPopupStageStyle(autoDetectStage);
+        setPopupStage(autoDetectStage, "/views/auto-detect/AutoDetect.fxml");
+        stageMap.put("autoDetectStage", autoDetectStage);
+        autoDetectStage.show();
 
     }
 
@@ -231,6 +247,16 @@ public class StageCoordinator {
                 .text(message)
                 .hideAfter(Duration.seconds(3))
                 .hideCloseButton()
+                .show();
+    }
+
+    public void showAdminNotification( AnnouncementDto announcementDto) {
+        var receivedAnnouncementBubble = new ReceivedAnnouncementBubble( announcementDto );
+
+        Notifications.create()
+                .graphic(receivedAnnouncementBubble)
+                .position(Pos.BOTTOM_RIGHT)
+                .hideAfter(Duration.INDEFINITE)
                 .show();
     }
 }

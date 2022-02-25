@@ -16,14 +16,14 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Optional;
 
-public class AddGroupChatChatServiceImpl extends UnicastRemoteObject implements AddGroupChatService {
+public class AddGroupChatServiceImpl extends UnicastRemoteObject implements AddGroupChatService {
     private Clients clients = Clients.getInstance();
     private GroupChatRepository groupChatRepository = RepositoryFactory.getInstance().getGroupChatRepository();
     private ImageDecoder imageDecoder = new ImageDecoderImpl();
     private final ImageDbUtil imageDbUtil = ImageDbUtil.getInstance();
 
 
-    protected AddGroupChatChatServiceImpl() throws RemoteException {
+    protected AddGroupChatServiceImpl() throws RemoteException {
     }
 
     @Override
