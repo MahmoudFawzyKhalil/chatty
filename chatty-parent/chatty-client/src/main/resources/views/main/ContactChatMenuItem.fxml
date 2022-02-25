@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.shape.Circle?>
 
-<fx:root id="contact-chat-hbox" alignment="CENTER_LEFT" styleClass="contact-chat-hbox" type="HBox" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root id="contact-chat-hbox" alignment="CENTER_LEFT" styleClass="contact-chat-hbox" type="HBox" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <StackPane id="contact-pic-container">
          <HBox.margin>

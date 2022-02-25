@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane styleClass="shadow-pane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.presentation.controllers.AutoDetectController">
+<BorderPane styleClass="shadow-pane" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.presentation.controllers.AutoDetectController">
    <center>
       <VBox id="add-card" alignment="CENTER" maxHeight="450.0" maxWidth="390.0" prefHeight="450.0" prefWidth="390.0" spacing="15.0" styleClass="card">
          <children>

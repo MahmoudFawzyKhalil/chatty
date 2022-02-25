@@ -8,7 +8,7 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
-<fx:root id="sent-chat-bubble-container" fillHeight="false" type="HBox" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root id="sent-chat-bubble-container" fillHeight="false" type="HBox" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <HBox id="image-message-container" HBox.hgrow="ALWAYS">
          <children>

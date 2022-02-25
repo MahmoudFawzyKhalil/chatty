@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox styleClass="light-back-ground" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.presentation.controllers.InvitationController">
+<VBox styleClass="light-back-ground" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.presentation.controllers.InvitationController">
    <children>
       <HBox id="friend-request-vbox" prefHeight="70.0" spacing="20.0" styleClass="main-back-ground">
          <children>

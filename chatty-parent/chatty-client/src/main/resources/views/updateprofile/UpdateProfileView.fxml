@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 
-<BorderPane id="update-profile-pane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.presentation.controllers.UpdateProfileController">
+<BorderPane id="update-profile-pane" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.presentation.controllers.UpdateProfileController">
    <top>
       <HBox id="update-profile-header" styleClass="profile-header" BorderPane.alignment="CENTER">
          <children>
