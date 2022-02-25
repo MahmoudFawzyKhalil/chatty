@@ -11,6 +11,7 @@ import gov.iti.jets.presentation.util.UiValidator;
 import gov.iti.jets.services.CountryDao;
 import gov.iti.jets.services.RegisterDao;
 import gov.iti.jets.services.util.DaoFactory;
+import gov.iti.jets.services.util.ServiceFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -22,6 +23,7 @@ import net.synedra.validatorfx.Validator;
 
 import java.net.URL;
 import java.rmi.ConnectException;
+import java.rmi.NoSuchObjectException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.time.LocalDate;
@@ -105,12 +107,13 @@ public class RegistrationTwoController implements Initializable {
             List<CountryDto> countryDtos = countryDao.getAll();
             List<CountryModel> countries = CountryMapper.INSTANCE.dtoListToModel(countryDtos);
             this.countryModels = countries.stream().collect(Collectors.toCollection(FXCollections::observableArrayList));
-        } catch (ConnectException c) {
+        } catch (NoSuchObjectException | NotBoundException | ConnectException c) {
+            ServiceFactory.getInstance().shutdown();
             StageCoordinator.getInstance().showErrorNotification("Failed to connect to server. Please try again later.");
             ModelFactory.getInstance().clearUserModel();
             ModelFactory.getInstance().clearUserModel();
             StageCoordinator.getInstance().switchToConnectToServer();
-        } catch (NotBoundException | RemoteException e) {
+        } catch (RemoteException e) {
             e.printStackTrace();
         }
     }
@@ -201,12 +204,13 @@ public class RegistrationTwoController implements Initializable {
     boolean isEmailFound() {
         try {
             return registerDao.isFoundBefore(registerModel.getEmail());
-        } catch (ConnectException c) {
+        } catch (NoSuchObjectException | NotBoundException | ConnectException c) {
+            ServiceFactory.getInstance().shutdown();
             StageCoordinator.getInstance().showErrorNotification("Failed to connect to server. Please try again later.");
             ModelFactory.getInstance().clearUserModel();
             ModelFactory.getInstance().clearUserModel();
             StageCoordinator.getInstance().switchToConnectToServer();
-        } catch (NotBoundException | RemoteException e) {
+        } catch (RemoteException e) {
             stageCoordinator.showErrorNotification(ErrorMessages.FAILED_TO_CONNECT);
         }
         return false;

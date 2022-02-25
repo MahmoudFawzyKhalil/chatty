@@ -101,19 +101,19 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
 
     @Override
     public void notifyOfServerShutDown() throws RemoteException {
-        Platform.runLater( () -> {
-            stageCoordinator.showErrorNotification( "Server has shutdown. Please contact your server administrator" );
+        Platform.runLater(() -> {
+            stageCoordinator.showErrorNotification("Server has shutdown. Please contact your server administrator");
             ModelFactory.getInstance().clearUserModel();
-            stageCoordinator.switchToLoginScene();
-        } );
+            stageCoordinator.switchToConnectToServer();
+        });
         serviceFactory.shutdown();
     }
 
     @Override
-    public void receiveAnnouncement( AnnouncementDto announcementDto ) throws RemoteException {
-        Platform.runLater( () -> {
-            stageCoordinator.showAdminNotification( announcementDto );
-        } );
+    public void receiveAnnouncement(AnnouncementDto announcementDto) throws RemoteException {
+        Platform.runLater(() -> {
+            stageCoordinator.showAdminNotification(announcementDto);
+        });
     }
 
     @Override
@@ -222,7 +222,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
     }
 
     @Override
-    public void notifyContactPicChange(UpdateProfilePicDto updateProfilePicDto)  {
+    public void notifyContactPicChange(UpdateProfilePicDto updateProfilePicDto) {
         Optional<ContactModel> changedContactModel = userModel.getContacts().stream().filter(c -> c.getPhoneNumber().equals(updateProfilePicDto.getPhoneNumber())).findFirst();
         changedContactModel.ifPresent(c -> {
             Platform.runLater(() -> {

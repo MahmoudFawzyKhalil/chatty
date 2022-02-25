@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.*;
+import java.rmi.NotBoundException;
 import java.util.concurrent.Callable;
 
 public class ClientDiscoveryUtil implements Callable<String> {
@@ -17,8 +18,14 @@ public class ClientDiscoveryUtil implements Callable<String> {
         return INSTANCE;
     }
 
-    private ClientDiscoveryUtil() {
+    DatagramSocket datagramSocket = null;
 
+    private ClientDiscoveryUtil() {
+        try {
+            datagramSocket = new DatagramSocket(7777);
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -29,12 +36,14 @@ public class ClientDiscoveryUtil implements Callable<String> {
         isWorking = true;
         String serverIp = "";
 
-        DatagramSocket datagramSocket = null;
-        try {
-            datagramSocket = new DatagramSocket(7777);
-        } catch (SocketException e) {
-            e.printStackTrace();
+        if (datagramSocket.isClosed()) {
+            try {
+                datagramSocket = new DatagramSocket(7777);
+            } catch (SocketException e) {
+                e.printStackTrace();
+            }
         }
+
 
         while (!isStopped) {
             try {
@@ -55,7 +64,14 @@ public class ClientDiscoveryUtil implements Callable<String> {
                 serverIp = new String(receivedPacket.getData()).trim();
 
                 if (!serverIp.isEmpty()) {
-                    break;
+                    try {
+                        ServiceFactory.getInstance().setRegistry(serverIp);
+                        ServiceFactory.getInstance().getLoginService();
+                        break;
+                    } catch (NotBoundException | java.rmi.ConnectException c) {
+                        logger.info("Server found put not working ...");
+                        serverIp = "";
+                    }
                 }
 
             } catch (SocketTimeoutException e) {
@@ -72,6 +88,9 @@ public class ClientDiscoveryUtil implements Callable<String> {
     }
 
     public void stop() {
+        if (datagramSocket.isConnected()) {
+            datagramSocket.close();
+        }
         this.isStopped = true;
         isWorking = false;
     }

@@ -3,34 +3,35 @@ package gov.iti.jets.presentation.controllers;
 import gov.iti.jets.commons.dtos.LoginDto;
 import gov.iti.jets.commons.dtos.StatusNotificationDto;
 import gov.iti.jets.commons.enums.StatusNotificationType;
+import gov.iti.jets.network.ClientImpl;
+import gov.iti.jets.presentation.datasaved.LoginData;
 import gov.iti.jets.presentation.models.ContactModel;
 import gov.iti.jets.presentation.models.GroupChatModel;
 import gov.iti.jets.presentation.models.UserModel;
 import gov.iti.jets.presentation.models.UserStatusModel;
-import gov.iti.jets.network.ClientImpl;
 import gov.iti.jets.presentation.util.ModelFactory;
 import gov.iti.jets.presentation.util.StageCoordinator;
 import gov.iti.jets.presentation.util.UiValidator;
 import gov.iti.jets.services.ConnectionDao;
 import gov.iti.jets.services.LoginDao;
 import gov.iti.jets.services.util.DaoFactory;
+import gov.iti.jets.services.util.ServiceFactory;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Hyperlink;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import net.synedra.validatorfx.Validator;
 
 import java.net.URL;
 import java.rmi.ConnectException;
+import java.rmi.NoSuchObjectException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -59,12 +60,27 @@ public class LoginController implements Initializable {
     @FXML
     private TextField phoneNumberTextField;
 
+    @FXML
+    private CheckBox rememberMeCheckBox;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         validatePhoneNumberTextField();
         validatePasswordTextField();
         addEnableButtonValidationListener();
+        setFields();
+    }
+
+    private void setFields() {
+        Optional<LoginData> optionalLoginDataDto = loginDao.getLoginDate();
+        if (optionalLoginDataDto.isPresent()) {
+            LoginData loginData = optionalLoginDataDto.get();
+            phoneNumberTextField.setText(loginData.getPhoneNumber());
+            if (loginData.isLoadAll()) {
+                passwordTextField.setText(loginData.getPassword());
+            }
+        }
     }
 
     private void validatePasswordTextField() {
@@ -139,18 +155,20 @@ public class LoginController implements Initializable {
                                 });
                             });
                 });
+                passwordTextField.clear();
                 ModelFactory.getInstance().getUpdateProfileModel().resetData();
                 stageCoordinator.switchToMainScene();
 
             } else {
                 stageCoordinator.showErrorNotification("Invalid phone number or password.");
             }
-        } catch (ConnectException c) {
+        } catch (NoSuchObjectException | NotBoundException | ConnectException c) {
+            ServiceFactory.getInstance().shutdown();
             stageCoordinator.showErrorNotification("Failed to connect to server. Please try again later.");
             ModelFactory.getInstance().clearUserModel();
             modelFactory.clearUserModel();
             stageCoordinator.switchToConnectToServer();
-        } catch (NotBoundException | RemoteException e) {
+        } catch (RemoteException e) {
             stageCoordinator.showErrorNotification("Failed to connect to server. Please try again later.");
             e.printStackTrace();
         }
