@@ -139,7 +139,7 @@ public class LoginController implements Initializable {
                                 });
                             });
                 });
-
+                ModelFactory.getInstance().getUpdateProfileModel().resetData();
                 stageCoordinator.switchToMainScene();
 
             } else {
