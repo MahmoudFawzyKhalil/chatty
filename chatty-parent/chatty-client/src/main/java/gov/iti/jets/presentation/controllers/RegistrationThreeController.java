@@ -8,13 +8,19 @@ import gov.iti.jets.presentation.util.ModelFactory;
 import gov.iti.jets.presentation.util.StageCoordinator;
 import gov.iti.jets.services.RegisterDao;
 import gov.iti.jets.services.util.DaoFactory;
+import gov.iti.jets.services.util.ServiceFactory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.image.Image;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
+import javafx.stage.FileChooser;
 
+import java.io.File;
 import java.net.URL;
+import java.rmi.ConnectException;
+import java.rmi.NoSuchObjectException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ResourceBundle;
@@ -26,6 +32,7 @@ public class RegistrationThreeController implements Initializable {
     private final RegisterModel registerModel = modelFactory.getRegisterModel();
     private final DaoFactory daoFactory = DaoFactory.getInstance();
     private final RegisterDao registerDao = daoFactory.getRegisterDao();
+    private FileChooser fileChooser = new FileChooser();
 
     @FXML
     private Circle profilePictureCircle;
@@ -33,11 +40,25 @@ public class RegistrationThreeController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         bindProfilePicCircle();
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Images", "*.jpeg", "*.jpg", "*.png", "*.bmp")
+        );
+
+
     }
 
     @FXML
     void onUploadPictureHyperLinkAction(ActionEvent event) {
-
+        File selectedFile = fileChooser.showOpenDialog(null);
+        if (selectedFile != null) {
+            double fileLen = selectedFile.length() / (double) (1024 * 1024);
+            if (fileLen > 2) {
+                stageCoordinator.showErrorNotification(ErrorMessages.IMAGE_LENGTH);
+                return;
+            }
+            Image selectedImage = new Image(selectedFile.getPath());
+            registerModel.setProfilePicture(selectedImage);
+        }
     }
 
     @FXML
@@ -58,7 +79,13 @@ public class RegistrationThreeController implements Initializable {
                 stageCoordinator.showErrorNotification(ErrorMessages.FAILED_REGISTER);
             }
 
-        } catch (NotBoundException | RemoteException e) {
+        }catch (NoSuchObjectException | NotBoundException | ConnectException c) {
+            ServiceFactory.getInstance().shutdown();
+            stageCoordinator.showErrorNotification("Failed to connect to server. Please try again later.");
+            ModelFactory.getInstance().clearUserModel();
+            modelFactory.clearUserModel();
+            stageCoordinator.switchToConnectToServer();
+        }catch (RemoteException e) {
             stageCoordinator.showErrorNotification(ErrorMessages.FAILED_TO_CONNECT);
         }
         return false;

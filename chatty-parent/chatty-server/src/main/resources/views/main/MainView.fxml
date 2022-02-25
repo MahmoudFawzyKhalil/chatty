@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.presentation.controllers.MainController">
+   <left>
+      <HBox id="side-bar" BorderPane.alignment="CENTER">
+         <children>
+            <VBox id="side-bar-left" prefWidth="80.0" spacing="30.0" styleClass="side-bar-left">
+               <children>
+                  <ScrollPane id="profile-pic-status-container" fitToHeight="true" fitToWidth="true" styleClass="profile-pic-status-container">
+                     <VBox.margin>
+                        <Insets top="20.0" />
+                     </VBox.margin>
+                  </ScrollPane>
+                  <StackPane id="dashboard-button-container">
+                     <children>
+                        <Button id="dashboard-button" fx:id="chartsButton" mnemonicParsing="false" onAction="#onChartsButtonAction" prefHeight="22.0" prefWidth="34.0" styleClass="dashboard-button">
+                           <tooltip>
+                              <Tooltip text="Dashbaord" />
+                           </tooltip></Button>
+                     </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </StackPane>
+                  <StackPane id="refresh-button-container" layoutX="10.0" layoutY="112.0">
+                     <children>
+                        <Button id="refresh-button" fx:id="refreshButton" mnemonicParsing="false" onAction="#onRefreshButtonAction" prefHeight="20.0" prefWidth="30.0" styleClass="refresh-button">
+                           <tooltip>
+                              <Tooltip text="Refresh Dashbaord" />
+                           </tooltip>
+                        </Button>
+                     </children>
+                  </StackPane>
+                  <StackPane id="broadcast-button-container" layoutX="10.0" layoutY="112.0">
+                     <children>
+                        <Button id="broadcast-button" fx:id="announcementsButton" mnemonicParsing="false" onAction="#onAnnouncementsButtonAction" prefHeight="26.0" prefWidth="34.0" styleClass="broadcast-button">
+                           <tooltip>
+                              <Tooltip text="Broadcast Message" />
+                           </tooltip>
+                        </Button>
+                     </children>
+                  </StackPane>
+                  <StackPane id="on-off-button-container">
+                     <children>
+                        <ToggleButton id="on-off-button" fx:id="serviceButton" mnemonicParsing="false" onAction="#onServiceButtonAction" prefHeight="28.0" prefWidth="25.0" styleClass="on-off-button">
+                           <tooltip>
+                              <Tooltip text="On/Off Server" />
+                           </tooltip>
+                        </ToggleButton>
+                     </children>
+                  </StackPane>
+                  <StackPane id="signout-button-container" />
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </left>
+   <stylesheets>
+      <URL value="@MainStyles.css" />
+      <URL value="@../../styles/Base.css" />
+   </stylesheets>
+   <center>
+      <VBox fx:id="dashboardPane" fillWidth="false" prefHeight="200.0" prefWidth="100.0" spacing="20.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox spacing="20.0">
+               <children>
+                  <HBox id="online-users-hbox" styleClass="users-statistics-cards" stylesheets="@MainStyles.css" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label prefWidth="400.0" text="Users Online">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </Label>
+                        <BarChart fx:id="onlineUsersBarChart">
+                          <xAxis>
+                            <CategoryAxis side="BOTTOM" />
+                          </xAxis>
+                          <yAxis>
+                            <NumberAxis side="LEFT" />
+                          </yAxis>
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </BarChart>
+                     </children>
+                  </HBox>
+                  <HBox id="users-gender-hbox" styleClass="users-statistics-cards" stylesheets="@MainStyles.css" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label prefWidth="400.0" text="Users Gender">
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </Label>
+                        <BarChart fx:id="gendersBarChart">
+                          <xAxis>
+                            <CategoryAxis side="BOTTOM" />
+                          </xAxis>
+                          <yAxis>
+                            <NumberAxis side="LEFT" />
+                          </yAxis>
+                        </BarChart>
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
+            <HBox id="users-country-hbox" styleClass="users-statistics-cards" VBox.vgrow="ALWAYS">
+               <children>
+                  <Label minWidth="100.0" text="Country">
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding></Label>
+                  <BarChart fx:id="countryBarChart" prefWidth="1920.0" HBox.hgrow="ALWAYS">
+                    <xAxis>
+                      <CategoryAxis side="BOTTOM" />
+                    </xAxis>
+                    <yAxis>
+                      <NumberAxis side="LEFT" />
+                    </yAxis>
+                  </BarChart>
+               </children>
+            </HBox>
+         </children>
+         <BorderPane.margin>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </BorderPane.margin>
+      </VBox>
+   </center>
+</BorderPane>

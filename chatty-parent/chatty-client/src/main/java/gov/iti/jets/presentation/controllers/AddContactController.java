@@ -12,6 +12,7 @@ import gov.iti.jets.presentation.util.StageCoordinator;
 import gov.iti.jets.services.AddContactDao;
 import gov.iti.jets.services.InvitationDecisionDao;
 import gov.iti.jets.services.util.DaoFactory;
+import gov.iti.jets.services.util.ServiceFactory;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,11 +22,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
+import java.rmi.ConnectException;
+import java.rmi.NoSuchObjectException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class AddContactController implements Initializable {
@@ -74,7 +76,12 @@ public class AddContactController implements Initializable {
                     }
                 }
 
-            } catch (NotBoundException | RemoteException e) {
+            }catch (NoSuchObjectException | NotBoundException | ConnectException c) {
+                ServiceFactory.getInstance().shutdown();
+                stageCoordinator.showErrorNotification("Failed to connect to server. Please try again later.");
+                modelFactory.clearUserModel();
+                stageCoordinator.switchToConnectToServer();
+            } catch ( RemoteException e) {
                 stageCoordinator.showErrorNotification( "Failed to connect to server. Please try again later." );
                 e.printStackTrace();
             } finally {
@@ -123,7 +130,13 @@ public class AddContactController implements Initializable {
                                 phoneNumbers.remove(invitedNumber);
                                 System.out.println(phoneNumbers);
                             }
-                    } catch (NotBoundException | RemoteException ex) {
+                    } catch (NoSuchObjectException | NotBoundException | ConnectException c) {
+                        ServiceFactory.getInstance().shutdown();
+                        stageCoordinator.showErrorNotification("Failed to connect to server. Please try again later.");
+                        ModelFactory.getInstance().clearUserModel();
+                        modelFactory.clearUserModel();
+                        stageCoordinator.switchToConnectToServer();
+                    }catch (RemoteException ex) {
                         StageCoordinator.getInstance().showErrorNotification(ErrorMessages.FAILED_TO_CONNECT);
                         ex.printStackTrace();
                     }

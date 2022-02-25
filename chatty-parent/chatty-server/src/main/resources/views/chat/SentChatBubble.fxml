@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+
+<fx:root id="sent-chat-bubble-container" fillHeight="false" type="HBox" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox id="image-message-container" HBox.hgrow="ALWAYS">
+         <children>
+            <HBox id="padding" HBox.hgrow="ALWAYS" />
+            <VBox id="sender-message-container" fx:id="messageBackgroundVbox" alignment="TOP_RIGHT" styleClass="sender-message-container">
+               <children>
+                  <Label id="sender-name" fx:id="userNameLabel" styleClass="sender-name" text="Christine Nedaa">
+                     <VBox.margin>
+                        <Insets right="2.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label id="timestamp" fx:id="timeStampLabel" opacity="0.5" styleClass="sender-name" text="Sun Feb 13 08:21:00 EET 2022">
+                     <VBox.margin>
+                        <Insets bottom="3.0" top="-1.0" />
+                     </VBox.margin>
+                  </Label>
+                  <TextFlow fx:id="textFlow" textAlignment="RIGHT">
+                     <children>
+                        <Text id="sender-message-text" fx:id="messageText" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="sender-message-text" text="Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell Okay hell " />
+                     </children>
+                  </TextFlow>
+               </children>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="8.0" />
+               </padding>
+            </VBox>
+            <Circle id="contact-pic" fx:id="userProfilePicCircle" fill="#243f66" radius="15.0" stroke="TRANSPARENT" strokeType="INSIDE">
+               <HBox.margin>
+                  <Insets left="5.0" />
+               </HBox.margin>
+            </Circle>
+         </children>
+         <HBox.margin>
+            <Insets right="10.0" top="20.0" />
+         </HBox.margin>
+      </HBox>
+   </children>
+</fx:root>

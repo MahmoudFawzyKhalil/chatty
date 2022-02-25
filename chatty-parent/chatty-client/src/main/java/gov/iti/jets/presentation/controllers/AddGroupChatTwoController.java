@@ -11,16 +11,22 @@ import gov.iti.jets.presentation.util.StageCoordinator;
 import gov.iti.jets.presentation.util.UiValidator;
 import gov.iti.jets.services.AddGroupChatDao;
 import gov.iti.jets.services.util.DaoFactory;
+import gov.iti.jets.services.util.ServiceFactory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
+import javafx.stage.FileChooser;
 import net.synedra.validatorfx.Validator;
 
+import java.io.File;
 import java.net.URL;
+import java.rmi.ConnectException;
+import java.rmi.NoSuchObjectException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ResourceBundle;
@@ -34,6 +40,8 @@ public class AddGroupChatTwoController implements Initializable {
     private AddGroupChatDao addGroupChatDao = DaoFactory.getInstance().getAddGroupChatDao();
     private Validator validator = UiValidator.getInstance().createValidator();
 
+    private FileChooser fileChooser = new FileChooser();
+
     @FXML
     private TextField groupNameTextField;
 
@@ -45,12 +53,16 @@ public class AddGroupChatTwoController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        ContactModel myContactModel = new ContactModel(userModel.getPhoneNumber(),userModel.getDisplayName(),userModel.getCurrentStatus());
+
+        ContactModel myContactModel = new ContactModel(userModel.getPhoneNumber(), userModel.getDisplayName(), userModel.getCurrentStatus());
         createGroupChatModel.getGroupMembersList().add(myContactModel);
         createGroupChatModel.groupChatNameProperty().bind(groupNameTextField.textProperty());
         addGroupPicCircleListener();
         validateGroupNameTextField();
         addEnableButtonValidationListener();
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Images", "*.jpeg", "*.jpg", "*.png", "*.bmp")
+        );
     }
 
     private void validateGroupNameTextField() {
@@ -107,7 +119,12 @@ public class AddGroupChatTwoController implements Initializable {
     private boolean create(AddGroupChatDto addGroupChatDto) {
         try {
             return addGroupChatDao.addGroup(addGroupChatDto);
-        } catch (NotBoundException | RemoteException e) {
+        } catch (NoSuchObjectException | NotBoundException | ConnectException c) {
+            ServiceFactory.getInstance().shutdown();
+            stageCoordinator.showErrorNotification("Failed to connect to server. Please try again later.");
+            modelFactory.clearUserModel();
+            stageCoordinator.switchToConnectToServer();
+        }catch (RemoteException e) {
             stageCoordinator.showErrorNotification(ErrorMessages.FAILED_TO_CONNECT);
         }
         return false;
@@ -115,6 +132,16 @@ public class AddGroupChatTwoController implements Initializable {
 
     @FXML
     void onUploadPictureHyperLinkAction(ActionEvent event) {
+        File selectedFile = fileChooser.showOpenDialog(null);
+        if (selectedFile != null) {
+            double fileLen = selectedFile.length() / (double) (1024 * 1024);
+            if (fileLen > 2) {
+                stageCoordinator.showErrorNotification(ErrorMessages.IMAGE_LENGTH);
+                return;
+            }
+            Image image=new Image(selectedFile.getPath());
+            createGroupChatModel.setGroupChatPicture(image);
+        }
 
     }
 

@@ -1,15 +1,23 @@
 package gov.iti.jets.presentation.controllers;
 
 import gov.iti.jets.commons.dtos.LoginDto;
+import gov.iti.jets.commons.dtos.StatusNotificationDto;
+import gov.iti.jets.commons.enums.StatusNotificationType;
 import gov.iti.jets.network.ClientImpl;
 import gov.iti.jets.presentation.datasaved.LoginData;
+import gov.iti.jets.presentation.models.ContactModel;
+import gov.iti.jets.presentation.models.GroupChatModel;
 import gov.iti.jets.presentation.models.UserModel;
+import gov.iti.jets.presentation.models.UserStatusModel;
 import gov.iti.jets.presentation.util.ModelFactory;
 import gov.iti.jets.presentation.util.StageCoordinator;
 import gov.iti.jets.presentation.util.UiValidator;
 import gov.iti.jets.services.ConnectionDao;
 import gov.iti.jets.services.LoginDao;
 import gov.iti.jets.services.util.DaoFactory;
+import gov.iti.jets.services.util.ServiceFactory;
+import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -17,10 +25,15 @@ import javafx.scene.control.*;
 import net.synedra.validatorfx.Validator;
 
 import java.net.URL;
+import java.rmi.ConnectException;
+import java.rmi.NoSuchObjectException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class LoginController implements Initializable {
 
@@ -30,8 +43,8 @@ public class LoginController implements Initializable {
     private final LoginDao loginDao = daoFactory.getLoginService();
     private final ConnectionDao connectionDao = daoFactory.getConnectionService();
     private final ClientImpl client = ClientImpl.getInstance();
-
-    private UserModel userModel;
+    private List<Integer> groupIdsList = new ArrayList<>();
+    private UserModel userModel = modelFactory.getUserModel();
 
     private Validator validator = UiValidator.getInstance().createValidator();
 
@@ -118,13 +131,53 @@ public class LoginController implements Initializable {
             boolean isAuthenticated = loginDao.isAuthenticated(loginDto);
             if (isAuthenticated) {
                 connectionDao.registerClient(phoneNumberTextField.getText(), client);
+                connectionDao.registerGroups(getGroupIdsList(userModel.getGroupChats()), client);
+
+                var notificationDto = new StatusNotificationDto(userModel.getPhoneNumber(),
+                        StatusNotificationType.valueOf(userModel.getCurrentStatus().getUserStatusName()));
+                List<String> contactsPhoneNumbers = userModel.getContacts()
+                        .stream()
+                        .map(ContactModel::getPhoneNumber)
+                        .collect(Collectors.toList());
+
+                connectionDao.notifyOthersOfStatusUpdate(notificationDto, contactsPhoneNumbers);
+
+                List<String> offlineContactsPhoneNumbers = connectionDao.getOfflineContacts(contactsPhoneNumbers);
+
+                offlineContactsPhoneNumbers.forEach(phoneNumber -> {
+                    userModel.getContacts()
+                            .stream()
+                            .filter(cm -> cm.getPhoneNumber().equals(phoneNumber))
+                            .findFirst()
+                            .ifPresent(contactModel -> {
+                                Platform.runLater(() -> {
+                                    contactModel.setCurrentStatus(UserStatusModel.OFFLINE);
+                                });
+                            });
+                });
+                passwordTextField.clear();
+                ModelFactory.getInstance().getUpdateProfileModel().resetData();
                 stageCoordinator.switchToMainScene();
+
             } else {
                 stageCoordinator.showErrorNotification("Invalid phone number or password.");
             }
-        } catch (NotBoundException | RemoteException e) {
+        } catch (NoSuchObjectException | NotBoundException | ConnectException c) {
+            ServiceFactory.getInstance().shutdown();
+            stageCoordinator.showErrorNotification("Failed to connect to server. Please try again later.");
+            ModelFactory.getInstance().clearUserModel();
+            modelFactory.clearUserModel();
+            stageCoordinator.switchToConnectToServer();
+        } catch (RemoteException e) {
             stageCoordinator.showErrorNotification("Failed to connect to server. Please try again later.");
             e.printStackTrace();
         }
+    }
+
+    private List<Integer> getGroupIdsList(ObservableList<GroupChatModel> groupChatModels) {
+        for (GroupChatModel groupChatModel : groupChatModels) {
+            groupIdsList.add(groupChatModel.getGroupChatId());
+        }
+        return groupIdsList;
     }
 }

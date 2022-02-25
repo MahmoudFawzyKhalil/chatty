@@ -93,11 +93,6 @@ public class GroupChatRepositoryImpl implements GroupChatRepository {
 
     @Override
     public int addGroup(GroupChatEntity groupChatEntity) {
-        /*TODO
-         *
-         * pic
-         *
-         * */
         String query = "insert into group_chats (group_chat_name) values (?) ";
         int addedGroupId = -1;
         try (Connection connection = ConnectionPool.getConnection();
@@ -181,6 +176,24 @@ public class GroupChatRepositoryImpl implements GroupChatRepository {
                 if (resultSet.next()) {
                     return true;
                 }
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean updatePicture(int groupId, String picURL) {
+        try (Connection connection = ConnectionPool.getConnection();
+             PreparedStatement statement = connection.prepareStatement("update group_chats set picture = ? where group_chat_id = ?");
+        ) {
+            statement.setString(1, picURL);
+            statement.setInt(2, groupId);
+            int effectedRows = statement.executeUpdate();
+            if (effectedRows == 1) {
+                return true;
             }
 
         } catch (SQLException ex) {

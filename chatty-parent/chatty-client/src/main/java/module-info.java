@@ -3,10 +3,16 @@ module chatty.client {
     requires java.rmi;
     requires  chatty.commons;
 
+    requires org.slf4j;
+
     // JavaFX
     requires javafx.controls;
     requires javafx.fxml;
     requires org.controlsfx.controls;
+    requires validatorfx;
+
+    // ChatBot
+    requires Ab;
 
     // Utils
     // MapStruct
@@ -14,12 +20,10 @@ module chatty.client {
     exports gov.iti.jets.presentation.models.mappers to org.mapstruct;
 
     // Hibernate Validator
-    // COULD BE USELESS
     requires jakarta.validation;
     requires org.hibernate.validator;
     requires org.hibernate.validator.cdi;
 
-    requires validatorfx;
 
     // Exports, Opens
     exports gov.iti.jets;

@@ -1,8 +1,8 @@
 package gov.iti.jets.services.util;
 
-import gov.iti.jets.commons.remoteinterfaces.ConnectionService;
 import gov.iti.jets.commons.remoteinterfaces.*;
-import gov.iti.jets.commons.remoteinterfaces.UpdateProfileService;
+import gov.iti.jets.services.ChatBotService;
+import gov.iti.jets.services.impls.ChatBotServiceImpl;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -13,26 +13,27 @@ public class ServiceFactory {
     private static final ServiceFactory registryFactory = new ServiceFactory();
     private Registry registry;
 
+    private String host = "127.0.0.1";
 
-    private static LoginService loginService;
-    private static AddContactService addContactService;
-
-    private static RegisterService registerService;
-    private static CountryService countryService;
-    private static InvitationDecisionService invitationDecisionService;
+    private LoginService loginService;
+    private AddContactService addContactService;
+    private RegisterService registerService;
+    private CountryService countryService;
+    private InvitationDecisionService invitationDecisionService;
     private UpdateProfileService updateProfileService;
     private ConnectionService connectionService;
     private AddGroupChatService addGroupChatService;
-    private static SingleMessageService singleMessageService;
+    private SingleMessageService singleMessageService;
+    private ChatBotService chatBotService;
+    private GroupMessageService groupMessageService;
 
 
     private ServiceFactory() {
-        try {
-            this.registry = LocateRegistry.getRegistry(1099);
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
 
+    }
+
+    public void setRegistry(String host) throws RemoteException {
+        this.registry = LocateRegistry.getRegistry(host, 1099);
     }
 
     public static ServiceFactory getInstance() {
@@ -41,7 +42,7 @@ public class ServiceFactory {
 
     public LoginService getLoginService() throws NotBoundException, RemoteException {
         if (loginService == null) {
-            loginService = (LoginService) registry.lookup("LoginService");
+            loginService = (LoginService) registry.lookup( "LoginService" );
 
         }
         return loginService;
@@ -49,7 +50,7 @@ public class ServiceFactory {
 
     public AddContactService getAddContactService() throws NotBoundException, RemoteException {
         if (addContactService == null) {
-            addContactService = (AddContactService) registry.lookup("AddContactService");
+            addContactService = (AddContactService) registry.lookup( "AddContactService" );
         }
         return addContactService;
     }
@@ -57,14 +58,14 @@ public class ServiceFactory {
 
     public ConnectionService getConnectionService() throws NotBoundException, RemoteException {
         if (connectionService == null) {
-            connectionService = (ConnectionService) registry.lookup("ConnectionService");
+            connectionService = (ConnectionService) registry.lookup( "ConnectionService" );
         }
         return connectionService;
     }
 
     public RegisterService getRegisterService() throws NotBoundException, RemoteException {
         if (registerService == null) {
-            registerService = (RegisterService) registry.lookup("RegisterService");
+            registerService = (RegisterService) registry.lookup( "RegisterService" );
 
         }
         return registerService;
@@ -72,7 +73,7 @@ public class ServiceFactory {
 
     public CountryService getCountryService() throws NotBoundException, RemoteException {
         if (countryService == null) {
-            countryService = (CountryService) registry.lookup("CountryService");
+            countryService = (CountryService) registry.lookup( "CountryService" );
 
         }
         return countryService;
@@ -80,7 +81,7 @@ public class ServiceFactory {
 
     public InvitationDecisionService getInvitationDecisionService() throws NotBoundException, RemoteException {
         if (invitationDecisionService == null) {
-            invitationDecisionService = (InvitationDecisionService) registry.lookup("InvitationDecisionService");
+            invitationDecisionService = (InvitationDecisionService) registry.lookup( "InvitationDecisionService" );
 
         }
         return invitationDecisionService;
@@ -88,7 +89,7 @@ public class ServiceFactory {
 
     public UpdateProfileService getUpdateProfileService() throws NotBoundException, RemoteException {
         if (updateProfileService == null) {
-            updateProfileService = (UpdateProfileService) registry.lookup("UpdateProfileService");
+            updateProfileService = (UpdateProfileService) registry.lookup( "UpdateProfileService" );
 
         }
         return updateProfileService;
@@ -96,17 +97,44 @@ public class ServiceFactory {
 
     public AddGroupChatService getAddGroupService() throws NotBoundException, RemoteException {
         if (addGroupChatService == null) {
-            addGroupChatService = (AddGroupChatService) registry.lookup("AddGroupChatService");
+            addGroupChatService = (AddGroupChatService) registry.lookup( "AddGroupChatService" );
         }
         return addGroupChatService;
     }
 
 
-    public SingleMessageService getSingleMessageService() throws NotBoundException, RemoteException{
-        if(singleMessageService==null){
-            singleMessageService = (SingleMessageService) registry.lookup("SingleMessageService");
+    public SingleMessageService getSingleMessageService() throws NotBoundException, RemoteException {
+        if (singleMessageService == null) {
+            singleMessageService = (SingleMessageService) registry.lookup( "SingleMessageService" );
         }
         return singleMessageService;
     }
 
+    public ChatBotService getChatBotService() {
+        if (chatBotService == null) {
+            chatBotService = new ChatBotServiceImpl();
+        }
+        return chatBotService;
+    }
+
+    public GroupMessageService getGroupMessageService() throws NotBoundException, RemoteException {
+        if (groupMessageService == null) {
+            groupMessageService = (GroupMessageService) registry.lookup("GroupMessageService");
+        }
+        return groupMessageService;
+    }
+
+    public void shutdown() {
+        loginService = null;
+        addContactService = null;
+        registerService = null;
+        countryService = null;
+        invitationDecisionService = null;
+        updateProfileService = null;
+        connectionService = null;
+        addGroupChatService = null;
+        singleMessageService = null;
+        chatBotService = null;
+        groupMessageService = null;
+    }
 }

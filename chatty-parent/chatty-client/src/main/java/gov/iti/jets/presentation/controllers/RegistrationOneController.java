@@ -7,6 +7,7 @@ import gov.iti.jets.presentation.util.StageCoordinator;
 import gov.iti.jets.presentation.util.UiValidator;
 import gov.iti.jets.services.RegisterDao;
 import gov.iti.jets.services.util.DaoFactory;
+import gov.iti.jets.services.util.ServiceFactory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -16,6 +17,8 @@ import javafx.scene.control.TextField;
 import net.synedra.validatorfx.Validator;
 
 import java.net.URL;
+import java.rmi.ConnectException;
+import java.rmi.NoSuchObjectException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ResourceBundle;
@@ -75,7 +78,13 @@ public class RegistrationOneController implements Initializable {
     boolean isPhoneNumberFound() {
         try {
             return registerDao.validatePhoneNumber(registerModel.getPhoneNumber());
-        } catch (NotBoundException | RemoteException e) {
+        } catch (NoSuchObjectException | NotBoundException | ConnectException c) {
+            ServiceFactory.getInstance().shutdown();
+            StageCoordinator.getInstance().showErrorNotification("Failed to connect to server. Please try again later.");
+            ModelFactory.getInstance().clearUserModel();
+            ModelFactory.getInstance().clearUserModel();
+            StageCoordinator.getInstance().switchToConnectToServer();
+        } catch (RemoteException e) {
             stageCoordinator.showErrorNotification(ErrorMessages.FAILED_TO_CONNECT);
         }
         return false;
