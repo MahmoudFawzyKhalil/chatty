@@ -3,6 +3,7 @@ package gov.iti.jets.presentation.util;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.SVGPath;
@@ -30,6 +31,12 @@ public class StageCoordinator {
 
     public void initStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
+        setAppIconAndTitle();
+    }
+
+    private void setAppIconAndTitle() {
+        primaryStage.getIcons().add( new Image(StageCoordinator.class.getResource( "/images/appIcon.png" ).toString()) );
+        primaryStage.setTitle( "Chatty Server" );
     }
 
     private void setSceneStyleSheets(Scene scene) {

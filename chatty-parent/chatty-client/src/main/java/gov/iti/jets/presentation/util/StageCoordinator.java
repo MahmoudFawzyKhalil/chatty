@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -37,6 +38,12 @@ public class StageCoordinator {
 
     public void initStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
+        setAppIconAndTitle();
+    }
+
+    private void setAppIconAndTitle() {
+        primaryStage.getIcons().add( new Image(StageCoordinator.class.getResource( "/images/appIcon.png" ).toString()) );
+        primaryStage.setTitle( "Chatty" );
     }
 
     public void switchToLoginScene() {
