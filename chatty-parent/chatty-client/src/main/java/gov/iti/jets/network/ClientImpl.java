@@ -213,6 +213,8 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
         Platform.runLater(() -> {
             InvitationModel invitationModel = InvitationMapper.INSTANCE.dtoToModel(receiverInvitationDto);
             userModel.getInvitations().add(invitationModel);
+            stageCoordinator.showMessageNotification( "New friend request!",
+                    receiverInvitationDto.getContactDto().getDisplayName() + " wants to be your friend!" );
         });
     }
 
