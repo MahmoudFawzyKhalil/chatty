@@ -20,10 +20,10 @@ public class StatusColors {
                 color = AVAILABLE_STATUS_COLOR;
                 break;
             case "Away":
-                color = BUSY_STATUS_COLOR;
+                color = AWAY_STATUS_COLOR;
                 break;
             case "Busy":
-                color = AWAY_STATUS_COLOR;
+                color = BUSY_STATUS_COLOR;
                 break;
             case "Offline":
                 color = OFFLINE_STATUS_COLOR;
