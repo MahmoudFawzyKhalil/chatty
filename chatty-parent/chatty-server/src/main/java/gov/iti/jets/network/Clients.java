@@ -6,6 +6,7 @@ import gov.iti.jets.commons.enums.StatusNotificationType;
 import gov.iti.jets.repository.util.RepositoryFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import java.rmi.RemoteException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -38,6 +39,10 @@ public class Clients {
         return clientMap.values();
     }
 
+    public Set<Map.Entry<String, Client>> getAllClientEntries(){
+        return clientMap.entrySet();
+    }
+
     public void addGroup(GroupChatDto groupChatDto) throws RemoteException {
         logger.info("new group added: " + groupChatDto.getGroupChatId());
         List<Client> clients = getClients(groupChatDto.getGroupMembersList());
@@ -57,15 +62,35 @@ public class Clients {
     }
 
     public void addGroupTo(List<Client> clients, GroupChatDto groupChatDto) throws RemoteException {
+        List<Client> unresponsiveClients = new ArrayList<>();
+
         for (Client client : clients) {
-            client.addGroupChat(groupChatDto);
+            try {
+                client.addGroupChat(groupChatDto);
+            } catch (RemoteException e) {
+                unresponsiveClients.add( client );
+                e.printStackTrace();
+            }
         }
+
+        unresponsiveClients.forEach( this::removeClientFromOnlineAndGroups );
     }
+
     public void sendMessageToOnlineClientsOfAGroupChat( GroupMessageDto groupMessageDto) throws RemoteException {
-        List <Client> clients = groupMap.get( groupMessageDto.getGroupChatId() );
-        for (Client client : clients) {
-            client.receiveGroupMessage(groupMessageDto);
+        List <Client> clientsInGroup = groupMap.get( groupMessageDto.getGroupChatId() );
+
+        List<Client> unresponsiveClients = new ArrayList<>();
+
+        for (Client client : clientsInGroup) {
+            try {
+                client.receiveGroupMessage(groupMessageDto);
+            } catch (RemoteException e) {
+                unresponsiveClients.add( client );
+                e.printStackTrace();
+            }
         }
+
+        unresponsiveClients.forEach( this::removeClientFromOnlineAndGroups );
     }
 
 
@@ -100,12 +125,38 @@ public class Clients {
                 try {
                     client.notifyOfStatusUpdate( dto );
                 } catch (RemoteException e) {
-                    removeClient( contact );
+                    var clientOptional = getClient( contact );
+                    if (clientOptional.isPresent()){
+                        removeClientFromOnlineAndGroups( clientOptional.get() );
+                    }
                 }
             } );
         }
 
         return Optional.ofNullable(clientMap.remove(phoneNumber));
+    }
+
+    private String getPhoneNumberFromClientReference(Client client){
+        String phoneNumber = null;
+
+        for (var entry : clientMap.entrySet()) {
+            if (entry.getValue() == client){
+                phoneNumber = entry.getKey();
+            }
+        }
+
+        return  phoneNumber;
+    }
+
+    private void removeClientFromGroups(Client client){
+        for (List<Client> clientList : groupMap.values()){
+            clientList.remove( client );
+        }
+    }
+
+    public void removeClientFromOnlineAndGroups(Client client){
+        removeClient( getPhoneNumberFromClientReference( client ) );
+        removeClientFromGroups( client );
     }
 
     public void clearAllClients() {
@@ -143,7 +194,11 @@ public class Clients {
         for (String phoneNumber : contactsPhoneNumber) {
             Optional<Client> client = getClient(phoneNumber);
             if (client.isPresent()) {
-                client.get().notifyContactPicChange(updateProfilePicDto);
+                try {
+                    client.get().notifyContactPicChange(updateProfilePicDto);
+                } catch (RemoteException e) {
+                    this.removeClientFromOnlineAndGroups( client.get() );
+                }
             }
         }
     }
@@ -152,7 +207,11 @@ public class Clients {
         for (String phoneNumber : contactsPhoneNumber) {
             Optional<Client> client = getClient(phoneNumber);
             if (client.isPresent()) {
-                client.get().notifyContactProfileChange(updateProfileDto);
+                try {
+                    client.get().notifyContactProfileChange(updateProfileDto);
+                } catch (RemoteException e) {
+                    this.removeClientFromOnlineAndGroups( client.get() );
+                }
             }
         }
     }

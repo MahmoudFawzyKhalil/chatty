@@ -189,16 +189,6 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
     }
 
     @Override
-    public void receiveInvitation(InvitationDto invitationDto) throws RemoteException {
-
-    }
-
-    @Override
-    public void updateContactList(List<ContactDto> dtos) throws RemoteException {
-
-    }
-
-    @Override
     public void addContact(ContactDto contactDto) throws RemoteException {
         Platform.runLater(() -> {
             ContactModel contactModel = ContactMapper.INSTANCE.contactDtoToModel(contactDto);
@@ -250,6 +240,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
             });
         });
     }
+
 
 
 }

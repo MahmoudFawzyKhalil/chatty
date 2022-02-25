@@ -14,8 +14,6 @@ import gov.iti.jets.repository.util.mappers.UserMapper;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
-import java.time.LocalDate;
-import java.util.*;
 
 public class ConnectionServiceImpl extends UnicastRemoteObject implements ConnectionService {
 
@@ -64,7 +62,7 @@ public class ConnectionServiceImpl extends UnicastRemoteObject implements Connec
                 try {
                     client.notifyOfStatusUpdate( statusNotificationDto );
                 } catch (RemoteException e) {
-                    e.printStackTrace();
+                    clients.removeClientFromOnlineAndGroups( client );
                 }
             } );
         }

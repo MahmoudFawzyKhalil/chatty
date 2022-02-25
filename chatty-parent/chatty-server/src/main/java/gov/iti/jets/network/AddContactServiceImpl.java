@@ -2,17 +2,12 @@ package gov.iti.jets.network;
 
 import gov.iti.jets.commons.callback.Client;
 import gov.iti.jets.commons.dtos.AddContactDto;
-import gov.iti.jets.commons.dtos.ContactDto;
 import gov.iti.jets.commons.dtos.InvitationDto;
 import gov.iti.jets.commons.remoteinterfaces.AddContactService;
-import gov.iti.jets.repository.ContactRepository;
-import gov.iti.jets.repository.InvitationRepository;
 import gov.iti.jets.repository.InvitationsRepository;
 import gov.iti.jets.repository.UserRepository;
-import gov.iti.jets.repository.entities.ContactEntity;
 import gov.iti.jets.repository.entities.InvitationEntity;
 import gov.iti.jets.repository.util.RepositoryFactory;
-import gov.iti.jets.repository.util.mappers.ContactMapper;
 import gov.iti.jets.repository.util.mappers.InvitationMapper;
 
 import java.rmi.RemoteException;
@@ -51,9 +46,14 @@ public class AddContactServiceImpl extends UnicastRemoteObject implements AddCon
                         optionalSender = clients.getClient(senderPhoneNumber);
 
                         if (optionalReceiver.isPresent()) {
-                            Client receiver = optionalReceiver.get();
-                            receiver.addInvitation(senderInvitationDto);
-                            return true;
+                            try {
+                                Client receiver = optionalReceiver.get();
+                                receiver.addInvitation(senderInvitationDto);
+                                return true;
+                            } catch (RemoteException e) {
+                                clients.removeClientFromOnlineAndGroups( optionalReceiver.get() );
+                                e.printStackTrace();
+                            }
                         }
                     }
                 }

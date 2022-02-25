@@ -16,9 +16,7 @@ public interface Client extends Remote {
     void receiveGroupMessage(GroupMessageDto groupMessageDto) throws RemoteException;
     void addGroupChat(GroupChatDto groupChatDto) throws RemoteException;
 
-    void receiveInvitation(InvitationDto invitationDto) throws RemoteException;
 
-    void updateContactList(List<ContactDto> dtos) throws RemoteException;
     void addContact(ContactDto contactDto) throws RemoteException;
     void addInvitation(InvitationDto senderInvitationDto)throws RemoteException;
 
