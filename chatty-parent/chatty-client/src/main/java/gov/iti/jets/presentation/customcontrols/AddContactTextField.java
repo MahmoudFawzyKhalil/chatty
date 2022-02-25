@@ -1,6 +1,5 @@
 package gov.iti.jets.presentation.customcontrols;
 
-import gov.iti.jets.presentation.util.StageCoordinator;
 import gov.iti.jets.presentation.util.UiValidator;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
@@ -74,11 +73,37 @@ public class AddContactTextField extends TextField implements Initializable {
     }
 
     private void addEnableButtonValidationListener() {
-        validator.containsErrorsProperty().addListener( e -> {
+  /*      validator.containsErrorsProperty().addListener( observable -> {
+            var property = (ReadOnlyBooleanProperty) observable;
+
+            boolean amIAndTheOnesAfterMeEmpty = true;
+
+            for (int i = list.indexOf( this ); i < list.size(); i++) {
+                if (!list.get( i ).getText().isEmpty()){
+                    amIAndTheOnesAfterMeEmpty = false;
+                }
+            }
+
             if (!validator.containsErrors()) {
                 addContactButton.setDisable( false );
             }
+        } );*/
+
+        this.textProperty().addListener( (observable, old, newval) -> {
+            boolean amIAndTheOnesAfterMeEmpty = true;
+
+            for (int i = list.indexOf( this ); i < list.size(); i++) {
+                if (!list.get( i ).getText().isEmpty()){
+                    amIAndTheOnesAfterMeEmpty = false;
+                }
+            }
+
+            if (validator.validate() || amIAndTheOnesAfterMeEmpty) {
+                addContactButton.setDisable( false );
+            }
         } );
+
+
 
         textFieldAddContactViewVBox.getChildren().addListener( new ListChangeListener<Node>() {
             @Override

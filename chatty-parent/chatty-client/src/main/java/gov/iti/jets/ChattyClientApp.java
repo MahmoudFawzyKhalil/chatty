@@ -39,7 +39,12 @@ public class ChattyClientApp extends Application {
         super.stop();
 
         try {
-            DaoFactory.getInstance().getConnectionService().unregisterClient(ModelFactory.getInstance().getUserModel().getPhoneNumber());
+            var connectionService = DaoFactory.getInstance().getConnectionService();
+
+            if (connectionService != null) {
+                connectionService.unregisterClient(ModelFactory.getInstance().getUserModel().getPhoneNumber());
+            }
+
             ClientDiscoveryUtil.getInstance().stop();
             ExecutorUtil.getInstance().shutDown();
         } catch (NotBoundException | RemoteException e) {
