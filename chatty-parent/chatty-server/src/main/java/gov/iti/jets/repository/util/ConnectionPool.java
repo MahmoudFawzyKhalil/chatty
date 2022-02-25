@@ -3,7 +3,6 @@ package gov.iti.jets.repository.util;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -37,8 +36,9 @@ public class ConnectionPool {
 
     private Properties loadProperties() {
         Properties properties = new Properties();
-        try (FileInputStream fis = new FileInputStream("datasource.properties")) {
-            properties.load(fis);
+
+        try {
+            properties.load(getClass().getResourceAsStream( "/datasource.properties" ));
         } catch (IOException ioException) {
             ioException.printStackTrace();
         }

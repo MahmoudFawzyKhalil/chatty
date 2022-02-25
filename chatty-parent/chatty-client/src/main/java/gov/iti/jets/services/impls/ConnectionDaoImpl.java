@@ -23,7 +23,9 @@ public class ConnectionDaoImpl implements ConnectionDao {
     @Override
     public void unregisterClient( String phoneNumber ) throws NotBoundException, RemoteException {
         ConnectionService connectionService = serviceFactory.getConnectionService();
-        connectionService.unregisterClient( phoneNumber );
+        if (connectionService != null){
+            connectionService.unregisterClient( phoneNumber );
+        }
     }
 
     @Override
