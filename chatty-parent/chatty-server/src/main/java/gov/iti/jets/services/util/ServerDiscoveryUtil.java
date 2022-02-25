@@ -21,7 +21,7 @@ public class ServerDiscoveryUtil {
     }
 
     public void startDiscoveryListener() {
-        new Thread( () -> {
+        Thread discoveryThread = new Thread( () -> {
             DatagramSocket datagramSocket = null;
             try {
                 datagramSocket = new DatagramSocket( 4444 );
@@ -50,6 +50,9 @@ public class ServerDiscoveryUtil {
                     e.printStackTrace();
                 }
             }
-        } ).start();
+        } );
+
+        discoveryThread.setDaemon( true );
+        discoveryThread.start();
     }
 }
