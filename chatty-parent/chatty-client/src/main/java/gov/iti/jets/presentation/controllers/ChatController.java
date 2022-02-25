@@ -91,8 +91,8 @@ public class ChatController implements Initializable {
 
     private ObservableMap<String, String> messageStyleMap = FXCollections.observableHashMap();
 
-    private String currentMessageTextStyleString;
-    private String currentMessageBubbleStyleString;
+    private String currentMessageTextStyleString = "";
+    private String currentMessageBubbleStyleString = "";
 
 
     public void initialize(URL location, ResourceBundle resources) {
@@ -104,8 +104,6 @@ public class ChatController implements Initializable {
         addMessageStyleMapListener();
         addFontComboBoxListeners();
         handleEnterKeyPressOnChatTextArea();
-
-        messageStyleMap.put("italic", "");
     }
 
     private void addFontComboBoxListeners() {
