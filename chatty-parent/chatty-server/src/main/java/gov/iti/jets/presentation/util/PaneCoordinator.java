@@ -1,10 +1,12 @@
 package gov.iti.jets.presentation.util;
 
 import gov.iti.jets.presentation.models.ServerModel;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,11 +33,16 @@ public class PaneCoordinator {
     }
 
     public void switchToChatPane() {
+        System.out.println(paneMap.get( "chatPane" ));
+        System.out.println(paneMap.get( "chatPane" ));
+        System.out.println(paneMap.get( "chatPane" ));
+        System.out.println(paneMap.get( "chatPane" ));
+        System.out.println(paneMap.get( "chatPane" ));
         mainSceneBorderPane.setCenter(paneMap.get("chatPane"));
     }
 
     private void loadChatPane() {
-       /* Pane chatPane = paneMap.get("chatPane");
+        Pane chatPane = paneMap.get("chatPane");
         if (chatPane == null) {
             try {
                 chatPane = FXMLLoader.load(getClass().getResource("/views/chat/ChatView.fxml"));
@@ -43,7 +50,7 @@ public class PaneCoordinator {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }*/
+        }
     }
 
     public void initDashboardPane( VBox dashboardPane ) {

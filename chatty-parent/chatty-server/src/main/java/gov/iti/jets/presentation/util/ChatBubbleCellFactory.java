@@ -1,9 +1,15 @@
 package gov.iti.jets.presentation.util;
 
-public class ChatBubbleCellFactory /*implements Callback<ListView<MessageModel>, ListCell<MessageModel>> */{
+import gov.iti.jets.presentation.customcontrols.SentChatBubble;
+import gov.iti.jets.presentation.models.MessageModel;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
+import javafx.util.Callback;
 
-/*    @Override
-    public ListCell<MessageModel> call(ListView<MessageModel> param) {
+public class ChatBubbleCellFactory implements Callback<ListView<MessageModel>, ListCell<MessageModel>> {
+
+    @Override
+    public ListCell<MessageModel> call( ListView<MessageModel> param) {
         ListCell<MessageModel> cell = new ListCell<>() {
             @Override
             public void updateItem(MessageModel messageModel, boolean empty) {
@@ -19,10 +25,6 @@ public class ChatBubbleCellFactory /*implements Callback<ListView<MessageModel>,
                         var scb = new SentChatBubble(messageModel);
                         scb.getTextFlow().maxWidthProperty().bind( parentListViewWidthProperty.multiply( 0.7 ) );
                         setGraphic(scb);
-                    } else {
-                        var scb = new ReceivedChatBubble(messageModel);
-                        scb.getTextFlow().maxWidthProperty().bind( parentListViewWidthProperty.multiply( 0.7 ) );
-                        setGraphic(scb);
                     }
                 } else {
                     setText("null");
@@ -31,7 +33,6 @@ public class ChatBubbleCellFactory /*implements Callback<ListView<MessageModel>,
             }
         };
 
-
         return cell;
-    }*/
+    }
 }

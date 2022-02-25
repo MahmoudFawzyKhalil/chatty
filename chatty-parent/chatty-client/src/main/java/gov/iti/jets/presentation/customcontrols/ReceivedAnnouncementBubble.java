@@ -13,6 +13,8 @@ import javafx.scene.text.TextFlow;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.ResourceBundle;
 
 public class ReceivedAnnouncementBubble extends HBox implements Initializable {
@@ -56,7 +58,7 @@ public class ReceivedAnnouncementBubble extends HBox implements Initializable {
         senderProfilePicCircle.setVisible( false );
         messageText.setText( announcementDto.getMessageBody() );
         senderNameLabel.setText( announcementDto.getAdminName() );
-        timeStampLabel.setText( announcementDto.getTimeStamp().toString() );
+        timeStampLabel.setText( announcementDto.getTimeStamp().format( DateTimeFormatter.ofLocalizedDateTime( FormatStyle.MEDIUM ) ) );
 
         messageText.setStyle( announcementDto.getCssTextStyleString() );
         messageBackgroundVbox.setStyle( announcementDto.getCssBubbleStyleString() );

@@ -57,12 +57,12 @@ public class MainController implements Initializable {
 
     @FXML
     void onAnnouncementsButtonAction(ActionEvent event) {
-        serverNotificationsService.sendAnnouncementToClients(null); //TODO
+        paneCoordinator.switchToChatPane();
     }
 
     @FXML
     void onChartsButtonAction(ActionEvent event) {
-        //TODO charts button action
+        paneCoordinator.switchToDashboardPane();
     }
 
     @FXML

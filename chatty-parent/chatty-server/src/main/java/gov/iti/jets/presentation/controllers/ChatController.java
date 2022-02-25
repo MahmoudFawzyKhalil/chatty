@@ -1,72 +1,89 @@
 package gov.iti.jets.presentation.controllers;
 
-public class ChatController  /*implements Initializable*/ {
-/*    private final UserModel userModel = ModelFactory.getInstance().getUserModel();
-    public ToggleButton boldToggleButton;
-    public ToggleButton italicToggleButton;
-    public ToggleButton underlineToggleButton;
-    private ContactModel contactModel;
-    private GroupChatModel groupChatModel;
-    private SingleMessageDao singleMessageDao = DaoFactory.getInstance().getSingleMessageDao();
+import gov.iti.jets.commons.dtos.AnnouncementDto;
+import gov.iti.jets.presentation.models.MessageModel;
+import gov.iti.jets.presentation.models.ServerModel;
+import gov.iti.jets.presentation.util.ChatBubbleCellFactory;
+import gov.iti.jets.presentation.util.ModelFactory;
+import gov.iti.jets.presentation.util.NoSelectionModel;
+import gov.iti.jets.services.ServerNotificationsService;
+import gov.iti.jets.services.util.ServiceFactory;
+import javafx.collections.FXCollections;
+import javafx.collections.MapChangeListener;
+import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.geometry.Side;
+import javafx.scene.control.*;
+import javafx.scene.input.ContextMenuEvent;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.shape.Circle;
+import javafx.scene.text.Font;
 
+import java.net.URL;
+import java.time.LocalDateTime;
+import java.util.ResourceBundle;
 
+public class ChatController  implements Initializable {
+
+    @FXML
+    private ToggleButton boldToggleButton;
+    @FXML
+    private ToggleButton italicToggleButton;
+    @FXML
+    private ToggleButton underlineToggleButton;
     @FXML
     private BorderPane centerBorderPane;
-
     @FXML
     private ListView<MessageModel> chatMessagesListView;
-
     @FXML
     private TextArea chatTextArea;
-
     @FXML
     private Label contactOrGroupNameLabel;
-
     @FXML
     private Circle contactOrGroupPicCircle;
-
     @FXML
     private Circle contactStatusCircle;
-
     @FXML
     private ContextMenu textStyleContextMenu;
-
     @FXML
     private Button textStyleButton;
-
     @FXML
     private ComboBox<String> fontFamilyComboBox;
-
     @FXML
     private ComboBox<String> fontSizeComboBox;
-
     @FXML
     private ColorPicker messageBackgroundColorPicker;
-
     @FXML
     private ColorPicker messageTextColorPicker;
-
     @FXML
     private Circle textBackgroundIndicatorCircle;
 
-
     private ObservableMap<String, String> messageStyleMap = FXCollections.observableHashMap();
-
-    private String currentMessageTextStyleString;
-    private String currentMessageBubbleStyleString;
-
+    private String currentMessageTextStyleString = "";
+    private String currentMessageBubbleStyleString = "";
+    private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
+    private final ServerNotificationsService serverNotificationsService = serviceFactory.getServerNotificationsService();
+    private final ServerModel serverModel = ModelFactory.getInstance().getServerModel();
 
     public void initialize( URL location, ResourceBundle resources ) {
+        bindAnnouncementsListView();
         preventRightClickOnTextStyleButton();
-        addCurrentlyChattingWithListener();
         setUpListViewProperties();
         populateFontComboBoxes();
         initMessageStyleMap();
         addMessageStyleMapListener();
         addFontComboBoxListeners();
         handleEnterKeyPressOnChatTextArea();
+    }
 
-        messageStyleMap.put( "italic", "" );
+    private void bindAnnouncementsListView() {
+        chatMessagesListView.itemsProperty().bind( serverModel.announcementsProperty() );
     }
 
     private void addFontComboBoxListeners() {
@@ -77,6 +94,16 @@ public class ChatController  /*implements Initializable*/ {
         fontFamilyComboBox.valueProperty().addListener( ( observable, oldValue, newValue ) -> {
             messageStyleMap.put( "font-family", "'" + newValue + "'" );
         } );
+    }
+
+    private void initMessageStyleMap() {
+        messageStyleMap.put( "bold", "" );
+        messageStyleMap.put( "underline", "" );
+        messageStyleMap.put( "italic", "" );
+        messageStyleMap.put( "font-family", "" );
+        messageStyleMap.put( "font-size", "" );
+        messageStyleMap.put( "font-color", "" );
+        messageStyleMap.put( "background-color", "" );
     }
 
     private void addMessageStyleMapListener() {
@@ -104,43 +131,10 @@ public class ChatController  /*implements Initializable*/ {
         } );
     }
 
-    private void initMessageStyleMap() {
-        messageStyleMap.put( "bold", "" );
-        messageStyleMap.put( "underline", "" );
-        messageStyleMap.put( "italic", "" );
-        messageStyleMap.put( "font-family", "" );
-        messageStyleMap.put( "font-size", "" );
-        messageStyleMap.put( "font-color", "" );
-        messageStyleMap.put( "background-color", "" );
-    }
-
     private void preventRightClickOnTextStyleButton() {
         textStyleButton.addEventFilter( ContextMenuEvent.CONTEXT_MENU_REQUESTED, Event::consume );
     }
 
-    private void addCurrentlyChattingWithListener() {
-        userModel.currentlyChattingWithProperty().addListener( ( observable, old, newval ) -> {
-            if (userModel.getCurrentlyChattingWith() == null) {
-                return;
-            }
-
-            Optional<ContactModel> contactOptional = userModel.getContacts().stream()
-                    .filter( cm -> cm.getPhoneNumber().equals( newval ) )
-                    .findFirst();
-            if (!contactOptional.isEmpty()) {
-                contactModel = contactOptional.get();
-                groupChatModel = null;
-                bindToContactModel();
-            } else {
-                Optional<GroupChatModel> groupChatOptional = userModel.getGroupChats().stream()
-                        .filter( gcm -> (gcm.getGroupChatId() + "").equals( newval ) )
-                        .findFirst();
-                groupChatModel = groupChatOptional.get();
-                contactModel = null;
-                bindToGroupChatModel();
-            }
-        } );
-    }
 
     private void setUpListViewProperties() {
         chatMessagesListView.setCellFactory( new ChatBubbleCellFactory() );
@@ -173,105 +167,35 @@ public class ChatController  /*implements Initializable*/ {
         } );
     }
 
-    private void bindToContactModel() {
-        PaneCoordinator.getInstance().switchToChatPane();
-        bindContactNameLabel();
-        bindContactPicCircle();
-        bindContactChatMessagesListView();
-        scrollChatMessagesListViewToLastMessage();
-    }
-
-    private void bindContactNameLabel() {
-        contactOrGroupNameLabel.textProperty().bind( contactModel.displayNameProperty() );
-    }
-
-    private void bindContactPicCircle() {
-        contactOrGroupPicCircle.setFill( new ImagePattern( contactModel.getProfilePicture() ) );
-        contactModel.profilePictureProperty().addListener( e -> {
-            contactOrGroupPicCircle.setFill( new ImagePattern( contactModel.getProfilePicture() ) );
-        } );
-    }
-
-    private void bindContactChatMessagesListView() {
-        chatMessagesListView.itemsProperty().bind( contactModel.messsagesProperty() );
-    }
-
     private void scrollChatMessagesListViewToLastMessage() {
         chatMessagesListView.scrollTo( chatMessagesListView.getItems().size() - 1 );
     }
 
-    private void bindToGroupChatModel() {
-        PaneCoordinator.getInstance().switchToChatPane();
-        bindGroupNameLabel();
-        bindGroupPicCircle();
-        bindGroupChatMessagesListView();
-        scrollChatMessagesListViewToLastMessage();
-    }
-
-    private void bindGroupNameLabel() {
-        contactOrGroupNameLabel.textProperty().bind( groupChatModel.groupChatNameProperty() );
-    }
-
-    private void bindGroupPicCircle() {
-        contactOrGroupPicCircle.setFill( new ImagePattern( groupChatModel.getGroupChatPicture() ) );
-        groupChatModel.groupChatPictureProperty().addListener( e -> {
-            contactOrGroupPicCircle.setFill( new ImagePattern( groupChatModel.getGroupChatPicture() ) );
-        } );
-    }
-
-    private void bindGroupChatMessagesListView() {
-        chatMessagesListView.itemsProperty().bind( groupChatModel.messsagesProperty() );
-    }
 
     @FXML
     void onSendMessageButtonAction( ActionEvent event ) {
 
-        *//*
-         * TODO
-         *  Refactor this to use proper methods and to get the properties form the textStyleProperties
-         *  This is part of the sendSingleMessage use case
-         * *//*
-        try {
-            singleMessageDao.sendMessage(createMessageDto());
-        } catch (NotBoundException e) {
-            e.printStackTrace();
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-        MessageModel messageModel = SingleMessageMapper.INSTANCE.dtoToModel(createMessageDto());
-        messageModel.setSentByMe(true);
-        messageModel.setSenderName(userModel.getDisplayName());
+        AnnouncementDto announcementDto = createAnnouncementDto();
 
-        if (groupChatModel == null && contactModel == null) {
-            return;
-        }
+        serverNotificationsService.sendAnnouncementToClients( announcementDto );
 
-        if (contactModel != null) {
-            contactModel.getMesssages().add(messageModel);
-            scrollChatMessagesListViewToLastMessage();
-        } else {
-            groupChatModel.getMesssages().add( new MessageModel( "You", LocalDateTime.now(),
-                    "Hello from send message button.",
-                    "", "", true ) );
-            scrollChatMessagesListViewToLastMessage();
-        }
+        MessageModel messageModel = new MessageModel( announcementDto.getAdminName(),
+                announcementDto.getTimeStamp(),
+                announcementDto.getMessageBody(),
+                announcementDto.getCssTextStyleString(),
+                announcementDto.getCssBubbleStyleString(),
+                true);
+
+        serverModel.getAnnouncements().add( messageModel );
+
         scrollChatMessagesListViewToLastMessage();
     }
 
-    private SingleMessageDto createMessageDto(){
-        SingleMessageDto singleMessageDto = new SingleMessageDto();
-        singleMessageDto.setMessageBody(chatTextArea.getText());
-        singleMessageDto.setSenderPhoneNumber(userModel.getPhoneNumber());
-        singleMessageDto.setReceiverPhoneNumber(userModel.getCurrentlyChattingWith());
-        singleMessageDto.setTimeStamp(LocalDateTime.now());
-        singleMessageDto.setCssTextStyleString(currentMessageTextStyleString);
-        singleMessageDto.setCssBubbleStyleString(currentMessageBubbleStyleString);
-        return singleMessageDto;
-    }
-
-    @FXML
-    void onAttachFileButtonAction( ActionEvent event ) {
-
+    private AnnouncementDto createAnnouncementDto(){
+        return new AnnouncementDto( chatTextArea.getText(),
+                LocalDateTime.now(),
+                this.currentMessageTextStyleString,
+                this.currentMessageBubbleStyleString);
     }
 
     @FXML
@@ -318,5 +242,5 @@ public class ChatController  /*implements Initializable*/ {
     public void onMessageBakckgroundColorPickerAction( ActionEvent actionEvent ) {
         String colorString = "#" + messageBackgroundColorPicker.getValue().toString().substring( 2, 8 );
         messageStyleMap.put( "background-color", colorString );
-    }*/
+    }
 }

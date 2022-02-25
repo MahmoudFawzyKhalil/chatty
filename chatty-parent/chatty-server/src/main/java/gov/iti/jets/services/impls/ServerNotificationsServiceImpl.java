@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.rmi.RemoteException;
-import java.time.LocalDateTime;
 
 public class ServerNotificationsServiceImpl implements ServerNotificationsService {
     Clients clients = Clients.getInstance();
@@ -29,13 +28,9 @@ public class ServerNotificationsServiceImpl implements ServerNotificationsServic
 
     @Override
     public void sendAnnouncementToClients(AnnouncementDto announcementDto) {
-        //TODO send announcement
         clients.getAllClients().forEach( client -> {
             try {
-                client.receiveAnnouncement( new AnnouncementDto("Hello from admin!",
-                        LocalDateTime.now(),
-                        "-fx-text-fill: white;",
-                        "-fx-background-color: black;") );
+                client.receiveAnnouncement( announcementDto );
             } catch (RemoteException e) {
                 e.printStackTrace();
             }

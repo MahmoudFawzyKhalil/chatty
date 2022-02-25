@@ -1,11 +1,23 @@
 package gov.iti.jets.presentation.customcontrols;
 
+import gov.iti.jets.presentation.models.MessageModel;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 
-public class SentChatBubble extends HBox  {
-/*
-    private final UserModel userModel = ModelFactory.getInstance().getUserModel();
+import java.io.IOException;
+import java.net.URL;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.util.ResourceBundle;
 
+public class SentChatBubble extends HBox implements Initializable {
     @FXML
     private VBox messageBackgroundVbox;
 
@@ -42,17 +54,14 @@ public class SentChatBubble extends HBox  {
 
     @Override
     public void initialize( URL location, ResourceBundle resources ) {
-        bindUserProfilePicCircle();
+        hideUserProfilePicCircle();
         bindMessageTextAndBackgroundProperties();
         bindUserNameLabel();
         bindTimeStampLabel();
     }
 
-    private void bindUserProfilePicCircle() {
-        userProfilePicCircle.setFill( new ImagePattern( userModel.getProfilePicture() ) );
-        userModel.profilePictureProperty().addListener( e -> {
-            userProfilePicCircle.setFill( new ImagePattern( userModel.getProfilePicture() ) );
-        } );
+    private void hideUserProfilePicCircle() {
+        userProfilePicCircle.setVisible( false );
     }
 
     private void bindMessageTextAndBackgroundProperties() {
@@ -71,5 +80,5 @@ public class SentChatBubble extends HBox  {
 
     public TextFlow getTextFlow() {
         return textFlow;
-    }*/
+    }
 }

@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 
 public class MessageModel {
     private StringProperty senderName = new SimpleStringProperty();
-    private ObjectProperty<Image> senderProfilePicture = new SimpleObjectProperty<>( new Image( getClass().getResource( "/images/user.png" ).toString() ) );
+    private ObjectProperty<Image> senderProfilePicture = new SimpleObjectProperty<>();
     private LocalDateTime timeStamp;
     private String messageBody;
     private String cssTextStyleString;
