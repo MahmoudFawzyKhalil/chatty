@@ -141,6 +141,7 @@ public class LoginController implements Initializable {
                                 });
                             });
                 });
+                passwordTextField.clear();
                 ModelFactory.getInstance().getUpdateProfileModel().resetData();
                 stageCoordinator.switchToMainScene();
 
