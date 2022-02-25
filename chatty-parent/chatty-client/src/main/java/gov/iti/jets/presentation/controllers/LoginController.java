@@ -3,17 +3,18 @@ package gov.iti.jets.presentation.controllers;
 import gov.iti.jets.commons.dtos.LoginDto;
 import gov.iti.jets.commons.dtos.StatusNotificationDto;
 import gov.iti.jets.commons.enums.StatusNotificationType;
+import gov.iti.jets.network.ClientImpl;
 import gov.iti.jets.presentation.models.ContactModel;
 import gov.iti.jets.presentation.models.GroupChatModel;
 import gov.iti.jets.presentation.models.UserModel;
 import gov.iti.jets.presentation.models.UserStatusModel;
-import gov.iti.jets.network.ClientImpl;
 import gov.iti.jets.presentation.util.ModelFactory;
 import gov.iti.jets.presentation.util.StageCoordinator;
 import gov.iti.jets.presentation.util.UiValidator;
 import gov.iti.jets.services.ConnectionDao;
 import gov.iti.jets.services.LoginDao;
 import gov.iti.jets.services.util.DaoFactory;
+import gov.iti.jets.services.util.ServiceFactory;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -27,6 +28,7 @@ import net.synedra.validatorfx.Validator;
 
 import java.net.URL;
 import java.rmi.ConnectException;
+import java.rmi.NoSuchObjectException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -145,12 +147,13 @@ public class LoginController implements Initializable {
             } else {
                 stageCoordinator.showErrorNotification("Invalid phone number or password.");
             }
-        } catch (ConnectException c) {
+        } catch (NoSuchObjectException | NotBoundException | ConnectException c) {
+            ServiceFactory.getInstance().shutdown();
             stageCoordinator.showErrorNotification("Failed to connect to server. Please try again later.");
             ModelFactory.getInstance().clearUserModel();
             modelFactory.clearUserModel();
             stageCoordinator.switchToConnectToServer();
-        } catch (NotBoundException | RemoteException e) {
+        } catch (RemoteException e) {
             stageCoordinator.showErrorNotification("Failed to connect to server. Please try again later.");
             e.printStackTrace();
         }

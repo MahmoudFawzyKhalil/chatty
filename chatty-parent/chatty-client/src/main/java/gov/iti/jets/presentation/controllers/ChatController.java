@@ -13,6 +13,7 @@ import gov.iti.jets.presentation.util.cellfactories.NoSelectionModel;
 import gov.iti.jets.services.GroupMessageDao;
 import gov.iti.jets.services.SingleMessageDao;
 import gov.iti.jets.services.util.DaoFactory;
+import gov.iti.jets.services.util.ServiceFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.MapChangeListener;
 import javafx.collections.ObservableList;
@@ -33,6 +34,7 @@ import javafx.scene.text.Font;
 
 import java.net.URL;
 import java.rmi.ConnectException;
+import java.rmi.NoSuchObjectException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.time.LocalDateTime;
@@ -273,12 +275,13 @@ public class ChatController implements Initializable {
         try {
             singleMessageDao.sendMessage(createMessageDto());
 
-        } catch (ConnectException c) {
+        } catch (NoSuchObjectException | NotBoundException | ConnectException c) {
+            ServiceFactory.getInstance().shutdown();
             StageCoordinator.getInstance().showErrorNotification("Failed to connect to server. Please try again later.");
             ModelFactory.getInstance().clearUserModel();
             ModelFactory.getInstance().clearUserModel();
             StageCoordinator.getInstance().switchToConnectToServer();
-        } catch (NotBoundException | RemoteException e) {
+        } catch (RemoteException e) {
             e.printStackTrace();
         }
         MessageModel messageModel = SingleMessageMapper.INSTANCE.dtoToModel(createMessageDto());
@@ -297,12 +300,12 @@ public class ChatController implements Initializable {
                 System.out.println("hereeee");
 
                 groupMessageDao.sendGroupMessage(createGroupMessageDto());
-            } catch (ConnectException c) {
+            } catch (NoSuchObjectException | NotBoundException | ConnectException c) {
+                ServiceFactory.getInstance().shutdown();
                 StageCoordinator.getInstance().showErrorNotification("Failed to connect to server. Please try again later.");
                 ModelFactory.getInstance().clearUserModel();
-                ModelFactory.getInstance().clearUserModel();
                 StageCoordinator.getInstance().switchToConnectToServer();
-            } catch (NotBoundException | RemoteException e) {
+            } catch (RemoteException e) {
                 e.printStackTrace();
             }
             MessageModel groupMessageModel = GroupMessageMapper.INSTANCE.dtoToModel(createGroupMessageDto());
