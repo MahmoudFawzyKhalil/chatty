@@ -56,7 +56,9 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
         userModel.setBirthDate(userDto.getBirthDate());
         userModel.setCountry(CountryMapper.INSTANCE.countryDtoToModel(userDto.getCountry()));
         userModel.setCurrentStatus(UserStatusMapper.INSTANCE.dtoToModel(userDto.getCurrentStatus()));
+
         userModel.setProfilePicture(ImageMapper.getInstance().encodedStringToImage(userDto.getProfilePicture()));
+
 
         for (ContactDto contactDto : userDto.getContactsList()) {
             userModel.getContacts().add(ContactMapper.INSTANCE.contactDtoToModel(contactDto));
