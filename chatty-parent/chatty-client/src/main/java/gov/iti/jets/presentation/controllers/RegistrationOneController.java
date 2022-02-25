@@ -16,6 +16,7 @@ import javafx.scene.control.TextField;
 import net.synedra.validatorfx.Validator;
 
 import java.net.URL;
+import java.rmi.ConnectException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ResourceBundle;
@@ -75,6 +76,11 @@ public class RegistrationOneController implements Initializable {
     boolean isPhoneNumberFound() {
         try {
             return registerDao.validatePhoneNumber(registerModel.getPhoneNumber());
+        } catch (ConnectException c) {
+            StageCoordinator.getInstance().showErrorNotification("Failed to connect to server. Please try again later.");
+            ModelFactory.getInstance().clearUserModel();
+            ModelFactory.getInstance().clearUserModel();
+            StageCoordinator.getInstance().switchToConnectToServer();
         } catch (NotBoundException | RemoteException e) {
             stageCoordinator.showErrorNotification(ErrorMessages.FAILED_TO_CONNECT);
         }

@@ -7,6 +7,7 @@ import gov.iti.jets.presentation.models.mappers.GroupMessageMapper;
 import gov.iti.jets.presentation.models.mappers.SingleMessageMapper;
 import gov.iti.jets.presentation.util.ModelFactory;
 import gov.iti.jets.presentation.util.PaneCoordinator;
+import gov.iti.jets.presentation.util.StageCoordinator;
 import gov.iti.jets.presentation.util.cellfactories.ChatBubbleCellFactory;
 import gov.iti.jets.presentation.util.cellfactories.NoSelectionModel;
 import gov.iti.jets.services.GroupMessageDao;
@@ -31,6 +32,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 
 import java.net.URL;
+import java.rmi.ConnectException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.time.LocalDateTime;
@@ -93,7 +95,7 @@ public class ChatController implements Initializable {
     private String currentMessageBubbleStyleString;
 
 
-    public void initialize( URL location, ResourceBundle resources ) {
+    public void initialize(URL location, ResourceBundle resources) {
         preventRightClickOnTextStyleButton();
         addCurrentlyChattingWithListener();
         setUpListViewProperties();
@@ -103,66 +105,66 @@ public class ChatController implements Initializable {
         addFontComboBoxListeners();
         handleEnterKeyPressOnChatTextArea();
 
-        messageStyleMap.put( "italic", "" );
+        messageStyleMap.put("italic", "");
     }
 
     private void addFontComboBoxListeners() {
-        fontSizeComboBox.valueProperty().addListener( ( observable, oldValue, newValue ) -> {
-            messageStyleMap.put( "font-size", newValue );
-        } );
+        fontSizeComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+            messageStyleMap.put("font-size", newValue);
+        });
 
-        fontFamilyComboBox.valueProperty().addListener( ( observable, oldValue, newValue ) -> {
-            messageStyleMap.put( "font-family", "'" + newValue + "'" );
-        } );
+        fontFamilyComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+            messageStyleMap.put("font-family", "'" + newValue + "'");
+        });
     }
 
     private void addMessageStyleMapListener() {
-        messageStyleMap.addListener( new MapChangeListener<String, String>() {
+        messageStyleMap.addListener(new MapChangeListener<String, String>() {
 
             @Override
-            public void onChanged( Change<? extends String, ? extends String> change ) {
-                String bold = messageStyleMap.get( "bold" ).isEmpty() ? "" : "-fx-font-weight: " + messageStyleMap.get( "bold" ) + "; ";
-                String underline = messageStyleMap.get( "underline" ).isEmpty() ? "" : "-fx-underline: " + messageStyleMap.get( "underline" ) + "; ";
-                String italic = messageStyleMap.get( "italic" ).isEmpty() ? "" : "-fx-font-style: " + messageStyleMap.get( "italic" ) + "; ";
-                String fontFamily = messageStyleMap.get( "font-family" ).isEmpty() ? "" : "-fx-font-family: " + messageStyleMap.get( "font-family" ) + "; ";
-                String fontSize = messageStyleMap.get( "font-size" ).isEmpty() ? "" : "-fx-font-size: " + messageStyleMap.get( "font-size" ) + "; ";
-                String textAreaFontColor = messageStyleMap.get( "font-color" ).isEmpty() ? "" : "-fx-text-fill: " + messageStyleMap.get( "font-color" ) + "; ";
-                String messageFontColor = messageStyleMap.get( "font-color" ).isEmpty() ? "" : "-fx-fill: " + messageStyleMap.get( "font-color" ) + "; ";
-                String messageBackgroundColor = messageStyleMap.get( "background-color" ).isEmpty() ? "" : "-fx-background-color: " + messageStyleMap.get( "background-color" ) + "; ";
-                String indicatorBackgroundColor = messageStyleMap.get( "background-color" ).isEmpty() ? "" : "-fx-fill: " + messageStyleMap.get( "background-color" ) + "; ";
+            public void onChanged(Change<? extends String, ? extends String> change) {
+                String bold = messageStyleMap.get("bold").isEmpty() ? "" : "-fx-font-weight: " + messageStyleMap.get("bold") + "; ";
+                String underline = messageStyleMap.get("underline").isEmpty() ? "" : "-fx-underline: " + messageStyleMap.get("underline") + "; ";
+                String italic = messageStyleMap.get("italic").isEmpty() ? "" : "-fx-font-style: " + messageStyleMap.get("italic") + "; ";
+                String fontFamily = messageStyleMap.get("font-family").isEmpty() ? "" : "-fx-font-family: " + messageStyleMap.get("font-family") + "; ";
+                String fontSize = messageStyleMap.get("font-size").isEmpty() ? "" : "-fx-font-size: " + messageStyleMap.get("font-size") + "; ";
+                String textAreaFontColor = messageStyleMap.get("font-color").isEmpty() ? "" : "-fx-text-fill: " + messageStyleMap.get("font-color") + "; ";
+                String messageFontColor = messageStyleMap.get("font-color").isEmpty() ? "" : "-fx-fill: " + messageStyleMap.get("font-color") + "; ";
+                String messageBackgroundColor = messageStyleMap.get("background-color").isEmpty() ? "" : "-fx-background-color: " + messageStyleMap.get("background-color") + "; ";
+                String indicatorBackgroundColor = messageStyleMap.get("background-color").isEmpty() ? "" : "-fx-fill: " + messageStyleMap.get("background-color") + "; ";
 
                 String textAreaStyleString = bold + underline + italic + fontFamily + fontSize + textAreaFontColor + messageFontColor;
                 currentMessageTextStyleString = bold + underline + italic + fontFamily + fontSize + messageFontColor;
                 currentMessageBubbleStyleString = messageBackgroundColor;
 
-                chatTextArea.setStyle( textAreaStyleString );
-                textBackgroundIndicatorCircle.setStyle( indicatorBackgroundColor );
+                chatTextArea.setStyle(textAreaStyleString);
+                textBackgroundIndicatorCircle.setStyle(indicatorBackgroundColor);
             }
-        } );
+        });
     }
 
     private void initMessageStyleMap() {
-        messageStyleMap.put( "bold", "" );
-        messageStyleMap.put( "underline", "" );
-        messageStyleMap.put( "italic", "" );
-        messageStyleMap.put( "font-family", "" );
-        messageStyleMap.put( "font-size", "" );
-        messageStyleMap.put( "font-color", "" );
-        messageStyleMap.put( "background-color", "" );
+        messageStyleMap.put("bold", "");
+        messageStyleMap.put("underline", "");
+        messageStyleMap.put("italic", "");
+        messageStyleMap.put("font-family", "");
+        messageStyleMap.put("font-size", "");
+        messageStyleMap.put("font-color", "");
+        messageStyleMap.put("background-color", "");
     }
 
     private void preventRightClickOnTextStyleButton() {
-        textStyleButton.addEventFilter( ContextMenuEvent.CONTEXT_MENU_REQUESTED, Event::consume );
+        textStyleButton.addEventFilter(ContextMenuEvent.CONTEXT_MENU_REQUESTED, Event::consume);
     }
 
     private void addCurrentlyChattingWithListener() {
-        userModel.currentlyChattingWithProperty().addListener( ( observable, old, newval ) -> {
+        userModel.currentlyChattingWithProperty().addListener((observable, old, newval) -> {
             if (userModel.getCurrentlyChattingWith() == null) {
                 return;
             }
 
             Optional<ContactModel> contactOptional = userModel.getContacts().stream()
-                    .filter( cm -> cm.getPhoneNumber().equals( newval ) )
+                    .filter(cm -> cm.getPhoneNumber().equals(newval))
                     .findFirst();
             if (!contactOptional.isEmpty()) {
                 contactModel = contactOptional.get();
@@ -170,44 +172,44 @@ public class ChatController implements Initializable {
                 bindToContactModel();
             } else {
                 Optional<GroupChatModel> groupChatOptional = userModel.getGroupChats().stream()
-                        .filter( gcm -> (gcm.getGroupChatId() + "").equals( newval ) )
+                        .filter(gcm -> (gcm.getGroupChatId() + "").equals(newval))
                         .findFirst();
                 groupChatModel = groupChatOptional.get();
                 contactModel = null;
                 bindToGroupChatModel();
             }
-        } );
+        });
     }
 
     private void setUpListViewProperties() {
-        chatMessagesListView.setCellFactory( new ChatBubbleCellFactory() );
-        chatMessagesListView.setSelectionModel( new NoSelectionModel<>() );
+        chatMessagesListView.setCellFactory(new ChatBubbleCellFactory());
+        chatMessagesListView.setSelectionModel(new NoSelectionModel<>());
     }
 
     private void populateFontComboBoxes() {
         ObservableList<String> sizes = FXCollections.observableArrayList();
-        sizes.addAll( "10", "12", "14", "16", "18", "20", "22", "24" );
-        fontSizeComboBox.itemsProperty().set( sizes );
-        fontSizeComboBox.getSelectionModel().select( "12" );
+        sizes.addAll("10", "12", "14", "16", "18", "20", "22", "24");
+        fontSizeComboBox.itemsProperty().set(sizes);
+        fontSizeComboBox.getSelectionModel().select("12");
 
-        ObservableList<String> fonts = FXCollections.observableArrayList( Font.getFontNames() );
-        fontFamilyComboBox.itemsProperty().set( fonts );
-        fontFamilyComboBox.getSelectionModel().select( "Helvetica" );
+        ObservableList<String> fonts = FXCollections.observableArrayList(Font.getFontNames());
+        fontFamilyComboBox.itemsProperty().set(fonts);
+        fontFamilyComboBox.getSelectionModel().select("Helvetica");
     }
 
     private void handleEnterKeyPressOnChatTextArea() {
-        chatTextArea.addEventFilter( KeyEvent.KEY_PRESSED, keyEvent -> {
+        chatTextArea.addEventFilter(KeyEvent.KEY_PRESSED, keyEvent -> {
             if (keyEvent.getCode() == KeyCode.ENTER && keyEvent.isShiftDown()) {
-                chatTextArea.appendText( "\n" );
+                chatTextArea.appendText("\n");
                 return;
             }
 
             if (keyEvent.getCode() == KeyCode.ENTER) {
                 keyEvent.consume();
                 if (chatTextArea.getText().isEmpty()) return;
-                onSendMessageButtonAction( new ActionEvent() );
+                onSendMessageButtonAction(new ActionEvent());
             }
-        } );
+        });
     }
 
     private void bindToContactModel() {
@@ -219,22 +221,22 @@ public class ChatController implements Initializable {
     }
 
     private void bindContactNameLabel() {
-        contactOrGroupNameLabel.textProperty().bind( contactModel.displayNameProperty() );
+        contactOrGroupNameLabel.textProperty().bind(contactModel.displayNameProperty());
     }
 
     private void bindContactPicCircle() {
-        contactOrGroupPicCircle.setFill( new ImagePattern( contactModel.getProfilePicture() ) );
-        contactModel.profilePictureProperty().addListener( e -> {
-            contactOrGroupPicCircle.setFill( new ImagePattern( contactModel.getProfilePicture() ) );
-        } );
+        contactOrGroupPicCircle.setFill(new ImagePattern(contactModel.getProfilePicture()));
+        contactModel.profilePictureProperty().addListener(e -> {
+            contactOrGroupPicCircle.setFill(new ImagePattern(contactModel.getProfilePicture()));
+        });
     }
 
     private void bindContactChatMessagesListView() {
-        chatMessagesListView.itemsProperty().bind( contactModel.messsagesProperty() );
+        chatMessagesListView.itemsProperty().bind(contactModel.messsagesProperty());
     }
 
     private void scrollChatMessagesListViewToLastMessage() {
-        chatMessagesListView.scrollTo( chatMessagesListView.getItems().size() - 1 );
+        chatMessagesListView.scrollTo(chatMessagesListView.getItems().size() - 1);
     }
 
     private void bindToGroupChatModel() {
@@ -246,22 +248,22 @@ public class ChatController implements Initializable {
     }
 
     private void bindGroupNameLabel() {
-        contactOrGroupNameLabel.textProperty().bind( groupChatModel.groupChatNameProperty() );
+        contactOrGroupNameLabel.textProperty().bind(groupChatModel.groupChatNameProperty());
     }
 
     private void bindGroupPicCircle() {
-        contactOrGroupPicCircle.setFill( new ImagePattern( groupChatModel.getGroupChatPicture() ) );
-        groupChatModel.groupChatPictureProperty().addListener( e -> {
-            contactOrGroupPicCircle.setFill( new ImagePattern( groupChatModel.getGroupChatPicture() ) );
-        } );
+        contactOrGroupPicCircle.setFill(new ImagePattern(groupChatModel.getGroupChatPicture()));
+        groupChatModel.groupChatPictureProperty().addListener(e -> {
+            contactOrGroupPicCircle.setFill(new ImagePattern(groupChatModel.getGroupChatPicture()));
+        });
     }
 
     private void bindGroupChatMessagesListView() {
-        chatMessagesListView.itemsProperty().bind( groupChatModel.messsagesProperty() );
+        chatMessagesListView.itemsProperty().bind(groupChatModel.messsagesProperty());
     }
 
     @FXML
-    void onSendMessageButtonAction( ActionEvent event ) {
+    void onSendMessageButtonAction(ActionEvent event) {
 
         /*
          * TODO
@@ -273,9 +275,12 @@ public class ChatController implements Initializable {
         try {
             singleMessageDao.sendMessage(createMessageDto());
 
-        } catch (NotBoundException e) {
-            e.printStackTrace();
-        } catch (RemoteException e) {
+        } catch (ConnectException c) {
+            StageCoordinator.getInstance().showErrorNotification("Failed to connect to server. Please try again later.");
+            ModelFactory.getInstance().clearUserModel();
+            ModelFactory.getInstance().clearUserModel();
+            StageCoordinator.getInstance().switchToConnectToServer();
+        } catch (NotBoundException | RemoteException e) {
             e.printStackTrace();
         }
         MessageModel messageModel = SingleMessageMapper.INSTANCE.dtoToModel(createMessageDto());
@@ -294,9 +299,12 @@ public class ChatController implements Initializable {
                 System.out.println("hereeee");
 
                 groupMessageDao.sendGroupMessage(createGroupMessageDto());
-            } catch (NotBoundException e) {
-                e.printStackTrace();
-            } catch (RemoteException e) {
+            } catch (ConnectException c) {
+                StageCoordinator.getInstance().showErrorNotification("Failed to connect to server. Please try again later.");
+                ModelFactory.getInstance().clearUserModel();
+                ModelFactory.getInstance().clearUserModel();
+                StageCoordinator.getInstance().switchToConnectToServer();
+            } catch (NotBoundException | RemoteException e) {
                 e.printStackTrace();
             }
             MessageModel groupMessageModel = GroupMessageMapper.INSTANCE.dtoToModel(createGroupMessageDto());
@@ -309,7 +317,7 @@ public class ChatController implements Initializable {
         scrollChatMessagesListViewToLastMessage();
     }
 
-    private SingleMessageDto createMessageDto(){
+    private SingleMessageDto createMessageDto() {
         SingleMessageDto singleMessageDto = new SingleMessageDto();
         singleMessageDto.setMessageBody(chatTextArea.getText());
         singleMessageDto.setSenderPhoneNumber(userModel.getPhoneNumber());
@@ -320,7 +328,7 @@ public class ChatController implements Initializable {
         return singleMessageDto;
     }
 
-    private GroupMessageDto createGroupMessageDto(){
+    private GroupMessageDto createGroupMessageDto() {
         Integer groupId = Integer.valueOf(userModel.getCurrentlyChattingWith());
         GroupMessageDto groupMessageDto = new GroupMessageDto();
         groupMessageDto.setGroupChatId(groupId);
@@ -334,54 +342,54 @@ public class ChatController implements Initializable {
     }
 
     @FXML
-    void onAttachFileButtonAction( ActionEvent event ) {
+    void onAttachFileButtonAction(ActionEvent event) {
 
     }
 
     @FXML
-    void onBoldToggleButtonAction( ActionEvent event ) {
+    void onBoldToggleButtonAction(ActionEvent event) {
         if (boldToggleButton.isSelected()) {
-            messageStyleMap.put( "bold", "bold" );
+            messageStyleMap.put("bold", "bold");
         } else {
-            messageStyleMap.put( "bold", "" );
+            messageStyleMap.put("bold", "");
         }
     }
 
     @FXML
-    void onItalicToggleButtonAction( ActionEvent event ) {
+    void onItalicToggleButtonAction(ActionEvent event) {
         if (italicToggleButton.isSelected()) {
-            messageStyleMap.put( "italic", "italic" );
+            messageStyleMap.put("italic", "italic");
         } else {
-            messageStyleMap.put( "italic", "" );
+            messageStyleMap.put("italic", "");
         }
     }
 
     @FXML
-    void onUnderlineToggleButtonAction( ActionEvent event ) {
+    void onUnderlineToggleButtonAction(ActionEvent event) {
         if (underlineToggleButton.isSelected()) {
-            messageStyleMap.put( "underline", "true" );
+            messageStyleMap.put("underline", "true");
         } else {
-            messageStyleMap.put( "underline", "" );
+            messageStyleMap.put("underline", "");
         }
     }
 
     @FXML
-    void onTextStyleButtonAction( ActionEvent event ) {
+    void onTextStyleButtonAction(ActionEvent event) {
         showTextStyleContextMenu();
     }
 
     private void showTextStyleContextMenu() {
-        textStyleContextMenu.show( textStyleButton, Side.RIGHT, 0, 0 );
+        textStyleContextMenu.show(textStyleButton, Side.RIGHT, 0, 0);
     }
 
-    public void onMessageTextColorPickerAction( ActionEvent actionEvent ) {
-        String colorString = "#" + messageTextColorPicker.getValue().toString().substring( 2, 8 );
-        messageStyleMap.put( "font-color", colorString );
+    public void onMessageTextColorPickerAction(ActionEvent actionEvent) {
+        String colorString = "#" + messageTextColorPicker.getValue().toString().substring(2, 8);
+        messageStyleMap.put("font-color", colorString);
     }
 
-    public void onMessageBakckgroundColorPickerAction( ActionEvent actionEvent ) {
-        String colorString = "#" + messageBackgroundColorPicker.getValue().toString().substring( 2, 8 );
-        messageStyleMap.put( "background-color", colorString );
+    public void onMessageBakckgroundColorPickerAction(ActionEvent actionEvent) {
+        String colorString = "#" + messageBackgroundColorPicker.getValue().toString().substring(2, 8);
+        messageStyleMap.put("background-color", colorString);
     }
 
 }

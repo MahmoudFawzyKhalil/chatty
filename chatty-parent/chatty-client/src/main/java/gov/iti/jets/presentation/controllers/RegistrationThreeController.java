@@ -18,6 +18,7 @@ import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.net.URL;
+import java.rmi.ConnectException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ResourceBundle;
@@ -76,7 +77,12 @@ public class RegistrationThreeController implements Initializable {
                 stageCoordinator.showErrorNotification(ErrorMessages.FAILED_REGISTER);
             }
 
-        } catch (NotBoundException | RemoteException e) {
+        } catch (ConnectException c) {
+            stageCoordinator.showErrorNotification("Failed to connect to server. Please try again later.");
+            ModelFactory.getInstance().clearUserModel();
+            modelFactory.clearUserModel();
+            stageCoordinator.switchToConnectToServer();
+        }catch (NotBoundException | RemoteException e) {
             stageCoordinator.showErrorNotification(ErrorMessages.FAILED_TO_CONNECT);
         }
         return false;

@@ -3,6 +3,8 @@ module chatty.client {
     requires java.rmi;
     requires  chatty.commons;
 
+    requires org.slf4j;
+
     // JavaFX
     requires javafx.controls;
     requires javafx.fxml;

@@ -21,11 +21,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
+import java.rmi.ConnectException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class AddContactController implements Initializable {
@@ -74,6 +74,11 @@ public class AddContactController implements Initializable {
                     }
                 }
 
+            }catch (ConnectException c) {
+                stageCoordinator.showErrorNotification("Failed to connect to server. Please try again later.");
+                ModelFactory.getInstance().clearUserModel();
+                modelFactory.clearUserModel();
+                stageCoordinator.switchToConnectToServer();
             } catch (NotBoundException | RemoteException e) {
                 stageCoordinator.showErrorNotification( "Failed to connect to server. Please try again later." );
                 e.printStackTrace();
@@ -123,7 +128,12 @@ public class AddContactController implements Initializable {
                                 phoneNumbers.remove(invitedNumber);
                                 System.out.println(phoneNumbers);
                             }
-                    } catch (NotBoundException | RemoteException ex) {
+                    } catch (ConnectException c) {
+                        stageCoordinator.showErrorNotification("Failed to connect to server. Please try again later.");
+                        ModelFactory.getInstance().clearUserModel();
+                        modelFactory.clearUserModel();
+                        stageCoordinator.switchToConnectToServer();
+                    }catch (NotBoundException | RemoteException ex) {
                         StageCoordinator.getInstance().showErrorNotification(ErrorMessages.FAILED_TO_CONNECT);
                         ex.printStackTrace();
                     }
