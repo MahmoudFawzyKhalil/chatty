@@ -10,15 +10,20 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class ConnectionPool {
-    private static HikariConfig config = new HikariConfig();
-    private static HikariDataSource ds;
-    static {
+    private static ConnectionPool INSTANCE = new ConnectionPool();
+    
+    private HikariConfig config = new HikariConfig();
+    private HikariDataSource ds;
+    
+    private ConnectionPool() {
         configure();
     }
-    private ConnectionPool() {
+
+    public static ConnectionPool getInstance() {
+        return INSTANCE;
     }
 
-    private static void configure() {
+    private void configure() {
         Properties properties = loadProperties();
         config.setJdbcUrl(properties.getProperty("url"));
         config.setUsername(properties.getProperty("username"));
@@ -30,7 +35,7 @@ public class ConnectionPool {
         ds = new HikariDataSource(config);
     }
 
-    private static Properties loadProperties() {
+    private Properties loadProperties() {
         Properties properties = new Properties();
         try (FileInputStream fis = new FileInputStream("datasource.properties")) {
             properties.load(fis);
@@ -40,11 +45,11 @@ public class ConnectionPool {
         return properties;
     }
 
-    public static void cleanup(){
+    public void cleanup(){
         ds.close();
     }
 
-    public static Connection getConnection() throws SQLException {
+    public Connection getConnection() throws SQLException {
         return ds.getConnection();
     }
 }

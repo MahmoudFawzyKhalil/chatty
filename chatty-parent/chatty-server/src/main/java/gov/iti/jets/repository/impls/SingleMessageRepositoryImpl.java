@@ -16,7 +16,7 @@ public class SingleMessageRepositoryImpl implements SingleMessageRepository {
 
     @Override
     public boolean insertMessage(SingleMessageEntity singleMessageEntity) {
-        try (Connection connection = ConnectionPool.getConnection();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement("insert into single_messages (sender_phone_number, receiver_phone_number, message_body, css_bubble_style, css_text_style, time_stamp) values(?, ?, ?, ?, ?, ?) ")) {
             preparedStatement.setString(1, singleMessageEntity.getSenderPhoneNumber());
             preparedStatement.setString(2, singleMessageEntity.getReceiverPhoneNumber());
@@ -38,7 +38,7 @@ public class SingleMessageRepositoryImpl implements SingleMessageRepository {
     @Override
     public List<SingleMessageEntity> getMessagesList() {
         List<SingleMessageEntity> messageList = new ArrayList<>();
-        try (Connection connection = ConnectionPool.getConnection();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement("select sender_phone_number, receiver_phone_number, message_body, css_bubble_style, css_text_style, time_stamp from single_messages");
         ) {
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -61,7 +61,7 @@ public class SingleMessageRepositoryImpl implements SingleMessageRepository {
         Map<String, List<SingleMessageEntity>> messagesMap = new HashMap<>();
         Optional<ContactEntity> optionalContactEntity;
 
-        try (Connection connection = ConnectionPool.getConnection();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement1 = connection.prepareStatement("select sender_phone_number, receiver_phone_number, message_body, css_bubble_style, css_text_style, time_stamp from single_messages where sender_phone_number = ? ");
              PreparedStatement statement2 = connection.prepareStatement("select sender_phone_number, receiver_phone_number, message_body, css_bubble_style, css_text_style, time_stamp from single_messages where receiver_phone_number = ?");
         ) {

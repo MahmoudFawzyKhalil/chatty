@@ -27,7 +27,7 @@ public class ChattyServerApp extends Application {
     }
     @Override
     public void stop() throws Exception {
-        ConnectionPool.cleanup();
+        ConnectionPool.getInstance().cleanup();
         serverNotificationsService.notifyClientsOfServerShutDown();
         rmiManager.stop();
     }

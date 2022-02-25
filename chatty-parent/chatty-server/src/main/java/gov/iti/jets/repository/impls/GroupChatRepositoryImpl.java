@@ -22,7 +22,7 @@ public class GroupChatRepositoryImpl implements GroupChatRepository {
     public Optional<GroupChatEntity> getById(int id) {
         String query = "select group_chat_id,group_chat_name,picture from group_chats where group_chat_id = ?";
         Optional<GroupChatEntity> optionalGroupChatEntity = Optional.empty();
-        try (Connection connection = ConnectionPool.getConnection();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(query);
         ) {
             statement.setInt(1, id);
@@ -53,7 +53,7 @@ public class GroupChatRepositoryImpl implements GroupChatRepository {
                 "where group_chat_id = ?";
 
         List<ContactEntity> groupMembersList = new ArrayList<>();
-        try (Connection connection = ConnectionPool.getConnection();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(query);
         ) {
             statement.setInt(1, id);
@@ -71,7 +71,7 @@ public class GroupChatRepositoryImpl implements GroupChatRepository {
     @Override
     public List<GroupChatEntity> getGroupChats(String phoneNumber) {
         List<Integer> joinedGroups = new ArrayList<>();
-        try (Connection connection = ConnectionPool.getConnection();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement("select group_chat_id from group_chats_users where user_phone_number = ?");
         ) {
             statement.setString(1, phoneNumber);
@@ -95,7 +95,7 @@ public class GroupChatRepositoryImpl implements GroupChatRepository {
     public int addGroup(GroupChatEntity groupChatEntity) {
         String query = "insert into group_chats (group_chat_name) values (?) ";
         int addedGroupId = -1;
-        try (Connection connection = ConnectionPool.getConnection();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
         ) {
             statement.setString(1, groupChatEntity.getGroupChatName());
@@ -126,7 +126,7 @@ public class GroupChatRepositoryImpl implements GroupChatRepository {
     public boolean addMembers(int id, List<ContactEntity> groupMembersList) {
         String query = "insert into group_chats_users (group_chat_id, user_phone_number) values(?, ?) ";
         if (isFoundById(id)) {
-            try (Connection connection = ConnectionPool.getConnection();
+            try (Connection connection = ConnectionPool.getInstance().getConnection();
                  PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 connection.setAutoCommit(false);
 
@@ -152,7 +152,7 @@ public class GroupChatRepositoryImpl implements GroupChatRepository {
 
     @Override
     public boolean deleteGroup(int id) {
-        try (Connection connection = ConnectionPool.getConnection();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement("delete from group_chats where group_chat_id= ? ");
         ) {
             statement.setInt(1, id);
@@ -168,7 +168,7 @@ public class GroupChatRepositoryImpl implements GroupChatRepository {
 
     @Override
     public boolean isFoundById(int id) {
-        try (Connection connection = ConnectionPool.getConnection();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement("select group_chat_id from group_chats where group_chat_id = ? ");
         ) {
             statement.setInt(1, id);
@@ -186,7 +186,7 @@ public class GroupChatRepositoryImpl implements GroupChatRepository {
 
     @Override
     public boolean updatePicture(int groupId, String picURL) {
-        try (Connection connection = ConnectionPool.getConnection();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement("update group_chats set picture = ? where group_chat_id = ?");
         ) {
             statement.setString(1, picURL);

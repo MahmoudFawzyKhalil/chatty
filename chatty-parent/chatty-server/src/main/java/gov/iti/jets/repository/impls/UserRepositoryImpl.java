@@ -17,7 +17,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public boolean isFoundByPhoneNumberAndPassword(String phoneNumber, String password) {
-        try (Connection connection = ConnectionPool.getConnection();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement("select * from users where phone_number = ? and user_password=?")) {
             preparedStatement.setString(1, phoneNumber);
             preparedStatement.setString(2, password);
@@ -32,7 +32,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public boolean addContacts(AddContactDto addContactDto) {
-        try (Connection connection = ConnectionPool.getConnection();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement("insert into invitations (sender, receiver) values(?,?)")) {
 
             logger.info("An attempt to add a contact was made: " + addContactDto.toString());
@@ -56,7 +56,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public boolean addUser(UserEntity userEntity) {
         if (!(isFoundByPhoneNumber(userEntity.getPhoneNumber()))) {
-            try (Connection connection = ConnectionPool.getConnection();
+            try (Connection connection = ConnectionPool.getInstance().getConnection();
                  PreparedStatement preparedStatement = connection.prepareStatement("insert into users (phone_number, display_name,gender, email,picture, bio, user_password, birth_date,country_id) values(?, ?, ?, ?, ?, ?, ?, ?, ?) ")) {
                 preparedStatement.setString(1, userEntity.getPhoneNumber());
                 preparedStatement.setString(2, userEntity.getDisplayName());
@@ -81,7 +81,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public boolean isFoundByPhoneNumber(String phoneNumber) {
-        try (Connection connection = ConnectionPool.getConnection();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement("select phone_number from users where phone_number = ?")) {
             preparedStatement.setString(1, phoneNumber);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -95,7 +95,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public boolean isFoundByEmail(String email) {
-        try (Connection connection = ConnectionPool.getConnection();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement("select email from users where email = ?")) {
             preparedStatement.setString(1, email);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -109,7 +109,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public boolean updatePicture(String imgPath, String phoneNumber) {
-        try (Connection connection = ConnectionPool.getConnection();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement("update users set picture = ? where phone_number = ?")) {
 
             preparedStatement.setString(1, imgPath);
@@ -126,7 +126,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public boolean update(UserEntity userEntity) {
-        try (Connection connection = ConnectionPool.getConnection();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement("update users set display_name = ? , bio = ? where phone_number = ?")) {
 
             preparedStatement.setString(1, userEntity.getDisplayName());
@@ -153,7 +153,7 @@ public class UserRepositoryImpl implements UserRepository {
 
         Optional<UserEntity> optionalUserEntity = Optional.empty();
 
-        try (Connection connection = ConnectionPool.getConnection();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement("select * from users where phone_number = ?")) {
             preparedStatement.setString(1, phoneNumber);
             try (ResultSet resultSet = preparedStatement.executeQuery();) {
