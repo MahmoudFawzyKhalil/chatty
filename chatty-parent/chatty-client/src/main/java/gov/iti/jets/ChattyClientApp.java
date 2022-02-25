@@ -1,14 +1,14 @@
 package gov.iti.jets;
 
 import gov.iti.jets.presentation.util.ModelFactory;
-import gov.iti.jets.presentation.util.MyExecutor;
+import gov.iti.jets.presentation.util.ExecutorUtil;
 import gov.iti.jets.presentation.util.StageCoordinator;
-import gov.iti.jets.services.util.ClientDiscoveryUtil;
 import gov.iti.jets.services.util.DaoFactory;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import gov.iti.jets.services.util.ClientDiscoveryUtil;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -41,7 +41,7 @@ public class ChattyClientApp extends Application {
         try {
             DaoFactory.getInstance().getConnectionService().unregisterClient(ModelFactory.getInstance().getUserModel().getPhoneNumber());
             ClientDiscoveryUtil.getInstance().stop();
-            MyExecutor.getInstance().shutDown();
+            ExecutorUtil.getInstance().shutDown();
         } catch (NotBoundException | RemoteException e) {
             logger.info("No Connection");
         }

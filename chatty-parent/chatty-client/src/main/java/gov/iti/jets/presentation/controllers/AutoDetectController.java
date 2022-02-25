@@ -1,7 +1,7 @@
 package gov.iti.jets.presentation.controllers;
 
 import gov.iti.jets.presentation.erros.ErrorMessages;
-import gov.iti.jets.presentation.util.MyExecutor;
+import gov.iti.jets.presentation.util.ExecutorUtil;
 import gov.iti.jets.presentation.util.StageCoordinator;
 import gov.iti.jets.services.util.ClientDiscoveryUtil;
 import gov.iti.jets.services.util.ServiceFactory;
@@ -21,8 +21,8 @@ public class AutoDetectController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        Future<String> future = MyExecutor.getInstance().submit(ClientDiscoveryUtil.getInstance());
-        MyExecutor.getInstance().execute(() -> {
+        Future<String> future = ExecutorUtil.getInstance().submit(ClientDiscoveryUtil.getInstance());
+        ExecutorUtil.getInstance().execute(() -> {
             try {
                 String host = future.get();
                 if (!host.isEmpty()) {

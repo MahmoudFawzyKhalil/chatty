@@ -5,15 +5,15 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-public class MyExecutor {
-    private static final MyExecutor INSTANCE = new MyExecutor();
+public class ExecutorUtil {
+    private static final ExecutorUtil INSTANCE = new ExecutorUtil();
     private ExecutorService executorService = Executors.newFixedThreadPool(5);
 
-    private MyExecutor() {
+    private ExecutorUtil() {
 
     }
 
-    public static MyExecutor getInstance() {
+    public static ExecutorUtil getInstance() {
         return INSTANCE;
     }
 

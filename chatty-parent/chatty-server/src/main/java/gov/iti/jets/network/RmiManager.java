@@ -63,7 +63,7 @@ public class RmiManager {
         invitationDecisionService = new InvitationDecisionServiceImpl();
         updateProfileService = new UpdateProfileServiceImpl();
         singleMessageService = new SingleMessageServiceImpl();
-        addGroupChatService = new AddGroupChatChatServiceImpl();
+        addGroupChatService = new AddGroupChatServiceImpl();
         groupMessageService = new GroupMessageServiceImpl();
 
         logger.info( "Created service remote objects." );
