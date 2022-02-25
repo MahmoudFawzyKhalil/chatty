@@ -1,10 +1,17 @@
 package gov.iti.jets.presentation.controllers;
 
+import gov.iti.jets.network.Clients;
 import gov.iti.jets.network.RmiManager;
+import gov.iti.jets.presentation.models.ServerModel;
+import gov.iti.jets.presentation.util.ModelFactory;
 import gov.iti.jets.presentation.util.PaneCoordinator;
 import gov.iti.jets.presentation.util.StageCoordinator;
+import gov.iti.jets.repository.DashboardRepository;
+import gov.iti.jets.repository.util.RepositoryFactory;
+import gov.iti.jets.services.DashboardService;
 import gov.iti.jets.services.ServerNotificationsService;
 import gov.iti.jets.services.util.ServiceFactory;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -17,6 +24,8 @@ import java.net.URL;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainController implements Initializable {
 
@@ -25,6 +34,10 @@ public class MainController implements Initializable {
     private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
     private final ServerNotificationsService serverNotificationsService = serviceFactory.getServerNotificationsService();
     private final PaneCoordinator paneCoordinator = PaneCoordinator.getInstance();
+    private final Clients clients = Clients.getInstance();
+    private final DashboardRepository dashboardRepository = RepositoryFactory.getInstance().getDashboardRepository();
+    private final DashboardService dashboardService = serviceFactory.getDashboardService();
+    private final ServerModel serverModel = ModelFactory.getInstance().getServerModel();
 
     @FXML
     private VBox dashboardPane;
@@ -52,7 +65,47 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize( URL location, ResourceBundle resources ) {
+        initDashboardPaneInPaneCoordinator();
+        bindChartsDataProperties();
+        loadChartsData();
+        scheduleLoadingChartsDataPeriodically();
+    }
+
+    private void initDashboardPaneInPaneCoordinator() {
         paneCoordinator.initDashboardPane(dashboardPane);
+    }
+
+    private void bindChartsDataProperties() {
+        onlineUsersBarChart.dataProperty().bind( serverModel.onlineUsersBarChartDataProperty() );
+        gendersBarChart.dataProperty().bind( serverModel.gendersBarChartDataProperty() );
+        countryBarChart.dataProperty().bind( serverModel.countryBarChartDataProperty() );
+    }
+
+    private void loadChartsData() {
+        serverModel.getOnlineUsersBarChartData().clear();
+        serverModel.getOnlineUsersBarChartData().addAll( dashboardService.getOnlineUsersBarChartData() );
+
+        serverModel.getGendersBarChartData().clear();
+        serverModel.getGendersBarChartData().addAll( dashboardService.getGendersBarChartData() );
+
+        serverModel.getCountryBarChartData().clear();
+        serverModel.getCountryBarChartData().addAll( dashboardService.getCountryBarChartData() );
+    }
+
+    private void scheduleLoadingChartsDataPeriodically() {
+        long delay = 5L * 60L * 1000L;
+        long period = 5L * 60L * 1000L;
+
+        Timer timer = new Timer(true);
+
+        TimerTask reloadChartsDataTask = new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater( MainController.this::loadChartsData );
+            }
+        };
+
+        timer.scheduleAtFixedRate(reloadChartsDataTask, delay, period);
     }
 
     @FXML
@@ -67,7 +120,7 @@ public class MainController implements Initializable {
 
     @FXML
     void onRefreshButtonAction(ActionEvent event) {
-        //TODO refresh data
+        loadChartsData();
     }
 
     @FXML

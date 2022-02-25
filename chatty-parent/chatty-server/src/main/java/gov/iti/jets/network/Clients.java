@@ -99,4 +99,8 @@ public class Clients {
         clientMap.clear();
         groupMap.clear();
     }
+
+    public int getCountOnlineUsers(){
+        return clientMap.size();
+    }
 }
