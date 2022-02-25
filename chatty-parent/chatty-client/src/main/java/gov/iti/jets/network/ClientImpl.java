@@ -129,7 +129,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
             Platform.runLater(() -> {
                 messageModel.senderProfilePictureProperty().bind(optionalContactModel.get().profilePictureProperty());
                 optionalContactModel.get().getMesssages().add(messageModel);
-
+                stageCoordinator.showMessageNotification( messageModel.getSenderName(), messageModel.getMessageBody() );
             });
 
             if (userModel.getIsUsingChatBot() && !singleMessageDto.isSentByChatBot()) {

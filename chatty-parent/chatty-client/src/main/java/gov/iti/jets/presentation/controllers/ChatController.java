@@ -265,11 +265,14 @@ public class ChatController implements Initializable {
     @FXML
     void onSendMessageButtonAction(ActionEvent event) {
 
-        /*
-         * TODO
-         *  Refactor this to use proper methods and to get the properties form the textStyleProperties
-         *  This is part of the sendSingleMessage use case
-         * */
+        if (chatTextArea.getText().isEmpty() || chatTextArea.getText().isBlank()){
+            chatTextArea.setText( "" );
+            return;
+        }
+
+        if (groupChatModel == null && contactModel == null) {
+            return;
+        }
 
 
         try {
@@ -288,17 +291,13 @@ public class ChatController implements Initializable {
         messageModel.setSentByMe(true);
         messageModel.setSenderName(userModel.getDisplayName());
 
-        if (groupChatModel == null && contactModel == null) {
-            return;
-        }
 
         if (contactModel != null) {
             contactModel.getMesssages().add(messageModel);
+            chatTextArea.setText( "" );
             scrollChatMessagesListViewToLastMessage();
         } else {
             try {
-                System.out.println("hereeee");
-
                 groupMessageDao.sendGroupMessage(createGroupMessageDto());
             } catch (NoSuchObjectException | NotBoundException | ConnectException c) {
                 ServiceFactory.getInstance().shutdown();
@@ -314,6 +313,7 @@ public class ChatController implements Initializable {
 
             groupChatModel.getMesssages().add(groupMessageModel);
             scrollChatMessagesListViewToLastMessage();
+            chatTextArea.setText( "" );
         }
         scrollChatMessagesListViewToLastMessage();
     }
