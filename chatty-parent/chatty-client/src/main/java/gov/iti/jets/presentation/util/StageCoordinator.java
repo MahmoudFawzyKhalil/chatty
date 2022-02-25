@@ -150,6 +150,10 @@ public class StageCoordinator {
         paneCoordinator.clearPaneMap();
     }
 
+    public void closeAutoDetectStage() {
+        stageMap.get("autoDetectStage").close();
+    }
+
     public void closeAddContactStage() {
         stageMap.get("addContactStage").close();
     }
@@ -158,12 +162,22 @@ public class StageCoordinator {
         stageMap.get("addGroupStage").close();
     }
 
+
     public void showAddContactStage() {
         Stage addContactStage = new Stage();
         setPopupStageStyle(addContactStage);
         setPopupStage(addContactStage, "/views/add-contact/AddContactView.fxml");
         stageMap.put("addContactStage", addContactStage);
         addContactStage.show();
+
+    }
+
+    public void showAutoDetectStage() {
+        Stage autoDetectStage = new Stage();
+        setPopupStageStyle(autoDetectStage);
+        setPopupStage(autoDetectStage, "/views/auto-detect/AutoDetect.fxml");
+        stageMap.put("autoDetectStage", autoDetectStage);
+        autoDetectStage.show();
 
     }
 

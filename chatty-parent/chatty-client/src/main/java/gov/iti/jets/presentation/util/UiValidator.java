@@ -21,6 +21,7 @@ public class UiValidator {
     public static Pattern USER_NAME_PATTERN = Pattern.compile( "[a-zA-Z0-9]+" );
     public static Pattern GROUP_CHAT_NAME_PATTERN = Pattern.compile( "[a-zA-Z0-9]+" );
     public static Pattern EMAIL_PATTERN = Pattern.compile( "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$" );
+    public static Pattern IP_PATTERN = Pattern.compile( "^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$" );
 
 
 

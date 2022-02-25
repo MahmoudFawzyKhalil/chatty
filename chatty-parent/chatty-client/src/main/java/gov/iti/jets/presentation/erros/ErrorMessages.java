@@ -8,4 +8,5 @@ public interface ErrorMessages {
     String FAILED_Update = "Failed to update";
     String ADD_GROUP_SELECT = "You need to select two contacts at least";
     String IMAGE_LENGTH = "Image size should not be greater than 2mb";
+    String NOT_VALID_IP = "Couldn't connect to this server";
 }

@@ -13,6 +13,7 @@ public class ServiceFactory {
     private static final ServiceFactory registryFactory = new ServiceFactory();
     private Registry registry;
 
+    private String host = "127.0.0.1";
 
     private static LoginService loginService;
     private static AddContactService addContactService;
@@ -29,11 +30,16 @@ public class ServiceFactory {
 
 
     private ServiceFactory() {
-        try {
-            this.registry = LocateRegistry.getRegistry(1099);
+        /*try {
+            this.registry = LocateRegistry.getRegistry(this.host, 1099);
         } catch (RemoteException e) {
             e.printStackTrace();
-        }
+        }*/
+
+    }
+
+    public void setRegistry(String host) throws RemoteException {
+        this.registry = LocateRegistry.getRegistry(host, 1099);
 
     }
 
@@ -104,21 +110,22 @@ public class ServiceFactory {
     }
 
 
-    public SingleMessageService getSingleMessageService() throws NotBoundException, RemoteException{
-        if(singleMessageService==null){
+    public SingleMessageService getSingleMessageService() throws NotBoundException, RemoteException {
+        if (singleMessageService == null) {
             singleMessageService = (SingleMessageService) registry.lookup("SingleMessageService");
         }
         return singleMessageService;
     }
 
-    public ChatBotService getChatBotService(){
-        if (chatBotService == null){
+    public ChatBotService getChatBotService() {
+        if (chatBotService == null) {
             chatBotService = new ChatBotServiceImpl();
         }
         return chatBotService;
     }
-    public GroupMessageService getGroupMessageService()throws NotBoundException, RemoteException{
-        if(groupMessageService==null){
+
+    public GroupMessageService getGroupMessageService() throws NotBoundException, RemoteException {
+        if (groupMessageService == null) {
             groupMessageService = (GroupMessageService) registry.lookup("GroupMessageService");
         }
         return groupMessageService;

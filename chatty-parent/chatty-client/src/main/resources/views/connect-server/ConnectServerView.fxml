@@ -22,7 +22,7 @@
                         <Insets bottom="7.0" left="7.0" right="7.0" top="7.0" />
                      </padding>
                   </TextField>
-                  <Button maxWidth="-Infinity" mnemonicParsing="false" onAction="#onLocalConnectButtonAction" prefWidth="85.0" styleClass="connect-button" text="Connect" />
+                  <Button fx:id="ipConnectButton" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onLocalConnectButtonAction" prefWidth="85.0" styleClass="connect-button" text="Connect" />
                </children>
             </HBox>
             <HBox id="online-hbox" alignment="CENTER" spacing="10.0" />
