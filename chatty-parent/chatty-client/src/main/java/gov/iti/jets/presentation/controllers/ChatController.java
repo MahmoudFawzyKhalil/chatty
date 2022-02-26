@@ -1,18 +1,23 @@
 package gov.iti.jets.presentation.controllers;
 
+import gov.iti.jets.commons.dtos.FileTransferPermissionDto;
+import gov.iti.jets.commons.dtos.FileTransferResponseDto;
 import gov.iti.jets.commons.dtos.GroupMessageDto;
 import gov.iti.jets.commons.dtos.SingleMessageDto;
 import gov.iti.jets.presentation.models.*;
 import gov.iti.jets.presentation.models.mappers.GroupMessageMapper;
 import gov.iti.jets.presentation.models.mappers.SingleMessageMapper;
+import gov.iti.jets.presentation.util.ExecutorUtil;
 import gov.iti.jets.presentation.util.ModelFactory;
 import gov.iti.jets.presentation.util.PaneCoordinator;
 import gov.iti.jets.presentation.util.StageCoordinator;
 import gov.iti.jets.presentation.util.cellfactories.ChatBubbleCellFactory;
 import gov.iti.jets.presentation.util.cellfactories.NoSelectionModel;
+import gov.iti.jets.services.FileTransferDao;
 import gov.iti.jets.services.GroupMessageDao;
 import gov.iti.jets.services.SingleMessageDao;
 import gov.iti.jets.services.util.DaoFactory;
+import gov.iti.jets.services.util.FileTransferTask;
 import javafx.collections.FXCollections;
 import javafx.collections.MapChangeListener;
 import javafx.collections.ObservableList;
@@ -30,7 +35,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
+import javafx.stage.FileChooser;
 
+import java.io.File;
 import java.net.URL;
 import java.rmi.ConnectException;
 import java.rmi.NotBoundException;
@@ -40,7 +47,9 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class ChatController implements Initializable {
+    private StageCoordinator stageCoordinator = StageCoordinator.getInstance();
     private final UserModel userModel = ModelFactory.getInstance().getUserModel();
+    private final FileTransferOperationAvailabilityModel fileTransferOperationAvailabilityModel = ModelFactory.getInstance().getFileTransferOperationAvailabilityModel();
     public ToggleButton boldToggleButton;
     public ToggleButton italicToggleButton;
     public ToggleButton underlineToggleButton;
@@ -48,6 +57,10 @@ public class ChatController implements Initializable {
     private GroupChatModel groupChatModel;
     private SingleMessageDao singleMessageDao = DaoFactory.getInstance().getSingleMessageDao();
     private GroupMessageDao groupMessageDao = DaoFactory.getInstance().getGroupMessageDao();
+    private FileTransferDao fileTransferDao = DaoFactory.getInstance().getFileTransferDao();
+    private FileChooser fileChooser = new FileChooser();
+    private File file;
+    private ExecutorUtil executorUtil = ExecutorUtil.getInstance();
 
     @FXML
     private BorderPane centerBorderPane;
@@ -343,7 +356,58 @@ public class ChatController implements Initializable {
 
     @FXML
     void onAttachFileButtonAction(ActionEvent event) {
+        if(!fileTransferOperationAvailabilityModel.isAvailable()){
+            stageCoordinator.showMessageNotification("File Transfer Operation Availability",
+                    "operation is not available now try later");
+            return;
+        }
+        file = fileChooser.showOpenDialog(null);
+        if(file==null){
+            return;
+        }
+        ContactModel contactModel = getContactModel();
+        FileTransferPermissionDto fileTransferPermissionDto = createFileTransferDto(file);
+        try {
+            stageCoordinator.showMessageNotification("File Transfer Permission",
+                    "sending file transfer permission to "+ contactModel.getDisplayName());
+            boolean result =fileTransferDao.askForPermissionToSendFile(fileTransferPermissionDto);
 
+            if (result == false) {
+                stageCoordinator.showMessageNotification("File Transfer Permission","can not send, "+
+                        contactModel.getDisplayName() + "is offline now");
+            }
+        } catch (NotBoundException e) {
+            e.printStackTrace();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private FileTransferPermissionDto createFileTransferDto(File file){
+        FileTransferPermissionDto fileTransferPermissionDto = new FileTransferPermissionDto();
+        fileTransferPermissionDto.setFile(file);
+        fileTransferPermissionDto.setFileName(file.getName());
+        fileTransferPermissionDto.setFileSize(file.length());
+        fileTransferPermissionDto.setSenderPhoneNumber(userModel.getPhoneNumber());
+        fileTransferPermissionDto.setReceiverPhoneNumber(userModel.getCurrentlyChattingWith());
+        return fileTransferPermissionDto;
+    }
+
+    private ContactModel getContactModel(){
+        Optional<ContactModel> contactModel = userModel.getContacts().stream()
+                .filter(cm -> cm.getPhoneNumber() == userModel.getCurrentlyChattingWith()).findFirst();
+        return contactModel.get();
+    }
+
+    private FileModel createFileModel(File file ){
+        FileModel fileModel = new FileModel();
+        fileModel.setFile(file);
+        fileModel.setFileSize(file.length());
+        fileModel.setFileName(file.getName());
+        fileModel.setNumberOfBytesSoFar(0);
+        fileModel.setSenderName(userModel.getDisplayName());
+        fileModel.setIsCanceled(false);
+        return fileModel;
     }
 
     @FXML

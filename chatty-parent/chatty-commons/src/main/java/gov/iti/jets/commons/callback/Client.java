@@ -31,4 +31,8 @@ public interface Client extends Remote {
     void notifyContactPicChange(UpdateProfilePicDto updateProfilePicDto) throws RemoteException;
 
     void notifyContactProfileChange(UpdateProfileDto updateProfileDto)throws RemoteException;
+
+    void receiveFileTransferPermission(FileTransferPermissionDto fileTransferPermissionDto) throws RemoteException;
+    void receiveFileTransferResponse(FileTransferResponseDto fileTransferResponseDto) throws RemoteException;
+
 }

@@ -27,6 +27,7 @@ public class RmiManager {
     private SingleMessageService singleMessageService;
     private AddGroupChatService addGroupChatService;
     private GroupMessageService groupMessageService;
+    private FileTransferService fileTransferService;
 
     private RmiManager() {
     }
@@ -65,7 +66,7 @@ public class RmiManager {
         singleMessageService = new SingleMessageServiceImpl();
         addGroupChatService = new AddGroupChatServiceImpl();
         groupMessageService = new GroupMessageServiceImpl();
-
+        fileTransferService = new FileTransferServiceImpl();
         logger.info( "Created service remote objects." );
     }
 
@@ -80,6 +81,7 @@ public class RmiManager {
         registry.rebind( "SingleMessageService", singleMessageService );
         registry.rebind( "AddGroupChatService", addGroupChatService );
         registry.rebind( "GroupMessageService", groupMessageService );
+        registry.rebind("FileTransferService", fileTransferService);
 
         logger.info( "Registered services with RMI registry." );
     }
@@ -103,6 +105,7 @@ public class RmiManager {
         UnicastRemoteObject.unexportObject( singleMessageService, false );
         UnicastRemoteObject.unexportObject( addGroupChatService, false );
         UnicastRemoteObject.unexportObject( groupMessageService, false );
+        UnicastRemoteObject.unexportObject(fileTransferService,false);
 
         logger.info( "Unexported service remote objects." );
     }
@@ -118,6 +121,7 @@ public class RmiManager {
         registry.unbind( "SingleMessageService" );
         registry.unbind( "AddGroupChatService" );
         registry.unbind( "GroupMessageService" );
+        registry.unbind("FileTransferService");
 
         logger.info( "Unbound service remote objects." );
     }

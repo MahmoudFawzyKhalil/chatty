@@ -1,5 +1,6 @@
 package gov.iti.jets;
 
+import gov.iti.jets.network.ClientImpl;
 import gov.iti.jets.presentation.util.ModelFactory;
 import gov.iti.jets.presentation.util.ExecutorUtil;
 import gov.iti.jets.presentation.util.StageCoordinator;
@@ -42,6 +43,14 @@ public class ChattyClientApp extends Application {
             DaoFactory.getInstance().getConnectionService().unregisterClient(ModelFactory.getInstance().getUserModel().getPhoneNumber());
             ClientDiscoveryUtil.getInstance().stop();
             ExecutorUtil.getInstance().shutDown();
+            if(ClientImpl.getInstance().fileTransferTask!=null){
+                System.out.println("main method");
+                ClientImpl.getInstance().fileTransferTask.close();
+            }
+            if(ClientImpl.getInstance().fileTransferReceivingTask!=null){
+
+                ClientImpl.getInstance().fileTransferReceivingTask.close();
+            }
         } catch (NotBoundException | RemoteException e) {
             logger.info("No Connection");
         }

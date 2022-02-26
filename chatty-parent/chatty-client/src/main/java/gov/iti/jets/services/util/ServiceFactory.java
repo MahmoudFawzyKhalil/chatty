@@ -26,6 +26,7 @@ public class ServiceFactory {
     private SingleMessageService singleMessageService;
     private ChatBotService chatBotService;
     private GroupMessageService groupMessageService;
+    private FileTransferService fileTransferService;
 
 
     private ServiceFactory() {
@@ -122,6 +123,13 @@ public class ServiceFactory {
             groupMessageService = (GroupMessageService) registry.lookup("GroupMessageService");
         }
         return groupMessageService;
+    }
+
+    public FileTransferService getFileTransferService () throws NotBoundException, RemoteException {
+        if(fileTransferService==null){
+            fileTransferService = (FileTransferService) registry.lookup("FileTransferService");
+        }
+        return fileTransferService;
     }
 
     public void shutdown() {

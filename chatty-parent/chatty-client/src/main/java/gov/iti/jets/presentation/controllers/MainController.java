@@ -177,4 +177,9 @@ public class MainController implements Initializable {
 
         paneCoordinator.switchToUpdateProfilePane();
     }
+
+    @FXML
+    void onFileTransferButtonAction(ActionEvent event) {
+        paneCoordinator.switchToFileTransferPane();
+    }
 }
