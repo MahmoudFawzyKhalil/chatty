@@ -187,6 +187,13 @@ public class StageCoordinator {
         }
     }
 
+    public void closeAddGroupSplashStage() {
+        Stage addGroupSplashStage=stageMap.get("addGroupSplashStage");
+        if(addGroupSplashStage!=null){
+            addGroupSplashStage.close();
+        }
+    }
+
 
     public void showAddContactStage() {
         Stage addContactStage = new Stage();
@@ -221,6 +228,15 @@ public class StageCoordinator {
         setPopupStage(registerUserSplashStage, "/views/register/RegisterUserSplash.fxml");
         stageMap.put("registerUserSplashStage", registerUserSplashStage);
         registerUserSplashStage.show();
+
+    }
+
+    public void showAddGroupSplashStage() {
+        Stage addGroupSplashStage = new Stage();
+        setPopupStageStyle(addGroupSplashStage);
+        setPopupStage(addGroupSplashStage, "/views/add-group/AddGroupSplash.fxml");
+        stageMap.put("addGroupSplashStage", addGroupSplashStage);
+        addGroupSplashStage.show();
 
     }
 
