@@ -31,9 +31,7 @@ public class LoginDaoImpl implements LoginDao {
             if (file.exists()) {
                 try (ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(file))) {
                     LoginData loginData = (LoginData) objectInputStream.readObject();
-                    System.out.println(loginData);
                     loginData.deCipherAll();
-                    System.out.println(loginData);
 
 
                     return Optional.of(loginData);
@@ -70,23 +68,5 @@ public class LoginDaoImpl implements LoginDao {
         }
     }
 
-    /*public Optional<LoginDto> loadIfFileExist() {
-        CipherUtil cipherUtil = CipherUtil.getInstance();
 
-
-        try {
-            File file = new File("myData.chatty");
-            if (file.exists()) {
-                try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
-                    String encryptedPhone = bufferedReader.readLine();
-                    String encryptedPassword = bufferedReader.readLine();
-                    LoginDto loginDto = new LoginDto(cipherUtil.decrypt(encryptedPhone), cipherUtil.decrypt(encryptedPassword));
-                    return Optional.of(loginDto);
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return Optional.empty();
-    }*/
 }

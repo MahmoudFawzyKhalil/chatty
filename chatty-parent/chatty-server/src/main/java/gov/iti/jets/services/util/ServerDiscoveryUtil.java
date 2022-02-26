@@ -1,5 +1,8 @@
 package gov.iti.jets.services.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.net.*;
 
@@ -7,6 +10,7 @@ public class ServerDiscoveryUtil {
 
     private static ServerDiscoveryUtil INSTANCE = new ServerDiscoveryUtil();
     private String serverIp;
+    private Logger logger= LoggerFactory.getLogger(ServerDiscoveryUtil.class);
 
     public static ServerDiscoveryUtil getInstance() {
         return INSTANCE;
@@ -36,14 +40,13 @@ public class ServerDiscoveryUtil {
                 try {
                     datagramSocket.receive( receivedPacket );
 
-                    System.err.println( new String( receivedPacket.getData() ).trim() );
 
                     DatagramSocket responderSocket = new DatagramSocket();
 
                     DatagramPacket responderPacket = new DatagramPacket( serverIp.getBytes(),
                             serverIp.getBytes().length, receivedPacket.getSocketAddress() );
 
-                    System.err.println( receivedPacket.getSocketAddress() );
+                    logger.info( receivedPacket.getSocketAddress().toString() );
 
                     responderSocket.send( responderPacket );
                 } catch (IOException e) {

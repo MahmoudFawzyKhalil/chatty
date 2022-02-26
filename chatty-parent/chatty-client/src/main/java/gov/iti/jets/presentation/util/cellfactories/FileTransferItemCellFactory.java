@@ -28,11 +28,7 @@ public class FileTransferItemCellFactory implements Callback<ListView<FileModel>
                     setGraphic( null );
                 } else if (fileModel != null) {
                     setText( null );
-/*
-                    FileTransferItem fileTransferItem = new FileTransferItem(fileModel);
-                    fileTransferItem.getCancelButton().addEventHandler(ActionEvent.ACTION, e -> {
-                            fileModel.setIsCanceled(true);
-                    });*/
+
                     setGraphic( new FileTransferItem(fileModel));
                 } else {
                     setText( "null" );

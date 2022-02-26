@@ -1,5 +1,8 @@
 package gov.iti.jets.services.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.UnsupportedEncodingException;
@@ -14,6 +17,7 @@ public class CipherUtil {
     private SecretKeySpec secretKey;
     private String password="chatty -> osama,doc,salma,christine";
     private byte[] key;
+    private Logger logger= LoggerFactory.getLogger(CipherUtil.class);
 
     private CipherUtil() {
 
@@ -44,7 +48,7 @@ public class CipherUtil {
             return Base64.getEncoder()
                     .encodeToString(cipher.doFinal(strToEncrypt.getBytes("UTF-8")));
         } catch (Exception e) {
-            System.out.println("Error while encrypting: " + e.toString());
+            logger.error("Error while encrypting: " + e.toString());
         }
         return null;
     }
@@ -57,7 +61,7 @@ public class CipherUtil {
             return new String(cipher.doFinal(Base64.getDecoder()
                     .decode(strToDecrypt)));
         } catch (Exception e) {
-            System.out.println("Error while decrypting: " + e.toString());
+            logger.error("Error while decrypting: " + e.toString());
         }
         return null;
     }

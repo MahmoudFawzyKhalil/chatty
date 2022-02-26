@@ -37,7 +37,6 @@ public class InvitationItemCellFactory implements Callback<ListView<InvitationMo
 
                     InvitationItem invitationItem = new InvitationItem(invitationModel);
 
-                    // Handle accept button
                     invitationItem.getAcceptButton().addEventHandler(ActionEvent.ACTION, e -> {
                         try {
                             boolean succeeded = dao.acceptInvite(
@@ -54,7 +53,6 @@ public class InvitationItemCellFactory implements Callback<ListView<InvitationMo
                         }
                     });
 
-                    // Handle refuse button
                     invitationItem.getRefuseButton().addEventHandler(ActionEvent.ACTION, e -> {
                         try {
                             boolean succeeded = dao.refuseInvite(

@@ -25,6 +25,8 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URL;
 import java.rmi.ConnectException;
@@ -43,6 +45,7 @@ public class MainController implements Initializable {
     private final ConnectionDao connectionDao = DaoFactory.getInstance().getConnectionService();
     private final LoginDao loginDao = DaoFactory.getInstance().getLoginService();
     private LoginData loginData = LoginData.getInstance();
+    private Logger logger= LoggerFactory.getLogger(MainController.class);
     @FXML
     private ListView<ContactModel> contactChatsListView;
 
@@ -141,11 +144,11 @@ public class MainController implements Initializable {
         if (chatBotToggleButton.isSelected()) {
             userModel.setIsUsingChatBot(true);
             stageCoordinator.showMessageNotification("ChatBot is now active", "Hello, world!");
-            System.err.println("IS USING CHATBOT: " + userModel.getIsUsingChatBot());
+            logger.info("IS USING CHATBOT: " + userModel.getIsUsingChatBot());
         } else {
             userModel.setIsUsingChatBot(false);
             stageCoordinator.showMessageNotification("ChatBot is now turned off", "Goodbye, cruel world!");
-            System.err.println("IS USING CHATBOT: " + userModel.getIsUsingChatBot());
+            logger.info("IS USING CHATBOT: " + userModel.getIsUsingChatBot());
         }
     }
 

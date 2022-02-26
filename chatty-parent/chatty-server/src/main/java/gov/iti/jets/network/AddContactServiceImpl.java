@@ -60,8 +60,6 @@ public class AddContactServiceImpl extends UnicastRemoteObject implements AddCon
                 }
             }
         }
-        System.err.println("IS THIS REALLY HAPPENING RIGHT NOW?!?!?!?!?!?!?!?!?");
-        System.err.println(result);
         return result;
     }
 

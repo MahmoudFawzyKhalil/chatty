@@ -59,7 +59,6 @@ public class FileTransferReceivingTask extends Task<Long> {
         return null;
     }
     public void close() throws IOException {
-        System.out.println("hellllllllllooooooooooooooooooooooooooooooooooo");
         serverSocket.close();
         socket.close();
         in.close();

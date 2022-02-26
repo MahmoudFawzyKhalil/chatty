@@ -22,7 +22,7 @@ public class ContactChatMenuItemCellFactory implements Callback<ListView<Contact
                     setGraphic( null );
                 } else if (contactModel != null) {
                     setText( null );
-                    setGraphic( new ContactChatMenuItem( contactModel ) ); //contact argument
+                    setGraphic( new ContactChatMenuItem( contactModel ) );
                 } else {
                     setText( "null" );
                     setGraphic( null );

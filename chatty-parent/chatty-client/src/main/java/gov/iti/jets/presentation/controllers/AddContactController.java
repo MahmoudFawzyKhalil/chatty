@@ -57,7 +57,6 @@ public class AddContactController implements Initializable {
     void onAddButtonAction( ActionEvent event ) {
         getPhoneNumbers();
         AddContactDto addContactDto = new AddContactDto( userModel.getPhoneNumber(), phoneNumbers );
-        System.out.println(phoneNumbers.size());
         if (isFriend()){
             stageCoordinator.showErrorNotification( "Already friends." );
             stageCoordinator.closeAddContactStage();
@@ -73,7 +72,6 @@ public class AddContactController implements Initializable {
         } else {
             try {
                 handleAddingSomeoneWhoAlreadyAddedMe();
-                System.out.println(addContactDto + " " + phoneNumbers.size());
                 if (!phoneNumbers.isEmpty()){
                     boolean addContactSucceeded = addContactDao.addContacts( addContactDto );
                     if (addContactSucceeded) {
@@ -151,12 +149,10 @@ public class AddContactController implements Initializable {
                     try {
                             boolean succeeded = invitationDecisionDao.acceptInvite(new InvitationDecisionDto(userModel.getPhoneNumber(),
                                     invitationModel.getContactModel().getPhoneNumber()));
-                            System.out.println(succeeded);
                             if (succeeded) {
                                 userModel.getInvitations().removeIf(im -> im.getContactModel().getPhoneNumber()
                                         .equals(invitationModel.getContactModel().getPhoneNumber()));
                                 phoneNumbers.remove(invitedNumber);
-                                System.out.println(phoneNumbers);
                             }
                     } catch (NoSuchObjectException | NotBoundException | ConnectException c) {
                         ServiceFactory.getInstance().shutdown();

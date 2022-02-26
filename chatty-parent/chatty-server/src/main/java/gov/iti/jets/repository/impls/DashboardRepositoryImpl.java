@@ -71,9 +71,8 @@ public class DashboardRepositoryImpl implements DashboardRepository {
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-        } ;
+        }
         dashboardEntity.setUsersByCountry(usersbyCountry);
-        System.out.println("number of male users is : "+maleUsers);
         return usersbyCountry;
     }
 }

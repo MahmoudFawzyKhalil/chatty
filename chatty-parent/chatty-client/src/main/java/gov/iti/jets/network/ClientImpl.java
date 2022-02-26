@@ -3,7 +3,6 @@ package gov.iti.jets.network;
 import gov.iti.jets.commons.callback.Client;
 import gov.iti.jets.commons.dtos.*;
 import gov.iti.jets.commons.enums.StatusNotificationType;
-import gov.iti.jets.commons.remoteinterfaces.FileTransferService;
 import gov.iti.jets.commons.util.mappers.ImageMapper;
 import gov.iti.jets.presentation.models.*;
 import gov.iti.jets.presentation.models.mappers.*;
@@ -16,6 +15,8 @@ import gov.iti.jets.services.util.*;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.net.InetAddress;
@@ -28,8 +29,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 
 public class ClientImpl extends UnicastRemoteObject implements Client {
@@ -44,13 +43,14 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
     public transient FileTransferReceivingTask fileTransferReceivingTask;
     public transient FileTransferTask fileTransferTask;
     private static ClientImpl INSTANCE;
+    private transient static Logger logger= LoggerFactory.getLogger(ClientImpl.class);
     private transient String currentDirectory = System.getProperty("user.dir");
 
     static {
         try {
             INSTANCE = new ClientImpl();
         } catch (RemoteException e) {
-            System.err.println("Failed to export ClientImpl");
+            logger.error("Failed to export ClientImpl");
             e.printStackTrace();
         }
     }

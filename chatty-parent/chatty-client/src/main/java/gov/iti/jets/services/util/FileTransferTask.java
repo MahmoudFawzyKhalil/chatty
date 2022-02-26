@@ -60,7 +60,6 @@ public class FileTransferTask extends Task<Long> {
     }
 
     public void close() throws IOException {
-        System.out.println("inside thread");
         socket.close();
         in.close();
         out.close();

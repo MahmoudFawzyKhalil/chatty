@@ -29,7 +29,6 @@ public class ConnectionServiceImpl extends UnicastRemoteObject implements Connec
 
         UserDto userDto = UserMapper.INSTANCE.userEntityToDto(userEntity.get());
 
-        // Must be called before loading messages from db!
         client.loadUserModel(userDto);
 
         Map<String,List<SingleMessageEntity>> messagesMapEntity = repositoryFactory.getSingleMessageRepository().getMessage(phoneNumber);
@@ -40,7 +39,6 @@ public class ConnectionServiceImpl extends UnicastRemoteObject implements Connec
         });
         client.loadSingleMessages(messagesMapDto);
 
-        // Must be called last!
         clients.addClient(phoneNumber,client);
     }
 

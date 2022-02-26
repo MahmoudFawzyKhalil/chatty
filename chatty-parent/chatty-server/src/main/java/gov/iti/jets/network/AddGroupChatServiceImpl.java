@@ -30,8 +30,6 @@ public class AddGroupChatServiceImpl extends UnicastRemoteObject implements AddG
     public boolean addGroup(AddGroupChatDto addGroupChatDto) throws RemoteException {
         GroupChatEntity groupChatEntity = GroupChatMapper.INSTANCE.addGroupChatDtoToEntity(addGroupChatDto);
         int groupId = groupChatRepository.addGroup(groupChatEntity);
-        System.out.println("----------------------/n----------------------------");
-        System.out.println(addGroupChatDto.getGroupChatPicture());
         try {
             String picName = groupId + ".bmp";
             String picURL = imageDbUtil.getGroupDbPath() + picName;

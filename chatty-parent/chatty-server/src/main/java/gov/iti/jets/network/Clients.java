@@ -94,7 +94,6 @@ public class Clients {
     }
 
 
-    // We add the phone number as an argument to avoid having to make a remote call to the client just to get their phone number!
     public void addClient(String phoneNumber, Client client) {
         logger.info("A client attempted to register its handler: " + phoneNumber);
 

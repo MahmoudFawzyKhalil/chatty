@@ -23,15 +23,6 @@
     -fx-background-color: -main-dark;
 }
 
-/*.input-field{
-    -fx-text-fill:-main-dark;
-    -fx-font-size: 16px;
-    -fx-background-radius:20px;
-    -fx-background-color: -main-light;
-    -fx-border-color: -main-dark;
-    -fx-border-width: 1px;
-    -fx-border-radius: 2px;
-}*/
 
 .input-field{
     -fx-text-fill:-main-medium;

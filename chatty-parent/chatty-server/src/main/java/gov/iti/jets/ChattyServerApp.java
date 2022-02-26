@@ -25,7 +25,6 @@ public class ChattyServerApp extends Application {
 
         ServerDiscoveryUtil.getInstance().startDiscoveryListener();
 
-        System.out.println("Working Directory = " + System.getProperty("user.dir"));
     }
     @Override
     public void stop() throws Exception {

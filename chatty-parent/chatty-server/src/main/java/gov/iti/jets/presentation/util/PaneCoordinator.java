@@ -33,11 +33,6 @@ public class PaneCoordinator {
     }
 
     public void switchToChatPane() {
-        System.out.println(paneMap.get( "chatPane" ));
-        System.out.println(paneMap.get( "chatPane" ));
-        System.out.println(paneMap.get( "chatPane" ));
-        System.out.println(paneMap.get( "chatPane" ));
-        System.out.println(paneMap.get( "chatPane" ));
         mainSceneBorderPane.setCenter(paneMap.get("chatPane"));
     }
 

@@ -44,7 +44,6 @@ public class InvitationDecisionServiceImpl extends UnicastRemoteObject implement
 
                     optionalReceiver = clients.getClient(receiverPhoneNumber);
                     optionalSender = clients.getClient(senderPhoneNumber);
-                    System.out.println(receiverContactDto);
 
                     if (optionalSender.isPresent()) {
                         try {
