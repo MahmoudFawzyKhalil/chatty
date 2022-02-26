@@ -15,19 +15,20 @@ import java.util.Optional;
 public class UserRepositoryImpl implements UserRepository {
     private Logger logger = LoggerFactory.getLogger(UserRepositoryImpl.class);
 
+
     @Override
-    public boolean isFoundByPhoneNumberAndPassword(String phoneNumber, String password) {
+    public String getPasswordByPhoneNumber(String phoneNumber) {
         try (Connection connection = ConnectionPool.getInstance().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement("select * from users where phone_number = ? and user_password=?")) {
+             PreparedStatement preparedStatement = connection.prepareStatement("select user_password from users where phone_number = ?")) {
             preparedStatement.setString(1, phoneNumber);
-            preparedStatement.setString(2, password);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next())
-                return true;
+            if (resultSet.next()) {
+                return resultSet.getString("user_password");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
+        return "";
     }
 
     @Override

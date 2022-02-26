@@ -21,6 +21,8 @@
     </modules>
 
     <dependencyManagement>
+
+
         <dependencies>
 
             <!-- ChatBot -->
