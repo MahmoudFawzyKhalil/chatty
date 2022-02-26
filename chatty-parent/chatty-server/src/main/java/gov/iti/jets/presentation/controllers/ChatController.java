@@ -6,6 +6,7 @@ import gov.iti.jets.presentation.models.ServerModel;
 import gov.iti.jets.presentation.util.ChatBubbleCellFactory;
 import gov.iti.jets.presentation.util.ModelFactory;
 import gov.iti.jets.presentation.util.NoSelectionModel;
+import gov.iti.jets.presentation.util.StageCoordinator;
 import gov.iti.jets.services.ServerNotificationsService;
 import gov.iti.jets.services.util.ServiceFactory;
 import javafx.collections.FXCollections;
@@ -70,6 +71,7 @@ public class ChatController  implements Initializable {
     private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
     private final ServerNotificationsService serverNotificationsService = serviceFactory.getServerNotificationsService();
     private final ServerModel serverModel = ModelFactory.getInstance().getServerModel();
+    private StageCoordinator stageCoordinator = StageCoordinator.getInstance();
 
     public void initialize( URL location, ResourceBundle resources ) {
         bindAnnouncementsListView();
@@ -175,6 +177,17 @@ public class ChatController  implements Initializable {
     @FXML
     void onSendMessageButtonAction( ActionEvent event ) {
 
+        if (chatTextArea.getText().length() > 700){
+            stageCoordinator.showErrorNotification( "Can't send an announcement longer than 700 characters." );
+            chatTextArea.setText( "" );
+            return;
+        }
+
+        if (chatTextArea.getText().isEmpty() || chatTextArea.getText().isBlank()){
+            chatTextArea.setText( "" );
+            return;
+        }
+
         AnnouncementDto announcementDto = createAnnouncementDto();
 
         serverNotificationsService.sendAnnouncementToClients( announcementDto );
@@ -188,6 +201,7 @@ public class ChatController  implements Initializable {
 
         serverModel.getAnnouncements().add( messageModel );
 
+        chatTextArea.setText( "" );
         scrollChatMessagesListViewToLastMessage();
     }
 
