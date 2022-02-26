@@ -29,7 +29,9 @@ public class AddContactServiceImpl extends UnicastRemoteObject implements AddCon
 
     @Override
     public boolean addContacts(AddContactDto addContactDto) throws RemoteException {
+        boolean result = false;
         if(userRepository.addContacts(addContactDto)) {
+            result = true;
             for (String receiverNumber : addContactDto.getPhoneNumbers()) {
                 String senderPhoneNumber = addContactDto.getPhoneNumber();
                 String receiverPhoneNumber = receiverNumber;
@@ -49,7 +51,6 @@ public class AddContactServiceImpl extends UnicastRemoteObject implements AddCon
                             try {
                                 Client receiver = optionalReceiver.get();
                                 receiver.addInvitation(senderInvitationDto);
-                                return true;
                             } catch (RemoteException e) {
                                 clients.removeClientFromOnlineAndGroups( optionalReceiver.get() );
                                 e.printStackTrace();
@@ -59,6 +60,37 @@ public class AddContactServiceImpl extends UnicastRemoteObject implements AddCon
                 }
             }
         }
-        return false;
+        System.err.println("IS THIS REALLY HAPPENING RIGHT NOW?!?!?!?!?!?!?!?!?");
+        System.err.println(result);
+        return result;
     }
+
+    @Override
+    public boolean doUsersExist( AddContactDto addContactDto ) throws RemoteException {
+        boolean result = true;
+        for (var userPhoneNumber : addContactDto.getPhoneNumbers()){
+            if (!userRepository.isFoundByPhoneNumber( userPhoneNumber )){
+                result = false;
+                break;
+            }
+        }
+
+        return result;
+    }
+
+    @Override
+    public boolean didISendAnInvitationBefore( AddContactDto addContactDto ) throws RemoteException {
+        boolean result = false;
+
+        for (var receiverPhoneNumber : addContactDto.getPhoneNumbers()){
+            if (invitationsRepository.getInvitation( addContactDto.getPhoneNumber(), receiverPhoneNumber ).isPresent()){
+                result = true;
+                break;
+            }
+        }
+
+        return result;
+    }
+
+
 }
