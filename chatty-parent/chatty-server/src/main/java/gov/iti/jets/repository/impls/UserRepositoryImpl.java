@@ -32,6 +32,21 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public String getEmailByPhoneNumber(String phoneNumber) {
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement("select email from users where phone_number = ?")) {
+            preparedStatement.setString(1, phoneNumber);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getString("email");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    @Override
     public boolean addContacts(AddContactDto addContactDto) {
 
 

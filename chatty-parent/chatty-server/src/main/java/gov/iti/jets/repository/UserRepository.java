@@ -8,6 +8,7 @@ import java.util.Optional;
 
 public interface UserRepository {
     String getPasswordByPhoneNumber(String phoneNumber);
+    String getEmailByPhoneNumber(String phoneNumber);
     boolean addContacts(AddContactDto addContactDto);
     boolean addUser(UserEntity userEntity) ;
     boolean isFoundByPhoneNumber(String phoneNumber);
