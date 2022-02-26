@@ -276,6 +276,12 @@ public class ChatController implements Initializable {
     @FXML
     void onSendMessageButtonAction(ActionEvent event) {
 
+        if (chatTextArea.getText().length() > 700){
+            stageCoordinator.showErrorNotification( "Can't send a message longer than 700 characters." );
+            chatTextArea.setText( "" );
+            return;
+        }
+
         if (chatTextArea.getText().isEmpty() || chatTextArea.getText().isBlank()){
             chatTextArea.setText( "" );
             return;
