@@ -1,6 +1,5 @@
 package gov.iti.jets.services.util;
 
-import gov.iti.jets.commons.dtos.FileTransferResponseDto;
 import gov.iti.jets.presentation.models.FileModel;
 import gov.iti.jets.presentation.models.FileTransferOperationAvailabilityModel;
 import gov.iti.jets.presentation.util.ModelFactory;
@@ -19,6 +18,7 @@ public class FileTransferReceivingTask extends Task<Long> {
     private String currentDirectory = System.getProperty("user.dir");
     private FileModel fileModel;
     private Socket socket;
+    private ServerSocket serverSocket;
     private BufferedInputStream in;
     private BufferedOutputStream out;
     private FileTransferOperationAvailabilityModel fileTransferOperationAvailabilityModel = ModelFactory.getInstance().getFileTransferOperationAvailabilityModel();
@@ -32,11 +32,12 @@ public class FileTransferReceivingTask extends Task<Long> {
         fileTransferOperationAvailabilityModel.setAvailable(false);
         File file = new File(currentDirectory, fileModel.getFileName());
         long bytesCount = 0;
-        try (ServerSocket serverSocket = new ServerSocket(9999);) {
+        try {
+            serverSocket = new ServerSocket(9999);
             socket = serverSocket.accept();
             in = new BufferedInputStream(socket.getInputStream());
             out = new BufferedOutputStream(new FileOutputStream(file,true));
-            byte[] buffer = new byte[1024];
+            byte[] buffer = new byte[1024 * 1024];
             int lengthRead;;
             while ((lengthRead = in.read(buffer)) > 0) {
                 bytesCount += lengthRead;
@@ -58,7 +59,8 @@ public class FileTransferReceivingTask extends Task<Long> {
         return null;
     }
     public void close() throws IOException {
-        System.out.println("yy");
+        System.out.println("hellllllllllooooooooooooooooooooooooooooooooooo");
+        serverSocket.close();
         socket.close();
         in.close();
         out.close();

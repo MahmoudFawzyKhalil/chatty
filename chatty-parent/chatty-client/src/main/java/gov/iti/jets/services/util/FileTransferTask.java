@@ -37,7 +37,7 @@ public class FileTransferTask extends Task<Long> {
             in = new BufferedInputStream(new FileInputStream(fileModel.getFile()));
             out = new BufferedOutputStream(socket.getOutputStream());
 
-            byte[] buffer = new byte[1024] ;
+            byte[] buffer = new byte[1024 * 1024] ;
             int lengthRead;
             while ((lengthRead = in.read(buffer)) > 0 ) {
                 if(!fileModel.isCanceled()){

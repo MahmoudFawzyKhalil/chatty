@@ -88,6 +88,7 @@ public class PaneCoordinator {
                 e.printStackTrace();
             }
         }
+        userModel.setCurrentlyChattingWith(null);
         mainSceneBorderPane.setCenter(fileTransferPane);
     }
 
