@@ -76,20 +76,18 @@ public class RegistrationThreeController implements Initializable {
             try {
                 if (future.get()) {
                     Platform.runLater(() -> {
-                        stageCoordinator.closeRegisterUserSplashStage();
                         registerModel.clear();
                         stageCoordinator.switchToLoginScene();
                         stageCoordinator.showMessageNotification("Success", "Created Successfully");
                     });
-                } else {
-                    Platform.runLater(stageCoordinator::closeRegisterUserSplashStage);
                 }
             } catch (InterruptedException | ExecutionException e) {
                 Platform.runLater(() -> {
                     stageCoordinator.showErrorNotification(ErrorMessages.FAILED_REGISTER);
-                    stageCoordinator.closeRegisterUserSplashStage();
                 });
                 e.printStackTrace();
+            } finally {
+                Platform.runLater(stageCoordinator::closeRegisterUserSplashStage);
             }
         });
     }
@@ -113,7 +111,10 @@ public class RegistrationThreeController implements Initializable {
                     stageCoordinator.switchToConnectToServer();
                 });
             } catch (RemoteException e) {
-                Platform.runLater(() -> stageCoordinator.showErrorNotification(ErrorMessages.FAILED_TO_CONNECT));
+                Platform.runLater(() -> {
+                    stageCoordinator.showErrorNotification(ErrorMessages.FAILED_TO_CONNECT);
+                    stageCoordinator.switchToConnectToServer();
+                });
             }
             return false;
         });
