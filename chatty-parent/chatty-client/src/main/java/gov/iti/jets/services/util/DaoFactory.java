@@ -16,13 +16,12 @@ public class DaoFactory {
     private final RegisterDao registerDao = new RegisterDaoImpl();
     private final CountryDao countryDao = new CountryDaoImpl();
     private final UpdateProfileDao updateProfileDao = new UpdateProfileDaoImpl();
-
     private static final AddContactDao addContactDao = new AddContactDaoImpl();
     private final InvitationDecisionDao invitationDecisionDao = new InvitationDecisionDaoImpl();
     private final SingleMessageDao singleMessageDao = new SingleMessageDaoImpl();
     private final GroupMessageDao groupMessageDao = new GroupMessageDaoImpl();
-
     private final AddGroupChatDao addGroupChatDao = new AddGroupChatDaoImpl();
+    private final FileTransferDao fileTransferDao = new FileTransferDaoImpl();
 
 
     private DaoFactory() {
@@ -70,8 +69,11 @@ public class DaoFactory {
         return groupMessageDao;
     }
 
-
     public AddGroupChatDao getAddGroupChatDao() {
         return addGroupChatDao;
+    }
+
+    public FileTransferDao getFileTransferDao() {
+        return fileTransferDao;
     }
 }

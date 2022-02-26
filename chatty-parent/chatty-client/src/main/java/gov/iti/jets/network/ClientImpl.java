@@ -3,17 +3,23 @@ package gov.iti.jets.network;
 import gov.iti.jets.commons.callback.Client;
 import gov.iti.jets.commons.dtos.*;
 import gov.iti.jets.commons.enums.StatusNotificationType;
+import gov.iti.jets.commons.remoteinterfaces.FileTransferService;
 import gov.iti.jets.commons.util.mappers.ImageMapper;
 import gov.iti.jets.presentation.models.*;
 import gov.iti.jets.presentation.models.mappers.*;
+import gov.iti.jets.presentation.util.ExecutorUtil;
 import gov.iti.jets.presentation.util.ModelFactory;
 import gov.iti.jets.presentation.util.StageCoordinator;
 import gov.iti.jets.services.ChatBotService;
-import gov.iti.jets.services.util.ServiceFactory;
+import gov.iti.jets.services.FileTransferDao;
+import gov.iti.jets.services.util.*;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.io.File;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -21,14 +27,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.FutureTask;
 
 public class ClientImpl extends UnicastRemoteObject implements Client {
 
     private final transient UserModel userModel = ModelFactory.getInstance().getUserModel();
+    private final transient FileTransferOperationAvailabilityModel fileTransferOperationAvailabilityModel= ModelFactory.getInstance().getFileTransferOperationAvailabilityModel();
     private final transient ServiceFactory serviceFactory = ServiceFactory.getInstance();
+    private final transient FileTransferDao fileTransferDao = DaoFactory.getInstance().getFileTransferDao();
     private final transient ChatBotService chatBotService = serviceFactory.getChatBotService();
     private final transient StageCoordinator stageCoordinator = StageCoordinator.getInstance();
+    private final transient ExecutorUtil executorUtil = ExecutorUtil.getInstance();
+    public transient FileTransferReceivingTask fileTransferReceivingTask;
+    public transient FileTransferTask fileTransferTask;
     private static ClientImpl INSTANCE;
+    private transient String currentDirectory = System.getProperty("user.dir");
 
     static {
         try {
@@ -245,6 +261,103 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
         });
     }
 
+    @Override
+    public void receiveFileTransferPermission(FileTransferPermissionDto fileTransferPermissionDto) {
+
+        FileTransferResponseDto fileTransferResponseDto = new FileTransferResponseDto();
+        Optional<ContactModel> optionalContactModel = userModel.getContacts().stream()
+                .filter(cm -> cm.getPhoneNumber().equals(fileTransferPermissionDto.getSenderPhoneNumber()))
+                .findFirst();
+
+        if (!optionalContactModel.isEmpty()) {
+
+            if(!fileTransferOperationAvailabilityModel.isAvailable()){
+                fileTransferResponseDto.setAccepted(false);
+                try {
+                    fileTransferResponseDto.setSenderPhoneNumber(optionalContactModel.get().getPhoneNumber());
+                    fileTransferResponseDto.setReceiverPhoneNumber(userModel.getPhoneNumber());
+                    fileTransferDao.sendFileTransferResponse(fileTransferResponseDto);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                } catch (NotBoundException e) {
+                    e.printStackTrace();
+                }
+                return;
+            }
 
 
+final FutureTask <Boolean>query = new FutureTask(new FileTransferAcceptanceCallable(fileTransferPermissionDto, optionalContactModel.get()));
+            Platform.runLater(query);
+            try {
+                if (!query.get()) {
+                    fileTransferResponseDto.setSenderPhoneNumber(optionalContactModel.get().getPhoneNumber());
+                    fileTransferResponseDto.setReceiverPhoneNumber(userModel.getPhoneNumber());
+                    fileTransferResponseDto.setAccepted(false);
+                    fileTransferDao.sendFileTransferResponse(fileTransferResponseDto);
+                    return;
+                } else {
+                    fileTransferResponseDto.setAccepted(true);
+                    fileTransferResponseDto.setReceiverIp(InetAddress.getLocalHost().getHostAddress());
+                    fileTransferResponseDto.setSenderPhoneNumber(optionalContactModel.get().getPhoneNumber());
+                    fileTransferResponseDto.setReceiverPhoneNumber(userModel.getPhoneNumber());
+                    fileTransferResponseDto.setFile(fileTransferPermissionDto.getFile());
+                    fileTransferDao.sendFileTransferResponse(fileTransferResponseDto);
+                    FileModel fileModel = createFileModel(fileTransferPermissionDto.getFile());
+                    Platform.runLater(()->{
+                        userModel.getFileTransferList().add(fileModel);
+                    });
+                    fileTransferReceivingTask = new FileTransferReceivingTask(fileModel);
+                    executorUtil.execute(fileTransferReceivingTask);
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            } catch (NotBoundException e) {
+                e.printStackTrace();
+            } catch (UnknownHostException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void receiveFileTransferResponse(FileTransferResponseDto fileTransferResponseDto) throws RemoteException {
+        Optional<ContactModel> optionalContactModel = userModel.getContacts().stream()
+                .filter(cm -> cm.getPhoneNumber().equals(fileTransferResponseDto.getReceiverPhoneNumber()))
+                .findFirst();
+        if (!optionalContactModel.isEmpty()) {
+            if (!fileTransferResponseDto.isAccepted()) {
+                Platform.runLater(()->{
+                    stageCoordinator.showMessageNotification("File Transfer Response",
+                            optionalContactModel.get().getDisplayName() + " did not accept file transfer.");
+                });
+                return;
+            }
+        }
+        Platform.runLater(()->{
+            stageCoordinator.showMessageNotification("File Transfer Response",
+                    optionalContactModel.get().getDisplayName()+ " accepts file transfer.");
+        });
+
+        FileModel fileModel = createFileModel(fileTransferResponseDto.getFile());
+        Platform.runLater(()->{
+            userModel.getFileTransferList().add(fileModel);
+        });
+        fileTransferTask = new FileTransferTask(fileModel,fileTransferResponseDto.getReceiverIp());
+        executorUtil.execute(fileTransferTask);
+    }
+
+    private FileModel createFileModel(File file){
+        FileModel fileModel = new FileModel();
+        fileModel.setFile(file);
+        fileModel.setFileSize(file.length());
+        fileModel.setFileName(file.getName());
+        fileModel.setNumberOfBytesSoFar(0);
+        fileModel.setSenderName(userModel.getDisplayName());
+        fileModel.setIsCanceled(false);
+        return fileModel;
+    }
 }

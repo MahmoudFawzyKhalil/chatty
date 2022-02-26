@@ -1,17 +1,18 @@
 package gov.iti.jets;
 
-import gov.iti.jets.presentation.util.ModelFactory;
+import gov.iti.jets.network.ClientImpl;
 import gov.iti.jets.presentation.util.ExecutorUtil;
+import gov.iti.jets.presentation.util.ModelFactory;
 import gov.iti.jets.presentation.util.StageCoordinator;
+import gov.iti.jets.services.util.ClientDiscoveryUtil;
 import gov.iti.jets.services.util.DaoFactory;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import gov.iti.jets.services.util.ClientDiscoveryUtil;
 
+import java.io.IOException;
 import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
 
 
 public class ChattyClientApp extends Application {
@@ -35,8 +36,7 @@ public class ChattyClientApp extends Application {
     }
 
     @Override
-    public void stop() throws Exception {
-        super.stop();
+    public void stop()  {
 
         try {
             var connectionService = DaoFactory.getInstance().getConnectionService();
@@ -47,7 +47,16 @@ public class ChattyClientApp extends Application {
 
             ClientDiscoveryUtil.getInstance().stop();
             ExecutorUtil.getInstance().shutDown();
-        } catch (NotBoundException | RemoteException e) {
+
+            if(ClientImpl.getInstance().fileTransferTask != null){
+                ClientImpl.getInstance().fileTransferTask.close();
+            }
+
+            if(ClientImpl.getInstance().fileTransferReceivingTask != null){
+                ClientImpl.getInstance().fileTransferReceivingTask.close();
+            }
+
+        } catch (NotBoundException | IOException e) {
             logger.info("No Connection");
         }
 

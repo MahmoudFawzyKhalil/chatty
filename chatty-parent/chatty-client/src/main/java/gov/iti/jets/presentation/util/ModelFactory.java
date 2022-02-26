@@ -13,6 +13,7 @@ public class ModelFactory {
     private GroupChatModel createGroupChatModel;
     private final RegisterModel registerModel = new RegisterModel();
     private UpdateProfileModel updateProfileModel;
+    private  FileTransferOperationAvailabilityModel fileTransferOperationAvailabilityModel;
 
     private ModelFactory() {
         populateMockUserModel();
@@ -75,6 +76,13 @@ public class ModelFactory {
             updateProfileModel = new UpdateProfileModel(getUserModel());
         }
         return updateProfileModel;
+    }
+
+    public FileTransferOperationAvailabilityModel getFileTransferOperationAvailabilityModel() {
+        if (fileTransferOperationAvailabilityModel == null) {
+            fileTransferOperationAvailabilityModel = new FileTransferOperationAvailabilityModel();
+        }
+        return fileTransferOperationAvailabilityModel;
     }
 
     public void clearUserModel() {
