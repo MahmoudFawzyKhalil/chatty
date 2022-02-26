@@ -1,7 +1,6 @@
 package gov.iti.jets.presentation.controllers;
 
 import gov.iti.jets.commons.dtos.FileTransferPermissionDto;
-import gov.iti.jets.commons.dtos.FileTransferResponseDto;
 import gov.iti.jets.commons.dtos.GroupMessageDto;
 import gov.iti.jets.commons.dtos.SingleMessageDto;
 import gov.iti.jets.presentation.models.*;
@@ -18,7 +17,6 @@ import gov.iti.jets.services.GroupMessageDao;
 import gov.iti.jets.services.SingleMessageDao;
 import gov.iti.jets.services.util.DaoFactory;
 import gov.iti.jets.services.util.ServiceFactory;
-import gov.iti.jets.services.util.FileTransferTask;
 import javafx.collections.FXCollections;
 import javafx.collections.MapChangeListener;
 import javafx.collections.ObservableList;
@@ -357,6 +355,11 @@ public class ChatController implements Initializable {
 
     @FXML
     void onAttachFileButtonAction(ActionEvent event) {
+        if (userModel.getCurrentlyChattingWith().length() < 5 || userModel.getCurrentlyChattingWith() == null){
+            stageCoordinator.showMessageNotification( "Can't send a file to a group!", "" );
+            return;
+        }
+
         if(!fileTransferOperationAvailabilityModel.isAvailable()){
             stageCoordinator.showMessageNotification("File Transfer Operation Availability",
                     "operation is not available now try later");
