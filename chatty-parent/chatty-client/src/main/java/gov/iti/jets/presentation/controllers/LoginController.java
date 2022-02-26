@@ -41,8 +41,8 @@ public class LoginController implements Initializable {
     private final StageCoordinator stageCoordinator = StageCoordinator.getInstance();
     private final ModelFactory modelFactory = ModelFactory.getInstance();
     private final DaoFactory daoFactory = DaoFactory.getInstance();
-    private final LoginDao loginDao = daoFactory.getLoginService();
-    private final ConnectionDao connectionDao = daoFactory.getConnectionService();
+    private final LoginDao loginDao = daoFactory.getLoginDao();
+    private final ConnectionDao connectionDao = daoFactory.getConnectionDao();
     private final ClientImpl client = ClientImpl.getInstance();
     private List<Integer> groupIdsList = new ArrayList<>();
     private UserModel userModel = modelFactory.getUserModel();

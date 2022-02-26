@@ -32,11 +32,11 @@ public class DaoFactory {
         return DAO_FACTORY;
     }
 
-    public LoginDao getLoginService() {
+    public LoginDao getLoginDao() {
         return LoginDao;
     }
 
-    public ConnectionDao getConnectionService() {
+    public ConnectionDao getConnectionDao() {
         return ConnectionDao;
     }
 
@@ -49,7 +49,7 @@ public class DaoFactory {
         return countryDao;
     }
 
-    public AddContactDao getAddContactService() {
+    public AddContactDao getAddContactDao() {
         return addContactDao;
     }
 

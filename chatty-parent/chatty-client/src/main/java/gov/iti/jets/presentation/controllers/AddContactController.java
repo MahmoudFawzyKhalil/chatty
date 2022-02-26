@@ -35,7 +35,7 @@ public class AddContactController implements Initializable {
     private StageCoordinator stageCoordinator = StageCoordinator.getInstance();
     private ModelFactory modelFactory = ModelFactory.getInstance();
     private final DaoFactory daoFactory = DaoFactory.getInstance();
-    private final AddContactDao addContactDao = daoFactory.getAddContactService();
+    private final AddContactDao addContactDao = daoFactory.getAddContactDao();
 
     private UserModel userModel = modelFactory.getUserModel();
     private List<TextField> phoneNumberTextFields = new ArrayList<>();

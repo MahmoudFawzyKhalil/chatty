@@ -42,8 +42,8 @@ public class MainController implements Initializable {
     private final StageCoordinator stageCoordinator = StageCoordinator.getInstance();
     private final PaneCoordinator paneCoordinator = PaneCoordinator.getInstance();
     private final UserModel userModel = ModelFactory.getInstance().getUserModel();
-    private final ConnectionDao connectionDao = DaoFactory.getInstance().getConnectionService();
-    private final LoginDao loginDao = DaoFactory.getInstance().getLoginService();
+    private final ConnectionDao connectionDao = DaoFactory.getInstance().getConnectionDao();
+    private final LoginDao loginDao = DaoFactory.getInstance().getLoginDao();
     private LoginData loginData = LoginData.getInstance();
     private Logger logger= LoggerFactory.getLogger(MainController.class);
     @FXML

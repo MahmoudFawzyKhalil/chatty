@@ -39,7 +39,7 @@ public class ChattyClientApp extends Application {
     public void stop()  {
 
         try {
-            var connectionService = DaoFactory.getInstance().getConnectionService();
+            var connectionService = DaoFactory.getInstance().getConnectionDao();
 
             if (connectionService != null) {
                 connectionService.unregisterClient(ModelFactory.getInstance().getUserModel().getPhoneNumber());
