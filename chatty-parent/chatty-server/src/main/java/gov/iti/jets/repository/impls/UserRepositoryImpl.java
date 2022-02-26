@@ -32,6 +32,8 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public boolean addContacts(AddContactDto addContactDto) {
+
+
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement("insert into invitations (sender, receiver) values(?,?)")) {
 
@@ -49,6 +51,7 @@ public class UserRepositoryImpl implements UserRepository {
                 return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
         return false;
     }

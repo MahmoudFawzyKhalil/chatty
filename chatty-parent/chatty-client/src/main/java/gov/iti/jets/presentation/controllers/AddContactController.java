@@ -12,6 +12,7 @@ import gov.iti.jets.presentation.util.StageCoordinator;
 import gov.iti.jets.services.AddContactDao;
 import gov.iti.jets.services.InvitationDecisionDao;
 import gov.iti.jets.services.util.DaoFactory;
+import gov.iti.jets.services.util.ExceptionHandlingUtil;
 import gov.iti.jets.services.util.ServiceFactory;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -55,6 +56,7 @@ public class AddContactController implements Initializable {
     @FXML
     void onAddButtonAction( ActionEvent event ) {
         getPhoneNumbers();
+        AddContactDto addContactDto = new AddContactDto( userModel.getPhoneNumber(), phoneNumbers );
         System.out.println(phoneNumbers.size());
         if (isFriend()){
             stageCoordinator.showErrorNotification( "Already friends." );
@@ -62,25 +64,29 @@ public class AddContactController implements Initializable {
         } else if (isAddingSelf()){
             stageCoordinator.showErrorNotification( "You can't add yourself." );
             stageCoordinator.closeAddContactStage();
+        } else if (!allUsersExist(addContactDto)){
+            stageCoordinator.showErrorNotification( "One or more users don't exist." );
+            stageCoordinator.closeAddContactStage();
+        } else if (iAmSendingAnInvitationAgain(addContactDto)){
+            stageCoordinator.showErrorNotification( "You've already sent this user an invite." );
+            stageCoordinator.closeAddContactStage();
         } else {
             try {
-                isSentInvitationBefore();
-                AddContactDto addContactDto = new AddContactDto( userModel.getPhoneNumber(), phoneNumbers );
+                handleAddingSomeoneWhoAlreadyAddedMe();
                 System.out.println(addContactDto + " " + phoneNumbers.size());
                 if (!phoneNumbers.isEmpty()){
                     boolean addContactSucceeded = addContactDao.addContacts( addContactDto );
                     if (addContactSucceeded) {
-                        stageCoordinator.showMessageNotification( "Success!", "Successfully added contacts." );
+                        Platform.runLater( () -> {
+                            stageCoordinator.showMessageNotification( "Success!", "Successfully added contacts." );
+                        } );
                     } else {
                         stageCoordinator.showErrorNotification( "Failed to add contacts. Please try again later." );
                     }
                 }
 
             }catch (NoSuchObjectException | NotBoundException | ConnectException c) {
-                ServiceFactory.getInstance().shutdown();
-                stageCoordinator.showErrorNotification("Failed to connect to server. Please try again later.");
-                modelFactory.clearUserModel();
-                stageCoordinator.switchToConnectToServer();
+                ExceptionHandlingUtil.getInstance().handleServerErrorCleanup();
             } catch ( RemoteException e) {
                 stageCoordinator.showErrorNotification( "Failed to connect to server. Please try again later." );
                 e.printStackTrace();
@@ -89,6 +95,28 @@ public class AddContactController implements Initializable {
                 resetAddContactView();
             }
         }
+    }
+
+    private boolean iAmSendingAnInvitationAgain(AddContactDto addContactDto) {
+        boolean result = false;
+        try {
+            result = addContactDao.didISendAnInvitationBefore( addContactDto );
+        } catch (NotBoundException | RemoteException e) {
+            ExceptionHandlingUtil.getInstance().handleServerErrorCleanup();
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    private boolean allUsersExist( AddContactDto addContactDto) {
+        boolean result = true;
+        try {
+            result = addContactDao.doUsersExist( addContactDto );
+        } catch (NotBoundException | RemoteException e) {
+            ExceptionHandlingUtil.getInstance().handleServerErrorCleanup();
+            e.printStackTrace();
+        }
+        return result;
     }
 
     private boolean isAddingSelf() {
@@ -115,7 +143,7 @@ public class AddContactController implements Initializable {
         return false;
     }
 
-    private void isSentInvitationBefore() {
+    private void handleAddingSomeoneWhoAlreadyAddedMe() {
         for (String invitedNumber : phoneNumbers) {
             for (InvitationModel invitationModel : userModel.getInvitations()) {
                 if (invitedNumber.equals(invitationModel.getContactModel().getPhoneNumber())) {
