@@ -162,34 +162,43 @@ public class StageCoordinator {
     }
 
     public void closeAutoDetectStage() {
-        stageMap.get("autoDetectStage").close();
+        Stage stage = stageMap.get("autoDetectStage");
+        if (stage != null) {
+            stage.close();
+        }
     }
 
     public void closeAddContactStage() {
-        stageMap.get("addContactStage").close();
+        Stage stage = stageMap.get("addContactStage");
+        if (stage != null) {
+            stage.close();
+        }
     }
 
     public void closeAddGroupChatStage() {
-        stageMap.get("addGroupStage").close();
+        Stage stage = stageMap.get("addGroupStage");
+        if (stage != null) {
+            stage.close();
+        }
     }
 
     public void closeLoadLoginDataSplashStage() {
-        Stage loadLoginDataSplashStage=stageMap.get("loadLoginDataSplashStage");
-        if(loadLoginDataSplashStage!=null){
+        Stage loadLoginDataSplashStage = stageMap.get("loadLoginDataSplashStage");
+        if (loadLoginDataSplashStage != null) {
             loadLoginDataSplashStage.close();
         }
     }
 
     public void closeRegisterUserSplashStage() {
-        Stage registerUserSplashStage=stageMap.get("registerUserSplashStage");
-        if(registerUserSplashStage!=null){
+        Stage registerUserSplashStage = stageMap.get("registerUserSplashStage");
+        if (registerUserSplashStage != null) {
             registerUserSplashStage.close();
         }
     }
 
     public void closeAddGroupSplashStage() {
-        Stage addGroupSplashStage=stageMap.get("addGroupSplashStage");
-        if(addGroupSplashStage!=null){
+        Stage addGroupSplashStage = stageMap.get("addGroupSplashStage");
+        if (addGroupSplashStage != null) {
             addGroupSplashStage.close();
         }
     }
