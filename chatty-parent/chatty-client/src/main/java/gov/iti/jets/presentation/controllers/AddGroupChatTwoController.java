@@ -161,7 +161,7 @@ public class AddGroupChatTwoController implements Initializable {
                 stageCoordinator.showErrorNotification(ErrorMessages.IMAGE_LENGTH);
                 return;
             }
-            Image image = new Image(selectedFile.getPath());
+            Image image = new Image(selectedFile.getPath(),500,500,true,true);
             createGroupChatModel.setGroupChatPicture(image);
         }
 

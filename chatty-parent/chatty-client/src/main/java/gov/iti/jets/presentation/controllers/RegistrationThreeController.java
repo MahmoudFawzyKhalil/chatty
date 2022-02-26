@@ -62,7 +62,7 @@ public class RegistrationThreeController implements Initializable {
                     stageCoordinator.showErrorNotification(ErrorMessages.IMAGE_LENGTH);
                     return;
                 }
-                Image selectedImage = new Image(selectedFile.getPath());
+                Image selectedImage = new Image(selectedFile.getPath(),500,500,true,true);
                 Platform.runLater(() -> registerModel.setProfilePicture(selectedImage));
             });
         }
