@@ -98,8 +98,6 @@ public class RegistrationTwoController implements Initializable {
                 this.setDisable(empty || diff < 10 );
             }
         });
-
-        birthDateDatePicker.setValue( LocalDate.ofYearDay( 2000, 1 ) );
     }
 
     private void loadCountries() {
@@ -170,7 +168,7 @@ public class RegistrationTwoController implements Initializable {
                 .dependsOn("country", countryComboBox.valueProperty())
                 .withMethod(c -> {
                     CountryModel country = c.get("country");
-                    if (country == RegisterModel.DEFAULT_COUNTRY_MODEL) {
+                    if (country.getCountryId() == RegisterModel.DEFAULT_COUNTRY_MODEL.getCountryId()) {
                         c.error("Please choose country.");
                         nextButton.setDisable(true);
                     }
