@@ -106,6 +106,10 @@ public class Clients {
     public Optional<Client> removeClient(String phoneNumber)  {
         logger.info("A client attempted to log out: " + phoneNumber);
 
+        if (phoneNumber == null) {
+            return Optional.ofNullable( null );
+        }
+
         if (clientMap.get(phoneNumber) != null){
             unregisterClientGroups(clientMap.get(phoneNumber));
         }
