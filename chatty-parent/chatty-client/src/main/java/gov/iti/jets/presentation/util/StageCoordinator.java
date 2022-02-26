@@ -43,8 +43,8 @@ public class StageCoordinator {
     }
 
     private void setAppIconAndTitle() {
-        primaryStage.getIcons().add( new Image(StageCoordinator.class.getResource( "/images/appIcon.png" ).toString()) );
-        primaryStage.setTitle( "Chatty" );
+        primaryStage.getIcons().add(new Image(StageCoordinator.class.getResource("/images/appIcon.png").toString()));
+        primaryStage.setTitle("Chatty");
     }
 
     public void switchToLoginScene() {
@@ -173,6 +173,27 @@ public class StageCoordinator {
         stageMap.get("addGroupStage").close();
     }
 
+    public void closeLoadLoginDataSplashStage() {
+        Stage loadLoginDataSplashStage=stageMap.get("loadLoginDataSplashStage");
+        if(loadLoginDataSplashStage!=null){
+            loadLoginDataSplashStage.close();
+        }
+    }
+
+    public void closeRegisterUserSplashStage() {
+        Stage registerUserSplashStage=stageMap.get("registerUserSplashStage");
+        if(registerUserSplashStage!=null){
+            registerUserSplashStage.close();
+        }
+    }
+
+    public void closeAddGroupSplashStage() {
+        Stage addGroupSplashStage=stageMap.get("addGroupSplashStage");
+        if(addGroupSplashStage!=null){
+            addGroupSplashStage.close();
+        }
+    }
+
 
     public void showAddContactStage() {
         Stage addContactStage = new Stage();
@@ -189,6 +210,33 @@ public class StageCoordinator {
         setPopupStage(autoDetectStage, "/views/auto-detect/AutoDetect.fxml");
         stageMap.put("autoDetectStage", autoDetectStage);
         autoDetectStage.show();
+
+    }
+
+    public void showLoginLoadingDataSplashStage() {
+        Stage loadLoginDataSplashStage = new Stage();
+        setPopupStageStyle(loadLoginDataSplashStage);
+        setPopupStage(loadLoginDataSplashStage, "/views/login/LoadDataSplash.fxml");
+        stageMap.put("loadLoginDataSplashStage", loadLoginDataSplashStage);
+        loadLoginDataSplashStage.show();
+
+    }
+
+    public void showRegisterUserSplashStage() {
+        Stage registerUserSplashStage = new Stage();
+        setPopupStageStyle(registerUserSplashStage);
+        setPopupStage(registerUserSplashStage, "/views/register/RegisterUserSplash.fxml");
+        stageMap.put("registerUserSplashStage", registerUserSplashStage);
+        registerUserSplashStage.show();
+
+    }
+
+    public void showAddGroupSplashStage() {
+        Stage addGroupSplashStage = new Stage();
+        setPopupStageStyle(addGroupSplashStage);
+        setPopupStage(addGroupSplashStage, "/views/add-group/AddGroupSplash.fxml");
+        stageMap.put("addGroupSplashStage", addGroupSplashStage);
+        addGroupSplashStage.show();
 
     }
 

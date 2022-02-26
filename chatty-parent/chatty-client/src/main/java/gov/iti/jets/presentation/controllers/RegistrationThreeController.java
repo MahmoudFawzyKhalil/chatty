@@ -4,11 +4,13 @@ import gov.iti.jets.commons.dtos.RegisterDto;
 import gov.iti.jets.presentation.erros.ErrorMessages;
 import gov.iti.jets.presentation.models.RegisterModel;
 import gov.iti.jets.presentation.models.mappers.RegisterMapper;
+import gov.iti.jets.presentation.util.ExecutorUtil;
 import gov.iti.jets.presentation.util.ModelFactory;
 import gov.iti.jets.presentation.util.StageCoordinator;
 import gov.iti.jets.services.RegisterDao;
 import gov.iti.jets.services.util.DaoFactory;
 import gov.iti.jets.services.util.ServiceFactory;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -24,6 +26,8 @@ import java.rmi.NoSuchObjectException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ResourceBundle;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 public class RegistrationThreeController implements Initializable {
 
@@ -49,46 +53,73 @@ public class RegistrationThreeController implements Initializable {
 
     @FXML
     void onUploadPictureHyperLinkAction(ActionEvent event) {
+
         File selectedFile = fileChooser.showOpenDialog(null);
         if (selectedFile != null) {
-            double fileLen = selectedFile.length() / (double) (1024 * 1024);
-            if (fileLen > 2) {
-                stageCoordinator.showErrorNotification(ErrorMessages.IMAGE_LENGTH);
-                return;
-            }
-            Image selectedImage = new Image(selectedFile.getPath());
-            registerModel.setProfilePicture(selectedImage);
+            ExecutorUtil.getInstance().execute(() -> {
+                double fileLen = selectedFile.length() / (double) (1024 * 1024);
+                if (fileLen > 2) {
+                    stageCoordinator.showErrorNotification(ErrorMessages.IMAGE_LENGTH);
+                    return;
+                }
+                Image selectedImage = new Image(selectedFile.getPath(),500,500,true,true);
+                Platform.runLater(() -> registerModel.setProfilePicture(selectedImage));
+            });
         }
     }
 
     @FXML
     void onFinishButtonAction(ActionEvent event) {
-        if (registered()) {
-            registerModel.clear();
-            stageCoordinator.switchToLoginScene();
-        }
+        ExecutorUtil.getInstance().execute(() -> {
+            Platform.runLater(stageCoordinator::showRegisterUserSplashStage);
+            Future<Boolean> future = registered();
+            try {
+                if (future.get()) {
+                    Platform.runLater(() -> {
+                        registerModel.clear();
+                        stageCoordinator.switchToLoginScene();
+                        stageCoordinator.showMessageNotification("Success", "Created Successfully");
+                    });
+                }
+            } catch (InterruptedException | ExecutionException e) {
+                Platform.runLater(() -> {
+                    stageCoordinator.showErrorNotification(ErrorMessages.FAILED_REGISTER);
+                });
+                e.printStackTrace();
+            } finally {
+                Platform.runLater(stageCoordinator::closeRegisterUserSplashStage);
+            }
+        });
     }
 
-    boolean registered() {
-        RegisterDto registerDto = RegisterMapper.INSTANCE.registerModelToDto(registerModel);
-        try {
-            if (registerDao.register(registerDto)) {
-                stageCoordinator.showMessageNotification("Success", "Created Successfully");
-                return true;
-            } else {
-                stageCoordinator.showErrorNotification(ErrorMessages.FAILED_REGISTER);
-            }
+    private Future<Boolean> registered() {
+        Future<Boolean> future = ExecutorUtil.getInstance().submit(() -> {
+            RegisterDto registerDto = RegisterMapper.INSTANCE.registerModelToDto(registerModel);
+            try {
+                if (registerDao.register(registerDto)) {
+                    return true;
+                } else {
+                    Platform.runLater(() -> stageCoordinator.showErrorNotification(ErrorMessages.FAILED_REGISTER));
+                }
 
-        }catch (NoSuchObjectException | NotBoundException | ConnectException c) {
-            ServiceFactory.getInstance().shutdown();
-            stageCoordinator.showErrorNotification("Failed to connect to server. Please try again later.");
-            ModelFactory.getInstance().clearUserModel();
-            modelFactory.clearUserModel();
-            stageCoordinator.switchToConnectToServer();
-        }catch (RemoteException e) {
-            stageCoordinator.showErrorNotification(ErrorMessages.FAILED_TO_CONNECT);
-        }
-        return false;
+            } catch (NoSuchObjectException | NotBoundException | ConnectException c) {
+                Platform.runLater(() -> {
+                    ServiceFactory.getInstance().shutdown();
+                    stageCoordinator.showErrorNotification("Failed to connect to server. Please try again later.");
+                    ModelFactory.getInstance().clearUserModel();
+                    modelFactory.clearUserModel();
+                    stageCoordinator.switchToConnectToServer();
+                });
+            } catch (RemoteException e) {
+                Platform.runLater(() -> {
+                    stageCoordinator.showErrorNotification(ErrorMessages.FAILED_TO_CONNECT);
+                    stageCoordinator.switchToConnectToServer();
+                });
+            }
+            return false;
+        });
+        return future;
+
     }
 
     @FXML

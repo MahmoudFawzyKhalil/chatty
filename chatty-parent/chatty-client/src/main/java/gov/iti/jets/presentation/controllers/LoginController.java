@@ -9,6 +9,7 @@ import gov.iti.jets.presentation.models.ContactModel;
 import gov.iti.jets.presentation.models.GroupChatModel;
 import gov.iti.jets.presentation.models.UserModel;
 import gov.iti.jets.presentation.models.UserStatusModel;
+import gov.iti.jets.presentation.util.ExecutorUtil;
 import gov.iti.jets.presentation.util.ModelFactory;
 import gov.iti.jets.presentation.util.StageCoordinator;
 import gov.iti.jets.presentation.util.UiValidator;
@@ -127,51 +128,66 @@ public class LoginController implements Initializable {
     @FXML
     void onLoginButtonAction(ActionEvent event) {
         LoginDto loginDto = new LoginDto(phoneNumberTextField.getText(), passwordTextField.getText());
-        try {
-            boolean isAuthenticated = loginDao.isAuthenticated(loginDto);
-            if (isAuthenticated) {
-                connectionDao.registerClient(phoneNumberTextField.getText(), client);
-                connectionDao.registerGroups(getGroupIdsList(userModel.getGroupChats()), client);
+        ExecutorUtil.getInstance().execute(() -> {
+            try {
+                boolean isAuthenticated = loginDao.isAuthenticated(loginDto);
+                if (isAuthenticated) {
+                    Platform.runLater(stageCoordinator::showLoginLoadingDataSplashStage);
 
-                var notificationDto = new StatusNotificationDto(userModel.getPhoneNumber(),
-                        StatusNotificationType.valueOf(userModel.getCurrentStatus().getUserStatusName()));
-                List<String> contactsPhoneNumbers = userModel.getContacts()
-                        .stream()
-                        .map(ContactModel::getPhoneNumber)
-                        .collect(Collectors.toList());
+                    connectionDao.registerClient(phoneNumberTextField.getText(), client);
+                    connectionDao.registerGroups(getGroupIdsList(userModel.getGroupChats()), client);
 
-                connectionDao.notifyOthersOfStatusUpdate(notificationDto, contactsPhoneNumbers);
-
-                List<String> offlineContactsPhoneNumbers = connectionDao.getOfflineContacts(contactsPhoneNumbers);
-
-                offlineContactsPhoneNumbers.forEach(phoneNumber -> {
-                    userModel.getContacts()
+                    var notificationDto = new StatusNotificationDto(userModel.getPhoneNumber(),
+                            StatusNotificationType.valueOf(userModel.getCurrentStatus().getUserStatusName()));
+                    List<String> contactsPhoneNumbers = userModel.getContacts()
                             .stream()
-                            .filter(cm -> cm.getPhoneNumber().equals(phoneNumber))
-                            .findFirst()
-                            .ifPresent(contactModel -> {
-                                Platform.runLater(() -> {
-                                    contactModel.setCurrentStatus(UserStatusModel.OFFLINE);
-                                });
-                            });
-                });
-                passwordTextField.clear();
-                ModelFactory.getInstance().getUpdateProfileModel().resetData();
-                stageCoordinator.switchToMainScene();
+                            .map(ContactModel::getPhoneNumber)
+                            .collect(Collectors.toList());
 
-            } else {
-                stageCoordinator.showErrorNotification("Invalid phone number or password.");
+                    connectionDao.notifyOthersOfStatusUpdate(notificationDto, contactsPhoneNumbers);
+
+                    List<String> offlineContactsPhoneNumbers = connectionDao.getOfflineContacts(contactsPhoneNumbers);
+
+                    offlineContactsPhoneNumbers.forEach(phoneNumber -> {
+                        userModel.getContacts()
+                                .stream()
+                                .filter(cm -> cm.getPhoneNumber().equals(phoneNumber))
+                                .findFirst()
+                                .ifPresent(contactModel -> {
+                                    Platform.runLater(() -> {
+                                        contactModel.setCurrentStatus(UserStatusModel.OFFLINE);
+                                    });
+                                });
+                    });
+                    Platform.runLater(() -> {
+                        passwordTextField.clear();
+                        ModelFactory.getInstance().getUpdateProfileModel().resetData();
+                        stageCoordinator.switchToMainScene();
+                    });
+
+                } else {
+                    Platform.runLater(() -> {
+                        stageCoordinator.showErrorNotification("Invalid phone number or password.");
+                    });
+                }
+            } catch (NoSuchObjectException | NotBoundException | ConnectException c) {
+                Platform.runLater(() -> {
+                    ServiceFactory.getInstance().shutdown();
+                    stageCoordinator.showErrorNotification("Failed to connect to server. Please try again later.");
+                    ModelFactory.getInstance().clearUserModel();
+                    modelFactory.clearUserModel();
+                    stageCoordinator.switchToConnectToServer();
+                });
+            } catch (RemoteException e) {
+                Platform.runLater(() -> {
+                    stageCoordinator.showErrorNotification("Failed to connect to server. Please try again later.");
+                    stageCoordinator.switchToConnectToServer();
+                });
+            }finally {
+                Platform.runLater(stageCoordinator::closeLoadLoginDataSplashStage);
             }
-        } catch (NoSuchObjectException | NotBoundException | ConnectException c) {
-            ServiceFactory.getInstance().shutdown();
-            stageCoordinator.showErrorNotification("Failed to connect to server. Please try again later.");
-            ModelFactory.getInstance().clearUserModel();
-            modelFactory.clearUserModel();
-            stageCoordinator.switchToConnectToServer();
-        } catch (RemoteException e) {
-            stageCoordinator.showErrorNotification("Failed to connect to server. Please try again later.");
-            e.printStackTrace();
-        }
+        });
+
     }
 
     private List<Integer> getGroupIdsList(ObservableList<GroupChatModel> groupChatModels) {

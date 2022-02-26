@@ -4,7 +4,6 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
@@ -31,22 +30,18 @@
                   <Insets top="40.0" />
                </VBox.margin>
             </HBox>
-            <ScrollPane id="text-field-holder" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" styleClass="transparent-color" vbarPolicy="NEVER" VBox.vgrow="ALWAYS">
-               <content>
-                  <VBox id="text-field-holder" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="15.0" styleClass="input-field-holder">
-                     <padding>
-                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                     </padding>
-                     <children>
-                        <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../images/loading.gif" />
-                           </image>
-                        </ImageView>
-                     </children>
-                  </VBox>
-               </content>
-            </ScrollPane>
+            <VBox id="text-field-holder" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="15.0" styleClass="input-field-holder" VBox.vgrow="ALWAYS">
+               <padding>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
+               <children>
+                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/loading.gif" />
+                     </image>
+                  </ImageView>
+               </children>
+            </VBox>
             <HBox id="adding-box" alignment="CENTER" spacing="10.0" styleClass="adding-box">
                <children>
                   <Button mnemonicParsing="false" onAction="#onCancelButtonAction" styleClass="add-button" text="Cancel" />
