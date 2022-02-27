@@ -10,7 +10,7 @@ import java.net.MalformedURLException;
 
 
 public class MailMaker {
-    public static MailMaker INSTANCE = new MailMaker();
+    private static MailMaker INSTANCE = new MailMaker();
 
     private HtmlEmail htmlEmail = new HtmlEmail();
     private String accountEmail = "chatty373@gmail.com";
