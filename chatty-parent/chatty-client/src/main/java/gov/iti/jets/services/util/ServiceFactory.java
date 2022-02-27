@@ -58,7 +58,7 @@ public class ServiceFactory {
 
 
     public ConnectionService getConnectionService() throws NotBoundException, RemoteException {
-        if (connectionService == null) {
+        if (connectionService == null && registry != null) {
             connectionService = (ConnectionService) registry.lookup( "ConnectionService" );
         }
         return connectionService;

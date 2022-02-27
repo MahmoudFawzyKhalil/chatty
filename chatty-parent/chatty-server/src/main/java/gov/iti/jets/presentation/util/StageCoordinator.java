@@ -31,6 +31,8 @@ public class StageCoordinator {
 
     public void initStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
+        this.primaryStage.setMinWidth(940);
+        this.primaryStage.setMinHeight(500);
         setAppIconAndTitle();
     }
 

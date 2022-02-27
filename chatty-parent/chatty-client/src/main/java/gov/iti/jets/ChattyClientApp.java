@@ -4,8 +4,10 @@ import gov.iti.jets.network.ClientImpl;
 import gov.iti.jets.presentation.util.ExecutorUtil;
 import gov.iti.jets.presentation.util.ModelFactory;
 import gov.iti.jets.presentation.util.StageCoordinator;
+import gov.iti.jets.services.ConnectionDao;
 import gov.iti.jets.services.util.ClientDiscoveryUtil;
 import gov.iti.jets.services.util.DaoFactory;
+import gov.iti.jets.services.util.SingleInstanceUtil;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
@@ -17,47 +19,47 @@ import java.rmi.NotBoundException;
 
 public class ChattyClientApp extends Application {
     private StageCoordinator stageCoordinator = StageCoordinator.getInstance();
-    private Logger logger = LoggerFactory.getLogger(ChattyClientApp.class);
+    private static Logger logger = LoggerFactory.getLogger( ChattyClientApp.class );
 
     @Override
-    public void start(Stage primaryStage) {
-        stageCoordinator.initStage(primaryStage);
+    public void start( Stage primaryStage ) {
+        stageCoordinator.initStage( primaryStage );
         stageCoordinator.switchToConnectToServer();
-
-        primaryStage.setWidth(960);
-        primaryStage.setHeight(530);
-        primaryStage.setMinWidth(960);
-        primaryStage.setMinHeight(530);
         primaryStage.show();
     }
 
-    public static void main(String[] args) {
+    public static void main( String[] args ) {
+        if (SingleInstanceUtil.getInstance().isAppActive()) {
+            logger.error( "An instance of chatty client is already running." );
+            System.exit( 1 );
+        }
+
         Application.launch();
     }
 
     @Override
-    public void stop()  {
+    public void stop() {
 
         try {
-            var connectionService = DaoFactory.getInstance().getConnectionDao();
+            ConnectionDao connectionDao = DaoFactory.getInstance().getConnectionDao();
 
-            if (connectionService != null) {
-                connectionService.unregisterClient(ModelFactory.getInstance().getUserModel().getPhoneNumber());
+            if (connectionDao != null) {
+                connectionDao.unregisterClient( ModelFactory.getInstance().getUserModel().getPhoneNumber() );
             }
 
             ClientDiscoveryUtil.getInstance().stop();
             ExecutorUtil.getInstance().shutDown();
 
-            if(ClientImpl.getInstance().fileTransferTask != null){
+            if (ClientImpl.getInstance().fileTransferTask != null) {
                 ClientImpl.getInstance().fileTransferTask.close();
             }
 
-            if(ClientImpl.getInstance().fileTransferReceivingTask != null){
+            if (ClientImpl.getInstance().fileTransferReceivingTask != null) {
                 ClientImpl.getInstance().fileTransferReceivingTask.close();
             }
 
         } catch (NotBoundException | IOException e) {
-            logger.info("No Connection");
+            logger.info( "No Connection" );
         }
 
         System.exit( 0 );
