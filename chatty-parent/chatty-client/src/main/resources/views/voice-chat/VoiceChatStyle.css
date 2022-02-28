@@ -1,0 +1,84 @@
+.main-back-ground{
+    -fx-background-color:-main-dark;
+}
+
+.card{
+    -fx-background-color:-main-medium;
+    -fx-background-radius:15px;
+}
+
+.contact-label{
+    -fx-text-fill:-main-light;
+    -fx-font-weight:bold;
+    -fx-font-size:24px;
+}
+
+.ringing-label{
+    -fx-text-fill:-main-light;
+    -fx-font-size:14px;
+}
+
+/*.accept-button{
+    -fx-shape: "219.429,367.932 108.606,257.11 147.394,218.319 219.429,290.353 355.463,154.319394.251,193.11";
+    -fx-background-color: -main-light;
+}*/
+
+
+.accept-button {
+    -fx-background-color: #198754;
+    -fx-font-size: 16px;
+    -fx-text-fill: -main-light;
+    -fx-cursor:hand;
+    -fx-background-radius:5px;
+}
+.accept-button:hover {
+    -fx-background-color: derive(#198754,-10%);
+}
+
+.reject-button {
+    -fx-background-color: #dc3545;
+    -fx-font-size: 16px;
+    -fx-text-fill: -main-light;
+    -fx-cursor:hand;
+    -fx-background-radius:5px;
+}
+.reject-button:hover {
+    -fx-background-color: derive(#dc3545,-10%);
+}
+
+.shadow-pane{
+   -fx-background-color: transparent;
+   -fx-padding: 10px;
+}
+
+.close-call-button {
+    -fx-background-color: #dc3545;
+        -fx-font-size: 16px;
+        -fx-text-fill: -main-light;
+        -fx-cursor:hand;
+        -fx-background-radius:5px;
+}
+
+.close-call-button:hover {
+    -fx-background-color: derive(#dc3545,-10%);
+}
+
+
+.create-account-label{
+    -fx-font-size:12px;
+    -fx-text-fill: derive(-main-light,-20%);
+}
+
+.hyperlink {
+    -fx-padding: 0.166667em;
+    -fx-cursor: hand;
+    -fx-content-display: LEFT;
+    -fx-text-fill: derive(-main-light,10%);
+    -fx-border-color: transparent;
+    -fx-underline: false;
+    fx-font-size:12px;
+
+}
+.hyperlink:hover {
+    -fx-underline: true;
+}

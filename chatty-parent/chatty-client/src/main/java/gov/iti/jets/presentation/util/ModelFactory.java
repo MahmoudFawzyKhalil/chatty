@@ -14,6 +14,7 @@ public class ModelFactory {
     private final RegisterModel registerModel = new RegisterModel();
     private UpdateProfileModel updateProfileModel;
     private  FileTransferOperationAvailabilityModel fileTransferOperationAvailabilityModel;
+    private VoiceChatModel voiceChatModel=new VoiceChatModel();
 
     private ModelFactory() {
         populateMockUserModel();
@@ -83,6 +84,10 @@ public class ModelFactory {
             fileTransferOperationAvailabilityModel = new FileTransferOperationAvailabilityModel();
         }
         return fileTransferOperationAvailabilityModel;
+    }
+
+    public VoiceChatModel getVoiceChatModel() {
+        return voiceChatModel;
     }
 
     public void clearUserModel() {

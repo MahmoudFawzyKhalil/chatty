@@ -13,7 +13,7 @@ import java.rmi.server.UnicastRemoteObject;
 
 public class RmiManager {
     private final static RmiManager INSTANCE = new RmiManager();
-    private final Logger logger = LoggerFactory.getLogger( RmiManager.class );
+    private final Logger logger = LoggerFactory.getLogger(RmiManager.class);
     private Registry registry;
     private boolean isRunning = false;
 
@@ -28,6 +28,7 @@ public class RmiManager {
     private AddGroupChatService addGroupChatService;
     private GroupMessageService groupMessageService;
     private FileTransferService fileTransferService;
+    private VoiceChatService voiceChatService;
 
     private RmiManager() {
     }
@@ -45,13 +46,13 @@ public class RmiManager {
 
     private void createOrObtainRegistry() throws RemoteException {
         try {
-            this.registry = LocateRegistry.createRegistry( 1099 );
+            this.registry = LocateRegistry.createRegistry(1099);
 
-            logger.info( "Created an RMI registry listening on port 1099" );
+            logger.info("Created an RMI registry listening on port 1099");
         } catch (RemoteException e) {
-            this.registry = LocateRegistry.getRegistry( 1099 );
+            this.registry = LocateRegistry.getRegistry(1099);
 
-            logger.info( "Registry was already alive. Obtained an RMI registry already listening on port 1099" );
+            logger.info("Registry was already alive. Obtained an RMI registry already listening on port 1099");
         }
     }
 
@@ -67,23 +68,25 @@ public class RmiManager {
         addGroupChatService = new AddGroupChatServiceImpl();
         groupMessageService = new GroupMessageServiceImpl();
         fileTransferService = new FileTransferServiceImpl();
-        logger.info( "Created service remote objects." );
+        voiceChatService = new VoiceChatServiceImpl();
+        logger.info("Created service remote objects.");
     }
 
     private void registerServices() throws RemoteException {
-        registry.rebind( "LoginService", loginService );
-        registry.rebind( "ConnectionService", connectionService );
-        registry.rebind( "RegisterService", registerService );
-        registry.rebind( "CountryService", countryService );
-        registry.rebind( "AddContactService", addContactService );
-        registry.rebind( "InvitationDecisionService", invitationDecisionService );
-        registry.rebind( "UpdateProfileService", updateProfileService );
-        registry.rebind( "SingleMessageService", singleMessageService );
-        registry.rebind( "AddGroupChatService", addGroupChatService );
-        registry.rebind( "GroupMessageService", groupMessageService );
+        registry.rebind("LoginService", loginService);
+        registry.rebind("ConnectionService", connectionService);
+        registry.rebind("RegisterService", registerService);
+        registry.rebind("CountryService", countryService);
+        registry.rebind("AddContactService", addContactService);
+        registry.rebind("InvitationDecisionService", invitationDecisionService);
+        registry.rebind("UpdateProfileService", updateProfileService);
+        registry.rebind("SingleMessageService", singleMessageService);
+        registry.rebind("AddGroupChatService", addGroupChatService);
+        registry.rebind("GroupMessageService", groupMessageService);
         registry.rebind("FileTransferService", fileTransferService);
+        registry.rebind("VoiceChatService", voiceChatService);
 
-        logger.info( "Registered services with RMI registry." );
+        logger.info("Registered services with RMI registry.");
     }
 
     public void stop() throws RemoteException, NotBoundException {
@@ -95,34 +98,36 @@ public class RmiManager {
     }
 
     private void unexportServices() throws NoSuchObjectException {
-        UnicastRemoteObject.unexportObject( loginService, false );
-        UnicastRemoteObject.unexportObject( connectionService, false );
-        UnicastRemoteObject.unexportObject( registerService, false );
-        UnicastRemoteObject.unexportObject( countryService, false );
-        UnicastRemoteObject.unexportObject( addContactService, false );
-        UnicastRemoteObject.unexportObject( invitationDecisionService, false );
-        UnicastRemoteObject.unexportObject( updateProfileService, false );
-        UnicastRemoteObject.unexportObject( singleMessageService, false );
-        UnicastRemoteObject.unexportObject( addGroupChatService, false );
-        UnicastRemoteObject.unexportObject( groupMessageService, false );
-        UnicastRemoteObject.unexportObject(fileTransferService,false);
+        UnicastRemoteObject.unexportObject(loginService, false);
+        UnicastRemoteObject.unexportObject(connectionService, false);
+        UnicastRemoteObject.unexportObject(registerService, false);
+        UnicastRemoteObject.unexportObject(countryService, false);
+        UnicastRemoteObject.unexportObject(addContactService, false);
+        UnicastRemoteObject.unexportObject(invitationDecisionService, false);
+        UnicastRemoteObject.unexportObject(updateProfileService, false);
+        UnicastRemoteObject.unexportObject(singleMessageService, false);
+        UnicastRemoteObject.unexportObject(addGroupChatService, false);
+        UnicastRemoteObject.unexportObject(groupMessageService, false);
+        UnicastRemoteObject.unexportObject(fileTransferService, false);
+        UnicastRemoteObject.unexportObject(voiceChatService, false);
 
-        logger.info( "Unexported service remote objects." );
+        logger.info("Unexported service remote objects.");
     }
 
     private void unbindServices() throws RemoteException, NotBoundException {
-        registry.unbind( "LoginService" );
-        registry.unbind( "ConnectionService" );
-        registry.unbind( "RegisterService" );
-        registry.unbind( "CountryService" );
-        registry.unbind( "AddContactService" );
-        registry.unbind( "InvitationDecisionService" );
-        registry.unbind( "UpdateProfileService" );
-        registry.unbind( "SingleMessageService" );
-        registry.unbind( "AddGroupChatService" );
-        registry.unbind( "GroupMessageService" );
+        registry.unbind("LoginService");
+        registry.unbind("ConnectionService");
+        registry.unbind("RegisterService");
+        registry.unbind("CountryService");
+        registry.unbind("AddContactService");
+        registry.unbind("InvitationDecisionService");
+        registry.unbind("UpdateProfileService");
+        registry.unbind("SingleMessageService");
+        registry.unbind("AddGroupChatService");
+        registry.unbind("GroupMessageService");
         registry.unbind("FileTransferService");
+        registry.unbind("VoiceChatService");
 
-        logger.info( "Unbound service remote objects." );
+        logger.info("Unbound service remote objects.");
     }
 }

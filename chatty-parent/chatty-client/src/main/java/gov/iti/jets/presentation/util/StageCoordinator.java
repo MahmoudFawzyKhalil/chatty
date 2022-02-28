@@ -203,6 +203,27 @@ public class StageCoordinator {
         }
     }
 
+    public void closeVoiceChatRinging() {
+        Stage voiceChatRinging = stageMap.get("voiceChatRinging");
+        if (voiceChatRinging != null) {
+            voiceChatRinging.close();
+        }
+    }
+
+    public void closeVoiceChatAcceptance() {
+        Stage voiceChatAcceptance = stageMap.get("voiceChatAcceptance");
+        if (voiceChatAcceptance != null) {
+            voiceChatAcceptance.close();
+        }
+    }
+
+    public void closeVoiceChatCall() {
+        Stage voiceChatCallStage = stageMap.get("voiceChatCallStage");
+        if (voiceChatCallStage != null) {
+            voiceChatCallStage.close();
+        }
+    }
+
 
     public void showAddContactStage() {
         Stage addContactStage = new Stage();
@@ -228,8 +249,8 @@ public class StageCoordinator {
         setPopupStage(loadLoginDataSplashStage, "/views/login/LoadDataSplash.fxml");
         stageMap.put("loadLoginDataSplashStage", loadLoginDataSplashStage);
         loadLoginDataSplashStage.show();
-
     }
+
 
     public void showRegisterUserSplashStage() {
         Stage registerUserSplashStage = new Stage();
@@ -238,6 +259,42 @@ public class StageCoordinator {
         stageMap.put("registerUserSplashStage", registerUserSplashStage);
         registerUserSplashStage.show();
 
+    }
+
+
+    public void showVoiceChatRinging() {
+        Stage voiceChatRinging = new Stage();
+        setVoiceChatStageStyle(voiceChatRinging);
+        setPopupStage(voiceChatRinging, "/views/voice-chat/VoiceChatRinging.fxml");
+        stageMap.put("voiceChatRinging", voiceChatRinging);
+        voiceChatRinging.show();
+    }
+
+    public void showVoiceChatAcceptance() {
+        Stage voiceChatAcceptance = new Stage();
+        setVoiceChatStageStyle(voiceChatAcceptance);
+        setPopupStage(voiceChatAcceptance, "/views/voice-chat/VoiceChatAcceptance.fxml");
+        stageMap.put("voiceChatAcceptance", voiceChatAcceptance);
+        voiceChatAcceptance.show();
+    }
+
+
+    public void showVoiceChatCallStage() {
+        Stage voiceChatCallStage = new Stage();
+        setVoiceChatStageStyle(voiceChatCallStage);
+        setPopupStage(voiceChatCallStage, "/views/voice-chat/VoiceChatCall.fxml");
+        stageMap.put("voiceChatCallStage", voiceChatCallStage);
+        /*voiceChatCallStage.addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, event -> {
+            VoiceSender.getInstance().closeCall();
+            VoiceReceiver.getInstance().closeCall();
+            ModelFactory.getInstance().getVoiceChatModel().setInCall(false);
+        });*/
+        voiceChatCallStage.show();
+    }
+
+
+    private void setVoiceChatStageStyle(Stage stage) {
+        stage.initStyle(StageStyle.TRANSPARENT);
     }
 
     public void showAddGroupSplashStage() {

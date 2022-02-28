@@ -23,6 +23,7 @@ module chatty.client {
     requires jakarta.validation;
     requires org.hibernate.validator;
     requires org.hibernate.validator.cdi;
+    requires javafx.media;
 
 
     // Exports, Opens

@@ -22,6 +22,7 @@ public class DaoFactory {
     private final GroupMessageDao groupMessageDao = new GroupMessageDaoImpl();
     private final AddGroupChatDao addGroupChatDao = new AddGroupChatDaoImpl();
     private final FileTransferDao fileTransferDao = new FileTransferDaoImpl();
+    private final  VoiceChatDao voiceChatDao=new VoiceChatDaoImpl();
 
 
     private DaoFactory() {
@@ -75,5 +76,9 @@ public class DaoFactory {
 
     public FileTransferDao getFileTransferDao() {
         return fileTransferDao;
+    }
+
+    public VoiceChatDao getVoiceChatDao() {
+        return voiceChatDao;
     }
 }
