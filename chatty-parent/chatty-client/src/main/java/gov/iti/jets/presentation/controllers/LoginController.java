@@ -103,7 +103,7 @@ public class LoginController implements Initializable {
                 .dependsOn("phoneNumber", phoneNumberTextField.textProperty())
                 .withMethod(c -> {
                     String phoneNumber = c.get("phoneNumber");
-                    if (!UiValidator.PHONE_NUMBER_PATTERN.matcher(phoneNumber).matches()) {
+                    if (!UiValidator.EGY_PHONE_NUMBER_PATTERN.matcher(phoneNumber).matches()) {
                         c.error("Please enter a valid 11 digit phone number.");
                         loginButton.setDisable(true);
                     }

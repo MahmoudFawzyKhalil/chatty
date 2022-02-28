@@ -337,23 +337,23 @@ INSERT INTO `chatty`.`user_status` (`user_status_id`, `user_status_name`) VALUES
 INSERT INTO `chatty`.`user_status` (`user_status_id`, `user_status_name`) VALUES ('2', 'Away');
 INSERT INTO `chatty`.`user_status` (`user_status_id`, `user_status_name`) VALUES ('3', 'Busy');
 
-INSERT INTO `chatty`.`users` (`phone_number`, `display_name`, `gender`, `email`, `bio`, `user_password`, `birth_date`, `country_id`, `user_status_id`) VALUES ('11111111111', 'Mahmoud123', 'M', 'mahmoudfawzykhalil98@gmail.com', 'Amir al a7zan', '$2a$10$ZATgKojZFirG2PaJLOr7T.qXD9.3xCGcOM.O8wuxm5pSc0VMQcjpm', '1998-01-21', '1', '1');
-INSERT INTO `chatty`.`users` (`phone_number`, `display_name`, `gender`, `email`, `bio`, `user_password`, `birth_date`, `country_id`, `user_status_id`) VALUES ('22222222222', 'Osama123', 'M', 'osama@gmail.com', 'soltan el a7zan', '$2a$10$SLfL8f3vT5q8IGOVQb.41elOF/Ir2RS9PcKJVMNBDPRB3p8SWzRYS', '1999-05-06', '2', '2');
-INSERT INTO `chatty`.`users` (`phone_number`, `display_name`, `gender`, `email`, `bio`, `user_password`, `birth_date`, `country_id`, `user_status_id`) VALUES ('33333333333', 'Salma123', 'F', 'salma.fayez@gmail.com', 'eh', '$2a$10$6CPdGS0BOwAXMn5kmL0f/.QaePk7u1d01NBluVIuz5KzjY8AP17EW', '2001-07-27', '1', '3');
-INSERT INTO `chatty`.`users` (`phone_number`, `display_name`, `gender`, `email`, `bio`, `user_password`, `birth_date`, `country_id`, `user_status_id`) VALUES ('44444444444', 'Christine123', 'F', 'christine123@gmail.com', 'ya 3m ektb ay 7aga', '$2a$10$XQnPVJn2xN14mPb.krloVuhX.22FJT.bPDAJ8qzTpoDoNuN5sgcaS', '1950-02-11', '2', '1');
-INSERT INTO `chatty`.`users` (`phone_number`, `display_name`, `gender`, `email`, `bio`, `user_password`, `birth_date`, `country_id`, `user_status_id`) VALUES ('55555555555', 'Hafsa123', 'F', 'hafsa@gmail.com', 'ay 7aga', '$2a$10$mwm6fnHF92U18kEK0F9kjeNa4M0Ifmz72yIAaJn4ncQy9LiVlBUr.', '1977-11-22', '1', '1');
+INSERT INTO `chatty`.`users` (`phone_number`, `display_name`, `gender`, `email`, `bio`, `user_password`, `birth_date`, `country_id`, `user_status_id`) VALUES ('01011111111', 'Mahmoud123', 'M', 'mahmoudfawzykhalil98@gmail.com', 'Amir al a7zan', '$2a$10$ZATgKojZFirG2PaJLOr7T.qXD9.3xCGcOM.O8wuxm5pSc0VMQcjpm', '1998-01-21', '1', '1');
+INSERT INTO `chatty`.`users` (`phone_number`, `display_name`, `gender`, `email`, `bio`, `user_password`, `birth_date`, `country_id`, `user_status_id`) VALUES ('01022222222', 'Osama123', 'M', 'osama@gmail.com', 'soltan el a7zan', '$2a$10$SLfL8f3vT5q8IGOVQb.41elOF/Ir2RS9PcKJVMNBDPRB3p8SWzRYS', '1999-05-06', '2', '2');
+INSERT INTO `chatty`.`users` (`phone_number`, `display_name`, `gender`, `email`, `bio`, `user_password`, `birth_date`, `country_id`, `user_status_id`) VALUES ('01033333333', 'Salma123', 'F', 'salma.fayez@gmail.com', 'eh', '$2a$10$6CPdGS0BOwAXMn5kmL0f/.QaePk7u1d01NBluVIuz5KzjY8AP17EW', '2001-07-27', '1', '3');
+INSERT INTO `chatty`.`users` (`phone_number`, `display_name`, `gender`, `email`, `bio`, `user_password`, `birth_date`, `country_id`, `user_status_id`) VALUES ('01044444444', 'Christine123', 'F', 'christine123@gmail.com', 'ya 3m ektb ay 7aga', '$2a$10$XQnPVJn2xN14mPb.krloVuhX.22FJT.bPDAJ8qzTpoDoNuN5sgcaS', '1950-02-11', '2', '1');
+INSERT INTO `chatty`.`users` (`phone_number`, `display_name`, `gender`, `email`, `bio`, `user_password`, `birth_date`, `country_id`, `user_status_id`) VALUES ('01055555555', 'Hafsa123', 'F', 'hafsa@gmail.com', 'ay 7aga', '$2a$10$mwm6fnHF92U18kEK0F9kjeNa4M0Ifmz72yIAaJn4ncQy9LiVlBUr.', '1977-11-22', '1', '1');
 
-INSERT INTO `chatty`.`contacts` (`contact_phone_number`, `contactee_phone_number`) VALUES ('11111111111', '22222222222');
-INSERT INTO `chatty`.`contacts` (`contact_phone_number`, `contactee_phone_number`) VALUES ('33333333333', '44444444444');
-INSERT INTO `chatty`.`contacts` (`contact_phone_number`, `contactee_phone_number`) VALUES ('55555555555', '44444444444');
+INSERT INTO `chatty`.`contacts` (`contact_phone_number`, `contactee_phone_number`) VALUES ('01011111111', '01022222222');
+INSERT INTO `chatty`.`contacts` (`contact_phone_number`, `contactee_phone_number`) VALUES ('01033333333', '01044444444');
+INSERT INTO `chatty`.`contacts` (`contact_phone_number`, `contactee_phone_number`) VALUES ('01055555555', '01044444444');
 
 INSERT INTO `chatty`.`group_chats` (`group_chat_name`) VALUES ('shabeha');
 INSERT INTO `chatty`.`group_chats` (`group_chat_name`) VALUES ('iti5000');
 
-INSERT INTO `chatty`.`group_chats_users` (`group_chat_id`, `user_phone_number`) VALUES ('1', '11111111111');
-INSERT INTO `chatty`.`group_chats_users` (`group_chat_id`, `user_phone_number`) VALUES ('1', '22222222222');
-INSERT INTO `chatty`.`group_chats_users` (`group_chat_id`, `user_phone_number`) VALUES ('1', '55555555555');
-INSERT INTO `chatty`.`group_chats_users` (`group_chat_id`, `user_phone_number`) VALUES ('2', '33333333333');
-INSERT INTO `chatty`.`group_chats_users` (`group_chat_id`, `user_phone_number`) VALUES ('2', '44444444444');
+INSERT INTO `chatty`.`group_chats_users` (`group_chat_id`, `user_phone_number`) VALUES ('1', '01011111111');
+INSERT INTO `chatty`.`group_chats_users` (`group_chat_id`, `user_phone_number`) VALUES ('1', '01022222222');
+INSERT INTO `chatty`.`group_chats_users` (`group_chat_id`, `user_phone_number`) VALUES ('1', '01055555555');
+INSERT INTO `chatty`.`group_chats_users` (`group_chat_id`, `user_phone_number`) VALUES ('2', '01033333333');
+INSERT INTO `chatty`.`group_chats_users` (`group_chat_id`, `user_phone_number`) VALUES ('2', '01044444444');
 
-INSERT INTO `chatty`.`invitations` (`sender`, `receiver`) VALUES ('11111111111', '33333333333');
+INSERT INTO `chatty`.`invitations` (`sender`, `receiver`) VALUES ('01011111111', '01033333333');

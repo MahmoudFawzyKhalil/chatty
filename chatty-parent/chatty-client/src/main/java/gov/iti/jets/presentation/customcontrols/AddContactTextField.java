@@ -61,7 +61,7 @@ public class AddContactTextField extends TextField implements Initializable {
                 .dependsOn("contactPhoneNumber", contactPhoneNumberTextField.textProperty())
                 .withMethod(c -> {
                     String phoneNumber = c.get("contactPhoneNumber");
-                    if (!UiValidator.PHONE_NUMBER_PATTERN.matcher(phoneNumber).matches()) {
+                    if (!UiValidator.EGY_PHONE_NUMBER_PATTERN.matcher(phoneNumber).matches()) {
                         c.error("Please enter a valid 11 digit phone number.");
                         addContactButton.setDisable(true);
                     }
@@ -82,12 +82,12 @@ public class AddContactTextField extends TextField implements Initializable {
     private boolean isAllValid() {
         for (int i = 0; i < textFieldAddContactViewVBox.getChildren().size() - 1; i++) {
             TextField textField = (TextField) textFieldAddContactViewVBox.getChildren().get(i);
-            if (!UiValidator.PHONE_NUMBER_PATTERN.matcher(textField.getText()).matches()) {
+            if (!UiValidator.EGY_PHONE_NUMBER_PATTERN.matcher(textField.getText()).matches()) {
                 return false;
             }
         }
         TextField textField = (TextField) textFieldAddContactViewVBox.getChildren().get(0);
-        if (textFieldAddContactViewVBox.getChildren().size() == 1 && !UiValidator.PHONE_NUMBER_PATTERN.matcher(textField.getText()).matches()) {
+        if (textFieldAddContactViewVBox.getChildren().size() == 1 && !UiValidator.EGY_PHONE_NUMBER_PATTERN.matcher(textField.getText()).matches()) {
             return false;
         }
         return true;

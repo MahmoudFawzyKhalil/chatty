@@ -17,7 +17,6 @@ public class UiValidator {
 
     private static final UiValidator INSTANCE = new UiValidator();
 
-    public static Pattern PHONE_NUMBER_PATTERN = Pattern.compile( "[0-9]{11}" );
     public static Pattern EGY_PHONE_NUMBER_PATTERN = Pattern.compile( "^(01)[1250][0-9]{8}$" );
     public static Pattern USER_NAME_PATTERN = Pattern.compile( "[a-zA-Z0-9]+" );
     public static Pattern GROUP_CHAT_NAME_PATTERN = Pattern.compile( "[a-zA-Z0-9]+" );
