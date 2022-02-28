@@ -92,4 +92,18 @@ public class PaneCoordinator {
         mainSceneBorderPane.setCenter(fileTransferPane);
     }
 
+    public void switchToPlaceholderPane() {
+        Pane placeholderPane = paneMap.get("placeholderPane");
+        if (placeholderPane == null) {
+            try {
+                placeholderPane = FXMLLoader.load(getClass().getResource("/views/main/PlaceholderView.fxml"));
+                paneMap.put("placeholderPane", placeholderPane);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        userModel.setCurrentlyChattingWith(null);
+        mainSceneBorderPane.setCenter(placeholderPane);
+    }
+
 }
