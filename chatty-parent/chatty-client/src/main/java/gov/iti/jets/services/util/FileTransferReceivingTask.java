@@ -36,12 +36,12 @@ public class FileTransferReceivingTask extends Task<Long> {
             serverSocket = new ServerSocket(9999);
             socket = serverSocket.accept();
             in = new BufferedInputStream(socket.getInputStream());
-            out = new BufferedOutputStream(new FileOutputStream(file,true));
-            byte[] buffer = new byte[1024 * 1024];
+            out = new BufferedOutputStream(new FileOutputStream(file));
+            byte[] buffer = new byte[1024 * 500];
             int lengthRead;;
             while ((lengthRead = in.read(buffer)) > 0) {
                 bytesCount += lengthRead;
-                out.write(buffer);
+                out.write(buffer, 0, lengthRead);
                 out.flush();
                 updateValue(bytesCount);
                 Platform.runLater(()->{
@@ -52,6 +52,7 @@ public class FileTransferReceivingTask extends Task<Long> {
             e.printStackTrace();
         } catch (IOException e) {
             logger.info("User closed the application");
+            e.printStackTrace();
         }finally {
             close();
             fileTransferOperationAvailabilityModel.setAvailable(true);
