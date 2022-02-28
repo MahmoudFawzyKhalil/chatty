@@ -19,6 +19,7 @@ public class RepositoryFactory {
     private final GroupChatRepository groupChatRepository = new GroupChatRepositoryImpl();
     private final InvitationRepository invitationRepository = new InvitationRepositoryImpl();
     private final SingleMessageRepository singleMessageRepository = new SingleMessageRepositoryImpl();
+    private final GroupMessageRepository groupMessageRepository = new GroupMessageRepositoryImpl();
 
     private  RepositoryFactory(){
 
@@ -51,4 +52,8 @@ public class RepositoryFactory {
     public GroupChatRepository getGroupChatRepository(){ return groupChatRepository;}
 
     public SingleMessageRepository getSingleMessageRepository(){return singleMessageRepository;}
+
+    public GroupMessageRepository getGroupMessageRepository(){
+        return groupMessageRepository;
+    }
 }

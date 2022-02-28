@@ -1,13 +1,16 @@
 package gov.iti.jets.network;
 
 import gov.iti.jets.commons.callback.Client;
+import gov.iti.jets.commons.dtos.GroupMessageDto;
 import gov.iti.jets.commons.dtos.SingleMessageDto;
 import gov.iti.jets.commons.dtos.StatusNotificationDto;
 import gov.iti.jets.commons.dtos.UserDto;
 import gov.iti.jets.commons.remoteinterfaces.ConnectionService;
+import gov.iti.jets.repository.entities.GroupMessageEntity;
 import gov.iti.jets.repository.entities.SingleMessageEntity;
 import gov.iti.jets.repository.entities.UserEntity;
 import gov.iti.jets.repository.util.RepositoryFactory;
+import gov.iti.jets.repository.util.mappers.GroupMessageMapper;
 import gov.iti.jets.repository.util.mappers.SingleMessageMapper;
 import gov.iti.jets.repository.util.mappers.UserMapper;
 
@@ -42,6 +45,15 @@ public class ConnectionServiceImpl extends UnicastRemoteObject implements Connec
         });
         client.loadSingleMessages(messagesMapDto);
 
+
+//        Map<Integer,List<GroupMessageEntity>> groupMessagesMapEntity = repositoryFactory.getGroupMessageRepository().getMessage();
+//        Map<Integer,List<GroupMessageDto>> groupMessageMapDto = new HashMap<>();
+//        groupMessagesMapEntity.forEach((k, v) -> {
+//            List<GroupMessageDto> groupMessageDto = GroupMessageMapper.INSTANCE.entityListToDtoList(v);
+//            groupMessageMapDto.put(k,groupMessageDto);
+//        });
+//        client.loadGroupMessages(groupMessageMapDto);
+
         // Must be called last!
         clients.addClient(phoneNumber,client);
     }
@@ -54,6 +66,16 @@ public class ConnectionServiceImpl extends UnicastRemoteObject implements Connec
     @Override
     public void registerGroups(List<Integer> groupIds, Client client) throws RemoteException {
         clients.registerClientGroups(groupIds,client);
+
+                Map<Integer, List<GroupMessageEntity>> groupMessagesMapEntity = repositoryFactory.getGroupMessageRepository().getMessage(groupIds.get(0));
+                Map<Integer, List<GroupMessageDto>> groupMessageMapDto = new HashMap<>();
+                groupMessagesMapEntity.forEach((k, v) -> {
+                    List<GroupMessageDto> groupMessageDto = GroupMessageMapper.INSTANCE.entityListToDtoList(v);
+                    groupMessageMapDto.put(k, groupMessageDto);
+                });
+                System.out.println("hello from connection service impl");
+                client.loadGroupMessages(groupMessageMapDto);
+
     }
 
     @Override

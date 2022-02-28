@@ -71,6 +71,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
         }
     }
 
+
     @Override
     public void loadSingleMessages(Map<String, List<SingleMessageDto>> messagesMap) throws RemoteException {
 
@@ -95,6 +96,38 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
                 ObservableList<MessageModel> messageModels = FXCollections.observableArrayList(messageModelList);
                 Platform.runLater(()->{
                         optionalContactModel.get().setMesssages(messageModels);
+                });
+            }
+        });
+    }
+
+    @Override
+    public void loadGroupMessages(Map<Integer, List<GroupMessageDto>> messagesMap) throws RemoteException {
+
+        messagesMap.forEach((k, v) -> {
+            Optional<GroupChatModel> optionalGroupChatModel = userModel.getGroupChats().stream()
+                    .filter(cm -> cm.getGroupChatId()==(k))
+                    .findFirst();
+
+
+            List<MessageModel> messageModelList = new ArrayList<>();
+            ObservableList<ContactModel> contactModelList;
+
+            for(GroupMessageDto messageDto : v){
+                MessageModel messageModel = GroupMessageMapper.INSTANCE.dtoToModel(messageDto);
+                if(messageDto.getSenderPhoneNumber().equals(userModel.getPhoneNumber())){
+                    messageModel.setSentByMe(true);
+                    messageModel.setSenderName(userModel.getDisplayName());
+                }
+                else{
+                    messageModel.setSenderName(optionalGroupChatModel.get().getGroupMembersList().get(k).getDisplayName());
+                }
+                messageModelList.add(messageModel);
+            }
+            if(!optionalGroupChatModel.isEmpty()){
+                ObservableList<MessageModel> messageModels = FXCollections.observableArrayList(messageModelList);
+                Platform.runLater(()->{
+                    optionalGroupChatModel.get().setMesssages(messageModels);
                 });
             }
         });
