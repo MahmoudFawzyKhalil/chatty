@@ -94,7 +94,7 @@
                   </Button>
                </children>
             </StackPane>
-            <Button id="attach-button" minWidth="25.0" mnemonicParsing="false" onAction="#onAttachFileButtonAction" prefWidth="25.0" styleClass="attach-button">
+            <Button id="attach-button" fx:id="attachFileButton" minWidth="25.0" mnemonicParsing="false" onAction="#onAttachFileButtonAction" prefWidth="25.0" styleClass="attach-button">
                <HBox.margin>
                   <Insets left="10.0" right="10.0" />
                </HBox.margin>

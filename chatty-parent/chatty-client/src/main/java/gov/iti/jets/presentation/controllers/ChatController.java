@@ -110,6 +110,9 @@ public class ChatController implements Initializable {
     @FXML
     private Button voiceChatButton;
 
+    @FXML
+    private Button attachFileButton;
+
 
     private ObservableMap<String, String> messageStyleMap = FXCollections.observableHashMap();
 
@@ -133,9 +136,10 @@ public class ChatController implements Initializable {
         userModel.chattingInGroupProperty().addListener(c->{
             if(userModel.isChattingInGroup()){
                 voiceChatButton.setVisible(false);
+                attachFileButton.setDisable( true );
             }else{
                 voiceChatButton.setVisible(true);
-
+                attachFileButton.setDisable( false );
             }
         });
 
