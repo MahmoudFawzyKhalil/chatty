@@ -17,7 +17,6 @@ public interface Client extends Remote {
 
     void addGroupChat(GroupChatDto groupChatDto) throws RemoteException;
 
-
     void addContact(ContactDto contactDto) throws RemoteException;
 
     void addInvitation(InvitationDto senderInvitationDto) throws RemoteException;
@@ -43,4 +42,6 @@ public interface Client extends Remote {
     boolean startVoiceChat(VoiceChatDto voiceChatDto) throws RemoteException;
 
     void closeVoiceChat(VoiceChatDto voiceChatDto) throws RemoteException;
+
+    void loadGroupMessages(Map<Integer, List<GroupMessageDto>> messagesMap) throws RemoteException;
 }

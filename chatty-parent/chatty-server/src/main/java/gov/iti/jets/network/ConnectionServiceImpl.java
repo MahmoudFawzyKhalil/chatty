@@ -1,13 +1,16 @@
 package gov.iti.jets.network;
 
 import gov.iti.jets.commons.callback.Client;
+import gov.iti.jets.commons.dtos.GroupMessageDto;
 import gov.iti.jets.commons.dtos.SingleMessageDto;
 import gov.iti.jets.commons.dtos.StatusNotificationDto;
 import gov.iti.jets.commons.dtos.UserDto;
 import gov.iti.jets.commons.remoteinterfaces.ConnectionService;
+import gov.iti.jets.repository.entities.GroupMessageEntity;
 import gov.iti.jets.repository.entities.SingleMessageEntity;
 import gov.iti.jets.repository.entities.UserEntity;
 import gov.iti.jets.repository.util.RepositoryFactory;
+import gov.iti.jets.repository.util.mappers.GroupMessageMapper;
 import gov.iti.jets.repository.util.mappers.SingleMessageMapper;
 import gov.iti.jets.repository.util.mappers.UserMapper;
 
@@ -38,6 +41,15 @@ public class ConnectionServiceImpl extends UnicastRemoteObject implements Connec
             messagesMapDto.put(k,messageDto);
         });
         client.loadSingleMessages(messagesMapDto);
+
+        Map<Integer,List<GroupMessageEntity>> groupMessagesMapEntity = repositoryFactory.getGroupMessageRepository().getGroupMessagesMap(phoneNumber);
+        Map<Integer,List<GroupMessageDto>> groupMessageMapDto = new HashMap<>();
+        groupMessagesMapEntity.forEach((k, v) -> {
+            List<GroupMessageDto> groupMessageListDto = GroupMessageMapper.INSTANCE.entityListToDtoList(v);
+            groupMessageMapDto.put(k,groupMessageListDto);
+        });
+
+        client.loadGroupMessages(groupMessageMapDto);
 
         clients.addClient(phoneNumber,client);
     }

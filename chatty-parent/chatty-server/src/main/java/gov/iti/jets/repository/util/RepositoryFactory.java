@@ -20,6 +20,7 @@ public class RepositoryFactory {
     private final InvitationRepository invitationRepository = new InvitationRepositoryImpl();
     private final SingleMessageRepository singleMessageRepository = new SingleMessageRepositoryImpl();
     private final DashboardRepository dashboardRepository = new DashboardRepositoryImpl();
+    private final GroupMessageRepository groupMessageRepository = new GroupMessageRepositoryImpl();
 
     private  RepositoryFactory(){
 
@@ -56,4 +57,6 @@ public class RepositoryFactory {
     public DashboardRepository getDashboardRepository() {
         return dashboardRepository;
     }
+
+    public GroupMessageRepository getGroupMessageRepository(){ return groupMessageRepository; }
 }
