@@ -7,6 +7,7 @@ import gov.iti.jets.presentation.customcontrols.ReceivedAnnouncementBubble;
 import gov.iti.jets.services.util.ServiceFactory;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
@@ -14,10 +15,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.SVGPath;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import javafx.stage.WindowEvent;
+import javafx.stage.*;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
 
@@ -65,12 +63,23 @@ public class StageCoordinator {
                 e.printStackTrace();
             }
         }
-        primaryStage.setWidth(primaryStage.getWidth() + 1);
-        primaryStage.setHeight(primaryStage.getHeight() + 1);
+        if(primaryStage.isMaximized()){//fix javafx bug
+            Screen screen = Screen.getPrimary();
+            Rectangle2D bounds = screen.getVisualBounds();
+            primaryStage.setMaximized(false);
+            primaryStage.setWidth(primaryStage.getWidth() + 1);
+            primaryStage.setHeight(primaryStage.getHeight() + 1);
+            primaryStage.setX(bounds.getMinX());
+            primaryStage.setY(bounds.getMinY());
+            primaryStage.setWidth(bounds.getWidth());
+            primaryStage.setHeight(bounds.getHeight());
+        }else{
+            primaryStage.setWidth(primaryStage.getWidth() + 1);
+            primaryStage.setHeight(primaryStage.getHeight() + 1);
+        }
         setSceneStyleSheets(loginScene);
         primaryStage.setScene(loginScene);
-        primaryStage.setWidth(primaryStage.getWidth() - 1);
-        primaryStage.setHeight(primaryStage.getHeight() - 1);
+
     }
 
     private void setSceneStyleSheets(Scene scene) {
@@ -136,12 +145,24 @@ public class StageCoordinator {
                 e.printStackTrace();
             }
         }
-        primaryStage.setWidth(primaryStage.getWidth() + 1);
-        primaryStage.setHeight(primaryStage.getHeight() + 1);
+        if(primaryStage.isMaximized()){//fix javafx bug
+            Screen screen = Screen.getPrimary();
+            Rectangle2D bounds = screen.getVisualBounds();
+            primaryStage.setMaximized(false);
+            primaryStage.setWidth(primaryStage.getWidth() + 1);
+            primaryStage.setHeight(primaryStage.getHeight() + 1);
+            primaryStage.setX(bounds.getMinX());
+            primaryStage.setY(bounds.getMinY());
+            primaryStage.setWidth(bounds.getWidth());
+            primaryStage.setHeight(bounds.getHeight());
+        }else{
+            primaryStage.setWidth(primaryStage.getWidth() + 1);
+            primaryStage.setHeight(primaryStage.getHeight() + 1);
+        }
+
         setSceneStyleSheets(mainScene);
         primaryStage.setScene(mainScene);
-        primaryStage.setWidth(primaryStage.getWidth() - 1);
-        primaryStage.setHeight(primaryStage.getHeight() - 1);
+
     }
 
     public void switchToAddGroupChatTwo() {
