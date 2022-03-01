@@ -40,10 +40,10 @@ public class StageCoordinator {
 
     public void initStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
-        this.primaryStage.setWidth( 960 );
-        this.primaryStage.setHeight( 530 );
-        this.primaryStage.setMinWidth( 960 );
-        this.primaryStage.setMinHeight( 530 );
+        this.primaryStage.setWidth(960);
+        this.primaryStage.setHeight(530);
+        this.primaryStage.setMinWidth(960);
+        this.primaryStage.setMinHeight(530);
         setAppIconAndTitle();
     }
 
@@ -63,20 +63,8 @@ public class StageCoordinator {
                 e.printStackTrace();
             }
         }
-        if(primaryStage.isMaximized()){//fix javafx bug
-            Screen screen = Screen.getPrimary();
-            Rectangle2D bounds = screen.getVisualBounds();
-            primaryStage.setMaximized(false);
-            primaryStage.setWidth(primaryStage.getWidth() + 1);
-            primaryStage.setHeight(primaryStage.getHeight() + 1);
-            primaryStage.setX(bounds.getMinX());
-            primaryStage.setY(bounds.getMinY());
-            primaryStage.setWidth(bounds.getWidth());
-            primaryStage.setHeight(bounds.getHeight());
-        }else{
-            primaryStage.setWidth(primaryStage.getWidth() + 1);
-            primaryStage.setHeight(primaryStage.getHeight() + 1);
-        }
+        fixFxBug();
+
         setSceneStyleSheets(loginScene);
         primaryStage.setScene(loginScene);
 
@@ -97,6 +85,7 @@ public class StageCoordinator {
                 e.printStackTrace();
             }
         }
+        fixFxBug();
         setSceneStyleSheets(registerSceneOne);
         primaryStage.setScene(registerSceneOne);
     }
@@ -112,6 +101,7 @@ public class StageCoordinator {
                 e.printStackTrace();
             }
         }
+        fixFxBug();
 
         setSceneStyleSheets(registerSceneTwo);
         primaryStage.setScene(registerSceneTwo);
@@ -128,6 +118,7 @@ public class StageCoordinator {
                 e.printStackTrace();
             }
         }
+        fixFxBug();
 
         setSceneStyleSheets(registerSceneThree);
         primaryStage.setScene(registerSceneThree);
@@ -145,7 +136,14 @@ public class StageCoordinator {
                 e.printStackTrace();
             }
         }
-        if(primaryStage.isMaximized()){//fix javafx bug
+        fixFxBug();
+        setSceneStyleSheets(mainScene);
+        primaryStage.setScene(mainScene);
+
+    }
+
+    private void fixFxBug() {
+        if (primaryStage.isMaximized()) {//fix javafx bug
             Screen screen = Screen.getPrimary();
             Rectangle2D bounds = screen.getVisualBounds();
             primaryStage.setMaximized(false);
@@ -155,14 +153,10 @@ public class StageCoordinator {
             primaryStage.setY(bounds.getMinY());
             primaryStage.setWidth(bounds.getWidth());
             primaryStage.setHeight(bounds.getHeight());
-        }else{
+        } else {
             primaryStage.setWidth(primaryStage.getWidth() + 1);
             primaryStage.setHeight(primaryStage.getHeight() + 1);
         }
-
-        setSceneStyleSheets(mainScene);
-        primaryStage.setScene(mainScene);
-
     }
 
     public void switchToAddGroupChatTwo() {
