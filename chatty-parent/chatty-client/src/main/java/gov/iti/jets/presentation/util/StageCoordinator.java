@@ -65,8 +65,12 @@ public class StageCoordinator {
                 e.printStackTrace();
             }
         }
+        primaryStage.setWidth(primaryStage.getWidth() + 1);
+        primaryStage.setHeight(primaryStage.getHeight() + 1);
         setSceneStyleSheets(loginScene);
         primaryStage.setScene(loginScene);
+        primaryStage.setWidth(primaryStage.getWidth() - 1);
+        primaryStage.setHeight(primaryStage.getHeight() - 1);
     }
 
     private void setSceneStyleSheets(Scene scene) {
@@ -132,10 +136,12 @@ public class StageCoordinator {
                 e.printStackTrace();
             }
         }
-        primaryStage.setWidth(961);
-        primaryStage.setHeight(531);
+        primaryStage.setWidth(primaryStage.getWidth() + 1);
+        primaryStage.setHeight(primaryStage.getHeight() + 1);
         setSceneStyleSheets(mainScene);
         primaryStage.setScene(mainScene);
+        primaryStage.setWidth(primaryStage.getWidth() - 1);
+        primaryStage.setHeight(primaryStage.getHeight() - 1);
     }
 
     public void switchToAddGroupChatTwo() {
