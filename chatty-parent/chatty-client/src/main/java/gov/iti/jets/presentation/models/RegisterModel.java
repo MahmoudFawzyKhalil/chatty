@@ -47,7 +47,7 @@ public class RegisterModel {
         displayName.set("");
         gender.set("Male");
         profilePicture.set(defaultImage);
-        birthDate.set(null);
+        birthDate.set(LocalDate.ofYearDay(2000, 1));
         email.set("");
         bio.set("");
     }

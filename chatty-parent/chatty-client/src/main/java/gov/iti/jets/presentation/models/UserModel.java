@@ -21,6 +21,7 @@ public class UserModel {
     private ListProperty<ContactModel> contacts = new SimpleListProperty<>( FXCollections.observableArrayList( ContactModel.extractor() ) );
     private ListProperty<GroupChatModel> groupChats = new SimpleListProperty<>( FXCollections.observableArrayList( GroupChatModel.extractor() ) );
     private ListProperty<InvitationModel> invitations = new SimpleListProperty<>( FXCollections.observableArrayList( InvitationModel.extractor() ) );
+    private ListProperty<FileModel> fileTransferList = new SimpleListProperty<>(FXCollections.observableArrayList(FileModel.extractor()));
     private final StringProperty currentlyChattingWith = new SimpleStringProperty();
     private final BooleanProperty isUsingChatBot = new SimpleBooleanProperty();
 
@@ -184,6 +185,18 @@ public class UserModel {
 
     public void setInvitations( ObservableList<InvitationModel> invitations ) {
         this.invitations.set( invitations );
+    }
+
+    public ObservableList<FileModel> getFileTransferList() {
+        return fileTransferList.get();
+    }
+
+    public ListProperty<FileModel> fileTransferListProperty() {
+        return fileTransferList;
+    }
+
+    public void setFileTransferList(ObservableList<FileModel> fileTransferList) {
+        this.fileTransferList.set(fileTransferList);
     }
 
     public String getCurrentlyChattingWith() {

@@ -21,7 +21,7 @@ public class ContactRepositoryImpl implements ContactRepository {
     public Optional<ContactEntity> getContact(String phoneNumber) {
         UserStatusRepository userStatusRepository = RepositoryFactory.getInstance().getUserStatusRepository();
         Optional<ContactEntity> optionalContactEntity = Optional.empty();
-        try (Connection connection = ConnectionPool.getConnection();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement("select phone_number, display_name, picture, user_status_id from users where phone_number = ?");
         ) {
             statement.setString(1, phoneNumber);
@@ -51,7 +51,7 @@ public class ContactRepositoryImpl implements ContactRepository {
         List<ContactEntity> contactList = new ArrayList<>();
         Optional<ContactEntity> optionalContactEntity;
 
-        try (Connection connection = ConnectionPool.getConnection();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement1 = connection.prepareStatement("select contact_phone_number from contacts where contactee_phone_number = ?");
              PreparedStatement statement2 = connection.prepareStatement("select contactee_phone_number from contacts where contact_phone_number = ?");
         ) {

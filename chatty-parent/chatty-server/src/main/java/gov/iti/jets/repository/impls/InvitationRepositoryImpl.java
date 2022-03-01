@@ -16,7 +16,7 @@ public class InvitationRepositoryImpl implements InvitationRepository {
 
     @Override
     public boolean acceptInvite(InvitationDecisionDto invitationDecisionDto) {
-        try (Connection connection = ConnectionPool.getConnection();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("delete from invitations where sender = ? and receiver = ?")) {
             logger.info( "An attempt to accept an invitation was made: " + invitationDecisionDto.toString() );
             preparedStatement.setString(1, invitationDecisionDto.getSenderPhoneNumber());
@@ -42,7 +42,7 @@ public class InvitationRepositoryImpl implements InvitationRepository {
 
     @Override
     public boolean refuseInvite(InvitationDecisionDto invitationDecisionDto) {
-        try (Connection connection = ConnectionPool.getConnection();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("delete from invitations where sender = ? and receiver = ?")) {
             logger.info( "An attempt to refuse an invitation was made: " + invitationDecisionDto.toString() );
             preparedStatement.setString(1, invitationDecisionDto.getSenderPhoneNumber());

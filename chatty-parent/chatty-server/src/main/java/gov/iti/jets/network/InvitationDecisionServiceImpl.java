@@ -44,17 +44,26 @@ public class InvitationDecisionServiceImpl extends UnicastRemoteObject implement
 
                     optionalReceiver = clients.getClient(receiverPhoneNumber);
                     optionalSender = clients.getClient(senderPhoneNumber);
-                    System.out.println(receiverContactDto);
 
                     if (optionalSender.isPresent()) {
-                        Client sender = optionalSender.get();
-                        sender.addContact(receiverContactDto);
+                        try {
+                            Client sender = optionalSender.get();
+                            sender.addContact(receiverContactDto);
+                        } catch (RemoteException e) {
+                            clients.removeClientFromOnlineAndGroups( optionalSender.get() );
+                            e.printStackTrace();
+                        }
                     }
 
                     if (optionalReceiver.isPresent()) {
-                        Client receiver = optionalReceiver.get();
-                        receiver.addContact(senderContactDto);
-                        return true;
+                        try {
+                            Client receiver = optionalReceiver.get();
+                            receiver.addContact(senderContactDto);
+                            return true;
+                        } catch (RemoteException e) {
+                            clients.removeClientFromOnlineAndGroups( optionalReceiver.get() );
+                            e.printStackTrace();
+                        }
                     }
                 }
             }

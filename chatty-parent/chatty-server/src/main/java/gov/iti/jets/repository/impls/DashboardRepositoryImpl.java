@@ -18,7 +18,7 @@ public class DashboardRepositoryImpl implements DashboardRepository {
     @Override
     public int getFemaleUsersNumber() {
 
-        try (Connection connection = ConnectionPool.getConnection();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery("select count(phone_number) from users where gender = 'F'")) {
             resultSet.next();
@@ -32,7 +32,7 @@ public class DashboardRepositoryImpl implements DashboardRepository {
 
     @Override
     public int getMaleUsersNumber() {
-        try (Connection connection = ConnectionPool.getConnection();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery("select count(phone_number) from users where gender = 'M'")) {
             resultSet.next();
@@ -47,7 +47,7 @@ public class DashboardRepositoryImpl implements DashboardRepository {
 
     @Override
     public int getAllUsersNumber() {
-        try (Connection connection = ConnectionPool.getConnection();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery("select count(phone_number) from users ")) {
             resultSet.next();
@@ -61,7 +61,7 @@ public class DashboardRepositoryImpl implements DashboardRepository {
 
     @Override
     public Map<String, Integer> getUserNumberByCountry() {
-        try (Connection connection = ConnectionPool.getConnection();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(  "select count(phone_number), country_name from users, countries where users.country_id = countries.country_id group by users.country_id;")
         ) {
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -71,9 +71,8 @@ public class DashboardRepositoryImpl implements DashboardRepository {
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-        } ;
+        }
         dashboardEntity.setUsersByCountry(usersbyCountry);
-        System.out.println("number of male users is : "+maleUsers);
         return usersbyCountry;
     }
 }

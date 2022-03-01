@@ -78,5 +78,32 @@ public class PaneCoordinator {
         mainSceneBorderPane.setCenter(updateProfilePane);
     }
 
+    public void switchToFileTransferPane() {
+        Pane fileTransferPane = paneMap.get("fileTransferPane");
+        if (fileTransferPane == null) {
+            try {
+                fileTransferPane = FXMLLoader.load(getClass().getResource("/views/filetransfer/FileTransferView.fxml"));
+                paneMap.put("fileTransferPane", fileTransferPane);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        userModel.setCurrentlyChattingWith(null);
+        mainSceneBorderPane.setCenter(fileTransferPane);
+    }
+
+    public void switchToPlaceholderPane() {
+        Pane placeholderPane = paneMap.get("placeholderPane");
+        if (placeholderPane == null) {
+            try {
+                placeholderPane = FXMLLoader.load(getClass().getResource("/views/main/PlaceholderView.fxml"));
+                paneMap.put("placeholderPane", placeholderPane);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        userModel.setCurrentlyChattingWith(null);
+        mainSceneBorderPane.setCenter(placeholderPane);
+    }
 
 }

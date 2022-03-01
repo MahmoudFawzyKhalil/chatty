@@ -45,6 +45,7 @@ public class ConnectServerController implements Initializable {
                 .decorates(serverIpTextField)
                 .immediate();
     }
+
     private void addEnableButtonValidationListener() {
         validator.containsErrorsProperty().addListener(e -> {
             if (!validator.containsErrors()) {
@@ -67,6 +68,7 @@ public class ConnectServerController implements Initializable {
             stageCoordinator.switchToLoginScene();
 
         } catch (RemoteException | NotBoundException e) {
+            ServiceFactory.getInstance().shutdown();
             stageCoordinator.showErrorNotification(ErrorMessages.NOT_VALID_IP);
         }
     }

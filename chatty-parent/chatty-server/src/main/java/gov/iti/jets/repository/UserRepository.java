@@ -7,7 +7,8 @@ import gov.iti.jets.repository.entities.UserEntity;
 import java.util.Optional;
 
 public interface UserRepository {
-    boolean isFoundByPhoneNumberAndPassword(String phoneNumber,String password);
+    String getPasswordByPhoneNumber(String phoneNumber);
+    String getEmailByPhoneNumber(String phoneNumber);
     boolean addContacts(AddContactDto addContactDto);
     boolean addUser(UserEntity userEntity) ;
     boolean isFoundByPhoneNumber(String phoneNumber);

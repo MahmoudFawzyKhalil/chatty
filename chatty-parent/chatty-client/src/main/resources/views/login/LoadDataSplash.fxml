@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane styleClass="shadow-pane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.presentation.controllers.AutoDetectController">
+   <center>
+      <VBox id="add-card" alignment="CENTER" maxHeight="350.0" maxWidth="390.0" prefHeight="350.0" prefWidth="390.0" spacing="30.0" styleClass="card">
+         <children>
+            <HBox id="title" alignment="CENTER" spacing="10.0">
+               <children>
+                  <Label id="add-label" styleClass="welcome-label" text="Loading data..." />
+               </children>
+               <VBox.margin>
+                  <Insets top="40.0" />
+               </VBox.margin>
+            </HBox>
+            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../images/loading.gif" />
+               </image>
+            </ImageView>
+         </children>
+      </VBox>
+   </center>
+   <stylesheets>
+      <URL value="@../../styles/Base.css" />
+      <URL value="@LoginStyles.css" />
+   </stylesheets>
+</BorderPane>

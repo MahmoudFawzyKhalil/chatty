@@ -6,11 +6,14 @@ import gov.iti.jets.presentation.models.ContactModel;
 import gov.iti.jets.presentation.models.GroupChatModel;
 import gov.iti.jets.presentation.models.UserModel;
 import gov.iti.jets.presentation.models.mappers.GroupChatMapper;
+import gov.iti.jets.presentation.util.ExecutorUtil;
 import gov.iti.jets.presentation.util.ModelFactory;
 import gov.iti.jets.presentation.util.StageCoordinator;
 import gov.iti.jets.presentation.util.UiValidator;
 import gov.iti.jets.services.AddGroupChatDao;
 import gov.iti.jets.services.util.DaoFactory;
+import gov.iti.jets.services.util.ServiceFactory;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -25,9 +28,12 @@ import net.synedra.validatorfx.Validator;
 import java.io.File;
 import java.net.URL;
 import java.rmi.ConnectException;
+import java.rmi.NoSuchObjectException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ResourceBundle;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 public class AddGroupChatTwoController implements Initializable {
     private StageCoordinator stageCoordinator = StageCoordinator.getInstance();
@@ -100,12 +106,23 @@ public class AddGroupChatTwoController implements Initializable {
 
     @FXML
     void onCreateButtonAction(ActionEvent event) {
-        AddGroupChatDto addGroupChatDto = GroupChatMapper.INSTANCE.modelToAddGroupChatDto(createGroupChatModel);
-        if (create(addGroupChatDto)) {
-            close();
-            stageCoordinator.showMessageNotification("Success", "Created successfully");
-        }
-
+        ExecutorUtil.getInstance().execute(() -> {
+            AddGroupChatDto addGroupChatDto = GroupChatMapper.INSTANCE.modelToAddGroupChatDto(createGroupChatModel);
+            Future<Boolean> future = create(addGroupChatDto);
+            try {
+                Platform.runLater(stageCoordinator::showAddGroupSplashStage);
+                if (future.get()) {
+                    Platform.runLater(()->{
+                        close();
+                        stageCoordinator.showMessageNotification("Success", "Created successfully");
+                    });
+                }
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }finally {
+                Platform.runLater(stageCoordinator::closeAddGroupSplashStage);
+            }
+        });
     }
 
     private void close() {
@@ -114,18 +131,25 @@ public class AddGroupChatTwoController implements Initializable {
         stageCoordinator.closeAddGroupChatStage();
     }
 
-    private boolean create(AddGroupChatDto addGroupChatDto) {
-        try {
-            return addGroupChatDao.addGroup(addGroupChatDto);
-        } catch (ConnectException c) {
-            stageCoordinator.showErrorNotification("Failed to connect to server. Please try again later.");
-            ModelFactory.getInstance().clearUserModel();
-            modelFactory.clearUserModel();
-            stageCoordinator.switchToConnectToServer();
-        }catch (NotBoundException | RemoteException e) {
-            stageCoordinator.showErrorNotification(ErrorMessages.FAILED_TO_CONNECT);
-        }
-        return false;
+    private Future<Boolean> create(AddGroupChatDto addGroupChatDto) {
+        Future<Boolean> future = ExecutorUtil.getInstance().submit(() -> {
+            try {
+                return addGroupChatDao.addGroup(addGroupChatDto);
+            } catch (NoSuchObjectException | NotBoundException | ConnectException c) {
+                Platform.runLater(()->{
+                    ServiceFactory.getInstance().shutdown();
+                    stageCoordinator.showErrorNotification("Failed to connect to server. Please try again later.");
+                    modelFactory.clearUserModel();
+                    stageCoordinator.switchToConnectToServer();
+                });
+            } catch (RemoteException e) {
+                Platform.runLater(()->{
+                    stageCoordinator.showErrorNotification(ErrorMessages.FAILED_TO_CONNECT);
+                });
+            }
+            return false;
+        });
+        return future;
     }
 
     @FXML
@@ -137,7 +161,7 @@ public class AddGroupChatTwoController implements Initializable {
                 stageCoordinator.showErrorNotification(ErrorMessages.IMAGE_LENGTH);
                 return;
             }
-            Image image=new Image(selectedFile.getPath());
+            Image image = new Image(selectedFile.getPath(),500,500,true,true);
             createGroupChatModel.setGroupChatPicture(image);
         }
 

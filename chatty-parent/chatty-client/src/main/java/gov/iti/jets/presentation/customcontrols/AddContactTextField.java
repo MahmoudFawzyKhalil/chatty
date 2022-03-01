@@ -1,15 +1,12 @@
 package gov.iti.jets.presentation.customcontrols;
 
-import gov.iti.jets.presentation.util.StageCoordinator;
 import gov.iti.jets.presentation.util.UiValidator;
-import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import net.synedra.validatorfx.Validator;
 
 import java.io.IOException;
@@ -21,18 +18,18 @@ import java.util.ResourceBundle;
 public class AddContactTextField extends TextField implements Initializable {
     @FXML
     private TextField contactPhoneNumberTextField;
-    private Pane textFieldAddContactViewVBox;
+    private VBox textFieldAddContactViewVBox;
     private List<TextField> list;
     private Button addContactButton;
     private Validator validator = UiValidator.getInstance().createValidator();
 
-    public AddContactTextField( Pane textFieldAddContactViewVBox, List<TextField> list, Button addContactButton ) {
-        FXMLLoader loader = new FXMLLoader( getClass().getResource( "/views/add-contact/AddContactTextField.fxml" ) );
-        loader.setController( this );
-        loader.setRoot( this );
+    public AddContactTextField(VBox textFieldAddContactViewVBox, List<TextField> list, Button addContactButton) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/add-contact/AddContactTextField.fxml"));
+        loader.setController(this);
+        loader.setRoot(this);
         this.list = list;
         this.addContactButton = addContactButton;
-        list.add( this );
+        list.add(this);
         try {
             loader.load();
         } catch (IOException e) {
@@ -45,52 +42,65 @@ public class AddContactTextField extends TextField implements Initializable {
     }
 
     private void setTextFieldListener() {
-        contactPhoneNumberTextField.textProperty().addListener( (( observable, oldValue, newValue ) -> {
-            int lastTextFieldIndex = textFieldAddContactViewVBox.getChildren().indexOf( this );
+        contactPhoneNumberTextField.textProperty().addListener(((observable, oldValue, newValue) -> {
+            int lastTextFieldIndex = textFieldAddContactViewVBox.getChildren().indexOf(this);
 
             if (!newValue.isEmpty() && lastTextFieldIndex == textFieldAddContactViewVBox.getChildren().size() - 1) {
-                textFieldAddContactViewVBox.getChildren().add( new AddContactTextField( textFieldAddContactViewVBox, list, addContactButton ) );
+                textFieldAddContactViewVBox.getChildren().add(new AddContactTextField(textFieldAddContactViewVBox, list, addContactButton));
             }
-        }) );
+        }));
     }
 
     @Override
-    public void initialize( URL location, ResourceBundle resources ) {
+    public void initialize(URL location, ResourceBundle resources) {
 
     }
 
     private void validatePhoneNumberTextField() {
         validator.createCheck()
-                .dependsOn( "contactPhoneNumber", contactPhoneNumberTextField.textProperty() )
-                .withMethod( c -> {
-                    String phoneNumber = c.get( "contactPhoneNumber" );
-                    if (!UiValidator.PHONE_NUMBER_PATTERN.matcher( phoneNumber ).matches()) {
-                        c.error( "Please enter a valid 11 digit phone number." );
-                        addContactButton.setDisable( true );
+                .dependsOn("contactPhoneNumber", contactPhoneNumberTextField.textProperty())
+                .withMethod(c -> {
+                    String phoneNumber = c.get("contactPhoneNumber");
+                    if (!UiValidator.EGY_PHONE_NUMBER_PATTERN.matcher(phoneNumber).matches()) {
+                        c.error("Please enter a valid 11 digit phone number.");
+                        addContactButton.setDisable(true);
                     }
-                } )
-                .decorates( contactPhoneNumberTextField )
+                })
+                .decorates(contactPhoneNumberTextField)
                 .immediate();
     }
 
-    private void addEnableButtonValidationListener() {
-        validator.containsErrorsProperty().addListener( e -> {
-            if (!validator.containsErrors()) {
-                addContactButton.setDisable( false );
+    private void removeAllEmpty() {
+        for (int i = 0; i < textFieldAddContactViewVBox.getChildren().size() - 1; i++) {
+            TextField textField = (TextField) textFieldAddContactViewVBox.getChildren().get(i);
+            if (textField.getText().trim().isEmpty()) {
+                textFieldAddContactViewVBox.getChildren().remove(i--);
             }
-        } );
+        }
+    }
 
-        textFieldAddContactViewVBox.getChildren().addListener( new ListChangeListener<Node>() {
-            @Override
-            public void onChanged( Change<? extends Node> c ) {
-                if (c.getList().isEmpty()){
-                    return;
-                }
-                var lastElement = (AddContactTextField) c.getList().get( c.getList().size() - 1 );
-                if (lastElement.textProperty().isEmpty().get()) {
-                    addContactButton.setDisable( false );
-                }
+    private boolean isAllValid() {
+        for (int i = 0; i < textFieldAddContactViewVBox.getChildren().size() - 1; i++) {
+            TextField textField = (TextField) textFieldAddContactViewVBox.getChildren().get(i);
+            if (!UiValidator.EGY_PHONE_NUMBER_PATTERN.matcher(textField.getText()).matches()) {
+                return false;
             }
-        } );
+        }
+        TextField textField = (TextField) textFieldAddContactViewVBox.getChildren().get(0);
+        if (textFieldAddContactViewVBox.getChildren().size() == 1 && !UiValidator.EGY_PHONE_NUMBER_PATTERN.matcher(textField.getText()).matches()) {
+            return false;
+        }
+        return true;
+    }
+
+    private void addEnableButtonValidationListener() {
+        this.textProperty().addListener((observable, old, newval) -> {
+            if (newval.trim().isEmpty()) {
+                removeAllEmpty();
+            }
+            if (isAllValid()) {
+                addContactButton.setDisable(false);
+            }
+        });
     }
 }

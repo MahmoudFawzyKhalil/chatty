@@ -25,14 +25,12 @@ public class SingleMessageServiceImpl extends UnicastRemoteObject implements Sin
         if(!client.isEmpty()){
             try {
                 client.get().receiveSingleMessage(singleMessageDto);
-            } catch (NotBoundException e) {
+            } catch (RemoteException | NotBoundException e) {
+                clients.removeClientFromOnlineAndGroups( client.get() );
                 e.printStackTrace();
             }
-        }else{
-            //TODO throw excpetion the user is not online
         }
         SingleMessageEntity singleMessageEntity = SingleMessageMapper.INSTANCE.dtoToEntity(singleMessageDto);
         repositoryFactory.getSingleMessageRepository().insertMessage(singleMessageEntity);
-//        repositoryFactory.getSingleMessageRepository().getMessage(singleMessageDto.getSenderPhoneNumber());
     }
 }

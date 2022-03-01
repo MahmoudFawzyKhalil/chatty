@@ -27,6 +27,8 @@ module chatty.server {
     requires jakarta.validation;
     requires org.hibernate.validator;
     requires org.hibernate.validator.cdi;
+    requires spring.security.crypto;
+    requires commons.email;
 
     // Exports, Opens
     exports gov.iti.jets;

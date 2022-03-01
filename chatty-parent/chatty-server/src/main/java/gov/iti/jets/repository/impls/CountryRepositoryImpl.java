@@ -13,7 +13,7 @@ public class CountryRepositoryImpl implements CountryRepository {
     @Override
     public Optional<CountryEntity> getById(int id) {
         Optional<CountryEntity> optionalCountryEntity = Optional.empty();
-        try (Connection connection = ConnectionPool.getConnection();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement("select country_id,country_name from countries where country_id = ?");
         ) {
             statement.setInt(1, id);
@@ -33,7 +33,7 @@ public class CountryRepositoryImpl implements CountryRepository {
     @Override
     public List<CountryEntity> getAll() {
         List<CountryEntity> countryEntities = new ArrayList<>();
-        try (Connection connection = ConnectionPool.getConnection();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery("select country_id,country_name from countries")) {
             while (resultSet.next()) {

@@ -62,6 +62,15 @@
                         <Insets />
                      </VBox.margin>
                   </StackPane>
+                  <StackPane id="file-button-container">
+                     <children>
+                        <Button id="file-button" mnemonicParsing="false" onAction="#onFileTransferButtonAction" prefHeight="30.0" prefWidth="25.0" styleClass="file-transfer-button">
+                           <tooltip>
+                              <Tooltip text="File Transfer" />
+                           </tooltip>
+                        </Button>
+                     </children>
+                  </StackPane>
                   <StackPane id="chatbot-button-container">
                      <children>
                         <ToggleButton id="chatbot-button" fx:id="chatBotToggleButton" mnemonicParsing="false" onAction="#onChatBotButtonAction" prefHeight="33.0" prefWidth="31.0" styleClass="chatbot-button">

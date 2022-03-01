@@ -7,11 +7,14 @@ import gov.iti.jets.presentation.erros.ErrorMessages;
 import gov.iti.jets.presentation.models.UpdateProfileModel;
 import gov.iti.jets.presentation.models.UserModel;
 import gov.iti.jets.presentation.models.mappers.UpdateProfileMapper;
+import gov.iti.jets.presentation.util.ExecutorUtil;
 import gov.iti.jets.presentation.util.ModelFactory;
 import gov.iti.jets.presentation.util.StageCoordinator;
 import gov.iti.jets.presentation.util.UiValidator;
 import gov.iti.jets.services.UpdateProfileDao;
 import gov.iti.jets.services.util.DaoFactory;
+import gov.iti.jets.services.util.ServiceFactory;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -27,6 +30,7 @@ import net.synedra.validatorfx.Validator;
 import java.io.File;
 import java.net.URL;
 import java.rmi.ConnectException;
+import java.rmi.NoSuchObjectException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ResourceBundle;
@@ -93,13 +97,13 @@ public class UpdateProfileController implements Initializable {
                 stageCoordinator.showErrorNotification(ErrorMessages.FAILED_Update);
             }
 
-        }
-        catch (ConnectException c) {
+        } catch (NoSuchObjectException | NotBoundException | ConnectException c) {
+            ServiceFactory.getInstance().shutdown();
             stageCoordinator.showErrorNotification("Failed to connect to server. Please try again later.");
             ModelFactory.getInstance().clearUserModel();
             ModelFactory.getInstance().clearUserModel();
             stageCoordinator.switchToConnectToServer();
-        }catch (NotBoundException | RemoteException e) {
+        } catch (RemoteException e) {
             stageCoordinator.showErrorNotification(ErrorMessages.FAILED_TO_CONNECT);
         }
     }
@@ -108,35 +112,48 @@ public class UpdateProfileController implements Initializable {
     void onUploadPictureHyperLinkAction(ActionEvent event) {
         File selectedFile = fileChooser.showOpenDialog(null);
         if (selectedFile != null) {
-            double fileLen = selectedFile.length() / (double) (1024 * 1024);
-            if (fileLen > 2) {
-                stageCoordinator.showErrorNotification(ErrorMessages.IMAGE_LENGTH);
-                return;
-            }
-            Image image = new Image(selectedFile.getPath());
-            String imageBase64 = ImageMapper.getInstance().imageToEncodedString(image);
-            try {
-                UpdateProfilePicDto updateProfilePicDto = new UpdateProfilePicDto(userModel.getPhoneNumber(),imageBase64);
-                boolean updated = updateProfileDao.updatePicture(updateProfilePicDto);
-                if (updated) {
-                    updateProfileModel.setProfilePicture(image);
-                    updateProfileModel.updateUserModelPicture();
-                    stageCoordinator.showMessageNotification("Success", "Updated Successfully");
+            ExecutorUtil.getInstance().execute(() -> {
 
-                } else {
-                    stageCoordinator.showErrorNotification(ErrorMessages.FAILED_Update);
+                double fileLen = selectedFile.length() / (double) (1024 * 1024);
+                if (fileLen > 2) {
+                    stageCoordinator.showErrorNotification(ErrorMessages.IMAGE_LENGTH);
+                    return;
+                }
+                Image image = new Image(selectedFile.getPath(),500,500,true,true);
+                String imageBase64 = ImageMapper.getInstance().imageToEncodedString(image);
+                try {
+                    UpdateProfilePicDto updateProfilePicDto = new UpdateProfilePicDto(userModel.getPhoneNumber(), imageBase64);
+                    boolean updated = updateProfileDao.updatePicture(updateProfilePicDto);
+                    if (updated) {
+                        updateProfileModel.setProfilePicture(image);
+                        updateProfileModel.updateUserModelPicture();
+                        Platform.runLater(() -> {
+                            stageCoordinator.showMessageNotification("Success", "Updated Successfully");
+
+                        });
+
+                    } else {
+                        Platform.runLater(() -> {
+                            stageCoordinator.showErrorNotification(ErrorMessages.FAILED_Update);
+                        });
+                    }
+
+                } catch (NoSuchObjectException | NotBoundException | ConnectException c) {
+                    Platform.runLater(() -> {
+                        ServiceFactory.getInstance().shutdown();
+                        StageCoordinator.getInstance().showErrorNotification("Failed to connect to server. Please try again later.");
+                        ModelFactory.getInstance().clearUserModel();
+                        ModelFactory.getInstance().clearUserModel();
+                        StageCoordinator.getInstance().switchToConnectToServer();
+                    });
+                } catch (RemoteException e) {
+                    Platform.runLater(() -> {
+                        stageCoordinator.showErrorNotification(ErrorMessages.FAILED_TO_CONNECT);
+                        e.printStackTrace();
+                    });
                 }
 
-            }catch (ConnectException c) {
-                StageCoordinator.getInstance().showErrorNotification("Failed to connect to server. Please try again later.");
-                ModelFactory.getInstance().clearUserModel();
-                ModelFactory.getInstance().clearUserModel();
-                StageCoordinator.getInstance().switchToConnectToServer();
-            }  catch (NotBoundException | RemoteException e) {
-                stageCoordinator.showErrorNotification(ErrorMessages.FAILED_TO_CONNECT);
-                e.printStackTrace();
-            }
-
+            });
 
         }
     }

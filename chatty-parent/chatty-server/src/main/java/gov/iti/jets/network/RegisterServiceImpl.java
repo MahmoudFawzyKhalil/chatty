@@ -9,6 +9,7 @@ import gov.iti.jets.repository.util.ImageDecoder;
 import gov.iti.jets.repository.util.ImageDecoderImpl;
 import gov.iti.jets.repository.util.RepositoryFactory;
 import gov.iti.jets.repository.util.mappers.UserMapper;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
@@ -16,10 +17,11 @@ import java.rmi.server.UnicastRemoteObject;
 
 public class RegisterServiceImpl extends UnicastRemoteObject implements RegisterService {
 
-    private RepositoryFactory repositoryFactory = RepositoryFactory.getInstance();
-    private UserRepository userRepository = repositoryFactory.getUserRepository();
-    private ImageDecoder imageDecoder = new ImageDecoderImpl();
-    private final ImageDbUtil imageDbUtil = ImageDbUtil.getInstance();
+    private transient RepositoryFactory repositoryFactory = RepositoryFactory.getInstance();
+    private transient UserRepository userRepository = repositoryFactory.getUserRepository();
+    private transient ImageDecoder imageDecoder = new ImageDecoderImpl();
+    private transient final ImageDbUtil imageDbUtil = ImageDbUtil.getInstance();
+    private transient BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     protected RegisterServiceImpl() throws RemoteException {
     }
@@ -35,7 +37,7 @@ public class RegisterServiceImpl extends UnicastRemoteObject implements Register
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        userEntity.setPassword(encoder.encode(registerDto.getPassword()));
         return userRepository.addUser(userEntity);
     }
 

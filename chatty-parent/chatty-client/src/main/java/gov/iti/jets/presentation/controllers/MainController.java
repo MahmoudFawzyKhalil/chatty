@@ -1,5 +1,6 @@
 package gov.iti.jets.presentation.controllers;
 
+import gov.iti.jets.presentation.datasaved.LoginData;
 import gov.iti.jets.commons.dtos.StatusNotificationDto;
 import gov.iti.jets.commons.enums.StatusNotificationType;
 import gov.iti.jets.presentation.models.ContactModel;
@@ -12,6 +13,7 @@ import gov.iti.jets.presentation.util.StatusColors;
 import gov.iti.jets.presentation.util.cellfactories.ContactChatMenuItemCellFactory;
 import gov.iti.jets.presentation.util.cellfactories.GroupChatMenuItemCellFactory;
 import gov.iti.jets.services.ConnectionDao;
+import gov.iti.jets.services.LoginDao;
 import gov.iti.jets.services.util.DaoFactory;
 import gov.iti.jets.services.util.ServiceFactory;
 import javafx.event.ActionEvent;
@@ -23,9 +25,12 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URL;
 import java.rmi.ConnectException;
+import java.rmi.NoSuchObjectException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.List;
@@ -37,8 +42,10 @@ public class MainController implements Initializable {
     private final StageCoordinator stageCoordinator = StageCoordinator.getInstance();
     private final PaneCoordinator paneCoordinator = PaneCoordinator.getInstance();
     private final UserModel userModel = ModelFactory.getInstance().getUserModel();
-    private final ConnectionDao connectionDao = DaoFactory.getInstance().getConnectionService();
-
+    private final ConnectionDao connectionDao = DaoFactory.getInstance().getConnectionDao();
+    private final LoginDao loginDao = DaoFactory.getInstance().getLoginDao();
+    private LoginData loginData = LoginData.getInstance();
+    private Logger logger= LoggerFactory.getLogger(MainController.class);
     @FXML
     private ListView<ContactModel> contactChatsListView;
 
@@ -56,66 +63,67 @@ public class MainController implements Initializable {
     private ServiceFactory serviceFactory = ServiceFactory.getInstance();
 
     @Override
-    public void initialize( URL location, ResourceBundle resources ) {
+    public void initialize(URL location, ResourceBundle resources) {
         bindProfilePicCircle();
         bindContactChatsListView();
         bindGroupChatsListView();
     }
 
     private void bindProfilePicCircle() {
-        userProfilePicCircle.setFill( new ImagePattern( userModel.getProfilePicture() ) );
-        userModel.profilePictureProperty().addListener( e -> {
-            userProfilePicCircle.setFill( new ImagePattern( userModel.getProfilePicture() ) );
-        } );
+        userProfilePicCircle.setFill(new ImagePattern(userModel.getProfilePicture()));
+        userModel.profilePictureProperty().addListener(e -> {
+            userProfilePicCircle.setFill(new ImagePattern(userModel.getProfilePicture()));
+        });
     }
 
     private void bindContactChatsListView() {
-        contactChatsListView.itemsProperty().bind( userModel.contactsProperty() );
-        contactChatsListView.setCellFactory( new ContactChatMenuItemCellFactory() );
+        contactChatsListView.itemsProperty().bind(userModel.contactsProperty());
+        contactChatsListView.setCellFactory(new ContactChatMenuItemCellFactory());
     }
 
     private void bindGroupChatsListView() {
-        groupChatsListView.setCellFactory( new GroupChatMenuItemCellFactory() );
-        groupChatsListView.itemsProperty().bind( userModel.groupChatsProperty() );
+        groupChatsListView.setCellFactory(new GroupChatMenuItemCellFactory());
+        groupChatsListView.itemsProperty().bind(userModel.groupChatsProperty());
     }
 
     @FXML
-    void onAddContactButtonAction( ActionEvent event ) {
+    void onAddContactButtonAction(ActionEvent event) {
         stageCoordinator.showAddContactStage();
     }
 
     @FXML
-    void onAddGroupButtonAction( ActionEvent event ) {
+    void onAddGroupButtonAction(ActionEvent event) {
         stageCoordinator.showAddGroupStage();
     }
 
     @FXML
-    void onAvailableStatusMenuItemAction( ActionEvent event ) {
-        userStatusCircle.setFill( StatusColors.AVAILABLE_STATUS_COLOR );
+    void onAvailableStatusMenuItemAction(ActionEvent event) {
+        userStatusCircle.setFill(StatusColors.AVAILABLE_STATUS_COLOR);
         notifyOthersOfStatusUpdate(StatusNotificationType.Available);
     }
 
     @FXML
-    void onBusyStatusMenuItemAction( ActionEvent event ) {
-        userStatusCircle.setFill( StatusColors.BUSY_STATUS_COLOR );
+    void onBusyStatusMenuItemAction(ActionEvent event) {
+        userStatusCircle.setFill(StatusColors.BUSY_STATUS_COLOR);
         notifyOthersOfStatusUpdate(StatusNotificationType.Busy);
     }
 
     @FXML
-    void onAwayStatusMenuItemAction( ActionEvent event ) {
-        userStatusCircle.setFill( StatusColors.AWAY_STATUS_COLOR );
+    void onAwayStatusMenuItemAction(ActionEvent event) {
+        userStatusCircle.setFill(StatusColors.AWAY_STATUS_COLOR);
         notifyOthersOfStatusUpdate(StatusNotificationType.Away);
     }
 
     private void notifyOthersOfStatusUpdate(StatusNotificationType type) {
         try {
-            connectionDao.notifyOthersOfStatusUpdate( createStatusNotificationDto(type), createContactsToNotifyList() );
-        } catch (ConnectException c) {
+            connectionDao.notifyOthersOfStatusUpdate(createStatusNotificationDto(type), createContactsToNotifyList());
+        } catch (NoSuchObjectException | NotBoundException | ConnectException c) {
+            ServiceFactory.getInstance().shutdown();
             StageCoordinator.getInstance().showErrorNotification("Failed to connect to server. Please try again later.");
             ModelFactory.getInstance().clearUserModel();
             ModelFactory.getInstance().clearUserModel();
             StageCoordinator.getInstance().switchToConnectToServer();
-        } catch (NotBoundException | RemoteException e) {
+        } catch (RemoteException e) {
             e.printStackTrace();
         }
     }
@@ -123,58 +131,65 @@ public class MainController implements Initializable {
     private List<String> createContactsToNotifyList() {
         return userModel.getContacts()
                 .stream()
-                .map( ContactModel::getPhoneNumber )
-                .collect( Collectors.toList());
+                .map(ContactModel::getPhoneNumber)
+                .collect(Collectors.toList());
     }
 
     private StatusNotificationDto createStatusNotificationDto(StatusNotificationType type) {
-        return new StatusNotificationDto( userModel.getPhoneNumber(), type );
+        return new StatusNotificationDto(userModel.getPhoneNumber(), type);
     }
 
     @FXML
-    void onChatBotButtonAction( ActionEvent event ) {
-        if (chatBotToggleButton.isSelected()){
-            userModel.setIsUsingChatBot( true );
-            stageCoordinator.showMessageNotification( "ChatBot is now active", "Hello, world!" );
-            System.err.println("IS USING CHATBOT: " + userModel.getIsUsingChatBot());
+    void onChatBotButtonAction(ActionEvent event) {
+        if (chatBotToggleButton.isSelected()) {
+            userModel.setIsUsingChatBot(true);
+            stageCoordinator.showMessageNotification("ChatBot is now active", "Hello, world!");
+            logger.info("IS USING CHATBOT: " + userModel.getIsUsingChatBot());
         } else {
-            userModel.setIsUsingChatBot( false );
-            stageCoordinator.showMessageNotification( "ChatBot is now turned off", "Goodbye, cruel world!" );
-            System.err.println("IS USING CHATBOT: " + userModel.getIsUsingChatBot());
+            userModel.setIsUsingChatBot(false);
+            stageCoordinator.showMessageNotification("ChatBot is now turned off", "Goodbye, cruel world!");
+            logger.info("IS USING CHATBOT: " + userModel.getIsUsingChatBot());
         }
     }
 
     @FXML
-    void onInvitationsButtonAction( ActionEvent event ) {
+    void onInvitationsButtonAction(ActionEvent event) {
         paneCoordinator.switchToInvitationPane();
     }
 
     @FXML
-    void onSignOutButtonAction( ActionEvent event ) {
+    void onSignOutButtonAction(ActionEvent event) {
         try {
-            connectionDao.unregisterClient( userModel.getPhoneNumber() );
-        }
-        catch (ConnectException c) {
+            connectionDao.unregisterClient(userModel.getPhoneNumber());
+        } catch (NoSuchObjectException | NotBoundException | ConnectException c) {
+            ServiceFactory.getInstance().shutdown();
             StageCoordinator.getInstance().showErrorNotification("Failed to connect to server. Please try again later.");
             ModelFactory.getInstance().clearUserModel();
             ModelFactory.getInstance().clearUserModel();
             StageCoordinator.getInstance().switchToConnectToServer();
-        } catch (NotBoundException | RemoteException e) {
+        } catch (RemoteException e) {
             e.printStackTrace();
         }
 
         ModelFactory.getInstance().clearUserModel();
+        loginData.setLoadAll(false);
+        loginDao.save(loginData);
         stageCoordinator.switchToLoginScene();
         serviceFactory.shutdown();
     }
 
     @FXML
-    void onUserProfilePicCircleMouseClicked( MouseEvent event ) {
+    void onUserProfilePicCircleMouseClicked(MouseEvent event) {
 
-        if (event.getButton().equals( MouseButton.SECONDARY )) {
+        if (event.getButton().equals(MouseButton.SECONDARY)) {
             return;
         }
 
         paneCoordinator.switchToUpdateProfilePane();
+    }
+
+    @FXML
+    void onFileTransferButtonAction(ActionEvent event) {
+        paneCoordinator.switchToFileTransferPane();
     }
 }

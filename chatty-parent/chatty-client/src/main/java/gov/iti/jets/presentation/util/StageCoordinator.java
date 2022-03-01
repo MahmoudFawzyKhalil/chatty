@@ -2,10 +2,12 @@ package gov.iti.jets.presentation.util;
 
 import gov.iti.jets.commons.dtos.AnnouncementDto;
 import gov.iti.jets.presentation.customcontrols.ReceivedAnnouncementBubble;
+import gov.iti.jets.services.util.ServiceFactory;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -37,6 +39,16 @@ public class StageCoordinator {
 
     public void initStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
+        this.primaryStage.setWidth( 960 );
+        this.primaryStage.setHeight( 530 );
+        this.primaryStage.setMinWidth( 960 );
+        this.primaryStage.setMinHeight( 530 );
+        setAppIconAndTitle();
+    }
+
+    private void setAppIconAndTitle() {
+        primaryStage.getIcons().add(new Image(StageCoordinator.class.getResource("/images/appIcon.png").toString()));
+        primaryStage.setTitle("Chatty");
     }
 
     public void switchToLoginScene() {
@@ -142,6 +154,7 @@ public class StageCoordinator {
                 e.printStackTrace();
             }
         }
+        ServiceFactory.getInstance().shutdown();
         setSceneStyleSheets(connectToServerScene);
         primaryStage.setScene(connectToServerScene);
     }
@@ -153,15 +166,45 @@ public class StageCoordinator {
     }
 
     public void closeAutoDetectStage() {
-        stageMap.get("autoDetectStage").close();
+        Stage stage = stageMap.get("autoDetectStage");
+        if (stage != null) {
+            stage.close();
+        }
     }
 
     public void closeAddContactStage() {
-        stageMap.get("addContactStage").close();
+        Stage stage = stageMap.get("addContactStage");
+        if (stage != null) {
+            stage.close();
+        }
     }
 
     public void closeAddGroupChatStage() {
-        stageMap.get("addGroupStage").close();
+        Stage stage = stageMap.get("addGroupStage");
+        if (stage != null) {
+            stage.close();
+        }
+    }
+
+    public void closeLoadLoginDataSplashStage() {
+        Stage loadLoginDataSplashStage = stageMap.get("loadLoginDataSplashStage");
+        if (loadLoginDataSplashStage != null) {
+            loadLoginDataSplashStage.close();
+        }
+    }
+
+    public void closeRegisterUserSplashStage() {
+        Stage registerUserSplashStage = stageMap.get("registerUserSplashStage");
+        if (registerUserSplashStage != null) {
+            registerUserSplashStage.close();
+        }
+    }
+
+    public void closeAddGroupSplashStage() {
+        Stage addGroupSplashStage = stageMap.get("addGroupSplashStage");
+        if (addGroupSplashStage != null) {
+            addGroupSplashStage.close();
+        }
     }
 
 
@@ -180,6 +223,33 @@ public class StageCoordinator {
         setPopupStage(autoDetectStage, "/views/auto-detect/AutoDetect.fxml");
         stageMap.put("autoDetectStage", autoDetectStage);
         autoDetectStage.show();
+
+    }
+
+    public void showLoginLoadingDataSplashStage() {
+        Stage loadLoginDataSplashStage = new Stage();
+        setPopupStageStyle(loadLoginDataSplashStage);
+        setPopupStage(loadLoginDataSplashStage, "/views/login/LoadDataSplash.fxml");
+        stageMap.put("loadLoginDataSplashStage", loadLoginDataSplashStage);
+        loadLoginDataSplashStage.show();
+
+    }
+
+    public void showRegisterUserSplashStage() {
+        Stage registerUserSplashStage = new Stage();
+        setPopupStageStyle(registerUserSplashStage);
+        setPopupStage(registerUserSplashStage, "/views/register/RegisterUserSplash.fxml");
+        stageMap.put("registerUserSplashStage", registerUserSplashStage);
+        registerUserSplashStage.show();
+
+    }
+
+    public void showAddGroupSplashStage() {
+        Stage addGroupSplashStage = new Stage();
+        setPopupStageStyle(addGroupSplashStage);
+        setPopupStage(addGroupSplashStage, "/views/add-group/AddGroupSplash.fxml");
+        stageMap.put("addGroupSplashStage", addGroupSplashStage);
+        addGroupSplashStage.show();
 
     }
 
@@ -250,8 +320,8 @@ public class StageCoordinator {
                 .show();
     }
 
-    public void showAdminNotification( AnnouncementDto announcementDto) {
-        var receivedAnnouncementBubble = new ReceivedAnnouncementBubble( announcementDto );
+    public void showAdminNotification(AnnouncementDto announcementDto) {
+        var receivedAnnouncementBubble = new ReceivedAnnouncementBubble(announcementDto);
 
         Notifications.create()
                 .graphic(receivedAnnouncementBubble)

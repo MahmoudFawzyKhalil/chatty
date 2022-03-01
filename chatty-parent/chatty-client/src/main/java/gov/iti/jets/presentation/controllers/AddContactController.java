@@ -12,6 +12,8 @@ import gov.iti.jets.presentation.util.StageCoordinator;
 import gov.iti.jets.services.AddContactDao;
 import gov.iti.jets.services.InvitationDecisionDao;
 import gov.iti.jets.services.util.DaoFactory;
+import gov.iti.jets.services.util.CleanupUtil;
+import gov.iti.jets.services.util.ServiceFactory;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -22,6 +24,7 @@ import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.rmi.ConnectException;
+import java.rmi.NoSuchObjectException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -32,7 +35,7 @@ public class AddContactController implements Initializable {
     private StageCoordinator stageCoordinator = StageCoordinator.getInstance();
     private ModelFactory modelFactory = ModelFactory.getInstance();
     private final DaoFactory daoFactory = DaoFactory.getInstance();
-    private final AddContactDao addContactDao = daoFactory.getAddContactService();
+    private final AddContactDao addContactDao = daoFactory.getAddContactDao();
 
     private UserModel userModel = modelFactory.getUserModel();
     private List<TextField> phoneNumberTextFields = new ArrayList<>();
@@ -53,33 +56,36 @@ public class AddContactController implements Initializable {
     @FXML
     void onAddButtonAction( ActionEvent event ) {
         getPhoneNumbers();
-        System.out.println(phoneNumbers.size());
+        AddContactDto addContactDto = new AddContactDto( userModel.getPhoneNumber(), phoneNumbers );
         if (isFriend()){
             stageCoordinator.showErrorNotification( "Already friends." );
             stageCoordinator.closeAddContactStage();
         } else if (isAddingSelf()){
             stageCoordinator.showErrorNotification( "You can't add yourself." );
             stageCoordinator.closeAddContactStage();
+        } else if (!allUsersExist(addContactDto)){
+            stageCoordinator.showErrorNotification( "One or more users don't exist." );
+            stageCoordinator.closeAddContactStage();
+        } else if (iAmSendingAnInvitationAgain(addContactDto)){
+            stageCoordinator.showErrorNotification( "You've already sent this user an invite." );
+            stageCoordinator.closeAddContactStage();
         } else {
             try {
-                isSentInvitationBefore();
-                AddContactDto addContactDto = new AddContactDto( userModel.getPhoneNumber(), phoneNumbers );
-                System.out.println(addContactDto + " " + phoneNumbers.size());
+                handleAddingSomeoneWhoAlreadyAddedMe();
                 if (!phoneNumbers.isEmpty()){
                     boolean addContactSucceeded = addContactDao.addContacts( addContactDto );
                     if (addContactSucceeded) {
-                        stageCoordinator.showMessageNotification( "Success!", "Successfully added contacts." );
+                        Platform.runLater( () -> {
+                            stageCoordinator.showMessageNotification( "Success!", "Successfully added contacts." );
+                        } );
                     } else {
                         stageCoordinator.showErrorNotification( "Failed to add contacts. Please try again later." );
                     }
                 }
 
-            }catch (ConnectException c) {
-                stageCoordinator.showErrorNotification("Failed to connect to server. Please try again later.");
-                ModelFactory.getInstance().clearUserModel();
-                modelFactory.clearUserModel();
-                stageCoordinator.switchToConnectToServer();
-            } catch (NotBoundException | RemoteException e) {
+            }catch (NoSuchObjectException | NotBoundException | ConnectException c) {
+                CleanupUtil.getInstance().handleServerErrorCleanup();
+            } catch ( RemoteException e) {
                 stageCoordinator.showErrorNotification( "Failed to connect to server. Please try again later." );
                 e.printStackTrace();
             } finally {
@@ -87,6 +93,28 @@ public class AddContactController implements Initializable {
                 resetAddContactView();
             }
         }
+    }
+
+    private boolean iAmSendingAnInvitationAgain(AddContactDto addContactDto) {
+        boolean result = false;
+        try {
+            result = addContactDao.didISendAnInvitationBefore( addContactDto );
+        } catch (NotBoundException | RemoteException e) {
+            CleanupUtil.getInstance().handleServerErrorCleanup();
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    private boolean allUsersExist( AddContactDto addContactDto) {
+        boolean result = true;
+        try {
+            result = addContactDao.doUsersExist( addContactDto );
+        } catch (NotBoundException | RemoteException e) {
+            CleanupUtil.getInstance().handleServerErrorCleanup();
+            e.printStackTrace();
+        }
+        return result;
     }
 
     private boolean isAddingSelf() {
@@ -113,7 +141,7 @@ public class AddContactController implements Initializable {
         return false;
     }
 
-    private void isSentInvitationBefore() {
+    private void handleAddingSomeoneWhoAlreadyAddedMe() {
         for (String invitedNumber : phoneNumbers) {
             for (InvitationModel invitationModel : userModel.getInvitations()) {
                 if (invitedNumber.equals(invitationModel.getContactModel().getPhoneNumber())) {
@@ -121,19 +149,18 @@ public class AddContactController implements Initializable {
                     try {
                             boolean succeeded = invitationDecisionDao.acceptInvite(new InvitationDecisionDto(userModel.getPhoneNumber(),
                                     invitationModel.getContactModel().getPhoneNumber()));
-                            System.out.println(succeeded);
                             if (succeeded) {
                                 userModel.getInvitations().removeIf(im -> im.getContactModel().getPhoneNumber()
                                         .equals(invitationModel.getContactModel().getPhoneNumber()));
                                 phoneNumbers.remove(invitedNumber);
-                                System.out.println(phoneNumbers);
                             }
-                    } catch (ConnectException c) {
+                    } catch (NoSuchObjectException | NotBoundException | ConnectException c) {
+                        ServiceFactory.getInstance().shutdown();
                         stageCoordinator.showErrorNotification("Failed to connect to server. Please try again later.");
                         ModelFactory.getInstance().clearUserModel();
                         modelFactory.clearUserModel();
                         stageCoordinator.switchToConnectToServer();
-                    }catch (NotBoundException | RemoteException ex) {
+                    }catch (RemoteException ex) {
                         StageCoordinator.getInstance().showErrorNotification(ErrorMessages.FAILED_TO_CONNECT);
                         ex.printStackTrace();
                     }

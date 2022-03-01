@@ -18,14 +18,12 @@ public interface UserMapper {
 
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
-//    String DEFAULT_PIC_URL = Paths.get("").toAbsolutePath().toString() + "/DB/profile-pic/user.bmp";
 
     UserEntity userDtoToEntity(UserDto userDto);
 
     @Mapping(source = "userPicture", target = "profilePicture", qualifiedByName = "userPicDto")
     UserDto userEntityToDto(UserEntity userEntity);
 
-    //    @Mapping(source = "profilePicture",target = "userPicture")
     UserEntity registerDtoToEntity(RegisterDto userDto);
 
     UserEntity updateProfileDtoToEntity(UpdateProfileDto updateProfileDto);

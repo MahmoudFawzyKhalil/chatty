@@ -69,38 +69,13 @@ public class ChatBotServiceImpl implements ChatBotService {
     private static String getBotPath() {
         String botPath = ChatBotService.class.getResource( "/chatbot" ).toString();
         botPath = botPath.substring( 0, botPath.length() - 1 ).replace( "file:/", "" );
+
+        // If in executable jar, use the external bots folder
+        if (botPath.contains( "jar" )){
+            botPath = System.getProperty( "user.dir" );
+        }
+
         return botPath;
     }
-
- /*   public static void main( String[] args ) {
-        String botPath = getBotPath();
-
-        MagicBooleans.trace_mode = false;
-        Bot bot = new Bot( "super", botPath );
-
-        Chat chatSession = new Chat( bot );
-
-        String textLine = "";
-
-        while (true) {
-            System.out.print( "Human : " );
-
-            textLine = IOUtils.readInputTextLine();
-
-            String request = textLine;
-
-            String response = chatSession.multisentenceRespond( request );
-
-            Pattern removeTagsPattern = Pattern.compile( "\\<.*\\>" );
-            Matcher removeTagsMatcher = removeTagsPattern.matcher( response );
-            String firstResult = removeTagsMatcher.replaceAll( " " );
-
-            Pattern removeHtmlPattern = Pattern.compile( "&.*;" );
-            Matcher removeHtmlMatcher = removeHtmlPattern.matcher( firstResult );
-            String secondResult = removeHtmlMatcher.replaceAll( " " );
-
-            System.out.println( "Robot : " + secondResult );
-        }
-    }*/
 }
 

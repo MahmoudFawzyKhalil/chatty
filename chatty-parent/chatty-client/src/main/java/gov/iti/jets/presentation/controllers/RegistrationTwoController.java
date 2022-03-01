@@ -11,23 +11,23 @@ import gov.iti.jets.presentation.util.UiValidator;
 import gov.iti.jets.services.CountryDao;
 import gov.iti.jets.services.RegisterDao;
 import gov.iti.jets.services.util.DaoFactory;
+import gov.iti.jets.services.util.ServiceFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.util.StringConverter;
 import net.synedra.validatorfx.Validator;
 
 import java.net.URL;
 import java.rmi.ConnectException;
+import java.rmi.NoSuchObjectException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
@@ -36,8 +36,8 @@ public class RegistrationTwoController implements Initializable {
     private final StageCoordinator stageCoordinator = StageCoordinator.getInstance();
     private final ModelFactory modelFactory = ModelFactory.getInstance();
     private final RegisterModel registerModel = modelFactory.getRegisterModel();
-    private CountryDao countryDao = DaoFactory.getInstance().getCountryDao();
-    private RegisterDao registerDao = DaoFactory.getInstance().getRegisterDao();
+    private final CountryDao countryDao = DaoFactory.getInstance().getCountryDao();
+    private final RegisterDao registerDao = DaoFactory.getInstance().getRegisterDao();
 
     @FXML
     private TextField bioTextField;
@@ -65,7 +65,7 @@ public class RegistrationTwoController implements Initializable {
     private ObservableList<CountryModel> countryModels;
 
 
-    private Validator validator = UiValidator.getInstance().createValidator();
+    private final Validator validator = UiValidator.getInstance().createValidator();
 
 
     @Override
@@ -84,7 +84,20 @@ public class RegistrationTwoController implements Initializable {
         validateCountryComboBox();
         validateBirthDateDatePicker();
         addEnableButtonValidationListener();
+        setDatePickerDefaults();
 
+    }
+
+    private void setDatePickerDefaults() {
+        birthDateDatePicker.setDayCellFactory(param -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                LocalDate now = LocalDate.now();
+                long diff = ChronoUnit.YEARS.between(date, now);
+                this.setDisable(empty || diff < 10 );
+            }
+        });
     }
 
     private void loadCountries() {
@@ -92,12 +105,13 @@ public class RegistrationTwoController implements Initializable {
             List<CountryDto> countryDtos = countryDao.getAll();
             List<CountryModel> countries = CountryMapper.INSTANCE.dtoListToModel(countryDtos);
             this.countryModels = countries.stream().collect(Collectors.toCollection(FXCollections::observableArrayList));
-        } catch (ConnectException c) {
+        } catch (NoSuchObjectException | NotBoundException | ConnectException c) {
+            ServiceFactory.getInstance().shutdown();
             StageCoordinator.getInstance().showErrorNotification("Failed to connect to server. Please try again later.");
             ModelFactory.getInstance().clearUserModel();
             ModelFactory.getInstance().clearUserModel();
             StageCoordinator.getInstance().switchToConnectToServer();
-        } catch (NotBoundException | RemoteException e) {
+        } catch (RemoteException e) {
             e.printStackTrace();
         }
     }
@@ -154,7 +168,7 @@ public class RegistrationTwoController implements Initializable {
                 .dependsOn("country", countryComboBox.valueProperty())
                 .withMethod(c -> {
                     CountryModel country = c.get("country");
-                    if (country == RegisterModel.DEFAULT_COUNTRY_MODEL) {
+                    if (country.getCountryId() == RegisterModel.DEFAULT_COUNTRY_MODEL.getCountryId()) {
                         c.error("Please choose country.");
                         nextButton.setDisable(true);
                     }
@@ -188,12 +202,13 @@ public class RegistrationTwoController implements Initializable {
     boolean isEmailFound() {
         try {
             return registerDao.isFoundBefore(registerModel.getEmail());
-        } catch (ConnectException c) {
+        } catch (NoSuchObjectException | NotBoundException | ConnectException c) {
+            ServiceFactory.getInstance().shutdown();
             StageCoordinator.getInstance().showErrorNotification("Failed to connect to server. Please try again later.");
             ModelFactory.getInstance().clearUserModel();
             ModelFactory.getInstance().clearUserModel();
             StageCoordinator.getInstance().switchToConnectToServer();
-        } catch (NotBoundException | RemoteException e) {
+        } catch (RemoteException e) {
             stageCoordinator.showErrorNotification(ErrorMessages.FAILED_TO_CONNECT);
         }
         return false;

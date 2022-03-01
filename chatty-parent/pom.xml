@@ -21,6 +21,8 @@
     </modules>
 
     <dependencyManagement>
+
+
         <dependencies>
 
             <!-- ChatBot -->
@@ -156,6 +158,12 @@
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>exec-maven-plugin</artifactId>
                     <version>3.0.0</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-shade-plugin</artifactId>
+                    <version>3.2.4</version>
                 </plugin>
 
             </plugins>

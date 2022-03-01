@@ -21,7 +21,7 @@ public class InvitationsRepositoryImpl implements InvitationsRepository {
 
         ContactRepository contactRepository = RepositoryFactory.getInstance().getContactRepository();
         Optional<InvitationEntity> optionalInvitationEntity = Optional.empty();
-        try (Connection connection = ConnectionPool.getConnection();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement("select sender, receiver from invitations where sender = ? and receiver = ?");
         ) {
             statement.setString(1, sender);
@@ -50,7 +50,7 @@ public class InvitationsRepositoryImpl implements InvitationsRepository {
         ContactRepository contactRepository = RepositoryFactory.getInstance().getContactRepository();
         List<InvitationEntity> invitationList = new ArrayList<>();
 
-        try (Connection connection = ConnectionPool.getConnection();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement("select sender from invitations where receiver = ?");
         ) {
             statement.setString(1, phoneNumber);

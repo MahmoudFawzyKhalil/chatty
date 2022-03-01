@@ -26,7 +26,8 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </padding>
             </PasswordField>
-            <Button fx:id="loginButton" mnemonicParsing="false" onAction="#onLoginButtonAction" styleClass="login-button" text="Login">
+            <HBox />
+            <Button fx:id="loginButton" defaultButton="true" mnemonicParsing="false" onAction="#onLoginButtonAction" styleClass="login-button" text="Login">
                <padding>
                   <Insets bottom="7.0" left="20.0" right="20.0" top="7.0" />
                </padding>
