@@ -191,6 +191,10 @@ public class UpdateProfileController implements Initializable {
                 .dependsOn("userName", nameTextField.textProperty())
                 .withMethod(c -> {
                     String bio = c.get("bio");
+                    if (bio.length()>100) {
+                        c.error("Bio cannot be longer than 100 characters");
+                        updateButton.setDisable(true);
+                    }
                     if (!updateProfileModel.isChanged()) {
                         c.error("No change");
                         updateButton.setDisable(true);
