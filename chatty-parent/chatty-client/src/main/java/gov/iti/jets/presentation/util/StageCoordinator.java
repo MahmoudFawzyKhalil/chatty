@@ -175,6 +175,14 @@ public class StageCoordinator {
         }
     }
 
+    public void closeTryToConnectSplashStageStage() {
+        Stage stage = stageMap.get("tryToConnectSplashStage");
+        if (stage != null) {
+            stage.close();
+        }
+    }
+
+
     public void closeAddContactStage() {
         Stage stage = stageMap.get("addContactStage");
         if (stage != null) {
@@ -247,7 +255,14 @@ public class StageCoordinator {
         setPopupStage(autoDetectStage, "/views/auto-detect/AutoDetect.fxml");
         stageMap.put("autoDetectStage", autoDetectStage);
         autoDetectStage.show();
+    }
 
+    public void showTryToConnectSplashStage() {
+        Stage tryToConnectSplashStage = new Stage();
+        setPopupStageStyle(tryToConnectSplashStage);
+        setPopupStage(tryToConnectSplashStage, "/views/connect-server-splash/TryConnectSplash.fxml");
+        stageMap.put("tryToConnectSplashStage", tryToConnectSplashStage);
+        tryToConnectSplashStage.show();
     }
 
     public void showLoginLoadingDataSplashStage() {
