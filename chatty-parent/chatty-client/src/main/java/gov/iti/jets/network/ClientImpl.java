@@ -193,6 +193,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
 
             Platform.runLater(() -> {
                 groupChatModel.getMesssages().add(messageModel);
+                stageCoordinator.showMessageNotification( groupChatModel.getGroupChatName(), messageModel.getMessageBody() );
             });
         }
 

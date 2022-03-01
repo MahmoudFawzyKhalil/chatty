@@ -320,30 +320,29 @@ public class ChatController implements Initializable {
                 return;
             }
 
-
-            try {
-
-                singleMessageDao.sendMessage(createMessageDto());
-
-            } catch (NoSuchObjectException | NotBoundException | ConnectException c) {
-                Platform.runLater(()->{
-                    ServiceFactory.getInstance().shutdown();
-                    StageCoordinator.getInstance().showErrorNotification("Failed to connect to server. Please try again later.");
-                    ModelFactory.getInstance().clearUserModel();
-                    ModelFactory.getInstance().clearUserModel();
-                    StageCoordinator.getInstance().switchToConnectToServer();
-                });
-                return;
-            } catch (RemoteException e) {
-                e.printStackTrace();
-                return;
-            }
-            MessageModel messageModel = SingleMessageMapper.INSTANCE.dtoToModel(createMessageDto());
-            messageModel.setSentByMe(true);
-            messageModel.setSenderName(userModel.getDisplayName());
-
-
             if (contactModel != null) {
+
+                try {
+
+                    singleMessageDao.sendMessage(createMessageDto());
+
+                } catch (NoSuchObjectException | NotBoundException | ConnectException c) {
+                    Platform.runLater(()->{
+                        ServiceFactory.getInstance().shutdown();
+                        StageCoordinator.getInstance().showErrorNotification("Failed to connect to server. Please try again later.");
+                        ModelFactory.getInstance().clearUserModel();
+                        ModelFactory.getInstance().clearUserModel();
+                        StageCoordinator.getInstance().switchToConnectToServer();
+                    });
+                    return;
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                    return;
+                }
+                MessageModel messageModel = SingleMessageMapper.INSTANCE.dtoToModel(createMessageDto());
+                messageModel.setSentByMe(true);
+                messageModel.setSenderName(userModel.getDisplayName());
+
                 Platform.runLater(()->{
                     contactModel.getMesssages().add(messageModel);
                     chatTextArea.setText("");
