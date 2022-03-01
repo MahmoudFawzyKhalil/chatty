@@ -13,12 +13,29 @@ This software project was built using a layered architecture. The following diag
 * Server statistics and management 
 * Updating user profiles
 * AIML chatbot
+* Auto-detect any available server using a UDP discovery protocol
+* Voice chat
+* Save messages to data base
+
+# ⚙ Technologies & Libraries
+* Maven
+* JDBC
+* Sockets
+* RMI
+* JavaFX
+* IO / NIO
+* Bean Validation (Hibernate Validator)
+* MapStruct
+* Logback
+* HikariCP
+* MySQL
+* Spring Security Crypto
 
 ![Animation](https://user-images.githubusercontent.com/73137611/155806535-92e5a736-0b30-4e19-b5f1-371c91970736.gif)
 ![Animation2](https://user-images.githubusercontent.com/73137611/155806878-b4b497cd-5821-4420-9a9d-e95340aa4ff2.gif)
 
 
-# 💻 How to run
+# 🛠 How to run
 **Maven**
 * Download version 0.0.4.3 of the chatbot dependency from [here](https://code.google.com/archive/p/program-ab/downloads).
 * Install it using the following maven command:
