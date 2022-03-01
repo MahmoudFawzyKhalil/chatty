@@ -110,7 +110,7 @@ public class AddGroupChatTwoController implements Initializable {
             AddGroupChatDto addGroupChatDto = GroupChatMapper.INSTANCE.modelToAddGroupChatDto(createGroupChatModel);
             Future<Boolean> future = create(addGroupChatDto);
             try {
-                Platform.runLater(stageCoordinator::showAddGroupSplashStage);
+                Platform.runLater(stageCoordinator::showAddSplashStage);
                 if (future.get()) {
                     Platform.runLater(()->{
                         close();
@@ -120,7 +120,7 @@ public class AddGroupChatTwoController implements Initializable {
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }finally {
-                Platform.runLater(stageCoordinator::closeAddGroupSplashStage);
+                Platform.runLater(stageCoordinator::closeAddSplashStage);
             }
         });
     }

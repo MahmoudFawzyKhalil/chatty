@@ -12,22 +12,20 @@ import java.net.MalformedURLException;
 public class MailMaker {
     private static MailMaker INSTANCE = new MailMaker();
 
-    private HtmlEmail htmlEmail = new HtmlEmail();
-    private String accountEmail = "chatty373@gmail.com";
-    private String password = "chattychatty373";
+    private HtmlEmail htmlEmail ;
+    private final String accountEmail = "chatty373@gmail.com";
+    private final String password = "chattychatty373";
 
     private Logger logger = LoggerFactory.getLogger(MailMaker.class);
 
     private MailMaker() {
-        config();
+
     }
-
-
     public static MailMaker getInstance() {
         return INSTANCE;
     }
-
     private void config() {
+        htmlEmail = new HtmlEmail();
         htmlEmail.setHostName("smtp.googlemail.com");
         htmlEmail.setSmtpPort(465);
         htmlEmail.setAuthenticator(new DefaultAuthenticator(accountEmail,
@@ -42,7 +40,7 @@ public class MailMaker {
 
 
     public void sendAddContactMail(String receiverMail,String senderPhoneNumber) throws EmailException, MalformedURLException {
-
+        config();
         htmlEmail.setSubject("New Contact");
         htmlEmail.addTo(receiverMail);
         htmlEmail.setHtmlMsg("<html>" +

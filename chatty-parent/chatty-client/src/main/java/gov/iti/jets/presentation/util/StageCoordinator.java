@@ -211,8 +211,8 @@ public class StageCoordinator {
         }
     }
 
-    public void closeAddGroupSplashStage() {
-        Stage addGroupSplashStage = stageMap.get("addGroupSplashStage");
+    public void closeAddSplashStage() {
+        Stage addGroupSplashStage = stageMap.get("addSplashStage");
         if (addGroupSplashStage != null) {
             addGroupSplashStage.close();
         }
@@ -329,12 +329,12 @@ public class StageCoordinator {
         stage.initStyle(StageStyle.TRANSPARENT);
     }
 
-    public void showAddGroupSplashStage() {
-        Stage addGroupSplashStage = new Stage();
-        setPopupStageStyle(addGroupSplashStage);
-        setPopupStage(addGroupSplashStage, "/views/add-group/AddGroupSplash.fxml");
-        stageMap.put("addGroupSplashStage", addGroupSplashStage);
-        addGroupSplashStage.show();
+    public void showAddSplashStage() {
+        Stage addSplashStage = new Stage();
+        setPopupStageStyle(addSplashStage);
+        setPopupStage(addSplashStage, "/views/add-splash/AddSplash.fxml");
+        stageMap.put("addSplashStage", addSplashStage);
+        addSplashStage.show();
 
     }
 
