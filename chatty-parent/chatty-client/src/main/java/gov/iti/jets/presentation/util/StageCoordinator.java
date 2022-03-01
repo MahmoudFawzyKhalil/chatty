@@ -1,6 +1,8 @@
 package gov.iti.jets.presentation.util;
 
 import gov.iti.jets.commons.dtos.AnnouncementDto;
+import gov.iti.jets.network.VoiceReceiver;
+import gov.iti.jets.network.VoiceSender;
 import gov.iti.jets.presentation.customcontrols.ReceivedAnnouncementBubble;
 import gov.iti.jets.services.util.ServiceFactory;
 import javafx.fxml.FXMLLoader;
@@ -15,6 +17,7 @@ import javafx.scene.shape.SVGPath;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
 
@@ -207,6 +210,27 @@ public class StageCoordinator {
         }
     }
 
+    public void closeVoiceChatRinging() {
+        Stage voiceChatRinging = stageMap.get("voiceChatRinging");
+        if (voiceChatRinging != null) {
+            voiceChatRinging.close();
+        }
+    }
+
+    public void closeVoiceChatAcceptance() {
+        Stage voiceChatAcceptance = stageMap.get("voiceChatAcceptance");
+        if (voiceChatAcceptance != null) {
+            voiceChatAcceptance.close();
+        }
+    }
+
+    public void closeVoiceChatCall() {
+        Stage voiceChatCallStage = stageMap.get("voiceChatCallStage");
+        if (voiceChatCallStage != null) {
+            voiceChatCallStage.close();
+        }
+    }
+
 
     public void showAddContactStage() {
         Stage addContactStage = new Stage();
@@ -232,8 +256,8 @@ public class StageCoordinator {
         setPopupStage(loadLoginDataSplashStage, "/views/login/LoadDataSplash.fxml");
         stageMap.put("loadLoginDataSplashStage", loadLoginDataSplashStage);
         loadLoginDataSplashStage.show();
-
     }
+
 
     public void showRegisterUserSplashStage() {
         Stage registerUserSplashStage = new Stage();
@@ -242,6 +266,52 @@ public class StageCoordinator {
         stageMap.put("registerUserSplashStage", registerUserSplashStage);
         registerUserSplashStage.show();
 
+    }
+
+
+    public void showVoiceChatRinging() {
+        Stage voiceChatRinging = new Stage();
+        setVoiceChatStageStyle(voiceChatRinging);
+        setPopupStage(voiceChatRinging, "/views/voice-chat/VoiceChatRinging.fxml");
+        stageMap.put("voiceChatRinging", voiceChatRinging);
+        voiceChatRinging.addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, event -> {
+            ModelFactory.getInstance().getVoiceChatModel().setInCall(false);
+            VoiceSender.getInstance().closeCall();
+            VoiceReceiver.getInstance().closeCall();
+        });
+        voiceChatRinging.show();
+    }
+
+    public void showVoiceChatAcceptance() {
+        Stage voiceChatAcceptance = new Stage();
+        setVoiceChatStageStyle(voiceChatAcceptance);
+        setPopupStage(voiceChatAcceptance, "/views/voice-chat/VoiceChatAcceptance.fxml");
+        stageMap.put("voiceChatAcceptance", voiceChatAcceptance);
+        voiceChatAcceptance.addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, event -> {
+            ModelFactory.getInstance().getVoiceChatModel().setInCall(false);
+            VoiceSender.getInstance().closeCall();
+            VoiceReceiver.getInstance().closeCall();
+        });
+        voiceChatAcceptance.show();
+    }
+
+
+    public void showVoiceChatCallStage() {
+        Stage voiceChatCallStage = new Stage();
+        setVoiceChatStageStyle(voiceChatCallStage);
+        setPopupStage(voiceChatCallStage, "/views/voice-chat/VoiceChatCall.fxml");
+        stageMap.put("voiceChatCallStage", voiceChatCallStage);
+        voiceChatCallStage.addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, event -> {
+            ModelFactory.getInstance().getVoiceChatModel().setInCall(false);
+            VoiceSender.getInstance().closeCall();
+            VoiceReceiver.getInstance().closeCall();
+        });
+        voiceChatCallStage.show();
+    }
+
+
+    private void setVoiceChatStageStyle(Stage stage) {
+        stage.initStyle(StageStyle.TRANSPARENT);
     }
 
     public void showAddGroupSplashStage() {
