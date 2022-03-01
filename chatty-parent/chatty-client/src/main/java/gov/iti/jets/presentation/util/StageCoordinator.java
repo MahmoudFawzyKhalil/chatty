@@ -3,6 +3,7 @@ package gov.iti.jets.presentation.util;
 import gov.iti.jets.commons.dtos.AnnouncementDto;
 import gov.iti.jets.network.VoiceReceiver;
 import gov.iti.jets.network.VoiceSender;
+import gov.iti.jets.presentation.controllers.VoiceChatAcceptanceController;
 import gov.iti.jets.presentation.customcontrols.ReceivedAnnouncementBubble;
 import gov.iti.jets.services.util.ServiceFactory;
 import javafx.fxml.FXMLLoader;
@@ -12,6 +13,8 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.SVGPath;
 import javafx.stage.Modality;
@@ -42,10 +45,10 @@ public class StageCoordinator {
 
     public void initStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
-        this.primaryStage.setWidth( 960 );
-        this.primaryStage.setHeight( 530 );
-        this.primaryStage.setMinWidth( 960 );
-        this.primaryStage.setMinHeight( 530 );
+        this.primaryStage.setWidth(960);
+        this.primaryStage.setHeight(530);
+        this.primaryStage.setMinWidth(960);
+        this.primaryStage.setMinHeight(530);
         setAppIconAndTitle();
     }
 
@@ -397,12 +400,20 @@ public class StageCoordinator {
     }
 
     public void showMessageNotification(String senderName, String message) {
+        playNotify();
         Notifications.create()
                 .title(senderName)
                 .text(message)
                 .hideAfter(Duration.seconds(3))
                 .hideCloseButton()
                 .show();
+    }
+
+    private void playNotify() {
+        Media media = new Media(VoiceChatAcceptanceController.class.getResource("/sounds/notify.wav").toString());
+        MediaPlayer mediaPlayer = new MediaPlayer(media);
+        mediaPlayer.setAutoPlay(true);
+        mediaPlayer.play();
     }
 
     public void showAdminNotification(AnnouncementDto announcementDto) {
