@@ -20,6 +20,7 @@ import gov.iti.jets.services.SingleMessageDao;
 import gov.iti.jets.services.VoiceChatDao;
 import gov.iti.jets.services.util.DaoFactory;
 import gov.iti.jets.services.util.ServiceFactory;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.MapChangeListener;
 import javafx.collections.ObservableList;
@@ -301,64 +302,81 @@ public class ChatController implements Initializable {
 
     @FXML
     void onSendMessageButtonAction(ActionEvent event) {
+        ExecutorUtil.getInstance().execute(()->{
+            if (chatTextArea.getText().length() > 700) {
+                Platform.runLater(()->{
+                    stageCoordinator.showErrorNotification("Can't send a message longer than 700 characters.");
+                    chatTextArea.setText("");
+                });
+                return;
+            }
 
-        if (chatTextArea.getText().length() > 700) {
-            stageCoordinator.showErrorNotification("Can't send a message longer than 700 characters.");
-            chatTextArea.setText("");
-            return;
-        }
+            if (chatTextArea.getText().isEmpty() || chatTextArea.getText().isBlank()) {
+                Platform.runLater(()->{chatTextArea.setText("");});
+                return;
+            }
 
-        if (chatTextArea.getText().isEmpty() || chatTextArea.getText().isBlank()) {
-            chatTextArea.setText("");
-            return;
-        }
-
-        if (groupChatModel == null && contactModel == null) {
-            return;
-        }
-
-
-        try {
-            singleMessageDao.sendMessage(createMessageDto());
-
-        } catch (NoSuchObjectException | NotBoundException | ConnectException c) {
-            ServiceFactory.getInstance().shutdown();
-            StageCoordinator.getInstance().showErrorNotification("Failed to connect to server. Please try again later.");
-            ModelFactory.getInstance().clearUserModel();
-            ModelFactory.getInstance().clearUserModel();
-            StageCoordinator.getInstance().switchToConnectToServer();
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-        MessageModel messageModel = SingleMessageMapper.INSTANCE.dtoToModel(createMessageDto());
-        messageModel.setSentByMe(true);
-        messageModel.setSenderName(userModel.getDisplayName());
+            if (groupChatModel == null && contactModel == null) {
+                return;
+            }
 
 
-        if (contactModel != null) {
-            contactModel.getMesssages().add(messageModel);
-            chatTextArea.setText("");
-            scrollChatMessagesListViewToLastMessage();
-        } else {
             try {
-                groupMessageDao.sendGroupMessage(createGroupMessageDto());
+
+                singleMessageDao.sendMessage(createMessageDto());
+
             } catch (NoSuchObjectException | NotBoundException | ConnectException c) {
-                ServiceFactory.getInstance().shutdown();
-                StageCoordinator.getInstance().showErrorNotification("Failed to connect to server. Please try again later.");
-                ModelFactory.getInstance().clearUserModel();
-                StageCoordinator.getInstance().switchToConnectToServer();
+                Platform.runLater(()->{
+                    ServiceFactory.getInstance().shutdown();
+                    StageCoordinator.getInstance().showErrorNotification("Failed to connect to server. Please try again later.");
+                    ModelFactory.getInstance().clearUserModel();
+                    ModelFactory.getInstance().clearUserModel();
+                    StageCoordinator.getInstance().switchToConnectToServer();
+                });
+                return;
             } catch (RemoteException e) {
                 e.printStackTrace();
+                return;
             }
-            MessageModel groupMessageModel = GroupMessageMapper.INSTANCE.dtoToModel(createGroupMessageDto());
-            groupMessageModel.setSentByMe(true);
-            groupMessageModel.setSenderName(userModel.getDisplayName());
+            MessageModel messageModel = SingleMessageMapper.INSTANCE.dtoToModel(createMessageDto());
+            messageModel.setSentByMe(true);
+            messageModel.setSenderName(userModel.getDisplayName());
 
-            groupChatModel.getMesssages().add(groupMessageModel);
-            scrollChatMessagesListViewToLastMessage();
-            chatTextArea.setText("");
-        }
-        scrollChatMessagesListViewToLastMessage();
+
+            if (contactModel != null) {
+                Platform.runLater(()->{
+                    contactModel.getMesssages().add(messageModel);
+                    chatTextArea.setText("");
+                    scrollChatMessagesListViewToLastMessage();
+                });
+            } else {
+                try {
+                    groupMessageDao.sendGroupMessage(createGroupMessageDto());
+                } catch (NoSuchObjectException | NotBoundException | ConnectException c) {
+                    Platform.runLater(()->{
+                        ServiceFactory.getInstance().shutdown();
+                        StageCoordinator.getInstance().showErrorNotification("Failed to connect to server. Please try again later.");
+                        ModelFactory.getInstance().clearUserModel();
+                        StageCoordinator.getInstance().switchToConnectToServer();
+                    });
+                    return;
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                    return;
+                }
+                MessageModel groupMessageModel = GroupMessageMapper.INSTANCE.dtoToModel(createGroupMessageDto());
+                groupMessageModel.setSentByMe(true);
+                groupMessageModel.setSenderName(userModel.getDisplayName());
+
+                Platform.runLater(()->{
+                    groupChatModel.getMesssages().add(groupMessageModel);
+                    scrollChatMessagesListViewToLastMessage();
+                    chatTextArea.setText("");
+                });
+            }
+            Platform.runLater(()->{scrollChatMessagesListViewToLastMessage();});
+        });
+
     }
 
     private SingleMessageDto createMessageDto() {
