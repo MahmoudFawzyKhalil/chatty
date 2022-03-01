@@ -15,6 +15,7 @@ public class UserModel {
     private ObjectProperty<Image> profilePicture = new SimpleObjectProperty<>( DEFAULT_IMAGE );
     private StringProperty email = new SimpleStringProperty();
     private StringProperty bio = new SimpleStringProperty();
+    private BooleanProperty chattingInGroup = new SimpleBooleanProperty(false);
     private ObjectProperty<LocalDate> birthDate = new SimpleObjectProperty<>();
     private ObjectProperty<CountryModel> country = new SimpleObjectProperty<>();
     private ObjectProperty<UserStatusModel> currentStatus = new SimpleObjectProperty<>();
@@ -209,6 +210,18 @@ public class UserModel {
 
     public void setCurrentlyChattingWith( String currentlyChattingWith ) {
         this.currentlyChattingWith.set( currentlyChattingWith );
+    }
+
+    public boolean isChattingInGroup() {
+        return chattingInGroup.get();
+    }
+
+    public BooleanProperty chattingInGroupProperty() {
+        return chattingInGroup;
+    }
+
+    public void setChattingInGroup(boolean chattingInGroup) {
+        this.chattingInGroup.set(chattingInGroup);
     }
 
     @Override

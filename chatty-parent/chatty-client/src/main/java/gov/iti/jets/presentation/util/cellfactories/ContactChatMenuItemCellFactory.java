@@ -33,6 +33,7 @@ public class ContactChatMenuItemCellFactory implements Callback<ListView<Contact
         cell.setOnMouseClicked( e -> {
             if (cell.getItem() == null) return;
             ContactModel contactModel = cell.getItem();
+            userModel.setChattingInGroup(false);
             userModel.setCurrentlyChattingWith( contactModel.getPhoneNumber() );
         } );
 

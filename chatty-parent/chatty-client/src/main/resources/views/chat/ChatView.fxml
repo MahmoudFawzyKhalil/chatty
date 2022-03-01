@@ -131,7 +131,7 @@
                </HBox.margin>
             </Label>
             <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-            <Button minWidth="25.0" mnemonicParsing="false" onAction="#onVoiceChatAction" prefWidth="25.0" styleClass="voice-call-button">
+            <Button fx:id="voiceChatButton" minWidth="25.0" mnemonicParsing="false" onAction="#onVoiceChatAction" prefWidth="25.0" styleClass="voice-call-button">
                <HBox.margin>
                   <Insets right="20.0" />
                </HBox.margin>

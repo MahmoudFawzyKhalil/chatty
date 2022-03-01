@@ -107,6 +107,9 @@ public class ChatController implements Initializable {
     @FXML
     private Circle textBackgroundIndicatorCircle;
 
+    @FXML
+    private Button voiceChatButton;
+
 
     private ObservableMap<String, String> messageStyleMap = FXCollections.observableHashMap();
 
@@ -123,6 +126,19 @@ public class ChatController implements Initializable {
         addMessageStyleMapListener();
         addFontComboBoxListeners();
         handleEnterKeyPressOnChatTextArea();
+        hideVoiceChatInGroup();
+    }
+
+    private void hideVoiceChatInGroup() {
+        userModel.chattingInGroupProperty().addListener(c->{
+            if(userModel.isChattingInGroup()){
+                voiceChatButton.setVisible(false);
+            }else{
+                voiceChatButton.setVisible(true);
+
+            }
+        });
+
     }
 
     private void addFontComboBoxListeners() {
