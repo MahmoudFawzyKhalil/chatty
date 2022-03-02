@@ -178,6 +178,7 @@ public class StageCoordinator {
                 e.printStackTrace();
             }
         }
+        fixFxBug();
         ServiceFactory.getInstance().shutdown();
         setSceneStyleSheets(connectToServerScene);
         primaryStage.setScene(connectToServerScene);
