@@ -34,6 +34,7 @@ public class GroupChatMenuItemCellFactory implements Callback<ListView<GroupChat
         cell.setOnMouseClicked( e -> {
             if (cell.getItem() == null) return;
             GroupChatModel groupChatModel = cell.getItem();
+            userModel.setChattingInGroup(true);
             userModel.setCurrentlyChattingWith( groupChatModel.getGroupChatId() + "" );
         } );
 

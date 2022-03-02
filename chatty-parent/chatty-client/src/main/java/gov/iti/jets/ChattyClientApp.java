@@ -29,6 +29,7 @@ public class ChattyClientApp extends Application {
     }
 
     public static void main( String[] args ) {
+
         if (SingleInstanceUtil.getInstance().isAppActive()) {
             logger.error( "An instance of chatty client is already running." );
             System.exit( 1 );

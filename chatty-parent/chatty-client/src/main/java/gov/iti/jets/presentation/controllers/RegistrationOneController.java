@@ -61,11 +61,26 @@ public class RegistrationOneController implements Initializable {
 
     @FXML
     void onNextButtonAction(ActionEvent event) {
-        if (!isPhoneNumberFound()) {
-            stageCoordinator.switchToRegisterSceneTwo();
-        } else {
-            stageCoordinator.showErrorNotification(ErrorMessages.PHONE_NUMBER_FOUND);
+        try {
+            if (!isPhoneNumberFound()) {
+                stageCoordinator.switchToRegisterSceneTwo();
+            } else {
+                stageCoordinator.showErrorNotification(ErrorMessages.PHONE_NUMBER_FOUND);
+            }
+        } catch (NoSuchObjectException | NotBoundException | ConnectException c) {
+            ServiceFactory.getInstance().shutdown();
+            StageCoordinator.getInstance().showErrorNotification(ErrorMessages.FAILED_TO_CONNECT);
+            ModelFactory.getInstance().clearUserModel();
+            ModelFactory.getInstance().clearUserModel();
+            StageCoordinator.getInstance().switchToConnectToServer();
+        } catch (RemoteException e) {
+            stageCoordinator.showErrorNotification(ErrorMessages.FAILED_TO_CONNECT);
+            ModelFactory.getInstance().clearUserModel();
+            ModelFactory.getInstance().clearUserModel();
+            StageCoordinator.getInstance().switchToConnectToServer();
+
         }
+
     }
 
 
@@ -75,19 +90,10 @@ public class RegistrationOneController implements Initializable {
         stageCoordinator.switchToLoginScene();
     }
 
-    boolean isPhoneNumberFound() {
-        try {
-            return registerDao.validatePhoneNumber(registerModel.getPhoneNumber());
-        } catch (NoSuchObjectException | NotBoundException | ConnectException c) {
-            ServiceFactory.getInstance().shutdown();
-            StageCoordinator.getInstance().showErrorNotification("Failed to connect to server. Please try again later.");
-            ModelFactory.getInstance().clearUserModel();
-            ModelFactory.getInstance().clearUserModel();
-            StageCoordinator.getInstance().switchToConnectToServer();
-        } catch (RemoteException e) {
-            stageCoordinator.showErrorNotification(ErrorMessages.FAILED_TO_CONNECT);
-        }
-        return false;
+    boolean isPhoneNumberFound() throws RemoteException, NotBoundException {
+        return registerDao.validatePhoneNumber(registerModel.getPhoneNumber());
+
+//        return false;
     }
 
 

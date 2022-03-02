@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane styleClass="shadow-pane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.iti.jets.presentation.controllers.RegisterUserSplashController">
+<BorderPane styleClass="shadow-pane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
    <center>
       <VBox id="add-card" alignment="CENTER" maxHeight="350.0" maxWidth="390.0" prefHeight="350.0" prefWidth="390.0" spacing="30.0" styleClass="card">
          <children>
@@ -31,6 +31,6 @@
    </center>
    <stylesheets>
       <URL value="@../../styles/Base.css" />
-      <URL value="@AddGroupStyles.css" />
+      <URL value="@AddStyles.css" />
    </stylesheets>
 </BorderPane>

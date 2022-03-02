@@ -34,7 +34,7 @@ import java.util.concurrent.FutureTask;
 public class ClientImpl extends UnicastRemoteObject implements Client {
 
     private final transient UserModel userModel = ModelFactory.getInstance().getUserModel();
-    private final transient FileTransferOperationAvailabilityModel fileTransferOperationAvailabilityModel= ModelFactory.getInstance().getFileTransferOperationAvailabilityModel();
+    private final transient FileTransferOperationAvailabilityModel fileTransferOperationAvailabilityModel = ModelFactory.getInstance().getFileTransferOperationAvailabilityModel();
     private final transient ServiceFactory serviceFactory = ServiceFactory.getInstance();
     private final transient FileTransferDao fileTransferDao = DaoFactory.getInstance().getFileTransferDao();
     private final transient ChatBotService chatBotService = serviceFactory.getChatBotService();
@@ -43,7 +43,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
     public transient FileTransferReceivingTask fileTransferReceivingTask;
     public transient FileTransferTask fileTransferTask;
     private static ClientImpl INSTANCE;
-    private transient static Logger logger= LoggerFactory.getLogger(ClientImpl.class);
+    private transient static Logger logger = LoggerFactory.getLogger(ClientImpl.class);
     private transient String currentDirectory = System.getProperty("user.dir");
 
     static {
@@ -116,6 +116,44 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
             }
         });
     }
+    @Override
+    public void loadGroupMessages(Map<Integer, List<GroupMessageDto>> messagesMap) throws RemoteException {
+
+        messagesMap.forEach((k, v) -> {
+            Optional<GroupChatModel> optionalGroupChatModel = userModel.getGroupChats().stream()
+                    .filter(cm -> cm.getGroupChatId()==k)
+                    .findFirst();
+
+
+            if(!optionalGroupChatModel.isEmpty()){
+                List<MessageModel> messageModelList = new ArrayList<>();
+                for(GroupMessageDto messageDto : v){
+                    MessageModel messageModel = GroupMessageMapper.INSTANCE.dtoToModel(messageDto);
+                    if(messageDto.getSenderPhoneNumber().equals(userModel.getPhoneNumber())){
+                        messageModel.setSentByMe(true);
+                        messageModel.setSenderName(userModel.getDisplayName());
+                    }
+                    else{
+                        Optional<ContactModel> contactModel = userModel.getContacts().stream()
+                                .filter(cm -> cm.getPhoneNumber().equals(messageDto.getSenderPhoneNumber())).findFirst();
+                        if(contactModel.isPresent()){
+                            messageModel.setSenderName(contactModel.get().getDisplayName());
+                        }
+                        else{
+                            messageModel.setSenderName(messageDto.getSenderPhoneNumber());
+                        }
+
+                    }
+                    messageModelList.add(messageModel);
+                }
+
+                ObservableList<MessageModel> messageModels = FXCollections.observableArrayList(messageModelList);
+                Platform.runLater(()->{
+                    optionalGroupChatModel.get().setMesssages(messageModels);
+                });
+            }
+        });
+    }
 
     @Override
     public void notifyOfServerShutDown() throws RemoteException {
@@ -147,7 +185,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
             Platform.runLater(() -> {
                 messageModel.senderProfilePictureProperty().bind(optionalContactModel.get().profilePictureProperty());
                 optionalContactModel.get().getMesssages().add(messageModel);
-                stageCoordinator.showMessageNotification( messageModel.getSenderName(), messageModel.getMessageBody() );
+                stageCoordinator.showMessageNotification(messageModel.getSenderName(), messageModel.getMessageBody());
             });
 
             if (userModel.getIsUsingChatBot() && !singleMessageDto.isSentByChatBot()) {
@@ -193,6 +231,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
 
             Platform.runLater(() -> {
                 groupChatModel.getMesssages().add(messageModel);
+                stageCoordinator.showMessageNotification( groupChatModel.getGroupChatName(), messageModel.getMessageBody() );
             });
         }
 
@@ -221,8 +260,8 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
         Platform.runLater(() -> {
             InvitationModel invitationModel = InvitationMapper.INSTANCE.dtoToModel(receiverInvitationDto);
             userModel.getInvitations().add(invitationModel);
-            stageCoordinator.showMessageNotification( "New friend request!",
-                    receiverInvitationDto.getContactDto().getDisplayName() + " wants to be your friend!" );
+            stageCoordinator.showMessageNotification("New friend request!",
+                    receiverInvitationDto.getContactDto().getDisplayName() + " wants to be your friend!");
         });
     }
 
@@ -271,7 +310,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
 
         if (!optionalContactModel.isEmpty()) {
 
-            if(!fileTransferOperationAvailabilityModel.isAvailable()){
+            if (!fileTransferOperationAvailabilityModel.isAvailable()) {
                 fileTransferResponseDto.setAccepted(false);
                 try {
                     fileTransferResponseDto.setSenderPhoneNumber(optionalContactModel.get().getPhoneNumber());
@@ -286,7 +325,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
             }
 
 
-final FutureTask <Boolean>query = new FutureTask(new FileTransferAcceptanceCallable(fileTransferPermissionDto, optionalContactModel.get()));
+            final FutureTask<Boolean> query = new FutureTask(new FileTransferAcceptanceCallable(fileTransferPermissionDto, optionalContactModel.get()));
             Platform.runLater(query);
             try {
                 if (!query.get()) {
@@ -303,7 +342,7 @@ final FutureTask <Boolean>query = new FutureTask(new FileTransferAcceptanceCalla
                     fileTransferResponseDto.setFile(fileTransferPermissionDto.getFile());
                     fileTransferDao.sendFileTransferResponse(fileTransferResponseDto);
                     FileModel fileModel = createFileModel(fileTransferPermissionDto.getFile());
-                    Platform.runLater(()->{
+                    Platform.runLater(() -> {
                         userModel.getFileTransferList().add(fileModel);
                     });
                     fileTransferReceivingTask = new FileTransferReceivingTask(fileModel);
@@ -330,27 +369,28 @@ final FutureTask <Boolean>query = new FutureTask(new FileTransferAcceptanceCalla
                 .findFirst();
         if (!optionalContactModel.isEmpty()) {
             if (!fileTransferResponseDto.isAccepted()) {
-                Platform.runLater(()->{
+                Platform.runLater(() -> {
                     stageCoordinator.showMessageNotification("File Transfer Response",
                             optionalContactModel.get().getDisplayName() + " did not accept file transfer.");
                 });
                 return;
             }
         }
-        Platform.runLater(()->{
+        Platform.runLater(() -> {
             stageCoordinator.showMessageNotification("File Transfer Response",
-                    optionalContactModel.get().getDisplayName()+ " accepts file transfer.");
+                    optionalContactModel.get().getDisplayName() + " accepts file transfer.");
         });
 
         FileModel fileModel = createFileModel(fileTransferResponseDto.getFile());
-        Platform.runLater(()->{
+        Platform.runLater(() -> {
             userModel.getFileTransferList().add(fileModel);
         });
-        fileTransferTask = new FileTransferTask(fileModel,fileTransferResponseDto.getReceiverIp());
+        fileTransferTask = new FileTransferTask(fileModel, fileTransferResponseDto.getReceiverIp());
         executorUtil.execute(fileTransferTask);
     }
 
-    private FileModel createFileModel(File file){
+
+    private FileModel createFileModel(File file) {
         FileModel fileModel = new FileModel();
         fileModel.setFile(file);
         fileModel.setFileSize(file.length());
@@ -359,5 +399,49 @@ final FutureTask <Boolean>query = new FutureTask(new FileTransferAcceptanceCalla
         fileModel.setSenderName(userModel.getDisplayName());
         fileModel.setIsCanceled(false);
         return fileModel;
+    }
+
+    @Override
+    public boolean receiveVoiceChatPermission(VoiceChatDto voiceChatDto) throws RemoteException {
+        VoiceChatModel voiceChatModel = ModelFactory.getInstance().getVoiceChatModel();
+        if (voiceChatModel.isInCall())
+            return false;
+
+        Optional<ContactModel> optionalContactModel = userModel.getContacts().stream()
+                .filter(cm -> cm.getPhoneNumber().equals(voiceChatDto.getCallerPhoneNumber()))
+                .findFirst();
+        if (optionalContactModel.isPresent()) {
+
+            Platform.runLater(() -> {
+                ContactModel contactModel = optionalContactModel.get();
+
+                voiceChatModel.setAll(contactModel, voiceChatDto.getCallerIp());
+                voiceChatModel.setInCall(true);
+                stageCoordinator.showVoiceChatAcceptance();
+            });
+        }
+        return true;
+    }
+
+    @Override
+    public boolean startVoiceChat(VoiceChatDto voiceChatDto) throws RemoteException {
+
+        VoiceChatModel voiceChatModel = ModelFactory.getInstance().getVoiceChatModel();
+
+        voiceChatModel.setContactIp(voiceChatDto.getCallerIp());
+
+        Platform.runLater(() -> {
+            voiceChatModel.setInCall(true);
+            stageCoordinator.closeVoiceChatRinging();
+            stageCoordinator.showVoiceChatCallStage();
+        });
+        return true;
+    }
+
+    @Override
+    public void closeVoiceChat(VoiceChatDto voiceChatDto) throws RemoteException {
+        Platform.runLater(()->{
+            ModelFactory.getInstance().getVoiceChatModel().setInCall(false);
+        });
     }
 }

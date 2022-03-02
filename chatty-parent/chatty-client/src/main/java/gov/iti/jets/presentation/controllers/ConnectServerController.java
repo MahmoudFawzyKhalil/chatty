@@ -1,9 +1,11 @@
 package gov.iti.jets.presentation.controllers;
 
 import gov.iti.jets.presentation.erros.ErrorMessages;
+import gov.iti.jets.presentation.util.ExecutorUtil;
 import gov.iti.jets.presentation.util.StageCoordinator;
 import gov.iti.jets.presentation.util.UiValidator;
 import gov.iti.jets.services.util.ServiceFactory;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -61,15 +63,24 @@ public class ConnectServerController implements Initializable {
 
     @FXML
     void onLocalConnectButtonAction(ActionEvent event) {
-        try {
+        ExecutorUtil.getInstance().execute(() -> {
+            try {
+                Platform.runLater(stageCoordinator::showTryToConnectSplashStage);
+                ServiceFactory.getInstance().setRegistry(serverIpTextField.getText());
+                ServiceFactory.getInstance().getLoginService();
+                Platform.runLater(() -> {
+                    stageCoordinator.switchToLoginScene();
+                });
 
-            ServiceFactory.getInstance().setRegistry(serverIpTextField.getText());
-            ServiceFactory.getInstance().getLoginService();
-            stageCoordinator.switchToLoginScene();
+            } catch (RemoteException | NotBoundException e) {
+                Platform.runLater(() -> {
+                    ServiceFactory.getInstance().shutdown();
+                    stageCoordinator.showErrorNotification(ErrorMessages.NOT_VALID_IP);
+                });
+            } finally {
+                Platform.runLater(stageCoordinator::closeTryToConnectSplashStageStage);
+            }
+        });
 
-        } catch (RemoteException | NotBoundException e) {
-            ServiceFactory.getInstance().shutdown();
-            stageCoordinator.showErrorNotification(ErrorMessages.NOT_VALID_IP);
-        }
     }
 }

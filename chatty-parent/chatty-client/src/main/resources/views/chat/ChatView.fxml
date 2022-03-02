@@ -14,6 +14,7 @@
 <?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
@@ -93,7 +94,7 @@
                   </Button>
                </children>
             </StackPane>
-            <Button id="attach-button" minWidth="25.0" mnemonicParsing="false" onAction="#onAttachFileButtonAction" prefWidth="25.0" styleClass="attach-button">
+            <Button id="attach-button" fx:id="attachFileButton" minWidth="25.0" mnemonicParsing="false" onAction="#onAttachFileButtonAction" prefWidth="25.0" styleClass="attach-button">
                <HBox.margin>
                   <Insets left="10.0" right="10.0" />
                </HBox.margin>
@@ -129,6 +130,12 @@
                   <Insets left="10.0" />
                </HBox.margin>
             </Label>
+            <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+            <Button fx:id="voiceChatButton" minWidth="25.0" mnemonicParsing="false" onAction="#onVoiceChatAction" prefWidth="25.0" styleClass="voice-call-button">
+               <HBox.margin>
+                  <Insets right="20.0" />
+               </HBox.margin>
+            </Button>
          </children>
       </HBox>
    </top>

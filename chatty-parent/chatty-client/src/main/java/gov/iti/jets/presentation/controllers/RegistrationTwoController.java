@@ -80,12 +80,27 @@ public class RegistrationTwoController implements Initializable {
         genderComboBox.getSelectionModel().selectFirst();
         birthDateDatePicker.valueProperty().bindBidirectional(registerModel.birthDateProperty());
         bioTextField.textProperty().bindBidirectional(registerModel.bioProperty());
+        validateBioTextField();
         validateEmailTextField();
         validateCountryComboBox();
         validateBirthDateDatePicker();
         addEnableButtonValidationListener();
         setDatePickerDefaults();
 
+    }
+
+    private void validateBioTextField() {
+        validator.createCheck()
+                .dependsOn("bio", bioTextField.textProperty())
+                .withMethod(c -> {
+                    String bio = c.get("bio");
+                    if (bio.length()>100) {
+                        c.error("Bio cannot be longer than 100 characters");
+                        nextButton.setDisable(true);
+                    }
+                })
+                .decorates(bioTextField)
+                .immediate();
     }
 
     private void setDatePickerDefaults() {

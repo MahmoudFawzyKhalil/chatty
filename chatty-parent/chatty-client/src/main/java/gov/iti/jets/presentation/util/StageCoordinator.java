@@ -1,10 +1,13 @@
 package gov.iti.jets.presentation.util;
 
 import gov.iti.jets.commons.dtos.AnnouncementDto;
+import gov.iti.jets.network.VoiceReceiver;
+import gov.iti.jets.network.VoiceSender;
 import gov.iti.jets.presentation.customcontrols.ReceivedAnnouncementBubble;
 import gov.iti.jets.services.util.ServiceFactory;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
@@ -12,9 +15,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.SVGPath;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
+import javafx.stage.*;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
 
@@ -39,10 +40,10 @@ public class StageCoordinator {
 
     public void initStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
-        this.primaryStage.setWidth( 960 );
-        this.primaryStage.setHeight( 530 );
-        this.primaryStage.setMinWidth( 960 );
-        this.primaryStage.setMinHeight( 530 );
+        this.primaryStage.setWidth(960);
+        this.primaryStage.setHeight(530);
+        this.primaryStage.setMinWidth(960);
+        this.primaryStage.setMinHeight(530);
         setAppIconAndTitle();
     }
 
@@ -62,8 +63,11 @@ public class StageCoordinator {
                 e.printStackTrace();
             }
         }
+        fixFxBug();
+
         setSceneStyleSheets(loginScene);
         primaryStage.setScene(loginScene);
+
     }
 
     private void setSceneStyleSheets(Scene scene) {
@@ -81,6 +85,7 @@ public class StageCoordinator {
                 e.printStackTrace();
             }
         }
+        fixFxBug();
         setSceneStyleSheets(registerSceneOne);
         primaryStage.setScene(registerSceneOne);
     }
@@ -96,6 +101,7 @@ public class StageCoordinator {
                 e.printStackTrace();
             }
         }
+        fixFxBug();
 
         setSceneStyleSheets(registerSceneTwo);
         primaryStage.setScene(registerSceneTwo);
@@ -112,6 +118,7 @@ public class StageCoordinator {
                 e.printStackTrace();
             }
         }
+        fixFxBug();
 
         setSceneStyleSheets(registerSceneThree);
         primaryStage.setScene(registerSceneThree);
@@ -129,10 +136,27 @@ public class StageCoordinator {
                 e.printStackTrace();
             }
         }
-        primaryStage.setWidth(961);
-        primaryStage.setHeight(531);
+        fixFxBug();
         setSceneStyleSheets(mainScene);
         primaryStage.setScene(mainScene);
+
+    }
+
+    private void fixFxBug() {
+        if (primaryStage.isMaximized()) {//fix javafx bug
+            Screen screen = Screen.getPrimary();
+            Rectangle2D bounds = screen.getVisualBounds();
+            primaryStage.setMaximized(false);
+            primaryStage.setWidth(primaryStage.getWidth() + 1);
+            primaryStage.setHeight(primaryStage.getHeight() + 1);
+            primaryStage.setX(bounds.getMinX());
+            primaryStage.setY(bounds.getMinY());
+            primaryStage.setWidth(bounds.getWidth());
+            primaryStage.setHeight(bounds.getHeight());
+        } else {
+            primaryStage.setWidth(primaryStage.getWidth() + 1);
+            primaryStage.setHeight(primaryStage.getHeight() + 1);
+        }
     }
 
     public void switchToAddGroupChatTwo() {
@@ -154,6 +178,7 @@ public class StageCoordinator {
                 e.printStackTrace();
             }
         }
+        fixFxBug();
         ServiceFactory.getInstance().shutdown();
         setSceneStyleSheets(connectToServerScene);
         primaryStage.setScene(connectToServerScene);
@@ -171,6 +196,14 @@ public class StageCoordinator {
             stage.close();
         }
     }
+
+    public void closeTryToConnectSplashStageStage() {
+        Stage stage = stageMap.get("tryToConnectSplashStage");
+        if (stage != null) {
+            stage.close();
+        }
+    }
+
 
     public void closeAddContactStage() {
         Stage stage = stageMap.get("addContactStage");
@@ -200,10 +233,31 @@ public class StageCoordinator {
         }
     }
 
-    public void closeAddGroupSplashStage() {
-        Stage addGroupSplashStage = stageMap.get("addGroupSplashStage");
+    public void closeAddSplashStage() {
+        Stage addGroupSplashStage = stageMap.get("addSplashStage");
         if (addGroupSplashStage != null) {
             addGroupSplashStage.close();
+        }
+    }
+
+    public void closeVoiceChatRinging() {
+        Stage voiceChatRinging = stageMap.get("voiceChatRinging");
+        if (voiceChatRinging != null) {
+            voiceChatRinging.close();
+        }
+    }
+
+    public void closeVoiceChatAcceptance() {
+        Stage voiceChatAcceptance = stageMap.get("voiceChatAcceptance");
+        if (voiceChatAcceptance != null) {
+            voiceChatAcceptance.close();
+        }
+    }
+
+    public void closeVoiceChatCall() {
+        Stage voiceChatCallStage = stageMap.get("voiceChatCallStage");
+        if (voiceChatCallStage != null) {
+            voiceChatCallStage.close();
         }
     }
 
@@ -223,7 +277,14 @@ public class StageCoordinator {
         setPopupStage(autoDetectStage, "/views/auto-detect/AutoDetect.fxml");
         stageMap.put("autoDetectStage", autoDetectStage);
         autoDetectStage.show();
+    }
 
+    public void showTryToConnectSplashStage() {
+        Stage tryToConnectSplashStage = new Stage();
+        setPopupStageStyle(tryToConnectSplashStage);
+        setPopupStage(tryToConnectSplashStage, "/views/connect-server-splash/TryConnectSplash.fxml");
+        stageMap.put("tryToConnectSplashStage", tryToConnectSplashStage);
+        tryToConnectSplashStage.show();
     }
 
     public void showLoginLoadingDataSplashStage() {
@@ -232,8 +293,8 @@ public class StageCoordinator {
         setPopupStage(loadLoginDataSplashStage, "/views/login/LoadDataSplash.fxml");
         stageMap.put("loadLoginDataSplashStage", loadLoginDataSplashStage);
         loadLoginDataSplashStage.show();
-
     }
+
 
     public void showRegisterUserSplashStage() {
         Stage registerUserSplashStage = new Stage();
@@ -244,12 +305,58 @@ public class StageCoordinator {
 
     }
 
-    public void showAddGroupSplashStage() {
-        Stage addGroupSplashStage = new Stage();
-        setPopupStageStyle(addGroupSplashStage);
-        setPopupStage(addGroupSplashStage, "/views/add-group/AddGroupSplash.fxml");
-        stageMap.put("addGroupSplashStage", addGroupSplashStage);
-        addGroupSplashStage.show();
+
+    public void showVoiceChatRinging() {
+        Stage voiceChatRinging = new Stage();
+        setVoiceChatStageStyle(voiceChatRinging);
+        setPopupStage(voiceChatRinging, "/views/voice-chat/VoiceChatRinging.fxml");
+        stageMap.put("voiceChatRinging", voiceChatRinging);
+        voiceChatRinging.addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, event -> {
+            ModelFactory.getInstance().getVoiceChatModel().setInCall(false);
+            VoiceSender.getInstance().closeCall();
+            VoiceReceiver.getInstance().closeCall();
+        });
+        voiceChatRinging.show();
+    }
+
+    public void showVoiceChatAcceptance() {
+        Stage voiceChatAcceptance = new Stage();
+        setVoiceChatStageStyle(voiceChatAcceptance);
+        setPopupStage(voiceChatAcceptance, "/views/voice-chat/VoiceChatAcceptance.fxml");
+        stageMap.put("voiceChatAcceptance", voiceChatAcceptance);
+        voiceChatAcceptance.addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, event -> {
+            ModelFactory.getInstance().getVoiceChatModel().setInCall(false);
+            VoiceSender.getInstance().closeCall();
+            VoiceReceiver.getInstance().closeCall();
+        });
+        voiceChatAcceptance.show();
+    }
+
+
+    public void showVoiceChatCallStage() {
+        Stage voiceChatCallStage = new Stage();
+        setVoiceChatStageStyle(voiceChatCallStage);
+        setPopupStage(voiceChatCallStage, "/views/voice-chat/VoiceChatCall.fxml");
+        stageMap.put("voiceChatCallStage", voiceChatCallStage);
+        voiceChatCallStage.addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, event -> {
+            ModelFactory.getInstance().getVoiceChatModel().setInCall(false);
+            VoiceSender.getInstance().closeCall();
+            VoiceReceiver.getInstance().closeCall();
+        });
+        voiceChatCallStage.show();
+    }
+
+
+    private void setVoiceChatStageStyle(Stage stage) {
+        stage.initStyle(StageStyle.TRANSPARENT);
+    }
+
+    public void showAddSplashStage() {
+        Stage addSplashStage = new Stage();
+        setPopupStageStyle(addSplashStage);
+        setPopupStage(addSplashStage, "/views/add-splash/AddSplash.fxml");
+        stageMap.put("addSplashStage", addSplashStage);
+        addSplashStage.show();
 
     }
 

@@ -3,6 +3,8 @@ package gov.iti.jets.presentation.controllers;
 import gov.iti.jets.commons.dtos.FileTransferPermissionDto;
 import gov.iti.jets.commons.dtos.GroupMessageDto;
 import gov.iti.jets.commons.dtos.SingleMessageDto;
+import gov.iti.jets.commons.dtos.VoiceChatDto;
+import gov.iti.jets.presentation.erros.ErrorMessages;
 import gov.iti.jets.presentation.models.*;
 import gov.iti.jets.presentation.models.mappers.GroupMessageMapper;
 import gov.iti.jets.presentation.models.mappers.SingleMessageMapper;
@@ -15,8 +17,10 @@ import gov.iti.jets.presentation.util.cellfactories.NoSelectionModel;
 import gov.iti.jets.services.FileTransferDao;
 import gov.iti.jets.services.GroupMessageDao;
 import gov.iti.jets.services.SingleMessageDao;
+import gov.iti.jets.services.VoiceChatDao;
 import gov.iti.jets.services.util.DaoFactory;
 import gov.iti.jets.services.util.ServiceFactory;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.MapChangeListener;
 import javafx.collections.ObservableList;
@@ -37,7 +41,9 @@ import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 
 import java.io.File;
+import java.net.InetAddress;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.rmi.ConnectException;
 import java.rmi.NoSuchObjectException;
 import java.rmi.NotBoundException;
@@ -58,6 +64,7 @@ public class ChatController implements Initializable {
     private SingleMessageDao singleMessageDao = DaoFactory.getInstance().getSingleMessageDao();
     private GroupMessageDao groupMessageDao = DaoFactory.getInstance().getGroupMessageDao();
     private FileTransferDao fileTransferDao = DaoFactory.getInstance().getFileTransferDao();
+    private VoiceChatDao voiceChatDao = DaoFactory.getInstance().getVoiceChatDao();
     private FileChooser fileChooser = new FileChooser();
     private File file;
     private ExecutorUtil executorUtil = ExecutorUtil.getInstance();
@@ -101,6 +108,12 @@ public class ChatController implements Initializable {
     @FXML
     private Circle textBackgroundIndicatorCircle;
 
+    @FXML
+    private Button voiceChatButton;
+
+    @FXML
+    private Button attachFileButton;
+
 
     private ObservableMap<String, String> messageStyleMap = FXCollections.observableHashMap();
 
@@ -117,6 +130,20 @@ public class ChatController implements Initializable {
         addMessageStyleMapListener();
         addFontComboBoxListeners();
         handleEnterKeyPressOnChatTextArea();
+        hideVoiceChatInGroup();
+    }
+
+    private void hideVoiceChatInGroup() {
+        userModel.chattingInGroupProperty().addListener(c->{
+            if(userModel.isChattingInGroup()){
+                voiceChatButton.setVisible(false);
+                attachFileButton.setDisable( true );
+            }else{
+                voiceChatButton.setVisible(true);
+                attachFileButton.setDisable( false );
+            }
+        });
+
     }
 
     private void addFontComboBoxListeners() {
@@ -275,64 +302,80 @@ public class ChatController implements Initializable {
 
     @FXML
     void onSendMessageButtonAction(ActionEvent event) {
-
-        if (chatTextArea.getText().length() > 700){
-            stageCoordinator.showErrorNotification( "Can't send a message longer than 700 characters." );
-            chatTextArea.setText( "" );
-            return;
-        }
-
-        if (chatTextArea.getText().isEmpty() || chatTextArea.getText().isBlank()){
-            chatTextArea.setText( "" );
-            return;
-        }
-
-        if (groupChatModel == null && contactModel == null) {
-            return;
-        }
-
-
-        try {
-            singleMessageDao.sendMessage(createMessageDto());
-
-        } catch (NoSuchObjectException | NotBoundException | ConnectException c) {
-            ServiceFactory.getInstance().shutdown();
-            StageCoordinator.getInstance().showErrorNotification("Failed to connect to server. Please try again later.");
-            ModelFactory.getInstance().clearUserModel();
-            ModelFactory.getInstance().clearUserModel();
-            StageCoordinator.getInstance().switchToConnectToServer();
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-        MessageModel messageModel = SingleMessageMapper.INSTANCE.dtoToModel(createMessageDto());
-        messageModel.setSentByMe(true);
-        messageModel.setSenderName(userModel.getDisplayName());
-
-
-        if (contactModel != null) {
-            contactModel.getMesssages().add(messageModel);
-            chatTextArea.setText( "" );
-            scrollChatMessagesListViewToLastMessage();
-        } else {
-            try {
-                groupMessageDao.sendGroupMessage(createGroupMessageDto());
-            } catch (NoSuchObjectException | NotBoundException | ConnectException c) {
-                ServiceFactory.getInstance().shutdown();
-                StageCoordinator.getInstance().showErrorNotification("Failed to connect to server. Please try again later.");
-                ModelFactory.getInstance().clearUserModel();
-                StageCoordinator.getInstance().switchToConnectToServer();
-            } catch (RemoteException e) {
-                e.printStackTrace();
+        ExecutorUtil.getInstance().execute(()->{
+            if (chatTextArea.getText().length() > 700) {
+                Platform.runLater(()->{
+                    stageCoordinator.showErrorNotification("Can't send a message longer than 700 characters.");
+                    chatTextArea.setText("");
+                });
+                return;
             }
-            MessageModel groupMessageModel = GroupMessageMapper.INSTANCE.dtoToModel(createGroupMessageDto());
-            groupMessageModel.setSentByMe(true);
-            groupMessageModel.setSenderName(userModel.getDisplayName());
 
-            groupChatModel.getMesssages().add(groupMessageModel);
-            scrollChatMessagesListViewToLastMessage();
-            chatTextArea.setText( "" );
-        }
-        scrollChatMessagesListViewToLastMessage();
+            if (chatTextArea.getText().isEmpty() || chatTextArea.getText().isBlank()) {
+                Platform.runLater(()->{chatTextArea.setText("");});
+                return;
+            }
+
+            if (groupChatModel == null && contactModel == null) {
+                return;
+            }
+
+            if (contactModel != null) {
+
+                try {
+
+                    singleMessageDao.sendMessage(createMessageDto());
+
+                } catch (NoSuchObjectException | NotBoundException | ConnectException c) {
+                    Platform.runLater(()->{
+                        ServiceFactory.getInstance().shutdown();
+                        StageCoordinator.getInstance().showErrorNotification("Failed to connect to server. Please try again later.");
+                        ModelFactory.getInstance().clearUserModel();
+                        ModelFactory.getInstance().clearUserModel();
+                        StageCoordinator.getInstance().switchToConnectToServer();
+                    });
+                    return;
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                    return;
+                }
+                MessageModel messageModel = SingleMessageMapper.INSTANCE.dtoToModel(createMessageDto());
+                messageModel.setSentByMe(true);
+                messageModel.setSenderName(userModel.getDisplayName());
+
+                Platform.runLater(()->{
+                    contactModel.getMesssages().add(messageModel);
+                    chatTextArea.setText("");
+                    scrollChatMessagesListViewToLastMessage();
+                });
+            } else {
+                try {
+                    groupMessageDao.sendGroupMessage(createGroupMessageDto());
+                } catch (NoSuchObjectException | NotBoundException | ConnectException c) {
+                    Platform.runLater(()->{
+                        ServiceFactory.getInstance().shutdown();
+                        StageCoordinator.getInstance().showErrorNotification("Failed to connect to server. Please try again later.");
+                        ModelFactory.getInstance().clearUserModel();
+                        StageCoordinator.getInstance().switchToConnectToServer();
+                    });
+                    return;
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                    return;
+                }
+                MessageModel groupMessageModel = GroupMessageMapper.INSTANCE.dtoToModel(createGroupMessageDto());
+                groupMessageModel.setSentByMe(true);
+                groupMessageModel.setSenderName(userModel.getDisplayName());
+
+                Platform.runLater(()->{
+                    groupChatModel.getMesssages().add(groupMessageModel);
+                    scrollChatMessagesListViewToLastMessage();
+                    chatTextArea.setText("");
+                });
+            }
+            Platform.runLater(()->{scrollChatMessagesListViewToLastMessage();});
+        });
+
     }
 
     private SingleMessageDto createMessageDto() {
@@ -361,29 +404,29 @@ public class ChatController implements Initializable {
 
     @FXML
     void onAttachFileButtonAction(ActionEvent event) {
-        if (userModel.getCurrentlyChattingWith().length() < 5 || userModel.getCurrentlyChattingWith() == null){
-            stageCoordinator.showMessageNotification( "Can't send a file to a group!", "" );
+        if (userModel.getCurrentlyChattingWith().length() < 5 || userModel.getCurrentlyChattingWith() == null) {
+            stageCoordinator.showMessageNotification("Can't send a file to a group!", "");
             return;
         }
 
-        if(!fileTransferOperationAvailabilityModel.isAvailable()){
+        if (!fileTransferOperationAvailabilityModel.isAvailable()) {
             stageCoordinator.showMessageNotification("File Transfer Operation Availability",
                     "operation is not available now try later");
             return;
         }
         file = fileChooser.showOpenDialog(null);
-        if(file==null){
+        if (file == null) {
             return;
         }
         ContactModel contactModel = getContactModel();
         FileTransferPermissionDto fileTransferPermissionDto = createFileTransferDto(file);
         try {
             stageCoordinator.showMessageNotification("File Transfer Permission",
-                    "sending file transfer permission to "+ contactModel.getDisplayName());
-            boolean result =fileTransferDao.askForPermissionToSendFile(fileTransferPermissionDto);
+                    "sending file transfer permission to " + contactModel.getDisplayName());
+            boolean result = fileTransferDao.askForPermissionToSendFile(fileTransferPermissionDto);
 
             if (result == false) {
-                stageCoordinator.showMessageNotification("File Transfer Permission","can not send, "+
+                stageCoordinator.showMessageNotification("File Transfer Permission", "can not send, " +
                         contactModel.getDisplayName() + "is offline now");
             }
         } catch (NotBoundException e) {
@@ -393,7 +436,7 @@ public class ChatController implements Initializable {
         }
     }
 
-    private FileTransferPermissionDto createFileTransferDto(File file){
+    private FileTransferPermissionDto createFileTransferDto(File file) {
         FileTransferPermissionDto fileTransferPermissionDto = new FileTransferPermissionDto();
         fileTransferPermissionDto.setFile(file);
         fileTransferPermissionDto.setFileName(file.getName());
@@ -403,13 +446,13 @@ public class ChatController implements Initializable {
         return fileTransferPermissionDto;
     }
 
-    private ContactModel getContactModel(){
+    private ContactModel getContactModel() {
         Optional<ContactModel> contactModel = userModel.getContacts().stream()
                 .filter(cm -> cm.getPhoneNumber() == userModel.getCurrentlyChattingWith()).findFirst();
         return contactModel.get();
     }
 
-    private FileModel createFileModel(File file ){
+    private FileModel createFileModel(File file) {
         FileModel fileModel = new FileModel();
         fileModel.setFile(file);
         fileModel.setFileSize(file.length());
@@ -466,4 +509,25 @@ public class ChatController implements Initializable {
         messageStyleMap.put("background-color", colorString);
     }
 
+    @FXML
+    void onVoiceChatAction(ActionEvent event) {
+        if (ModelFactory.getInstance().getVoiceChatModel().isInCall()) {
+            stageCoordinator.showErrorNotification(ErrorMessages.ALREADY_IN_CALL);
+            return;
+        }
+        try {
+            VoiceChatDto voiceChatDto = new VoiceChatDto(userModel.getPhoneNumber(), userModel.getCurrentlyChattingWith(), InetAddress.getLocalHost().getHostAddress());
+            if (voiceChatDao.askPermissionForCalling(voiceChatDto)) {
+                Optional<ContactModel> optionalContactModel = userModel.getContacts().stream().filter(c -> c.getPhoneNumber().equals(userModel.getCurrentlyChattingWith())).findFirst();
+                ModelFactory.getInstance().getVoiceChatModel().setContactModel(optionalContactModel.get());
+                ModelFactory.getInstance().getVoiceChatModel().setInCall(true);
+                stageCoordinator.showVoiceChatRinging();
+            } else {
+                stageCoordinator.showMessageNotification("Voice chat", "Can't call right now");
+
+            }
+        } catch (UnknownHostException | NotBoundException | RemoteException e) {
+            e.printStackTrace();
+        }
+    }
 }
